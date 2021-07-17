@@ -9,7 +9,7 @@ All the class materials will be posted/updated here.
   <table class="table table-striped table-hover">
     <thead>
       <tr>
-        <th>Day</th>
+        <th>Date</th>
         <th>Topic</th>
         <th>Materials</th>
               </tr>

@@ -6,7 +6,9 @@ Prerequisites: Intro to Networks, Linear Models
 
 ### Lecture: 10am –12 pm, online–synchronous
 
-### Instructor: Professor Olga Chyzh, olga dot chyzh at utoronto dot ca
+### Instructor: Professor Olga Chyzh,
+
+### Email: olga dot chyzh at utoronto dot ca
 
 ### Office Hours: by appointment, <a href="https://chyzh.youcanbook.me/">https://chyzh.youcanbook.me/ </a>
 
