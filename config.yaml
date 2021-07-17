@@ -1,0 +1,36 @@
+baseurl: "/"
+languageCode: "en-us"
+title: "Network Analysis"
+theme: "hugo-xmin"
+googleAnalytics: ""
+disqusShortname: ""
+ignoreFiles: ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
+footnotereturnlinkcontents: "↩"
+
+#permalinks:
+#  note: "/note/:year/:month/:day/:slug/"
+#  post: "/post/:year/:month/:day/:slug/"
+
+menu:
+  main:
+    - name: Home
+      url: ""
+      weight: 1
+    - name: Schedule
+      url: "schedule/"
+      weight: 2
+    - name: Homework
+      url: "homework/"
+      weight: 3
+    - name: Syllabus
+      url: "syllabus/"
+      weight: 4
+
+params:
+  description = "A website built through Hugo and blogdown."
+    footer = "&copy; [Olga Chyzh](https://www.olgachyzh.com) | [Github](https://github.com/ochyzh) | [Twitter](https://twitter.com/olga_chyzh)"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
