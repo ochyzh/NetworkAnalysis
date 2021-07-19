@@ -8,9 +8,9 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+
 exclude: true
-editor_options: 
-  chunk_output_type: console
+
 ---
 
 ```{r  setup, message=FALSE, warning=FALSE, include=FALSE}
@@ -19,7 +19,6 @@ options(
   width = 80,
   tibble.width = 80
 )
-
 
 knitr::opts_chunk$set(package.startup.message = FALSE,
   fig.align = "center",  warning=FALSE,  echo=FALSE, message=FALSE
