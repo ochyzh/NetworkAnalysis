@@ -1,0 +1,479 @@
+---
+title: "Advanced Network Analysis"
+author: "Olga Chyzh [www.olgachyzh.com]"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+exclude: true
+editor_options: 
+  chunk_output_type: console
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="todays-class" class="section level2">
+<h2>Today’s Class</h2>
+<p><strong>Network Analysis: Getting Started with the super basics</strong></p>
+<ol style="list-style-type: decimal">
+<li>Definitions. What is network analysis?</li>
+<li>Network Science: Origins</li>
+<li>Network features and measurements</li>
+<li>Collecting network data</li>
+<li>What does this all mean for Political Science?</li>
+<li>Processing network data in R</li>
+</ol>
+</div>
+<div id="what-is-a-network-i.e.-a-graph" class="section level2">
+<h2>What is a network (i.e., a graph)?</h2>
+<p>A set of <strong>nodes</strong> and <strong>relation(s)</strong> defined on them</p>
+</div>
+<div id="section" class="section level2">
+<h2><img src="images/madmen.png" width="400px" style="display: block; margin: auto;" /></h2>
+</div>
+<div id="defining-network-features-measurements-whats-a-node" class="section level2">
+<h2>Defining Network Features &amp; Measurements: What’s a node?</h2>
+<ul>
+<li>A <span style="color:DarkCyan"><strong>node</strong></span> can be defined as an entity that can form relations with other entities.</li>
+</ul>
+<p><strong>Synonyms</strong>:</p>
+<ul>
+<li>actor: from sociometry, common terminology in sociology and psychology</li>
+<li>vertex: from graph theory (i.e., math), common terminology in mathematics and physics</li>
+</ul>
+</div>
+<div id="term-node-is-common-in-statistics-and-applied-sciences-outside-of-soc-and-psych." class="section level2">
+<h2>Term node is common in statistics and applied sciences outside of soc and psych.</h2>
+</div>
+<div id="examples-of-nodes" class="section level2">
+<h2>Examples of Nodes</h2>
+<ul>
+<li>Individuals (Mad Men characters, legislators)</li>
+<li>Families (Padgett and Ansell’s reading)</li>
+<li>Human Rights NGOs</li>
+<li>Countries</li>
+</ul>
+<hr />
+</div>
+<div id="defining-network-features-measurements-whats-a-relation" class="section level2">
+<h2>Defining Network Features &amp; Measurements: What’s a relation?</h2>
+<ul>
+<li>A <span style="color:DarkCyan"><strong>relation/tie</strong></span> defines the existence of an attribute relating nodes.</li>
+</ul>
+<p><strong>Synonyms</strong>:</p>
+<ul>
+<li>link: common in computer science (e.g., huge lit on “Link Prediction”) and social sciences</li>
+<li>edge: graph theoretic terminology common in physics and math, but also elsewhere</li>
+</ul>
+<p><strong>Ties can have characteristics</strong>:</p>
+<ul>
+<li>Weight</li>
+<li>Qualitative attributes</li>
+<li><h2 id="direction">Direction</h2></li>
+</ul>
+</div>
+<div id="lets-brainstorm-ties-to-go-with-our-nodes" class="section level2">
+<h2>Let’s brainstorm ties to go with our nodes</h2>
+<ul>
+<li>Romantic relationship, marriage, friendship</li>
+<li>Business relationship</li>
+<li>Cooperation/conflict</li>
+</ul>
+</div>
+<div id="origins-and-history-of-network-analysis" class="section level2">
+<h2>Origins and History of Network Analysis</h2>
+<p>Early Puzzles</p>
+<ul>
+<li>Sociologists began using the term as early as 1887 and early 1990s</li>
+<li>Emile Durkheim, Jacob Moreno, and later Harrison White (among others) were interested in understanding social patterns and the relations between members of a system.
+<ul>
+<li>How do people feel towards one another? Why might this matter?</li>
+</ul></li>
+</ul>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Early study of network analysis</td>
+</tr>
+<tr class="even">
+<td>Early Puzzles: Individuals inside social groups</td>
+</tr>
+<tr class="odd">
+<td>- Example: In 1932 there was a pandemic of runaways at Brooklyn public and private schools: within two weeks 14 girls ran away, which was 30 times more than the average number
+- Moreno’s finding: position in network predicted whether the girl would run away</td>
+</tr>
+<tr class="even">
+<td><img src="images/moreno.png" width="400px" style="display: block; margin: auto;" /></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="early-study-of-network-analysis" class="section level2">
+<h2>Early study of network analysis</h2>
+<p>Kathleen Carley, Another Early Puzzle (1980-90s): Group Stability and Organization</p>
+<hr />
+</div>
+<div id="early-study-of-network-analysis-1" class="section level2">
+<h2>Early study of network analysis</h2>
+<p>Kathleen Carley, Another Early Puzzle (1980-90s): Group Stability and Organization</p>
+<ul>
+<li>Example: What makes a group stable? Application: founders/leaders of businesses</li>
+</ul>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Early study of network analysis
+Kathleen Carley, Another Early Puzzle (1980-90s): Group Stability and Organization</td>
+</tr>
+<tr class="even">
+<td>- Example: What makes a group stable? Application: founders/leaders of businesses
+- Shared knowledge between actors matters as much, if not more, than context for group stability</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="early-study-of-network-analysis-2" class="section level2">
+<h2>Early study of network analysis</h2>
+<p>Kathleen Carley, Another Early Puzzle (1980-90s): Group Stability and Organization</p>
+<ul>
+<li>Example: What makes a group stable? Application: founders/leaders of businesses</li>
+<li>Shared knowledge between actors matters as much, if not more, than context for group stability</li>
+<li>i.e., characteristics outside the group versus inside of the group</li>
+</ul>
+<hr />
+</div>
+<div id="defining-network-features-measurements" class="section level2">
+<h2>Defining Network Features &amp; Measurements</h2>
+<p>How can we capture these relationships? <span style="color:MediumAquamarine"> <em>The Sociomatrix</em>. </span>
+example: <span style="color:Purple"> <em>PONIES</em> </span></p>
+<p><img src="images/horserank1.jpg" width="600px" style="display: block; margin: auto;" /></p>
+<p><em>Ranks and Relationships in Highland Ponies and Highland Cows</em> by <strong>Brock et. al 1976</strong></p>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Sociomatrix: Pony threats
+<span style="color:DarkCyan"> Directed, targeted behavior </span></td>
+</tr>
+<tr class="even">
+<td><img src="images/ponies1.png" width="600px" style="display: block; margin: auto;" /></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sociomatrix-pony-grooming" class="section level2">
+<h2>Sociomatrix: Pony grooming</h2>
+<p><span style="color:DarkCyan"> Undirected, mutual behavior </span></p>
+</div>
+<div id="section-1" class="section level2">
+<h2><img src="images/ponies2.png" width="600px" style="display: block; margin: auto;" /></h2>
+</div>
+<div id="how-might-we-look-at-this-in-r" class="section level2">
+<h2>How might we look at this in R?</h2>
+<ul>
+<li><p>Our class has an R package that will contain all the datasets.</p></li>
+<li><p>To load our class package (you have to do this each time you need to access the data):</p></li>
+</ul>
+<pre class="r"><code>library(devtools)
+install_github(&quot;ochyzh/networkdata&quot;)
+library(networkdata)</code></pre>
+<ul>
+<li>Now, load the specific dataset:</li>
+</ul>
+<pre class="r"><code>data(highlandPonies)
+ponies&lt;-as.matrix(highlandPonies[1:17, 2:18])</code></pre>
+<p>Create a graph object:</p>
+<pre class="r"><code>library(igraph)
+pGraph &lt;- graph_from_adjacency_matrix(ponies, weighted=TRUE, mode=&quot;undirected&quot;,
+                                      diag=FALSE)</code></pre>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Plot using the <em>igraph</em> package:</td>
+</tr>
+<tr class="even">
+<td><code>r V(pGraph)$color &lt;- ifelse(V(pGraph)$name %in% c("WT", "WH", "WS"), "azure1", "turquoise") ponyPlot&lt;- plot(pGraph, edge.arrow.size=.2, edge.color="black", vertex.frame.color="black", vertex.label=V(pGraph)$names, vertex.label.color="black", layout=layout_with_fr, edge.width=E(pGraph)$weight/5, edge.curved=.08)</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="mutually-supportive-behavior-between-ponies" class="section level2">
+<h2>Mutually supportive behavior between ponies</h2>
+<p><img src="images/ponies.png" width="600px" style="display: block; margin: auto;" /></p>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Other Examples of Neworks</td>
+</tr>
+<tr class="even">
+<td>- Survey data (Mexico violence)
+- Text (co-occurrence matrices)
+- Event data (conflict between actors, shared behavior between actors)
+- Membership data (subcommittees)</td>
+</tr>
+</tbody>
+</table>
+<p>class: inverse, middle, center
+# Collecting network data</p>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Activity 1: Build your own sociomatrix of shared experience
+Break-out groups interview</td>
+</tr>
+<tr class="even">
+<td>1. Brainstorm a question you can ask each member of the group.
+2. Keep the question simple yet specific enough to get variation in this small sample, i.e. “have you ever visited Texas” or “have you ever graphed a social network before?”
+3. Record this observational data where in each observation (person) is a row in the data and their response (the variable you measured) is a column.
+4. Now transform this data, with pen and pencil, into a sociomatrix.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="activity-1-undirected-sociomatrix-of-shared-interests" class="section level2">
+<h2>Activity 1: Undirected sociomatrix of Shared Interests</h2>
+<p>Step 1: A simple Data set</p>
+<p>Step 2: A simple, undirected, sociomatrix</p>
+<p><img src="images/sociomatrix0.jpeg" width="800px" style="display: block; margin: auto;" /></p>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Summary: data processing</td>
+</tr>
+<tr class="even">
+<td><img src="images/df_adj_net3.png" width="800px" style="display: block; margin: auto;" /></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="networks-in-political-science" class="section level2">
+<h2>Networks in Political Science</h2>
+<p><strong>Dyads</strong></p>
+<ul>
+<li>Introduced by the use of dyads, largely in International Relations literature</li>
+</ul>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Networks in Political Science
+<strong>Dyads</strong></td>
+</tr>
+<tr class="even">
+<td>- Introduced by the use of dyads, largely in International Relations literature
+- Early work in IR focused on the behavior and policies of individual states (for example, Morgenthau 1948).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="networks-in-political-science-1" class="section level2">
+<h2>Networks in Political Science</h2>
+<p><strong>Dyads</strong></p>
+<ul>
+<li>Introduced by the use of dyads, largely in International Relations literature</li>
+<li>Early work in IR focused on the behavior and policies of individual states (for example, Morgenthau 1948).</li>
+<li>Analysis of pairs of countries (trade, war, democracy, political ties).</li>
+</ul>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Networks in Political Science
+<strong>Dyads</strong></td>
+</tr>
+<tr class="even">
+<td>- Introduced by the use of dyads, largely in International Relations literature
+- Early work in IR focused on the behavior and policies of individual states (for example, Morgenthau 1948).
+- Analysis of pairs of countries (trade, war, democracy, political ties).
++ Example:
+* US-Iraq 2003: War
+* US-Iran 2003: No War
+* Iran-Iraq 2003: No War</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="networks-in-political-science-2" class="section level2">
+<h2>Networks in Political Science</h2>
+<p><strong>Dyads</strong></p>
+<ul>
+<li>Introduced by the use of dyads, largely in International Relations literature</li>
+<li>Early work in IR focused on the behavior and policies of individual states (for example, Morgenthau 1948).</li>
+<li>Analysis of pairs of countries (trade, war, democracy, political ties).
+<ul>
+<li>Example:
+<ul>
+<li>US-<span style="color:MediumAquamarine">Iraq</span> 2003: War</li>
+<li>US-Iran 2003: No War</li>
+<li>Iran-<span style="color:MediumAquamarine">Iraq</span> 2003: No War</li>
+</ul></li>
+</ul></li>
+</ul>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>## This image again (or why logits are not who you think they are)
+<img src="images/df_adj_net3.png" width="800px" style="display: block; margin: auto;" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>## Networks in Political Science
+Today: Systems (Dyads –&gt; Networks)</td>
+</tr>
+<tr class="even">
+<td>- Researchers recognize that dyads cannot be studied independently
+- Network analysis is seen in a wide variety of applications both within and beyond Political Science:
++ geography
++ spatial analysis
++ conflict studies
++ peer-networks
++ congressional voting</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="network-graphs-can-reveal-important-structures" class="section level2">
+<h2>Network graphs can reveal important structures</h2>
+<div class="figure" style="text-align: center">
+<img src="images/p1.png" alt=" " width="49%" height="10%" /><img src="images/p2.png" alt=" " width="49%" height="10%" />
+<p class="caption">
+</p>
+</div>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Adolescent romantic and sexual networks</td>
+</tr>
+<tr class="even">
+<td><img src="images/jefferson.jpg" width="600px" style="display: block; margin: auto;" />
+<strong>Bearman, Moody and Stovel</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="adolescent-social-structure-by-jim-moody" class="section level2">
+<h2>Adolescent Social Structure by <strong>Jim Moody</strong></h2>
+<p><img src="images/schoolGrade.png" width="600px" style="display: block; margin: auto;" /></p>
+<table>
+<tbody>
+<tr class="odd">
+<td>## Adolescent Social Structure by <strong>Jim Moody</strong></td>
+</tr>
+<tr class="even">
+<td><img src="images/schoolRace.png" width="600px" style="display: block; margin: auto;" /></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="networks-of-violence-in-nigeria" class="section level2">
+<h2>Networks of Violence in Nigeria</h2>
+<p><img src="images/nigeria_postBK.png" width="700px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="networks-of-violence-predicting-conflict-in-nigeria-by-dorff-gallop-minhas" class="section level2">
+<h2><em>Networks of Violence: Predicting Conflict in Nigeria</em> by <strong>Dorff, Gallop, &amp; Minhas</strong></h2>
+</div>
+<div id="structures-do-hide-in-hairballs" class="section level2">
+<h2>Structures do hide in hairballs …</h2>
+<p><img src="images/icews_matlconf.png" width="700px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="international-conflict-event-warning-system-icews-material-conflict-by-minhas-hoff-ward" class="section level2">
+<h2><em>International Conflict Event Warning System (ICEWS): Material Conflict</em> by <strong>Minhas, Hoff, &amp; Ward</strong></h2>
+<p>class: inverse, middle, center
+# Processing Network Data:</p>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Dealing with Data
+You might begin with either a matrix or information stored separately about edges and nodes. This depends on your data collection strategy.</td>
+</tr>
+<tr class="even">
+<td>Useful terminology for working in <em>R</em>:</td>
+</tr>
+<tr class="odd">
+<td>+ Matrices: the adjacency matrix
++ Edges: linkages between actors or nodes
++ Vertices: nodes (or actors) in your system</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="how-can-we-go-beyond-dyads" class="section level2">
+<h2>How can we go beyond dyads?</h2>
+<p>How do we restructure a dyadic data frame such as alliances from COW into a matrix format?</p>
+<pre class="r"><code>data(defAlly)
+head(defAlly)</code></pre>
+<pre><code>##   ccode1 ccode2   ij defAlly year
+## 1      2     20 2_20       1 2012
+## 2      2     31 2_31       0 2012
+## 3      2     41 2_41       0 2012
+## 4      2     42 2_42       0 2012
+## 5      2     51 2_51       0 2012
+## 6      2     52 2_52       0 2012</code></pre>
+<table style="width:6%;">
+<colgroup>
+<col width="5%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>## Your Turn (5 min)</td>
+</tr>
+<tr class="even">
+<td>Can you transform <code>defAlly</code> into a matrix form as shown below?</td>
+</tr>
+<tr class="odd">
+<td><code>##     2 20 31 41 42 51 52 53 54 55 56 57 58 60 70 80 90 91 92 93 ## 2  NA  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 ## 20  1 NA  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 ## 31  0  0 NA  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 ## 41  0  0  0 NA  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 ## 42  0  0  0  0 NA  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 ## 51  0  0  0  0  0 NA  0  0  0  0  0  0  0  0  0  0  0  0  0  0 ## 52  0  0  0  0  0  0 NA  0  0  0  0  0  0  0  0  0  0  0  0  0 ## 53  0  0  0  0  0  0  0 NA  1  1  1  1  1  1  0  0  0  0  0  0 ## 54  0  0  0  0  0  0  0  1 NA  1  1  1  1  1  0  0  0  0  0  0 ## 55  0  0  0  0  0  0  0  1  1 NA  1  1  1  1  0  0  0  0  0  0 ## 56  0  0  0  0  0  0  0  1  1  1 NA  1  1  1  0  0  0  0  0  0 ## 57  0  0  0  0  0  0  0  1  1  1  1 NA  1  1  0  0  0  0  0  0 ## 58  0  0  0  0  0  0  0  1  1  1  1  1 NA  1  0  0  0  0  0  0 ## 60  0  0  0  0  0  0  0  1  1  1  1  1  1 NA  0  0  0  0  0  0 ## 70  0  0  0  0  0  0  0  0  0  0  0  0  0  0 NA  0  0  0  0  0 ## 80  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 NA  0  0  0  0 ## 90  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 NA  0  0  0 ## 91  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 NA  0  0 ## 92  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 NA  0 ## 93  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 NA</code></td>
+</tr>
+<tr class="even">
+<td>(Hint the <code>spread</code> function from the <code>tidyr</code> package might be useful … also easy to do with a for loop)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="what-weve-learned-so-far" class="section level2">
+<h2>What We’ve Learned So Far</h2>
+<ul>
+<li>Network analysis has applications to many fields, from animal science to economics and political science.</li>
+<li>Network data are most often stored as a sociomatrix.</li>
+<li>Networks may contain important structures that are missed if treated as dyadic data.</li>
+<li>Network data are easily visualized using <code>igraph</code>.</li>
+<li>Convert long-form (dyadic) data into a matrix in <span class="math inline">\(R\)</span>.</li>
+</ul>
+</div>
