@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced Network Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Advanced Network Analysis
+## Intro to Networks
+### Olga Chyzh [www.olgachyzh.com]
+
+---
+
+
+
+
+
+
+
+
+## Centrality
+
+- Centrality measures help understand: 
+  + **"Which node is the most important or central in this network?"**
+  + What do you mean by "important"?
+  + What do you mean by "center"?
+  + Definition of "center" varies by context/purpose
+    + The power a person holds in an organization may be inversely proportional to the number of keys on their keyring 
+      + A janitor has keys to every office, and no power
+      + The CEO does not need a key: people always open the door for her
+
+---
+
+## Centrality
+
+Freeman (1979):
+
+"There is certainly no unanimity on exactly what centrality is or on its conceptual foundations, and there is little agreement on the proper procedure for its measurement."
+
+---
+## Working example
+
+[Florentine marriages (Padgett &amp; Ansell 1993)](http://home.uchicago.edu/~jpadgett/papers/published/robust.pdf)
+
+
+```r
+# load datasets
+data(flo) #this dataset is available from the -network- package
+# view
+dim(flo)
+```
+
+```
+## [1] 16 16
+```
+
+```r
+rownames(flo)
+```
+
+```
+##  [1] "Acciaiuoli"   "Albizzi"      "Barbadori"    "Bischeri"     "Castellani"  
+##  [6] "Ginori"       "Guadagni"     "Lamberteschi" "Medici"       "Pazzi"       
+## [11] "Peruzzi"      "Pucci"        "Ridolfi"      "Salviati"     "Strozzi"     
+## [16] "Tornabuoni"
+```
+
+```r
+flo[1:5,1:5]
+```
+
+```
+##            Acciaiuoli Albizzi Barbadori Bischeri Castellani
+## Acciaiuoli          0       0         0        0          0
+## Albizzi             0       0         0        0          0
+## Barbadori           0       0         0        0          1
+## Bischeri            0       0         0        0          0
+## Castellani          0       0         1        0          0
+```
+
+---
+
+## Florentine families
+
+
+```r
+# convert to igraph object
+library(igraph)
+g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
+plot(g)
+```
+
+---
+
+## Florentine families
+
+Who looks central? 
+
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-4-1.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+## Florentine families
+
+Does simply plotting with different layouts help?
+
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-5-1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+## Popular Measures of Centrality
+
+Well ... let's define centrality:
+
+- Degree
+- Closeness 
+- Betweenness
+- Eigenvector
+
+---
+
+## Degree centrality
+
+- **Idea**: The nodes with more connections to others are more central
+
+
+
+- How to  measure: 
+  + Undirected degree centrality: `\(\sum_{j:j \neq i} y_{i,j}\)`
+  + Directed outdegree centrality: `\(\sum_{j:j \neq i} y_{j,i}\)`
+  + Directed indegree centrality: `\(\sum_{j:j \neq i} y_{i,j}\)`
+
+
+
+- Though simple, degree is often a highly effective measure of the influence or importance of a node
+  + In many situations, people with more connections tend to have more power
+
+
+
+- Examples where this might be useful? 
+
+---
+
+## Degree centrality
+
+Lets calculate degree centrality in R (using the `igraph` package)
+
+
+```
+##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
+##          6          4          4          3          3          3
+```
+
+---
+
+## Degree centrality
+
+Lets calculate degree centrality in R using `igraph`
+
+
+```r
+?degree
+```
+
+&lt;img src="images/degreeHelp.png" width="700px" style="display: block; margin: auto;" /&gt;
+---
+
+## Degree centrality
+
+Lets calculate degree centrality in R using `igraph`
+
+
+```r
+cDegree = degree(g, mode='in', loops=FALSE)
+sort(cDegree, decreasing=TRUE)[1:6]
+```
+
+```
+##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
+##          6          4          4          3          3          3
+```
+
+---
+## Now ...
+
+Adjust the size of nodes in the Florentine graph by degree
+
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-10-1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+# convert to igraph object
+g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
+set.seed(6886)
+plot(g, vertex.size=5*cDegree)
+```
+
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-11-1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+## Closeness centrality
+
+- **Idea**: If a node is far away from all other nodes, then it should be less central ... or to put it another way, the more central a node, the lower its total distance to all other nodes
+- How to measure: 
+  + (geodesic) distance: `\(d_{i,j}\)` is the minimal path length from `\(i\)` to `\(j\)`
+  + closeness centrality: `\(\frac{1}{\sum_{j:j \neq i} d_{i,j}}\)`
+- Closeness can also be regarded as a measure of how long it will take to spread information from a node to all other nodes sequentially
+- This measure won't be useful for disconnected graphs ... why?
+- Examples where this might be useful?
+
+
+---
+## Closeness centrality
+
+Lets think about how to calculate this ...
+
+- Start with getting distances between nodes
+
+
+```r
+d = distances(g)
+d[1:5,1:5]
+```
+
+```
+##            Acciaiuoli Albizzi Barbadori Bischeri Castellani
+## Acciaiuoli          0       2         2        4          3
+## Albizzi             2       0         2        2          3
+## Barbadori           2       2         0        3          1
+## Bischeri            4       2         3        0          2
+## Castellani          3       3         1        2          0
+```
+
+---
+
+## Closeness centrality
+
+Why? is this
+
+
+```r
+d['Pucci',1:5]
+```
+
+```
+## Acciaiuoli    Albizzi  Barbadori   Bischeri Castellani 
+##        Inf        Inf        Inf        Inf        Inf
+```
+
+Lets fix. 
+
+
+```r
+d[d==Inf] = NA
+```
+
+---
+
+## Now lets get a pseudo-measure of closeness
+
+
+```r
+avgPathDistance = sort(apply(d, 1, mean, na.rm=TRUE), decreasing=FALSE)
+
+#dump pucci
+avgPathDistance = avgPathDistance[-1]
+
+# top 6
+avgPathDistance[1:6]
+```
+
+```
+##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
+##   1.666667   1.866667   1.933333   1.933333   2.000000   2.133333
+```
+
+---
+
+## Closeness centrality
+
+Lets calculate this in `igraph`
+
+
+```r
+?closeness
+```
+
+&lt;img src="images/closenessHelp.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Closeness centrality
+
+Lets calculate this in `igraph`
+
+
+```r
+sort(closeness(g), decreasing=TRUE)[1:6]
+```
+
+```
+##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
+## 0.02439024 0.02272727 0.02222222 0.02222222 0.02173913 0.02083333
+```
+
+Compare with our hack-y calculation:
+
+
+```r
+avgPathDistance[1:6]
+```
+
+```
+##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
+##   1.666667   1.866667   1.933333   1.933333   2.000000   2.133333
+```
+---
+
+## Degree vs Closeness
+
+
+```r
+sort(degree(g), decreasing=TRUE)[1:6]
+```
+
+```
+##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
+##          6          4          4          3          3          3
+```
+
+```r
+sort(closeness(g), decreasing=TRUE)[1:6]
+```
+
+```
+##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
+## 0.02439024 0.02272727 0.02222222 0.02222222 0.02173913 0.02083333
+```
+---
+## Two-way Visualization Comparison
+
+Now plot adjusting node sizes by closeness centrality, and position the previous plot using node size as a function of degree to the left
+
+
+&lt;img src="images/twoway.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+## Two-way Visualization Comparison
+
+
+```r
+CloseCent&lt;-closeness(g)
+g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
+set.seed(5574)
+LO = layout_with_fr(g) #Layout
+
+par(mfrow=c(1,2)) # plot four figures - 1 rows, 2 columns
+plot(g, vertex.size=1000*CloseCent, layout=LO, main="Closeness")
+plot(g, vertex.size=5*cDegree, layout=LO, main="Degree")
+```
+
+
+&lt;img src="images/twoway.png" width="400px" style="display: block; margin: auto;" /&gt;
+---
+
+## Betweenness
+
+- **Idea**: A node is central if it acts as a bridge to other nodes
+
+- How to measure in words: 
+  + For each pair of nodes, compute the geodesic distance (shortest path between them)
+  + Then for each node, determine the fraction of shortest paths that go through the actor in question
+  + End by summing this fraction over all pairs of nodes
+---
+
+## Betweenness
+
+- How to measure a bit more formally:
+  + Say `\(g_{j,k}\)` equals the number of geodesics between nodes `\(j\)` and `\(k\)`
+  + Say `\(g_{j,k}(i)\)` equals the number of geodesics between nodes `\(j\)` and `\(k\)` going through `\(i\)`
+  + Then betweenness centrality for actor `\(i\)`: `\(\sum_{j&lt;k} \frac{g_{j,k}(i)}{g_{j,k}}\)`
+
+---
+
+## Betweenness
+
+- Simple way to think of `\(\frac{g_{j,k}(i)}{g_{j,k}}\)` is the probability that a "message" from `\(j\)` to `\(k\)` goes through `\(i\)`
+  + `\(j\)` and `\(k\)` have `\(g_{j,k}\)` routes of communication
+  + `\(i\)` is on `\(g_{j,k}(i)\)` of these routes
+  + a randomly selected path contains `\(i\)` with probability `\(\frac{g_{j,k}(i)}{g_{j,k}}\)` 
+
+- Examples where this might be useful?
+
+---
+
+## Betweenness
+
+Lets calculate this in `igraph`
+
+
+```r
+?betweenness
+```
+
+&lt;img src="images/betweennessHelp.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Betweenness
+
+Lets calculate this in `igraph`
+
+
+```r
+sort(betweenness(g), decreasing=TRUE)[1:6]
+```
+
+```
+##   Medici Guadagni  Albizzi Salviati  Ridolfi Bischeri 
+## 47.50000 23.16667 19.33333 13.00000 10.33333  9.50000
+```
+
+---
+
+## Degree vs Closeness vs Betweenness
+
+
+```r
+sort(degree(g), decreasing=TRUE)[1:6]
+```
+
+```
+##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
+##          6          4          4          3          3          3
+```
+
+```r
+sort(closeness(g), decreasing=TRUE)[1:6]
+```
+
+```
+##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
+## 0.02439024 0.02272727 0.02222222 0.02222222 0.02173913 0.02083333
+```
+
+```r
+sort(betweenness(g), decreasing=TRUE)[1:6]
+```
+
+```
+##   Medici Guadagni  Albizzi Salviati  Ridolfi Bischeri 
+## 47.50000 23.16667 19.33333 13.00000 10.33333  9.50000
+```
+
+
+
+---
+## Three-Way Visualization Comparison
+
+Now plot adjusting node sizes by closeness centrality, and position the previous plot using node size as a function of degree to the left
+
+
+&lt;img src="images/threeway.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+## Three-Way Visualization Comparison
+
+```r
+BetwCent&lt;-betweenness(g)
+g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
+set.seed(5574)
+
+
+par(mfrow=c(1,3)) # plot four figures - 1 row, 3 columns
+plot(g, vertex.size=BetwCent, layout=LO, main="Betweenness")
+plot(g, vertex.size=1000*CloseCent, layout=LO, main="Closeness")
+plot(g, vertex.size=5*cDegree, layout=LO, main="Degree")
+```
+
+
+&lt;img src="images/threeway.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Comparison of these measures (Thanks to Arifuzzaman &amp; Bhuiyan)
+
+&lt;img src="images/comparisonCentrality.png" width="1000px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Comparison of these measures (Thanks to Arifuzzaman &amp; Bhuiyan)
+
+&lt;img src="images/comparisonCentralityTable.png" width="1000px" style="display: block; margin: auto;" /&gt;
+---
+
+## One more ... Eigenvector
+
+- **Idea**: An actor is more central if it is connected to other more central actors
+
+
+- Eigenvector centrality: centrality of each node is proportional to the sum of the centralities of its neighbors (let `\(c_{i}^{e}\)` denote the eigenvector centrality of actor `\(i\)`):
+  + `\(c_{i}^{e} = \frac{1}{\lambda} \sum_{j:j\neq i} y_{ij} c_{j}^{e}\)`
+
+
+- Based on some matrix algebra: 
+  + `\(Y c^{e} = \lambda c^{e}\)`
+  + Vector `\(c^{e}\)` satisfying the above equation is an **eigenvector** of Y
+
+ 
+- Generally, there are multiple eigenvectors, centrality is taken to be the one corresponding to the largest value of `\(\lambda\)`
+
+
+- Examples of where this might be useful?
+
+---
+
+## Trillion dollar application
+
+ `Google Describing PageRank`: PageRank relies on the uniquely democratic nature of the web by using its vast link structure as an indicator of an individual page’s value. In essence, Google interprets a link from page A to page B as a vote, by page A, for page B. But, Google looks at more than the sheer volume of votes, or links a page receives; it also analyzes the page that casts the vote. Votes cast by pages that are themselves “important” weigh more heavily and help to make other pages “important.”
+
+
+---
+## Eigenvector centrality
+
+Lets calculate this in `igraph`
+
+
+```r
+?eigen_centrality
+```
+
+&lt;img src="images/eigenvectorHelp.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Eigenvector centrality
+
+Lets calculate this in `igraph`
+
+
+```r
+sort(eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
+```
+
+```
+##     Medici    Strozzi    Ridolfi Tornabuoni   Guadagni   Bischeri 
+##  1.0000000  0.8272688  0.7937398  0.7572302  0.6718805  0.6572037
+```
+
+---
+## Degree vs Closeness vs Betweenness vs Eigenvector
+
+
+```r
+sort(degree(g), decreasing=TRUE)[1:6]
+sort(closeness(g), decreasing=TRUE)[1:6]
+sort(betweenness(g), decreasing=TRUE)[1:6]
+sort(eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
+```
+
+
+```
+##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
+##          6          4          4          3          3          3
+```
+
+```
+##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
+## 0.02439024 0.02272727 0.02222222 0.02222222 0.02173913 0.02083333
+```
+
+```
+##   Medici Guadagni  Albizzi Salviati  Ridolfi Bischeri 
+## 47.50000 23.16667 19.33333 13.00000 10.33333  9.50000
+```
+
+```
+##     Medici    Strozzi    Ridolfi Tornabuoni   Guadagni   Bischeri 
+##  1.0000000  0.8272688  0.7937398  0.7572302  0.6718805  0.6572037
+```
+
+---
+
+## Four-Way Visualization Comparison
+
+- Now plot adjusting node sizes by eigenvalue centrality, and position the previous plot using node size as a function of degree to the left
+
+&lt;img src="images/all_four.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+EigenCent&lt;-eigen_centrality(g)
+
+par(mfrow=c(2,2)) # plot four figures - 2 row, 2 columns
+plot(g, vertex.size=30*EigenCent$vector, layout=LO, main="Eigenvalue")
+plot(g, vertex.size=BetwCent, layout=LO, main="Betweenness")
+plot(g, vertex.size=1000*CloseCent, layout=LO, main="Closeness")
+plot(g, vertex.size=5*cDegree, layout=LO, main="Degree")
+```
+
+---
+## Break-Out Groups
+For each of the following networks, think of the best measure of centrality to measure the amount of influence in different contexts.
+
+- countries connected by trade relations
+- a network of student friendships on a university campus
+- a network of legislators connected by co-sponsorships of bills
+- a network of CEOs connected based on their undergraduate institutions
+---
+## A word from Wasserman &amp; Faust
+
+"..., we do not expect that the most fruitful development in descriptive techniques will be the continued addition of yet another definition of centrality measure or yet another subgroup definition or yet another definition of equivalence. Rather, we expect that careful assessment of the usefulness of current methods in substantive and theoretical applications will be helpful in determining when, and under what conditions, each method is useful (perhaps in conjunction with statistical assumptions). Considerable work also needs to be done on measurement properties (such as sampling variability) of the current measures."
+---
+## Application: Feld (1991)
+
+Goals: 
+
+- Learn to calculate various measures of centrality
+- Continue familiarizing yourself with managing network data
+- Replicate the analysis by Feld (1991)
+
+
+
+---
+
+## Feld (1991) Summary
+
+- Most people have fewer friends than their friends. Why?
+
+- The distribution of the number of friends' friends is pulled to the right by a small number of people with a lot of friends.
+
+- Other examples of the same phenomenon?
+---
+
+## Plan
+
+- Step 1: Load the data.  We'll be using a dataset named *coleman* from the `sna` package.
+
+  + Notice that these are not the same data as in Feld (1991)
+  
+
+```r
+library(sna)
+data(coleman)
+#?coleman 
+```
+---
+
+
+## Plan
+- Step 2: Plot the network in the fall. Notice that our data is a 2x73x73 array.
+ 
+
+```r
+#coleman[1,,] #Fall
+#dim(coleman[1,,])
+library(igraph)
+pGraph&lt;-graph_from_adjacency_matrix(coleman[1,,])
+V(pGraph)$label&lt;- NA
+plot(pGraph, vertex.size=10, edge.arrow.size=.2,vertex.color="blue" )
+```
+
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-41-1.png" width="45%" style="display: block; margin: auto;" /&gt;
+---
+
+## Now Let's Replicate Feld's Analysis
+
+Table 1 on p. 1466
+
+&lt;img src="images/Feld_T1.png" width="75%" style="display: block; margin: auto;" /&gt;
+---
+## Your Turn
+
+Calculate number of friends (degree centrality) for each person.
+
+
+```
+##   from_id deg
+## 1       1   5
+## 2       2   2
+## 3       3   2
+## 4       4   4
+## 5       5   2
+```
+
+---
+## Table 1 Replication Cont'd
+
+1. Calculate individual's degree for Coleman data using dplyr:
+
+  
+
+```r
+deg&lt;-as_tibble(coleman[1,,]) %&gt;% 
+  mutate(from_id=row.names(coleman[1,,])) %&gt;% 
+  pivot_longer(cols=`1`:`73`,names_to="to_id",values_to="friend") %&gt;%
+  group_by(from_id) %&gt;% 
+  summarise(degree=sum(friend)) %&gt;% 
+  ungroup()
+```
+
+---
+## Table 1 Replication Cont'd
+
+2. Calculate total number of friends of friends of each person.
+3. Calculate average number of friends of friends.
+
+
+```
+## # A tibble: 69 x 4
+##    from_id  ideg tot_fdeg ave_deg
+##    &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+##  1 1           5       16    3.2 
+##  2 11          4       16    4   
+##  3 12          3       13    4.33
+##  4 13          4       15    3.75
+##  5 14          2        8    4   
+##  6 15          1        5    5   
+##  7 16          3       10    3.33
+##  8 17          2        3    1.5 
+##  9 18          3       12    4   
+## 10 19          5       17    3.4 
+## # ... with 59 more rows
+```
+---
+## Table 1 Replication Cont'd
+
+2. Calculate total number of friends of friends of each person.
+3. Calculate average number of friends of friends.
+
+
+```r
+fdeg&lt;-as_tibble(coleman[1,,]) %&gt;% 
+  mutate(from_id=row.names(coleman[1,,])) %&gt;% 
+  pivot_longer(cols=`1`:`73`,names_to="to_id",values_to="friend") %&gt;%
+  filter(friend==1) %&gt;%
+  group_by(from_id)%&gt;%
+  mutate(idegree=sum(friend), to_id=to_id) %&gt;%
+  left_join(deg, by=c("to_id"="from_id")) %&gt;%
+  rename(fdegree=degree)  %&gt;%
+  mutate(tot_fdeg=sum(fdegree),ave_fdeg=mean(fdegree)) %&gt;%
+  ungroup() 
+
+fdeg %&gt;% group_by(from_id) %&gt;% summarise(ideg=first(idegree),tot_fdeg=first(tot_fdeg), ave_fdeg=first(ave_fdeg))
+```
+
+
+---
+## Figure 3 Replication
+
+1. Plot individual's degree distribution for Coleman data:
+
+```r
+p&lt;-deg %&gt;% 
+  ggplot() +
+  geom_bar(aes(x=degree))+
+  xlab("Individual's Degree")+
+  theme_classic()
+```
+---
+## Figure 3 Replication Cont'd
+
+2. Plot friend's degree distribution:
+
+```r
+p1&lt;-fdeg %&gt;%  ggplot() +geom_bar(aes(x=fdegree))+
+  xlab("Friend's Degree")+
+  theme_classic()
+```
+
+---
+## Figure 3 Replication Cont'd
+3. Combine the plots
+
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-49-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Feld (1991) Figure 3
+
+
+&lt;img src="images/Feld_F3.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

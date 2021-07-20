@@ -26,6 +26,16 @@ All the class materials will be posted/updated here.
           </dl>
         </td>
       </tr>
+      <tr>
+        <td>July 21</td>
+        <td>Network Centrality</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/03_centrality.html" target=_blank>network centrality </a>  |<a href="../materials/YourTurnAnswers/03_centrality_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/Scripts/day2_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
