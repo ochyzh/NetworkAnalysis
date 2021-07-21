@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced Network Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Advanced Network Analysis
+## Community Detection
+### Olga Chyzh [www.olgachyzh.com]
+
+---
+
+
+
+
+
+class: inverse, middle, center
+# Network Community Detection
+---
+## Reading Materials
+
+- [Barabasi, Albert-Laszlo. (2016). Network Science. Cambridge University Press. Chapter 9.](http://networksciencebook.com/chapter/9)
+- Zachary, Wayne W. (1977). An information flow model for conflict and fission in small groups. Journal of Anthropological Research 33(4) : 452-473.
+- Renshon, Jonathan. (2016). Status deficits and war. International Organization 70(3): 513-550.
+- Gould, Roger V. (1991). Multiple Networks and Mobilization in the Paris Commune, 1971. Americal Sociological Review 56(6): 716-729. 
+
+---
+## Introduction: Belgium
+&lt;img src="images/belgium.png" width="700px" style="display: block; margin: auto;" /&gt;
+---
+## Introduction: Belgium
+- Population: 11.5 mil
+- Bilingual: 59% Flemish (speak Dutch), 40% Waloons (French)
+- Is the society so densely knitted together that nobody notices who is of what ethnic group?
+- Or do the two groups minimize the interactions?
+---
+## Blondel et al. (2008)
+
+- Applied a community finding algorithm to the call patterns of a big mobile phone operator.
+- Goal: identify individuals who regularly talk to one another.
+---
+## Blondel et al. (2008)
+&lt;img src="images/belgium_communities.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, middle, center
+#  Communities: the Basics
+---
+## Network Levels of Analysis
+
+&lt;img src="images/levels_of_analysis.png" width="900px" style="display: block; margin: auto;" /&gt;
+
+---
+## What Is A Community?
+
+- A community is a locally dense connected subgraph. (Barabasi, 2016, 325)
+  + All members of a community must be reached through other members of the same community (connectedness).
+  + Nodes that belong to the same community have a higher probability of linking than nodes outside of the community (density).
+  + Examples: communities among the karate club members, communities of international states, communities of legislators, neighborhood communities.
+- Note that these features do not uniquly define a community, just offer some guidelines.
+  
+---
+## Cliques as Communities
+
+A clique is a complete subgraph of *k*-nodes.
+&lt;img src="images/cliques.png" width="900px" style="display: block; margin: auto;" /&gt;
+
+- May be too restrictive.
+---
+## Strong and Weak Communities
+Consider a connected subgraph `\(C\)` of `\(N_c\)` nodes.
+
+*Internal degree, `\(k_i^{int}\)`* is the set of links of node *i* that connectes to the other nodes in the same community.
+
+*External degree, `\(k_i^{ext}\)`* is the set of links of node *i* that connects to the rest of the network.
+
+If `\(k_i^{ext}=0\)`, all neighbors of `\(i\)` belong to `\(C\)`, and `\(C\)` is a good community for `\(i\)`.
+
+If `\(k_i^{int}=0\)`, all neighbors of `\(i\)` belong to other communities, then `\(i\)` should be assigned to a different community.
+
+
+---
+## Example
+
+`\(k_i^{ext}=1\)`, `\(k_i^{int}=3\)`
+
+&lt;img src="images/communities.png" width="300px" style="display: block; margin: auto;" /&gt;
+---
+## Strong and Weak Communities
+
+In a *strong community* each node of `\(C\)` has more links within the community than with the rest of the graph, `\(k_i^{int}(C)&gt;k_i^{ext}(C)\)`. In a *weak community,* the total internal degree of `\(C\)` exceeds its total external degree, `\(k_i^{in}(C)&gt;k_i^{out}(C)\)`.  
+
+&lt;img src="images/communities1.png" width="700px" style="display: block; margin: auto;" /&gt;
+---
+## Number of Partitions
+
+How many ways can we partition a network into 2 communities? 
+
+Divide a network into two equal non-overlapping subgraphs, such that the number of links between the nodes in the two groups is minimized.
+
+Two subgroups of size n1 and n2. Total number of combinations: `\(\frac{N!}{n_1!n_2!}\)`
+
+- `\(N=10 \implies 256\)` partitions
+- `\(N=100 \implies 10^{26}\)` partitions
+
+If the number and size of the communities are unknown at the beginning, the number of possible partitions is a Bell Number. 
+
+Brute force approach is unfeasible, need an algorithm.
+---
+## Ravasz Algorithm
+
+Step 1: Define the Similarity Matrix 
+
+High for node pairs that likely belong to the same community, low for those that likely belong to different communities. 
+Nodes that connect directly to each other and/or share multiple neighbors are more likely to belong to the same dense local neighborhood, hence their similarity should be large.
+
+Topological overlap matrix: `\(x_{ij}=\frac{J_N(i,j)}{min(k_i,k_j)}\)`, where `\(J_N(i,j)\)` is the number of common neighbors of nodes `\(i\)` and `\(j\)`, `\(+1\)` if there is a direct link between `\(i\)` and `\(j\)`, and `\(min(k_i,k_j)\)` is the smaller of the degrees `\(k_i\)` and `\(k_j\)`.
+
+&lt;img src="images/J_ij.png" width="200px" style="display: block; margin: auto;" /&gt;
+ 
+
+
+
+
+
+
+
+
+
+---
+## Ravasz Algorithm
+Step 2: Define Group Similarity
+
+Nodes are merged into groups based on their mutual similarity, e.g. average cluster linkage. 
+
+Step 3: Apply Hierarchical Clustering 
+
+- Assign each node to a community of its own and evaluate the similarity for all node pairs. The initial similarities between these “communities” are simply the node similarities.
+- Find the community pair with the highest similarity and merge them to form a single community.
+- Calculate the similarity between the new community and all other communities.
+- Repeat from Step 2 until all nodes are merged into a single community.
+
+
+
+
+
+
+
+
+
+---
+## Different Splits of the Florentine Network
+
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+
+
+
+---
+## The Ravasz Algorithm Splits of Zachary's Data
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+---
+## Zachary (1977)
+
+- Karate club of 34 members; 
+
+- 78 pairwise links between members who regularly interacted outside the club;
+
+- A conflict between the club’s president and the instructor split the club into two.
+
+- Today community finding algorithms are often tested based on their ability to infer these two communities from the structure of the network before the split.
+
+
+---
+## Zachary (1977)
+
+- Maximum Flow Minimum Cut Procedure: divides network nodes into two subsets, one containing the source and the other, the sink. The edges connecting the two subsets, called `the cut.` The cut with the minimum sum of the capacities of all of its edges represents a bottleneck in the network. (464) 
+---
+## Zachary (1977)
+
+&lt;img src="images/zachary.png" width="500px" style="display: block; margin: auto;" /&gt;
+ 
+---
+## Can We Replicate the Result?
+
+
+```r
+library(igraph) #Zachary's karate club dataset is built into the igraph package.
+karate &lt;- make_graph("Zachary") 
+mf&lt;-max_flow(karate, source=V(karate)[1], target=V(karate)[34])
+V(karate)$color&lt;- ifelse(V(karate) %in%  mf$partition1, "red","pink")
+plot(karate, edge.color="black", vertex.frame.color="black")
+```
+
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-17-1.png" width="350px" style="display: block; margin: auto;" /&gt;
+---
+## Can We Find the Same Result?
+
+
+```r
+mf$partition1
+```
+
+```
+## + 17/34 vertices, from d3a0304:
+##  [1]  1  2  3  4  5  6  7  8 10 11 12 13 14 17 18 20 22
+```
+
+```r
+mf$partition2
+```
+
+```
+## + 17/34 vertices, from d3a0304:
+##  [1]  9 15 16 19 21 23 24 25 26 27 28 29 30 31 32 33 34
+```
+---
+## Other Ways to Partition Networks
+
+- Modularity: a measure of the extent to which like is connected to like in a network.
+  + A *greedy algorithm* iteratively joins nodes if the move increases the new partition's modularity.
+
+&lt;img src="images/modularity.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+library(sna)
+data(coleman)
+#make into an igraph object
+friends&lt;-graph_from_adjacency_matrix(coleman[2,,], mode="undirected", diag=FALSE)
+friends &lt;- igraph::delete.vertices(friends , which(igraph::degree(friends)==0))
+LO = layout_with_fr(friends) #Layout
+cfg&lt;-cluster_fast_greedy(friends)
+modularity(cfg)
+```
+
+```
+## [1] 0.5904201
+```
+
+```r
+cfg$membership
+```
+
+```
+##  [1] 5 5 1 1 5 5 5 5 5 1 5 5 5 5 1 5 5 5 5 5 5 3 5 1 4 5 1 4 4 1 1 1 4 1 4 5 1 4 1 1 1 2 2 2 2 2 2 2 2 2 3 2 2 3 2 3 2 3 3 3 3
+## [62] 3 3 3 3 3 3 3 3
+```
+---
+## Communities in the Friendship Network
+
+```r
+plot(cfg, friends, layout=LO, main="Greedy")
+```
+
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+---
+## Other Examples:
+
+
+```r
+wc &lt;- cluster_walktrap(friends) #community structure via short random walks
+modularity(wc)
+```
+
+```
+## [1] 0.5935815
+```
+
+```r
+membership(wc)
+```
+
+```
+##  1  2  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 
+##  2  2  1  1  2  2  2  2  1  1  2  2  2  2  1  2  1  1  2  2  2  3  2  2  5  2  1  5  5  1  1  2  5  1  5  2  2  5  1  1  1  3 
+## 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 
+##  3  3  3  3  3  3  3  3  3  3  3  4  3  4  3  4  4  4  4  4  4  4  4  4  4  4  4
+```
+---
+## Fast Greedy Algorithm
+
+
+```r
+fg &lt;- cluster_fast_greedy(friends) #Used in Renshon (2016)
+modularity(fg)
+```
+
+```
+## [1] 0.5904201
+```
+
+```r
+fg$membership
+```
+
+```
+##  [1] 5 5 1 1 5 5 5 5 5 1 5 5 5 5 1 5 5 5 5 5 5 3 5 1 4 5 1 4 4 1 1 1 4 1 4 5 1 4 1 1 1 2 2 2 2 2 2 2 2 2 3 2 2 3 2 3 2 3 3 3 3
+## [62] 3 3 3 3 3 3 3 3
+```
+
+---
+## Egde Betweenness
+
+
+```r
+ceb&lt;-cluster_edge_betweenness(friends)
+modularity(ceb)
+```
+
+```
+## [1] 0.5993285
+```
+
+```r
+ceb$membership
+```
+
+```
+##  [1] 1 1 2 2 1 1 1 1 2 2 1 1 1 1 2 1 2 2 1 1 1 3 1 2 4 1 2 4 4 2 2 3 4 2 4 1 1 4 2 2 2 3 3 3 3 3 3 3 3 3 3 3 3 5 3 5 5 5 5 5 5
+## [62] 5 5 5 5 5 5 5 5
+```
+
+---
+## Comparing Clustering Algorithms
+
+
+```r
+par(mfrow=c(2, 2), mar=c(0,0,1,0))
+plot(cfg, friends, layout=LO, main="Greedy")
+plot(wc, friends, layout=LO, main="Short Random Walks")
+plot(fg, friends, layout=LO,main= "Fast Greedy")
+plot(ceb, friends, layout=LO, main="Betweenness")
+```
+
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-25-1.png" width="300px" style="display: block; margin: auto;" /&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

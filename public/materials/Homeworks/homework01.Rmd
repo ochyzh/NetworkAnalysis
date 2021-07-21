@@ -1,0 +1,61 @@
+---
+title: 'Network Analysis II - Homework #1'
+author: "Your Name"
+date: "7/22/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Please replace "Your Name" in the YAML (top of this script) with your name.
+
+## Friendship networks
+
+2. Run the code in the chunk below to load the `coleman` friendship data from the `sna` package. You can run this code by pressing the green arrow in the top right corner of the chunk. If the code gives you an error, make sure that you installed the package `sna`.
+
+```{r, message=FALSE}
+library(sna)
+data(coleman)
+```
+
+3. Run the next chunk to plot the friendship network using the `igraph` package.
+
+```{r, message=FALSE}
+library(igraph)
+frMat<-graph_from_adjacency_matrix(coleman[1,,], mode="directed",diag=FALSE )
+frMat <- igraph::delete.vertices(frMat , which(igraph::degree(frMat)==0))
+V(frMat)$label<-NA
+plot(frMat, edge.arrow.size=.2, vertex.size=10, vertex.color="turquoise")
+```
+
+4. In the empty code chunk below, type in the commands to calculate betweenness centrality for all nodes and plot the network so that node size is proportional to its degree (multiply betweenness by .1 to make the graph readable). Reduce edge arrow size to 0.2.
+
+```{r}
+#Type code below:
+
+
+```
+
+5. Just eye-balling, how many clusters do you see in this network?  [Type your answer here].
+
+6. In the empty code chunk below, type in the commands to partition this network using the `cluster_edge_betweenness` algorithm. Plot the communities.
+
+```{r}
+#Type code below:
+
+
+```
+
+7. How many clusters did the algorithm identify? [Type your answer here].
+
+
+8. Knit the RMarkdown file (press the "Knit" button above) and read through the corresponding html file.  
+
+Note: 
+
+This homework is supposed to be mainly a code reading exercise. You should not have to program extensively. Instead, you have to figure out which pieces you need to copy and edit. 
+
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html file with it. 

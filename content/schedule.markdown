@@ -36,6 +36,16 @@ All the class materials will be posted/updated here.
           </dl>
         </td>
       </tr>
+      <tr>
+        <td>July 22</td>
+        <td>Community Detection</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a>  | <a href="../materials/Slides/04_communities.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day3_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
