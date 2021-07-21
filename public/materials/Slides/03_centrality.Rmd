@@ -1,6 +1,6 @@
 ---
 title: Advanced Network Analysis
-subtitle: "Intro to Networks"
+subtitle: "Centrality"
 author: "Olga Chyzh [www.olgachyzh.com]"
 output:
   xaringan::moon_reader:
