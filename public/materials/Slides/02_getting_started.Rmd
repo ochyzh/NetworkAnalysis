@@ -183,7 +183,7 @@ knitr::include_graphics("images/ponies1.png")
 ## Sociomatrix: Pony grooming
 <span style="color:DarkCyan"> Undirected, mutual behavior </span>
 
-```{r, out.width= "600px",fig.align="center"}
+```{r, out.width= "500px",fig.align="center"}
 knitr::include_graphics("images/ponies2.png")
 ```
 ---
@@ -230,7 +230,7 @@ ponyPlot<- plot(pGraph,
 
 ## Mutually supportive behavior between ponies
 
-```{r, out.width= "600px",fig.align="center"}
+```{r, out.width= "500px",fig.align="center"}
 knitr::include_graphics("images/ponies.png")
 ```
 
