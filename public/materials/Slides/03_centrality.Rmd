@@ -91,7 +91,7 @@ plot(g)
 
 Who looks central? 
 
-```{r, echo=FALSE, eval=TRUE, out.width='500px', fig.align='center'}
+```{r, echo=FALSE, eval=TRUE, out.width='400px', fig.align='center'}
 # convert to igraph object
 library(igraph)
 g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
@@ -104,7 +104,7 @@ plot(g)
 
 Does simply plotting with different layouts help?
 
-```{r, echo=FALSE, eval=TRUE, out.width='500px', fig.align='center'}
+```{r, echo=FALSE, eval=TRUE, out.width='400px', fig.align='center'}
 
 par(mfrow=c(2, 3), mar=c(0,0,1,0))
 plot(g, layout=layout_randomly, main="Random")
@@ -168,7 +168,7 @@ Lets calculate degree centrality in R using `igraph`
 ?degree
 ```
 
-```{r, out.width='700px', fig.align='center',echo=FALSE}
+```{r, out.width='500px', fig.align='center',echo=FALSE}
 knitr::include_graphics('images/degreeHelp.png')
 ```
 ---
@@ -187,7 +187,7 @@ sort(cDegree, decreasing=TRUE)[1:6]
 
 Adjust the size of nodes in the Florentine graph by degree
 
-```{r, echo=FALSE, eval=TRUE, out.width='500px', fig.align='center'}
+```{r, echo=FALSE, eval=TRUE, out.width='450px', fig.align='center'}
 # convert to igraph object
 g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
 set.seed(6886)
@@ -267,7 +267,7 @@ Lets calculate this in `igraph`
 ?closeness
 ```
 
-```{r, out.width='700px', fig.align='center',echo=FALSE}
+```{r, out.width='500px', fig.align='center',echo=FALSE}
 knitr::include_graphics('images/closenessHelp.png')
 ```
 
@@ -300,14 +300,14 @@ sort(closeness(g), decreasing=TRUE)[1:6]
 Now plot adjusting node sizes by closeness centrality, and position the previous plot using node size as a function of degree to the left
 
 
-```{r, out.width='700px', fig.align='center',echo=FALSE}
+```{r, out.width='500px', fig.align='center',echo=FALSE}
 knitr::include_graphics('images/twoway.png')
 ```
 
 ---
 ## Two-way Visualization Comparison
 
-```{r, echo=TRUE, eval=FALSE,message=FALSE, warning=FALSE, fig.align="center",out.width='500px'}
+```{r, echo=TRUE, eval=T,results='hide',message=FALSE, warning=FALSE, fig.align="center",out.width='500px'}
 CloseCent<-closeness(g)
 g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
 set.seed(5574)
@@ -362,7 +362,7 @@ Lets calculate this in `igraph`
 ?betweenness
 ```
 
-```{r, out.width='700px', fig.align='center',echo=FALSE}
+```{r, out.width='450px', fig.align='center',echo=FALSE}
 knitr::include_graphics('images/betweennessHelp.png')
 ```
 
@@ -400,7 +400,7 @@ knitr::include_graphics('images/threeway.png')
 
 ---
 ## Three-Way Visualization Comparison
-```{r, echo=TRUE, eval=FALSE,message=FALSE, warning=FALSE, fig.align="center",out.width='700px'}
+```{r, echo=TRUE, eval=TRUE, include=FALSE,message=FALSE, warning=FALSE, fig.align="center",out.width='700px'}
 BetwCent<-betweenness(g)
 g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
 set.seed(5574)
@@ -514,6 +514,7 @@ knitr::include_graphics('images/all_four.png')
 ---
 
 ```{r, echo=TRUE, eval=TRUE,message=FALSE, warning=FALSE, fig.show = 'hide'}
+LO = layout_with_fr(g) #Layout
 EigenCent<-eigen_centrality(g)
 
 par(mfrow=c(2,2)) # plot four figures - 2 row, 2 columns
