@@ -46,6 +46,16 @@ All the class materials will be posted/updated here.
           </dl>
         </td>
       </tr>
+      <tr>
+        <td>July 23</td>
+        <td>Random Networks</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/05_random_graphs.html" target=_blank>random graphs </a>  | <a href="../materials/Slides/05_random_graphs.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day4_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
