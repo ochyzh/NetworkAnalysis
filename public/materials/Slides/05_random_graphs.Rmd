@@ -23,27 +23,27 @@ class: inverse, middle, center
 
 ---
 ## Granovetter (1973) Theory.
->- Ties are not binary, but vary in strength (i.e. abscent, weak, strong).
->- The stronger the tie between A and B, the larger the overlap of individuals in A's and B's networks.
->   + As individuals have limited time to spend with their contacts, some contacts are bound to be brought into interaction;
->   + Homophily, i.e. the friends of A are more likely to know one another as they may have common interests.
->- The forbidden triad: A and B are strongly linked, and A and C are strongly linked, yet C and B do not share a tie.
->- No strong tie is a bridge (the only path between two points), i.e. all the bridges are weak ties.
->- <span style="color: blue;"> **Removal of a weak tie does more "damage" to transmission of information within the network than removal of a strong tie.**</span>
+- Ties are not binary, but vary in strength (i.e. abscent, weak, strong).
+- The stronger the tie between A and B, the larger the overlap of individuals in A's and B's networks.
+   + As individuals have limited time to spend with their contacts, some contacts are bound to be brought into interaction;
+   + Homophily, i.e. the friends of A are more likely to know one another as they may have common interests.
+- The forbidden triad: A and B are strongly linked, and A and C are strongly linked, yet C and B do not share a tie.
+- No strong tie is a bridge (the only path between two points), i.e. all the bridges are weak ties.
+- <span style="color: blue;"> **Removal of a weak tie does more "damage" to transmission of information within the network than removal of a strong tie.**</span>
 ---
 
 ## Implications for Diffusion Studies.
->-  Information (e.g. rumors) traverses greater social distance when passed through weak ties. Long information paths, though, are less useful (information is distorted as it passes through additional links).
->- Diffusion studies should focus on weak ties, i.e. when asking respondents for their contacts, not limit the number of choices allowed.
->   + *What does this imply for tracing of disease spread?* (Is contagion likely to originate with strong or weak ties?)
->- Many studies of diffusion of innovation tend attribute  adoption to *central* contacts, i.e. correlate the time of diffusion with network centrality. In actuality, what matters may be not the number of ties (centrality), but the number of *weak ties.*
+-  Information (e.g. rumors) traverses greater social distance when passed through weak ties. Long information paths, though, are less useful (information is distorted as it passes through additional links).
+- Diffusion studies should focus on weak ties, i.e. when asking respondents for their contacts, not limit the number of choices allowed.
+   + *What does this imply for tracing of disease spread?* (Is contagion likely to originate with strong or weak ties?)
+- Many studies of diffusion of innovation tend attribute  adoption to *central* contacts, i.e. correlate the time of diffusion with network centrality. In actuality, what matters may be not the number of ties (centrality), but the number of *weak ties.*
 ---
 
 ## Empirical Evidence
->- The "six degrees of separation" Milgram experiment (actually 2 to 10 links out of 12--33% of completed chains)
+- The "six degrees of separation" Milgram experiment (actually 2 to 10 links out of 12--33% of completed chains)
 
->- Survey respondents who recently found a new job (through contacts) tended to do so through contacts who were only marginally included in their current network. In most cases through, the initial source (employer) was only one or two links removed (relatively short paths).
->- It is more difficult to organize a cliquish community than one with multiple layers of cross-personal ties (Boston West End).
+- Survey respondents who recently found a new job (through contacts) tended to do so through contacts who were only marginally included in their current network. In most cases through, the initial source (employer) was only one or two links removed (relatively short paths).
+- It is more difficult to organize a cliquish community than one with multiple layers of cross-personal ties (Boston West End).
 
 ---
 class: inverse, middle, center  
@@ -261,9 +261,22 @@ If there is a directed edge from vertex $i$ to vertex $j$ in a directed network,
 ---
 ## Reciprocity
 
-$$ \text{Reciprocated Ties}  = \sum_{i=1}^n \sum_{j=1}^n g_{ij}g_{ji} $$
-$$ \text{Total Ties} = \sum_{i=1}^n \sum_{j=1}^n g_{ij} $$ 
-$$ r = \frac{\text{Reciprocated Ties}}{\text{Total Ties}} $$
+
+$$
+\begin{equation}
+\text{Reciprocated Ties}  = \sum_{i=1}^n \sum_{j=1}^n g_{ij}g_{ji}
+\end{equation}
+$$
+$$
+\begin{equation}
+\text{Total Ties} = \sum_{i=1}^n \sum_{j=1}^n g_{ij}
+\end{equation}
+$$ 
+$$
+\begin{equation}
+r = \frac{\text{Reciprocated Ties}}{\text{Total Ties}}
+\end{equation}
+$$
 Where $n$ is the number of nodes, and $g_{ij}$ is a tie indicator.
 ---
 ## Example
