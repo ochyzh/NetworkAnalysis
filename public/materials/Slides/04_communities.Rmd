@@ -130,8 +130,10 @@ Step 1: Define the Similarity Matrix
 
 High for node pairs that likely belong to the same community, low for those that likely belong to different communities. 
 Nodes that connect directly to each other and/or share multiple neighbors are more likely to belong to the same dense local neighborhood, hence their similarity should be large.
+---
+## Ravasz Algorithm
 
-Topological overlap matrix: $x_{ij}=\frac{J_N(i,j)}{min(k_i,k_j)}$, where $J_N(i,j)$ is the number of common neighbors of nodes $i$ and $j$, $+1$ if there is a direct link between $i$ and $j$, and $min(k_i,k_j)$ is the smaller of the degrees $k_i$ and $k_j$.
+Topological overlap matrix: $x_{ij}=\frac{J_N(i,j)}{min(k_i,k_j)+1-\Theta(A_{ij})}$, where $J_N(i,j)$ is the number of common neighbors of nodes $i$ and $j$, $+1$ if there is a direct link between $i$ and $j$, and $min(k_i,k_j)$ is the smaller of the degrees $k_i$ and $k_j$. $A_{ij}=\sum_c^{n_c} \frac{L_c}{L}$, where $L_c$ is the total number of links in community $c$, and $L$ is the total number of links in the graph.  Here $\Theta(x)$ is the Heaviside step function, which is zero for $x\leq0$ and one for $x>0$.
 
 ```{r, out.width='200px', fig.align='center', echo=FALSE}
 knitr::include_graphics('images/J_ij.png')
@@ -139,7 +141,7 @@ knitr::include_graphics('images/J_ij.png')
  
 
 
-```{r, echo=F, eval=TRUE, message=FALSE }
+```{r, echo=F, include=F, eval=TRUE, message=FALSE }
 library(tidyr)
 library(tidyverse)
 library(magrittr)
@@ -203,7 +205,14 @@ Step 3: Apply Hierarchical Clustering
 - Calculate the similarity between the new community and all other communities.
 - Repeat from Step 2 until all nodes are merged into a single community.
 
+---
+## Barabasi Fig 9.9
 
+
+```{r, out.width='800px', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/ravazs.png')
+```
+ 
 
 
 ```{r, echo=F, eval=TRUE}
@@ -430,3 +439,9 @@ plot(fg, friends, layout=LO,main= "Fast Greedy")
 plot(ceb, friends, layout=LO, main="Betweenness")
 ```
 
+---
+## Comparing Clustering Algorithms
+
+```{r, out.width='900px', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/table91.png')
+```
