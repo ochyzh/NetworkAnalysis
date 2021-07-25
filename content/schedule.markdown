@@ -56,6 +56,16 @@ All the class materials will be posted/updated here.
           </dl>
         </td>
       </tr>
+      <tr>
+        <td>July 26</td>
+        <td>Intro to ERGMs</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/06_intro_ergms.html" target=_blank>intro ergms </a>  | <a href="../materials/Slides/06_intro_ergms.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day5_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
