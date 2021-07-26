@@ -66,6 +66,16 @@ All the class materials will be posted/updated here.
           </dl>
         </td>
       </tr>
+      <tr>
+        <td>July 27</td>
+        <td>ERGM Specification</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/07_ergm_specification.html" target=_blank>ergm specification </a>  | <a href="../materials/Slides/07_ergm_specification.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day6_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

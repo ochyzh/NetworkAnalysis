@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced Network Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Advanced Network Analysis
+## ERGM Specification and Implementation
+### Olga Chyzh [www.olgachyzh.com]
+
+---
+
+
+
+
+
+## Readings 
+David R. Hunter, Mark S. Handcock, Carter T. Butts, Steven M. Goodreau, and Martina Morris. Ergm: A package to fit, simulate and diagnose exponential-family models for networks. *Journal of Statistical Software*, 24(3):1--29, 2008.
+
+Emily Kalah Gade, Michael Gabbay, Mohammed M. Hafez, and Zane Kelly. Networks of cooperation: Rebel alliances in fragmented civil wars. *Journal of Conflict Resolution*, 63(9):2071--2097, 2019.
+---
+## ERGM Specification: Ground Rules
+
+We will be working with a network that consists of the ten 10 most ideological senators from the 109th Congress. An edge `\(ij\)` in this network is defined as equal to 1 if i cosponsored j at least two times. Suppose you think that senators are more likely to co-sponsor legisation if they:
+a. Come from nearby states,
+b. Have similar ideology.
+
+
+---
+
+## ERGM Specification: Ground Rules
+1. Your dependent variable must be a network object with binary edges. The `network` command creates network objects from edgelists or adjacency matrices. Pay attention to whether you are working with a directed or an undirected network.
+
+
+```r
+library(statnet)
+library(devtools)
+#install_github("ochyzh/networkdata")
+library(networkdata)
+```
+
+
+```r
+data(legnet)
+mynet&lt;-network(el, matrix.type="edgelist", 
+                directed=TRUE, loops=FALSE)
+```
+
+---
+## ERGM Specification: Ground Rules
+2. All edge-level/dyadic covariates must be stored as matrix objects and defined as *network attributes* using `set.network.attribute` command. Make sure your vertices are named/sorted the same way in all datasets.
+
+
+```r
+# Convert the object "edist" which contains euclidean distance (units in lat/long), to a matrix:
+edist &lt;- as.matrix(edist)
+# Define network attribute
+set.network.attribute(mynet,"dist",edist)
+```
+---
+## ERGM Specification: Ground Rules
+3. All node-level covariates must be defined as *vertex attributes* using `set.vertex.attribute` command. Again, pay attention to names/order in which your nodes are sorted in the data.
+
+
+```r
+# Define object "dwnom" (ideology) as a vertex attribute
+#detach("package:igraph", unload=TRUE) the below command seems to clash with igraph
+set.vertex.attribute(mynet,"ideol",dwnom$dwnom)
+```
+---
+## Your Turn
+
+1. Plot the Cosponsorship Network. What network features (e.g., triangles, 2-stars) seem prevalent?
+2. Estimate an `ergm` with edges, ideological, and geographic homophily;
+3. Check goodness of fit. Plot observed values against boxplots of simulated networks.
+4. Now add a control for popularity (`istar(2)`).
+5. Check MCMC performance.  Does the trace plot look good?
+6. Add a control for transitivity (`triangle`). If that does not work, try using `gwesp` instead.
+7. Increase MCMC sample size to 10000. Make a trace plot.  Does it look good?
+
+---
+## Gade et al. 2019
+- Why Do Rebel Groups Cooperate?
+  + power
+  + ideology
+  + state sponsorship
+  
+- Ideological similarigty is the primary driver for rebel cooperation.
+---
+## Gade et al. 2019 Hypothesis
+
+Ideology:
+
+- Ideological proximity in rebel networks should yield greater militant cooperation than ideological distance.
+
+Power:
+
+- An overriding concern for capability aggregation in rebel movements will tend to
+produce *symmetric* alliances.
+- The desire of strong groups to form alliances that maximize decision-making
+autonomy vis-$\grave{a}$-vis rivals will generate *asymmetric* alliances.
+
+State sponsorship:
+
+- Rebel groups that share the same state sponsor will cooperate more frequently.
+---
+## Data
+
+```r
+# load data
+data(gadeData)
+
+
+gadeData #to look at the data
+```
+
+```
+##      Var1  Var2 coopActions           id ideol_diff.dyad powerdiff.dyad loc.dyad spons.dyad averageId.node size.node
+## 2    13th 101st    1.000000   13th_101st     0.000000000           0.20        1          1       1.000000      1.80
+## 3    AARB 101st    0.000000   AARB_101st     0.333333333           7.00        1          0       1.333333      9.00
+## 4      AF 101st    0.000000     AF_101st     0.000000000           8.00        1          0       1.000000     10.00
+## 5     ANF 101st    0.000000    ANF_101st     3.666666667           5.00        1          0       4.666667      7.00
+## 6    ASIM 101st    1.000000   ASIM_101st     1.833333333          13.00        1          0       2.833333     15.00
+## 7    ISIL 101st    0.000000   ISIL_101st     4.000000000          23.00        1          1       5.000000     25.00
+## 8    AASB 101st    0.000000   AASB_101st     1.000000000           0.50        1          1       2.000000      2.50
+## 9     ADF 101st    0.000000    ADF_101st     3.666666667           0.45        1          0       4.666667      1.55
+## 10   AASG 101st    0.000000   AASG_101st     1.556666667           1.00        0          0       2.556667      3.00
+## 11    ARC 101st    0.000000    ARC_101st     0.666666667           4.00        0          1       1.666667      6.00
+## 12     LF 101st    0.000000     LF_101st     1.333333333           6.00        1          0       2.333333      8.00
+## 13    ATB 101st    0.000000    ATB_101st     1.333333333           6.00        1          0       2.333333      8.00
+## 14    JAI 101st    0.000000    JAI_101st     2.000000000          15.00        1          0       3.000000     17.00
+## 15    AFB 101st    0.000000    AFB_101st     0.666666667           0.00        1          0       1.666667      2.00
+## 16    1st 101st    0.000000    1st_101st     0.333333333           1.10        1          0       1.333333      0.90
+## 17    AIG 101st    0.000000    AIG_101st     2.000000000           6.50        0          1       3.000000      8.50
+## 18   FSIM 101st    0.000000   FSIM_101st     2.333000000           1.50        1          1       3.333000      0.50
+## 19   Hazm 101st    0.000000   Hazm_101st     0.000000000           2.00        1          0       1.000000      4.00
+## 20    JAA 101st    0.000000    JAA_101st     4.000000000           1.20        1          0       5.000000      0.80
+## 21     LH 101st    0.000000     LH_101st     2.000000000           1.00        1          0       3.000000      1.00
+## 22    SAS 101st    0.000000    SAS_101st     0.000000000           7.00        1          0       1.000000      9.00
+## 23   AALS 101st    0.000000   AALS_101st     0.000000000           1.50        0          0       1.000000      0.50
+## 24    ASB 101st    0.000000    ASB_101st     1.000000000           1.50        0          0       2.000000      0.50
+## 25   FKUG 101st    0.000000   FKUG_101st     0.666666667           0.90        1          0       1.666667      1.10
+## 26    MSC 101st    0.000000    MSC_101st     2.556666667           1.50        0          0       3.556667      0.50
+## 27    ASL 101st    1.000000    ASL_101st     0.333333333           2.50        1          0       1.333333      4.50
+## 28 NADAZM 101st    0.000000 NADAZM_101st     0.666666667           3.00        1          0       1.666667      5.00
+## 29    SRF 101st    0.000000    SRF_101st     0.333333333          10.50        1          1       1.333333     12.50
+## 30    JMA 101st    0.000000    JMA_101st     3.667000000           1.25        1          0       4.667000      0.75
+## 31   IARB 101st    0.000000   IARB_101st     0.333300000           1.50        1          0       1.333300      0.50
+## 32  101st  13th    1.000000   101st_13th     0.000000000           0.20        1          1       1.000000      2.00
+## 34   AARB  13th    0.000000    AARB_13th     0.333333333           7.20        1          0       1.333333      9.00
+## 35     AF  13th    0.000000      AF_13th     0.000000000           8.20        1          0       1.000000     10.00
+## 36    ANF  13th    0.000000     ANF_13th     3.666666667           5.20        1          0       4.666667      7.00
+## 37   ASIM  13th    1.000000    ASIM_13th     1.833333333          13.20        1          0       2.833333     15.00
+## 38   ISIL  13th    0.000000    ISIL_13th     4.000000000          23.20        1          1       5.000000     25.00
+## 39   AASB  13th    0.000000    AASB_13th     1.000000000           0.70        1          1       2.000000      2.50
+## 40    ADF  13th    0.000000     ADF_13th     3.666666667           0.25        1          0       4.666667      1.55
+## 41   AASG  13th    0.000000    AASG_13th     1.556666667           1.20        1          0       2.556667      3.00
+## 42    ARC  13th    0.000000     ARC_13th     0.666666667           4.20        0          1       1.666667      6.00
+## 43     LF  13th    0.000000      LF_13th     1.333333333           6.20        1          0       2.333333      8.00
+## 44    ATB  13th    0.000000     ATB_13th     1.333333333           6.20        1          0       2.333333      8.00
+## 45    JAI  13th    0.000000     JAI_13th     2.000000000          15.20        1          0       3.000000     17.00
+## 46    AFB  13th    0.000000     AFB_13th     0.666666667           0.20        1          0       1.666667      2.00
+## 47    1st  13th    0.000000     1st_13th     0.333333333           0.90        0          0       1.333333      0.90
+## 48    AIG  13th    0.000000     AIG_13th     2.000000000           6.70        0          1       3.000000      8.50
+## 49   FSIM  13th    0.000000    FSIM_13th     2.333000000           1.30        1          1       3.333000      0.50
+## 50   Hazm  13th    0.000000    Hazm_13th     0.000000000           2.20        1          0       1.000000      4.00
+## 51    JAA  13th    0.000000     JAA_13th     4.000000000           1.00        1          0       5.000000      0.80
+## 52     LH  13th    0.000000      LH_13th     2.000000000           0.80        1          0       3.000000      1.00
+## 53    SAS  13th    0.000000     SAS_13th     0.000000000           7.20        1          0       1.000000      9.00
+## 54   AALS  13th    0.000000    AALS_13th     0.000000000           1.30        1          0       1.000000      0.50
+## 55    ASB  13th    0.000000     ASB_13th     1.000000000           1.30        0          0       2.000000      0.50
+## 56   FKUG  13th    0.000000    FKUG_13th     0.666666667           0.70        1          0       1.666667      1.10
+## 57    MSC  13th    0.000000     MSC_13th     2.556666667           1.30        0          0       3.556667      0.50
+## 58    ASL  13th    1.000000     ASL_13th     0.333333333           2.70        1          0       1.333333      4.50
+## 59 NADAZM  13th    0.000000  NADAZM_13th     0.666666667           3.20        1          0       1.666667      5.00
+## 60    SRF  13th    0.000000     SRF_13th     0.333333333          10.70        1          1       1.333333     12.50
+## 61    JMA  13th    0.000000     JMA_13th     3.667000000           1.05        1          0       4.667000      0.75
+## 62   IARB  13th    0.000000    IARB_13th     0.333300000           1.30        1          0       1.333300      0.50
+## 63  101st  AARB    0.000000   101st_AARB     0.333333333           7.00        1          0       1.000000      2.00
+## 64   13th  AARB    0.000000    13th_AARB     0.333333333           7.20        1          0       1.000000      1.80
+## 66     AF  AARB    1.414214      AF_AARB     0.333333333           1.00        1          1       1.000000     10.00
+## 67    ANF  AARB    1.414214     ANF_AARB     3.333333334           2.00        1          0       4.666667      7.00
+## 68   ASIM  AARB    3.162278    ASIM_AARB     1.500000000           6.00        1          1       2.833333     15.00
+## 69   ISIL  AARB    1.000000    ISIL_AARB     3.666666667          16.00        1          0       5.000000     25.00
+## 70   AASB  AARB    0.000000    AASB_AARB     0.666666667           6.50        1          1       2.000000      2.50
+## 71    ADF  AARB    0.000000     ADF_AARB     3.333333334           7.45        1          0       4.666667      1.55
+## 72   AASG  AARB    0.000000    AASG_AARB     1.223333334           6.00        1          0       2.556667      3.00
+## 73    ARC  AARB    0.000000     ARC_AARB     0.333333334           3.00        1          1       1.666667      6.00
+## 74     LF  AARB    0.000000      LF_AARB     1.000000000           1.00        1          1       2.333333      8.00
+## 75    ATB  AARB    0.000000     ATB_AARB     1.000000000           1.00        1          0       2.333333      8.00
+## 76    JAI  AARB    0.000000     JAI_AARB     1.666666667           8.00        1          0       3.000000     17.00
+## 77    AFB  AARB    0.000000     AFB_AARB     0.333333334           7.00        1          0       1.666667      2.00
+## 78    1st  AARB    0.000000     1st_AARB     0.000000000           8.10        1          0       1.333333      0.90
+## 79    AIG  AARB    1.000000     AIG_AARB     1.666666667           0.50        1          0       3.000000      8.50
+## 80   FSIM  AARB    0.000000    FSIM_AARB     1.999666667           8.50        1          0       3.333000      0.50
+## 81   Hazm  AARB    0.000000    Hazm_AARB     0.333333333           5.00        1          0       1.000000      4.00
+## 82    JAA  AARB    0.000000     JAA_AARB     3.666666667           8.20        1          0       5.000000      0.80
+## 83     LH  AARB    0.000000      LH_AARB     1.666666667           8.00        1          0       3.000000      1.00
+## 84    SAS  AARB    1.414214     SAS_AARB     0.333333333           0.00        1          1       1.000000      9.00
+## 85   AALS  AARB    0.000000    AALS_AARB     0.333333333           8.50        1          1       1.000000      0.50
+## 86    ASB  AARB    0.000000     ASB_AARB     0.666666667           8.50        1          0       2.000000      0.50
+## 87   FKUG  AARB    0.000000    FKUG_AARB     0.333333334           7.90        1          0       1.666667      1.10
+## 88    MSC  AARB    0.000000     MSC_AARB     2.223333334           8.50        1          1       3.556667      0.50
+## 89    ASL  AARB    0.000000     ASL_AARB     0.000000000           4.50        1          0       1.333333      4.50
+## 90 NADAZM  AARB    0.000000  NADAZM_AARB     0.333333334           4.00        1          0       1.666667      5.00
+## 91    SRF  AARB    0.000000     SRF_AARB     0.000000000           3.50        1          1       1.333333     12.50
+## 92    JMA  AARB    0.000000     JMA_AARB     3.333666667           8.25        1          0       4.667000      0.75
+## 93   IARB  AARB    0.000000    IARB_AARB     0.000033333           8.50        1          1       1.333300      0.50
+##    spons_actor.node
+## 2                 1
+## 3                 1
+## 4                 1
+## 5                 0
+## 6                 1
+## 7                 0
+## 8                 0
+## 9                 0
+## 10                0
+## 11                1
+## 12                1
+## 13                1
+## 14                1
+## 15                1
+## 16                1
+## 17                0
+## 18                0
+## 19                1
+## 20                0
+## 21                0
+## 22                0
+## 23                0
+## 24                0
+## 25                1
+## 26                0
+## 27                1
+## 28                1
+## 29                1
+## 30                0
+## 31                0
+## 32                1
+## 34                1
+## 35                1
+## 36                0
+## 37                1
+## 38                0
+## 39                0
+## 40                0
+## 41                0
+## 42                1
+## 43                1
+## 44                1
+## 45                1
+## 46                1
+## 47                1
+## 48                0
+## 49                0
+## 50                1
+## 51                0
+## 52                0
+## 53                0
+## 54                0
+## 55                0
+## 56                1
+## 57                0
+## 58                1
+## 59                1
+## 60                1
+## 61                0
+## 62                0
+## 63                1
+## 64                1
+## 66                1
+## 67                0
+## 68                1
+## 69                0
+## 70                0
+## 71                0
+## 72                0
+## 73                1
+## 74                1
+## 75                1
+## 76                1
+## 77                1
+## 78                1
+## 79                0
+## 80                0
+## 81                1
+## 82                0
+## 83                0
+## 84                0
+## 85                0
+## 86                0
+## 87                1
+## 88                0
+## 89                1
+## 90                1
+## 91                1
+## 92                0
+## 93                0
+##  [ reached 'max' / getOption("max.print") -- omitted 840 rows ]
+```
+---
+## Results
+
+&lt;img src="images/gadeetal_table.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+---
+## Replicate Gade et al's Analysis Using an ERGM
+
+- Note that the command `ergm` requires the data to be saved as a `network` object.
+- A `network` object may be constructed from a matrix or edgelist.
+- Gade et al's dependent variable is `coopActions`.
+
+```r
+table(gadeData$coopActions) #the dv takes the following values.
+hist(gadeData$coopActions)
+```
+
+---
+## The Dependent Variable
+
+- `coopActions` is coded as the square root of the total number of cooperative acts between rebel groups.
+- For our purposes, we will recode this variable as binary, so that it equals to 1 if two groups cooperated at least once and 0 otherwise.
+
+
+```r
+gadeData$coopBin&lt;-as.numeric(gadeData$coopActions&gt;0)
+table(gadeData$coopBin)
+```
+
+```
+## 
+##   0   1 
+## 758 172
+```
+
+---
+## Dyadic Covariates
+
+- Note that Gade et al' hypothesis are tested using four dyadic covariates: ideol_diff.dyad, powerdiff.dyad. These covariates are constructed as a function of nodal covariates.
+- Also note that there are two edge-level covariates: loc.dyad (location), and spons.dyad (same sponsor). These need to be specified as separate networks.
+
+---
+## Prepare the Data
+
+
+```r
+# data characs
+actors = sort(unique(c(gadeData$Var1, gadeData$Var2)))
+gadeData&lt;-sort(gadeData)
+#These are the dyadic variables. They
+#must be in matrix form.
+dyadVars = names(gadeData)[c(12,5:8)]
+n = length(actors) ; p = length(dyadVars)
+
+# create empty arr object for all dyad vars
+dyadArray = array(0, 
+	dim=c(n,n,p),
+	dimnames=list(actors,actors,dyadVars)
+	)
+```
+---
+
+
+```r
+# loop through and fill in
+for(param in dyadVars){
+	for(i in 1:nrow(gadeData)){
+		a1 = gadeData$Var1[i]
+		a2 = gadeData$Var2[i]
+		val = gadeData[i,param]
+		dyadArray[a1,a2,param] = val
+	}
+}
+```
+---
+
+```r
+# These are node-level variables.
+nodeVars = names(gadeData)[9:11]
+nodeData = unique(gadeData[,c('Var1',nodeVars)])
+rownames(nodeData) = nodeData$Var1
+nodeData = nodeData[actors,c(-1)]
+```
+---
+
+```r
+# The DV must be a network object
+net = as.network(
+	dyadArray[,,'coopBin'], 
+	directed=FALSE, loops=FALSE, 
+	matrix.type='adjacency'
+	)
+```
+
+
+
+```r
+# Set node attributes
+for(param in nodeVars){
+	set.vertex.attribute(net, param, nodeData[,param])
+}
+
+# Set network attributes:
+set.network.attribute(net,'loc.dyad',dyadArray[,,'loc.dyad'])
+set.network.attribute(net,'spons.dyad',dyadArray[,,'spons.dyad'])
+```
+
+---
+## Make a Network Graph:
+
+```r
+plot(net, label = network.vertex.names(net))
+```
+
+&lt;img src="07_ergm_specification_files/figure-html/graph-1.png" style="display: block; margin: auto;" /&gt;
+---
+
+## Estimate a Logit
+
+```r
+m0 = ergm(
+	net ~ 
+    edges + 
+    nodecov('averageId.node') +
+    nodecov('size.node') + 
+    nodecov('spons_actor.node') + 
+    absdiff('averageId.node') +
+    absdiff('size.node') +
+    edgecov('loc.dyad') +
+    edgecov('spons.dyad')
+	)
+```
+---
+## Estimate a Logit
+
+```r
+summary(m0)
+```
+
+```
+## Call:
+## ergm(formula = net ~ edges + nodecov("averageId.node") + nodecov("size.node") + 
+##     nodecov("spons_actor.node") + absdiff("averageId.node") + 
+##     absdiff("size.node") + edgecov("loc.dyad") + edgecov("spons.dyad"))
+## 
+## Iterations:  7 out of 20 
+## 
+## Monte Carlo MLE Results:
+##                          Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## edges                    -7.30989    1.24208      0  -5.885  &lt; 1e-04 ***
+## nodecov.averageId.node    0.42619    0.11065      0   3.852 0.000117 ***
+## nodecov.size.node         0.11015    0.02443      0   4.509  &lt; 1e-04 ***
+## nodecov.spons_actor.node  0.53841    0.29636      0   1.817 0.069256 .  
+## absdiff.averageId.node   -0.21684    0.12422      0  -1.746 0.080877 .  
+## absdiff.size.node        -0.10494    0.03149      0  -3.332 0.000862 ***
+## edgecov.loc.dyad          3.01050    1.02633      0   2.933 0.003354 ** 
+## edgecov.spons.dyad        0.04250    0.41806      0   0.102 0.919018    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##      Null Deviance: 644.6  on 465  degrees of freedom
+##  Residual Deviance: 353.6  on 457  degrees of freedom
+##  
+## AIC: 369.6    BIC: 402.8    (Smaller is better.)
+```
+
+---
+## Add Triangles
+
+```r
+m1 = ergm(
+	net ~ 
+    edges + 
+    nodecov('averageId.node') +
+    nodecov('size.node') + 
+    nodecov('spons_actor.node') + 
+    absdiff('averageId.node') +
+    absdiff('size.node') +
+    edgecov('loc.dyad') +
+    edgecov('spons.dyad')+
+		gwesp
+		)
+```
+---
+## Add Triangles
+
+
+```r
+summary(m1)
+```
+
+```
+## Call:
+## ergm(formula = net ~ edges + nodecov("averageId.node") + nodecov("size.node") + 
+##     nodecov("spons_actor.node") + absdiff("averageId.node") + 
+##     absdiff("size.node") + edgecov("loc.dyad") + edgecov("spons.dyad") + 
+##     gwesp)
+## 
+## Iterations:  4 out of 20 
+## 
+## Monte Carlo MLE Results:
+##                          Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## edges                    -6.96793    1.19522      0  -5.830  &lt; 1e-04 ***
+## nodecov.averageId.node    0.21949    0.08262      0   2.657  0.00789 ** 
+## nodecov.size.node         0.05958    0.01977      0   3.014  0.00258 ** 
+## nodecov.spons_actor.node  0.14499    0.21489      0   0.675  0.49986    
+## absdiff.averageId.node   -0.21550    0.11265      0  -1.913  0.05576 .  
+## absdiff.size.node        -0.06690    0.02711      0  -2.468  0.01358 *  
+## edgecov.loc.dyad          2.56820    1.01579      0   2.528  0.01146 *  
+## edgecov.spons.dyad        0.05460    0.36702      0   0.149  0.88174    
+## gwesp                     0.84757    0.32276      0   2.626  0.00864 ** 
+## gwesp.decay               0.83144    0.25561      0   3.253  0.00114 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##      Null Deviance: 644.6  on 465  degrees of freedom
+##  Residual Deviance: 322.8  on 455  degrees of freedom
+##  
+## AIC: 342.8    BIC: 384.3    (Smaller is better.)
+```
+
+---
+## Assess Model Fit
+
+```r
+AIC(m1)
+```
+
+```
+## [1] 342.8487
+```
+
+```r
+BIC(m1)
+```
+
+```
+## [1] 384.2691
+```
+
+```r
+set.seed(6886)
+gofM1 = gof( m1, 
+    GOF=~degree+espartners+distance-model )
+```
+---
+## Assess Model Fit
+
+```r
+# we'll compare against four plots, so set up plotting window
+par(mfrow = c(2, 2))
+plot(gofM1)
+```
+
+&lt;img src="07_ergm_specification_files/figure-html/fit1-1.png" style="display: block; margin: auto;" /&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
