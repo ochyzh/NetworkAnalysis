@@ -184,16 +184,17 @@ $$\begin{align}
 	+ Compare the mean statistics to the observed
 	+ Repeat until difference is lower than some stopping condition
 ---
+
 ## MCMC-MLE  ... more details
 
 - Generate distributions of different $g$s that emerges for any given specification of $\beta$s
 - Search over set of $\beta$s to find one that leads to the highest likelihood of getting a network that looks similar to the observed $g$
 - How to generate a distribution of different $g$'s for any given specification of $\beta$?
-  + <font size="4">Fix starting network at $g^{0}$</font>
-  + <font size="4">Randomly pick a link, $(ij)$, to change</font>
-  + <font size="4">Then, based on MPLE, randomly put the link $ij$ in or out with the appropriate probability given the profile of parameters $\beta$ and given $g^{0}_{-ij}$</font>
-  + <font size="4">This leads to a new network $g^{1}$</font>
-  + <font size="4">Iterate through different links in the network, which results in a Markov chain over the resulting networks, and over time the probability that we visit any given network approaches that of its steady state distribution.</font>
+    - Fix starting network at $g^{0}$
+    - Randomly pick a link, $ij$, to change
+    - Then, based on MPLE, randomly put the link $ij$ in or out with the appropriate probability given the profile of parameters $\beta$ and given $g^{0}_{-ij}$
+    - This leads to a new network $g^{1}$
+   - Iterate through different links in the network, which results in a Markov chain over the resulting networks, and over time the probability that we visit any given network approaches that of its steady state distribution.
 ---
 
 ## Still some problems ...

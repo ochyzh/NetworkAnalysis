@@ -103,7 +103,7 @@ knitr::include_graphics('images/communities.png')
 ---
 ## Strong and Weak Communities
 
-In a *strong community* each node of $C$ has more links within the community than with the rest of the graph, $k_i^{int}(C)>k_i^{ext}(C)$. In a *weak community,* the total internal degree of $C$ exceeds its total external degree, $k_i^{in}(C)>k_i^{out}(C)$.  
+In a *strong community* each node of $C$ has more links within the community than with the rest of the graph, $k_i^{int}(C)>k_i^{ext}(C)$. In a *weak community,* the total internal degree of $C$ exceeds its total external degree, $k^{in}(C)>k^{out}(C)$.  
 
 ```{r, out.width='700px', fig.align='center', echo=FALSE}
 knitr::include_graphics('images/communities1.png')
