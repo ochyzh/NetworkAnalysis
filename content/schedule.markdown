@@ -51,7 +51,7 @@ All the class materials will be posted/updated here.
         <td>Random Networks</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/05_random_graphs.html" target=_blank>random graphs </a>  | <a href="../materials/Slides/05_random_graphs.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day4_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/05_random_graphs.html" target=_blank>random graphs </a>  | <a href="../materials/Slides/05_random_graphs.pdf" target=_blank>slides in pdf</a> |<a href="../materials/YourTurnAnswers/05_random_nets_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/Scripts/day4_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
