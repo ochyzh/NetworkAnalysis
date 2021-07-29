@@ -61,7 +61,7 @@ All the class materials will be posted/updated here.
         <td>Intro to ERGMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/06_intro_ergms.html" target=_blank>intro ergms </a>  | <a href="../materials/Slides/06_intro_ergms.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day5_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/06_intro_ergms.html" target=_blank>intro ergms </a>  | <a href="../materials/Slides/06_intro_ergms.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day5_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/06_intro_ergms_yourturn.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>
