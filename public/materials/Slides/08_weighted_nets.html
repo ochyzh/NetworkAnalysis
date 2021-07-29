@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced Network Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Advanced Network Analysis
+## ERGMs for Valued Networks
+### Olga Chyzh [www.olgachyzh.com]
+
+---
+
+
+
+
+
+## Readings 
+- Pavel N Krivitsky. Exponential-family random graph models for valued networks.
+*Electronic Journal of Statistics*, 6: 1110--1128, 2012.
+
+- Bruce A. Desmarais and Skyler J. Cranmer. Statistical inference for valued-edge
+networks: The generalized exponential random graph model. *PloS One*, 7(1), 2012.
+---
+## Overview
+
+- Many networks of interest have valued rather than binary edges, e.g. trade network, friendships, romantic relationships.
+- Can generalize ERGMs to modeling networks with count or rank-ordered valued edges.
+- Similar properties and estimation approach.
+---
+class: inverse, middle, center
+# Estimation 
+---
+## Install Packages:
+
+
+```r
+rm(list=ls())
+#install.packages("ergm.count")
+library(statnet)
+library(ergm.count)
+library(networkdata)
+```
+
+---
+## Load the Data
+
+We are going to use Gade et al's data.  Our dependent variable--- the valued network--- records the number of collaborations between rebel groups.
+
+
+```r
+data(gadeData)
+# data characs
+actors = sort(unique(c(gadeData$Var1, gadeData$Var2)))
+gadeData&lt;-sort(gadeData)
+gadeData$coopActions&lt;-round(gadeData$coopActions^2)
+#These are the dyadic variables. They
+#must be in matrix form.
+dyadVars = names(gadeData)[c(3,5:8)]
+n = length(actors) ; p = length(dyadVars)
+```
+
+---
+
+```r
+# create empty arr object for all dyad vars
+dyadArray = array(0, 
+	dim=c(n,n,p),
+	dimnames=list(actors,actors,dyadVars)
+	)
+# loop through and fill in
+for(param in dyadVars){
+	for(i in 1:nrow(gadeData)){
+		a1 = gadeData$Var1[i]
+		a2 = gadeData$Var2[i]
+		val =gadeData[i,param]
+		dyadArray[a1,a2,param] = val
+	}
+}
+```
+
+---
+
+
+```r
+# These are node-level variables.
+nodeVars = names(gadeData)[9:11]
+nodeData = unique(gadeData[,c('Var1',nodeVars)])
+rownames(nodeData) = nodeData$Var1
+nodeData = nodeData[actors,c(-1)]
+# The DV must be a network object
+net = as.network(
+	dyadArray[,,'coopActions'], 
+	directed=FALSE, loops=FALSE, 
+	matrix.type='adjacency',
+	ignore.eval = FALSE, 
+  names.eval = "coopActions"
+	)
+```
+---
+## Look at the first 10 rows and cols:
+
+```r
+ as.matrix(net[1:10,1:10])
+```
+
+```
+##       101st 13th 1st AALS AARB AASB AASG ADF AF AFB
+## 101st     0    1   0    0    0    0    0   0  0   0
+## 13th      1    0   0    0    0    0    0   0  0   0
+## 1st       0    0   0    0    0    0    0   0  0   1
+## AALS      0    0   0    0    0    0    0   0  0   0
+## AARB      0    0   0    0    0    0    0   0  1   0
+## AASB      0    0   0    0    0    0    0   1  0   0
+## AASG      0    0   0    0    0    0    0   0  0   1
+## ADF       0    0   0    0    0    1    0   0  0   0
+## AF        0    0   0    0    1    0    0   0  0   0
+## AFB       0    0   1    0    0    0    1   0  0   0
+```
+
+---
+
+```r
+# Set node attributes
+for(param in nodeVars){
+	network::set.vertex.attribute(net, param, nodeData[,param])
+}
+
+# Set network attributes:
+set.network.attribute(net,'loc.dyad',dyadArray[,,'loc.dyad'])
+set.network.attribute(net,'spons.dyad',dyadArray[,,'spons.dyad'])
+# We can view the attribute as a sociomatrix.
+as.matrix(net, attrname = "coopActions")[1:10, 1:10]
+```
+
+```
+##       101st 13th 1st AALS AARB AASB AASG ADF AF AFB
+## 101st     0    1   0    0    0    0    0   0  0   0
+## 13th      1    0   0    0    0    0    0   0  0   0
+## 1st       0    0   0    0    0    0    0   0  0   1
+## AALS      0    0   0    0    0    0    0   0  0   0
+## AARB      0    0   0    0    0    0    0   0  2   0
+## AASB      0    0   0    0    0    0    0   1  0   0
+## AASG      0    0   0    0    0    0    0   0  0   1
+## ADF       0    0   0    0    0    1    0   0  0   0
+## AF        0    0   0    0    2    0    0   0  0   0
+## AFB       0    0   1    0    0    0    1   0  0   0
+```
+---
+## Make a Network Graph with Valued Edges:
+
+
+```r
+plot(net, edge.col = "black", usecurve = TRUE, 
+     edge.curve = 0, edge.lwd=.25*dyadArray[,,"coopActions"], 
+     displaylabels = TRUE)
+```
+---
+## Make a Network Graph with Valued Edges:
+
+&lt;img src="08_weighted_nets_files/figure-html/graph1-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+## Valued ERGMs
+
+- The package `ergm.count` extends the `ergm` package to allow for modeling networks with valued edges. This is done by specifying the `response` argument with the name of the edge attribute to use as the response variable.
+
+- New concept: a reference distribution
+  + Need to think about how the values for connections we measure are distributed. The reference distribution specifies the model for the data before we add any ERGM terms.  
+
+
+```r
+help("ergm-references")
+```
+---
+## The Reference Distribution
+
+&lt;img src="images/CountDistributions.png" width="600px" style="display: block; margin: auto;" /&gt;
+---
+## The Sample Space
+
+- For binary ERGMs, the sample space (or support) `\(\mathcal{Y}\)` — the set of possible networks that can occur — is usually some subset of `\(2^N\)`, the set of all possible ways in which relationships among the actors may occur.
+
+- For the sample space of valued ERGMs, we need to define `\(\mathcal{S}\)`, the set of possible values each relationship may take. For example, for count data, that’s `\(\mathcal{S}=\{0,1,…,s\}\)` if the maximum count is `\(s\)` and `\(\{0,1,…\}\)` if there is no a priori upper bound. Having specified that, `\(\mathcal{Y}\)` is defined as some subset of `\(\mathcal{S}^\mathcal{Y}\)`: the set of possible ways to assign to each relationship a value.
+---
+## Estimate a Valued ERGM
+
+
+```r
+m0 &lt;- ergm(net ~ sum + 
+    nodecov('averageId.node') +
+    nodecov('size.node') + 
+    nodecov('spons_actor.node') + 
+    absdiff('averageId.node') +
+    absdiff('size.node') +
+    edgecov('loc.dyad') +
+    edgecov('spons.dyad'), 
+    response = "coopActions", reference = ~Poisson)
+mcmc.diagnostics(m0)
+```
+---
+## Diagnostics
+&lt;img src="images/m0_traceplot.png" width="550px" style="display: block; margin: auto;" /&gt;
+---
+## Table of Results
+
+
+
+
+```r
+summary(m0)
+```
+
+```
+## Iterations:  5 out of 20 
+## 
+## Monte Carlo MLE Results:
+##                              Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## sum                          -8.10533    1.05447      0  -7.687  &lt; 1e-04 ***
+## nodecov.sum.averageId.node    0.55962    0.04884      0  11.459  &lt; 1e-04 ***
+## nodecov.sum.size.node         0.07523    0.00605      0  12.434  &lt; 1e-04 ***
+## nodecov.sum.spons_actor.node  0.73878    0.13749      0   5.373  &lt; 1e-04 ***
+## absdiff.sum.averageId.node   -0.17780    0.04779      0  -3.720 0.000199 ***
+## absdiff.sum.size.node        -0.08958    0.01007      0  -8.897  &lt; 1e-04 ***
+## edgecov.sum.NULL              3.95933    0.99062      0   3.997  &lt; 1e-04 ***
+## edgecov.sum.NULL.1            0.58640    0.14944      0   3.924  &lt; 1e-04 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##      Null Deviance:    0.0  on 465  degrees of freedom
+##  Residual Deviance: -692.7  on 457  degrees of freedom
+##  
+## Note that the null model likelihood and deviance are defined to be 0. This means that all likelihood-based inference
+## (LRT, Analysis of Deviance, AIC, BIC, etc.) is only valid between models with the same reference distribution and
+## constraints.
+## 
+## AIC: -676.7    BIC: -643.6    (Smaller is better.)
+```
+---
+## Interpretation
+
+Let's calculate the expected number of links between two average rebel groups:
+ 
+ - Set all `\(x\)`s to their mean values
+ - Calculate the expected number as `\(e^{X^{T}\beta}\)`
+ 
+
+```r
+#to get the mean values (in same order as in our model)
+x_mean&lt;-apply(data[,c(9,10,11,5,6,7,8)],2,mean)
+exp(c(1,x_mean)%*%m0$coef) #expected number of collaborations
+```
+---
+## Your Turn
+Calculate the expected number of links between two average rebel groups with no ideological differences: 
+
+---
+class: inverse, middle, center
+# Accounting for Network Dependencies
+---
+## Individual Heterogeneity
+
+Actors may have different overall propensities to interact. This has been modeled using using degeneracy-prone terms like `\(k\)`-star counts. With valued ERGMs, a more robust measure is:
+
+`\(\pmb{g_{actor\ cov.}}(\pmb{y})=\sum\limits_{i\in N}{\frac{1}{n-2}}\sum\limits_{j,k\in\mathbb{Y_i}\land j&lt;k}{(\sqrt{\pmb{y}_{i,j}-\overline{{\sqrt{\pmb{y}}}}})(\sqrt{\pmb{y}_{i,k}-\overline{{\sqrt{\pmb{y}}}}})}\)`
+
+This is essentially a measure of covariance between the squared values of edges incident (originating) from the same actor. Implemented with the term `nodesqrtcovar`.
+---
+## Triadic Closure
+`transitiveweights(twopath, combine, affect)`
+ 
+- `twopath`---given `\(\pmb{y}_{i,j}\)` and `\(\pmb{y}_{k,j}\)`, how to compute the value for the two-path?
+  + `"min"`---the minimum of their values
+  + `"geomean`---geometric mean
+  
+- `combine`---given the strength of the two-paths `\(\pmb{y}_{i-&gt;k-&gt;j}\)` for all `\(k\neq i,j\)`, how to combine the values?
+  + `"max"`--- the strength of the strongest path
+  + `"sum"`---the sum of path strength
+  
+- `affect` ---given the combined strength pf the two-paths between `\(i\)` and `\(j\)`, how should they affect `\(\pmb{Y}_{i,j}\)`?
+  + `"min"`
+  + `"geomean"`
+---
+
+## Example
+
+
+```r
+m1 &lt;- ergm(net ~ sum + 
+    nodecov('averageId.node') +
+    nodecov('size.node') + 
+    nodecov('spons_actor.node') + 
+    absdiff('averageId.node') +
+    absdiff('size.node') +
+    edgecov('loc.dyad') +
+    edgecov('spons.dyad')+ 
+    transitiveweights("min","max","min"), 
+    response = "coopActions", reference = ~Poisson)
+par(mfrow = c(3,2))
+mcmc.diagnostics(m1)
+```
+---
+## Diagnostics
+&lt;img src="images/m1_traceplot.png" width="650px" style="display: block; margin: auto;" /&gt;
+---
+## Table of Results
+
+```r
+summary(m1)
+```
+
+```
+## Iterations:  6 out of 20 
+## 
+## Monte Carlo MLE Results:
+##                                Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## sum                           -7.417775   1.061091      0  -6.991  &lt; 1e-04 ***
+## nodecov.sum.averageId.node     0.550254   0.049272      0  11.168  &lt; 1e-04 ***
+## nodecov.sum.size.node          0.067013   0.005905      0  11.348  &lt; 1e-04 ***
+## nodecov.sum.spons_actor.node   0.827648   0.132379      0   6.252  &lt; 1e-04 ***
+## absdiff.sum.averageId.node    -0.160610   0.044788      0  -3.586 0.000336 ***
+## absdiff.sum.size.node         -0.077496   0.009579      0  -8.090  &lt; 1e-04 ***
+## edgecov.sum.NULL               3.782666   1.005441      0   3.762 0.000168 ***
+## edgecov.sum.NULL.1             0.523423   0.128019      0   4.089  &lt; 1e-04 ***
+## transitiveweights.min.max.min -0.635663   0.045871      0 -13.858  &lt; 1e-04 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##      Null Deviance:    0.0  on 465  degrees of freedom
+##  Residual Deviance: -790.2  on 456  degrees of freedom
+##  
+## Note that the null model likelihood and deviance are defined to be 0. This means that all likelihood-based inference
+## (LRT, Analysis of Deviance, AIC, BIC, etc.) is only valid between models with the same reference distribution and
+## constraints.
+## 
+## AIC: -772.2    BIC: -734.9    (Smaller is better.)
+```
+
+---
+class: inverse, middle, center
+# Simulating Networks
+---
+## Simulating Networks
+
+We can use the estimates from our model to simulate a network (just like with ERGMs). If the simulated networks look similar to the observed network, then our model has a good fit.
+
+
+```r
+# Simulate from model fit:
+simNets &lt;- simulate(m1, nsim = 3)
+
+# Define a plotting function:
+plotSimNet = function(net, label){
+	set.seed(6886)
+	plot(net, edge.col = "black", usecurve = TRUE, 
+     edge.curve = 0, edge.lwd=.1*dyadArray[,,"coopActions"], 
+     displaylabels = TRUE)
+	title(label) }
+```
+---
+
+```r
+par(mfrow = c(2, 2))
+# add actual network to list of sim nets
+# for comparison
+simNets[[4]] = net
+labels = c(paste0("sim",1:3), 'actual')
+lapply(1:length(simNets), function(i){
+	plotSimNet(simNets[[i]], labels[i]) })
+```
+---
+## Observed vs. Simulated Networks
+&lt;img src="08_weighted_nets_files/figure-html/plotsim1-1.png" style="display: block; margin: auto;" /&gt;
+
+```
+## [[1]]
+## NULL
+## 
+## [[2]]
+## NULL
+## 
+## [[3]]
+## NULL
+## 
+## [[4]]
+## NULL
+```
+---
+## With Fixed Coordinates:
+
+
+```r
+#Plot the original network to get the layout:
+set.seed(6886)
+p&lt;-plot(net, edge.col = "black", usecurve = TRUE, 
+     edge.curve = 0, edge.lwd=.25*dyadArray[,,"coopActions"], 
+     displaylabels = TRUE)
+```
+
+&lt;img src="08_weighted_nets_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+
+```r
+# Define a plotting function:
+plotSimNet = function(net, label){
+	set.seed(6886)
+	plot(net, edge.col = "black", usecurve = TRUE, 
+     edge.curve = 0, edge.lwd=.1*dyadArray[,,"coopActions"], 
+     displaylabels = TRUE, coord=p)
+	title(label) }
+```
+---
+## Observed vs. Simulated Networks (Fixed Coord.)
+&lt;img src="08_weighted_nets_files/figure-html/plotsim2-1.png" style="display: block; margin: auto;" /&gt;
+
+```
+## [[1]]
+## NULL
+## 
+## [[2]]
+## NULL
+## 
+## [[3]]
+## NULL
+## 
+## [[4]]
+## NULL
+```
+
+---
+## Assessing Model Fit
+
+In the above exercise, we compared our network to only 3 simulated networks. Ideally, we would like to compare it to more than 3. Since it's difficult to look at thousands of simulated networks on a graph, a way to compare our network to thousands of such simulated networks is by summarizing the characteristics of these simulated networks, such as the sum of edges or various other measures.
+
+Notice that in the code below that, in addition to network statistics included in model `m1`, we can also summarize statistics that were not explicitly included in `m1`, such as `nodesquarecovar`. This is because our simulated networks may still exhibit vertex heterogeneity as a function of the modeled network properties (e.g. triangles), i.e. more triangles may also lead to more k-stars.
+
+Also notice that I specified `output="stats"`. Since I only care about network summaries, I am telling the function to NOT save the actual simulated networks, but only their summary statistics. This saves memory space.
+
+---
+
+
+```r
+# Simulate from model fit:
+simNets1000 &lt;- simulate(m1, monitor = ~nodesqrtcovar(TRUE), 
+    nsim = 1000, output = "stats")
+```
+---
+## Results of the Simulation
+
+```r
+colnames(simNets1000)
+```
+
+```
+##  [1] "sum"                           "nodecov.sum.averageId.node"    "nodecov.sum.size.node"         "nodecov.sum.spons_actor.node" 
+##  [5] "absdiff.sum.averageId.node"    "absdiff.sum.size.node"         "edgecov.sum.NULL"              "edgecov.sum.NULL"             
+##  [9] "transitiveweights.min.max.min" "nodesqrtcovar.centered"
+```
+
+---
+## Plot the Summary of the Simulations
+
+
+```r
+#How prevalent are k-stars in the observed network?
+obsNet&lt;-summary(net~sum+transitiveweights("min","max","min")+nodesqrtcovar(TRUE), 
+                response = "coopActions")
+par(mfrow = c(2, 2))
+#1st col.=sum
+plot(density(simNets1000[,1]), main="")
+abline(v = obsNet[1])
+title("Sum")
+
+# 9th col. = transitiveweights
+plot(density(simNets1000[,9]), main="")
+abline(v = obsNet[2])
+title("Transitive Weights")
+
+# 10th col. = nodesqrtcovar
+plot(density(simNets1000[,10]), main="", xlim=c(10,80))
+abline(v = obsNet)
+title("Nodesqrtvar")
+```
+---
+## Plot the Summary of the Simulations
+&lt;img src="08_weighted_nets_files/figure-html/plotsim10001-1.png" style="display: block; margin: auto;" /&gt;
+---
+## Improve Model Specofication
+
+
+```r
+m2 &lt;- ergm(net ~ sum + 
+    nodecov('averageId.node') +
+    nodecov('size.node') + 
+    nodecov('spons_actor.node') + 
+    absdiff('averageId.node') +
+    absdiff('size.node') +
+    edgecov('loc.dyad') +
+    edgecov('spons.dyad')+ 
+    transitiveweights("min","max","min")+
+    nodesqrtcovar(TRUE), 
+    response = "coopActions", reference = ~Poisson)
+```
+---
+## Improve Model Specification
+
+
+
+
+```
+## Iterations:  12 out of 20 
+## 
+## Monte Carlo MLE Results:
+##                                Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## sum                           -4.726287   1.105867      0  -4.274  &lt; 1e-04 ***
+## nodecov.sum.averageId.node     0.296854   0.056879      0   5.219  &lt; 1e-04 ***
+## nodecov.sum.size.node          0.070925   0.006855      0  10.346  &lt; 1e-04 ***
+## nodecov.sum.spons_actor.node   0.230775   0.140995      0   1.637  0.10168    
+## absdiff.sum.averageId.node    -0.256984   0.047476      0  -5.413  &lt; 1e-04 ***
+## absdiff.sum.size.node         -0.103376   0.008632      0 -11.975  &lt; 1e-04 ***
+## edgecov.sum.NULL               3.253555   1.026670      0   3.169  0.00153 ** 
+## edgecov.sum.NULL.1             0.241622   0.159609      0   1.514  0.13007    
+## transitiveweights.min.max.min -0.690133   0.102974      0  -6.702  &lt; 1e-04 ***
+## nodesqrtcovar.centered         2.627587   0.266903      0   9.845  &lt; 1e-04 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##      Null Deviance:    0.0  on 465  degrees of freedom
+##  Residual Deviance: -932.9  on 455  degrees of freedom
+##  
+## Note that the null model likelihood and deviance are defined to be 0. This means that all likelihood-based inference
+## (LRT, Analysis of Deviance, AIC, BIC, etc.) is only valid between models with the same reference distribution and
+## constraints.
+## 
+## AIC: -912.9    BIC: -871.5    (Smaller is better.)
+```
+---
+## Your Turn
+Follow the steps we did for `m1` to evaluate the fit of model `m2`.  Start by simulating a small number of networks, plot them and compare them to the observed network.  Then simulate 1000 networks and compare them to the observed network on the key network statistics. Does `m2` have a better fit?
+
+---
+
+&lt;img src="images/m2_sims.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+&lt;img src="images/m2_fit.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
