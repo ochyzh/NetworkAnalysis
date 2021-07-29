@@ -57,7 +57,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>July 26</td>
+        <td>July 26-29</td>
         <td>Intro to ERGMs</td>
         <td>
           <dl>
@@ -67,7 +67,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>July 27</td>
+        <td>July 29</td>
         <td>ERGM Specification</td>
         <td>
           <dl>
