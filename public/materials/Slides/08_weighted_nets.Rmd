@@ -37,7 +37,7 @@ class: inverse, middle, center
 ## Install Packages:
 
 ```{r lib, echo=TRUE, eval=TRUE, message=FALSE}
-rm(list=ls())
+
 #install.packages("ergm.count")
 library(statnet)
 library(ergm.count)
@@ -161,7 +161,7 @@ knitr::include_graphics("images/CountDistributions.png")
 
 - For binary ERGMs, the sample space (or support) $\mathcal{Y}$ — the set of possible networks that can occur — is usually some subset of $2^N$, the set of all possible ways in which relationships among the actors may occur.
 
-- For the sample space of valued ERGMs, we need to define $\mathcal{S}$, the set of possible values each relationship may take. For example, for count data, that’s $\mathcal{S}=\{0,1,…,s\}$ if the maximum count is $s$ and $\{0,1,…\}$ if there is no a priori upper bound. Having specified that, $\mathcal{Y}$ is defined as some subset of $\mathcal{S}^\mathcal{Y}$: the set of possible ways to assign to each relationship a value.
+- For the sample space of valued ERGMs, we need to define $\mathcal{S}$, the set of possible values each relationship may take. For example, for count data, that’s $\mathcal{S}=\{0,1,…,s\}$ if the maximum count is $s$ and $\{0,1,…\}$ if there is no a priori upper bound. Having specified that, $\mathcal{Y}$ is defined as some subset of $\mathcal{S}^{N}$: the set of possible ways to assign to each relationship a value.
 ---
 ## Estimate a Valued ERGM
 
@@ -315,6 +315,10 @@ p<-plot(net, edge.col = "black", usecurve = TRUE,
      edge.curve = 0, edge.lwd=.25*dyadArray[,,"coopActions"], 
      displaylabels = TRUE)
 
+```
+
+---
+```{r}
 # Define a plotting function:
 plotSimNet = function(net, label){
 	set.seed(6886)
@@ -323,6 +327,8 @@ plotSimNet = function(net, label){
      displaylabels = TRUE, coord=p)
 	title(label) }
 ```
+
+
 ---
 ## Observed vs. Simulated Networks (Fixed Coord.)
 ```{r plotsim2, echo=FALSE, eval=TRUE, message=FALSE, fig.width=10, fig.height=7,fig.align="center"}
