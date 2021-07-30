@@ -81,7 +81,7 @@ All the class materials will be posted/updated here.
         <td>Weighted Networks</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>ergm specification </a>  | <a href="../materials/Slides/08_weighted_nets.html.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day9_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.html.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day9_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
