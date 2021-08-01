@@ -71,7 +71,7 @@ The chunk below shows the code to calculate the predicted probability of a tie f
 #Make sure you saved your model from question 6 under the name `m1`. Uncomment the code in order to run (i. e., remove # in from of each line).
 #plogis(coef(m1)[['edges']] + 
 #         10*coef(m1)[['nodecov.Seniority']]+
-#         0*coef(m1)[['nodefactor.Practice']]+
+#         0*coef(m1)[['nodefactor.Practice.2']]+
 #         coef(m1)[['nodematch.Practice']]+
 #         coef(m1)[['nodematch.Gender']]+
 #         coef(m1)[['nodematch.Office']])

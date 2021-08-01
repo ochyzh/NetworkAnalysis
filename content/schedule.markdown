@@ -81,7 +81,17 @@ All the class materials will be posted/updated here.
         <td>Weighted Networks</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.html.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day9_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day9_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Aug 2</td>
+        <td>ERGM Application</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>  | <a href="../materials/Slides/09_ergm_application.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day10_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>

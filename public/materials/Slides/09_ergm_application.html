@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced Network Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Advanced Network Analysis
+## ERGM Application
+### Olga Chyzh [www.olgachyzh.com]
+
+---
+
+
+
+
+
+## Readings 
+
+- Steven M. Goodreau, James A. Kitts, and Martina Morris. Birds of a feather, or
+friend of a friend? using exponential random graph models to investigate adolescent social networks. *Demography*, 46(1):103--125, 2009.
+---
+## Goodreau et al, 2009
+
+Goal: to identify the determinants of friendship formation that lead to pervasive regularities in friendship structure among adolescent students
+
+Three mechanisms:
+
+- *Sociality*---heterogeneity among individuals in their propensity to establish friendship ties. Individuals with greater sociality have higher degree, although degree may be also influenced by other factors.
+
+- *Selective mixing* is a dyad-level process by which pairs form (or break) relationships based on their combination of individual attributes. *Assortative
+mixing* is the greater propensity to partner with others having attributes similar to one's own. The resulting pattern---homophily--- is the predominance of within-group ties.
+
+- *Triad Closure* leads to the outcome of transitivity. Possible mechanisms include increased chance for interaction and tendency for structural balance (i.e. a friend of my friend is my friend).
+---
+## Goodreau et al, 2009
+
+Additional mechanisms:
+
+- Homophily may also be amplified by triad closure if there is already a tendency toward assortative mixing.
+- Transitivity may also result from assortative mixing since increasing the likelihood of within category
+ties enhances the opportunity for completed triangles within categories, especially when groups are small.  
+- Population composition---the opportunity for partner selection is constrained by the available pool of partners.
+
+---
+
+&lt;img src="images/Goodreau_Fig2.png" width="1000px" style="display: block; margin: auto;" /&gt;
+---
+## Data
+
+- Friendship data from the first wave of Add Health, a sample of more than 90,000
+U.S. students in grades 7 through 12, obtained in 1994–1995 through a stratifed sample of
+schools.
+- The questionnaire provided a school roster and asked students to identify their five best male and five best female friends,
+in order of closeness. 
+- Students were allowed to nominate friends outside school or missing from the roster, or to stop before nominating five friends of either sex. 
+- Most students listed fewer friends than the maximum, but for the remainder, there may be some truncation. *When would this be a problem?*
+---
+## Open Data
+
+
+```r
+rm(list=ls())
+library(statnet)
+data(faux.mesa.high) 
+mesa &lt;- faux.mesa.high
+mesa
+```
+
+```
+##  Network attributes:
+##   vertices = 205 
+##   directed = FALSE 
+##   hyper = FALSE 
+##   loops = FALSE 
+##   multiple = FALSE 
+##   bipartite = FALSE 
+##   total edges= 203 
+##     missing edges= 0 
+##     non-missing edges= 203 
+## 
+##  Vertex attribute names: 
+##     Grade Race Sex 
+## 
+## No edge attributes
+```
+---
+## Plot Data
+
+
+```r
+par(mfrow=c(1,1)) # Back to 1-panel plots
+plot(mesa, vertex.col='Grade')
+legend('bottomleft',fill=7:12,
+       legend=paste('Grade',7:12),cex=0.75)
+```
+---
+## Plot Data
+&lt;img src="09_ergm_application_files/figure-html/unnamed-chunk-3-1.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+class: inverse, middle, center
+# Model Specification
+---
+## Sociality
+Goodreau et al (2009, 111) "infer sociality based on counts of ties observed: `\(s\)` represents the total
+number of ties, and `\(k_i\)` is the total number of ties for all persons with attribute value `\(i\)`. The `\(s\)`
+term acts as an intercept [`edges`], and the coefficient for `\(s\)` represents the conditional log-odds of a
+tie for the reference category (in these models, reference categories are grade 7, white, and
+male). The `\(k_i\)` terms assume homogeneity within attribute class, allowing each race, sex, and
+grade to have different mean sociality."
+
+---
+## Sociality
+Can also use the search function to find the relevant terms.
+
+```r
+search.ergmTerms(keyword='sociality')
+```
+
+```
+## Found  8  matching ergm terms:
+## b1sociality(nodes=-1)
+##  Degree
+## 
+## b1sociality(nodes=-1, form="sum")
+##  Degree
+## 
+## b2sociality(nodes=-1)
+##  Degree
+## 
+## b2sociality(nodes=-1, form="sum")
+##  Degree
+## 
+## receiver(base=1, nodes=-1)
+##  Receiver effect
+## 
+## receiver(base=1, nodes=-1, form="sum")
+##  Receiver effect
+## 
+## sender(base=1, nodes=-1)
+##  Sender effect
+## 
+## sender(base=1, nodes=-1, form="sum")
+##  Sender effect
+```
+---
+## Sociality
+
+- None of these match the authors' description, which sounds like they are using the term `nodefactor`. 
+- Term `nodefactor` adds multiple network statistics to the model, one for each of the unique values of the attribute. Each of these statistics gives the number of times a node with that attribute or those attributes appears in an edge in the network.
+- Note: `nodefactor` assumes non-numeric (e.g., character, factor) class, so recode "Grade" as a character.
+
+---
+## Sociality
+
+Based on this description, the model so far is specified as:
+
+
+```r
+table(mesa %v% 'Race') # Frequencies of race
+table(mesa %v% 'Sex') # Frequencies of sex
+table(mesa %v% 'Grade') # Frequencies of Grade
+mesa %v% "Grade" &lt;-as.character(mesa %v% "Grade")
+
+m1&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","Other"))+
+            nodefactor("Sex", levels="F")+
+            nodefactor("Grade", levels=c("8","9","10","11","12")))
+```
+---
+## Sociality
+
+- Note that we specified levels for each `nodefactor` as to make sure that the reference categories match those of Goodreau et al.
+- The description of `nodefactor` in `?ergm.terms` says that including each level is not a good idea (need a reference category, just like with categorical variables in OLS).
+- If we get a positive coefficient on any categories within *Race*, *Sex*, and/or *Grade*, we will infer that students with that characteristic are, on average, more social.
+---
+## Selective Mixing
+Two selective mixing dynamics:
+
+1. A homogeneous propensity for assortative mixing across attribute categories (“uniform homophily”). 
+2. A propensity that is specific to individual categories (“differential homophily”).
+
+"Statistics are as follows: first, `\(h\)` is the total number of ties between persons in the same
+attribute category, regardless of category. This uniform homophily is used for sex since
+there are only three tie types (MM, MF, FF); with main effects included, only one degree
+of freedom remains. Second, `\(h_i\)` is the total number of ties between persons both in attribute
+category `\(i\)`. There is one such statistic for each category of the attribute. This differential
+homophily is used for race and grade 4."
+---
+## Selective Mixing
+Can also use the search function to find the relevant terms.
+
+```r
+search.ergmTerms(keyword='homophily')
+```
+
+```
+## Found  13  matching ergm terms:
+## b1degrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
+##  Degree range for the first mode in a bipartite (a.k.a. two-mode) network
+## 
+## b1nodematch(attr, diff=FALSE, keep=NULL, alpha=1, beta=1,)
+##  Nodal attribute-based homophily effect for the first mode in a bipartite (aka two-mode) network
+## 
+## b2degrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
+##  Degree range for the second mode in a bipartite (a.k.a. two-mode) network
+## 
+## b2nodematch(attr, diff=FALSE, keep=NULL, alpha=1, beta=1,)
+##  Nodal attribute-based homophily effect for the second mode in a bipartite (aka two-mode) network
+## 
+## degrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
+##  Degree range
+## 
+## degree(d, by=NULL, homophily=FALSE, levels=NULL)
+##  Degree
+## 
+## idegrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
+##  In-degree range
+## 
+## idegree(d, by=NULL, homophily=FALSE, levels=NULL)
+##  In-degree
+## 
+## nodematch(attr, diff=FALSE, keep=NULL, levels=NULL)
+##  Uniform homophily and differential homophily
+## 
+## nodematch(attr, diff=FALSE, keep=NULL, levels=NULL, form="sum")
+##  Uniform homophily and differential homophily
+## 
+## match()
+##  Uniform homophily and differential homophily
+## 
+## odegrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
+##  Out-degree range
+## 
+## odegree(d, by=NULL, homophily=FALSE, levels=NULL)
+##  Out-degree
+```
+
+- Term `nodematch` sounds like a good candidate.
+---
+## Selective Mixing
+
+Based on this description, we can further specify the model  as:
+
+
+```r
+m1&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm"))+
+            nodefactor("Sex", levels="F")+
+            nodefactor("Grade",  levels=c("8","9","10","11","12"))+
+            nodematch("Sex")+nodematch("Race",diff=TRUE)+nodematch("Grade",diff=TRUE)
+            )
+```
+
+Note: option `diff` specifies whether there can be differences in probability of friendships between groups.
+
+- Use `absdiff` instead of `nodematch` for continuous variables (e.g. wealth).
+---
+## Triad Closure
+
+"For the reasons described above, we investigate triad closure using the
+GWESP statistic. We adopt a value of `\(0.25\)` for decay, although results are robust to this choice."
+
+Based on this description, we can further specify the model  as:
+
+
+```r
+mesa %v% "Grade" &lt;-as.character(mesa %v% "Grade")
+m1&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
+            nodefactor("Sex", levels="F")+
+            nodefactor("Grade", levels=c("8","9","10","11","12"))+
+            nodematch("Sex")+nodematch("Race",diff=TRUE)+nodematch("Grade",diff=TRUE)+
+            gwesp(decay=0.25)
+            )
+par(mfrow = c(3, 2))
+mcmc.diagnostics(m1)
+```
+---
+## Results
+&lt;img src="images/Goodreau_Fig3.png" width="600px" style="display: block; margin: auto;" /&gt;
+---
+## Our Replication: M1 Diagnostics
+
+&lt;img src="images/M1_diagnostics.png" width="750px" style="display: block; margin: auto;" /&gt;
+
+---
+## Increase the Number of Simulations.
+
+
+```r
+m2&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
+            nodefactor("Sex", levels="F")+
+            nodefactor("Grade", levels=c("8","9","10","11","12"))+
+            nodematch("Sex")+nodematch("Race",diff=TRUE)+
+            nodematch("Grade",diff=TRUE)+gwesp(decay=0.25),
+            control=control.ergm(seed=6886,		MCMC.samplesize=10000, MCMLE.maxit=50)
+            )
+par(mfrow = c(3, 2))
+mcmc.diagnostics(m2)
+```
+---
+## Results
+
+&lt;img src="images/M3_diagnostics.png" width="350px" style="display: block; margin: auto;" /&gt;
+
+---
+## Results
+
+```
+##  Results:
+## 
+##                        Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## edges                 -10.22281    1.17910      0  -8.670  &lt; 1e-04 ***
+## nodefactor.Race.Black   0.61845    0.24268      0   2.548 0.010822 *  
+## nodefactor.Race.Hisp   -0.49867    0.23138      0  -2.155 0.031144 *  
+## nodefactor.Race.NatAm  -0.47808    0.20968      0  -2.280 0.022603 *  
+## nodefactor.Race.Other  -1.54877    0.96497      0  -1.605 0.108496    
+## nodefactor.Sex.F        0.13086    0.06715      0   1.949 0.051314 .  
+## nodefactor.Grade.8      1.45656    0.66174      0   2.201 0.027729 *  
+## nodefactor.Grade.9      2.22394    0.62197      0   3.576 0.000349 ***
+## nodefactor.Grade.10     2.55889    0.62167      0   4.116  &lt; 1e-04 ***
+## nodefactor.Grade.11     2.30632    0.62423      0   3.695 0.000220 ***
+## nodefactor.Grade.12     2.93496    0.62202      0   4.718  &lt; 1e-04 ***
+## nodematch.Sex           0.52444    0.13175      0   3.980  &lt; 1e-04 ***
+## nodematch.Race.Black       -Inf    0.00000      0    -Inf  &lt; 1e-04 ***
+## nodematch.Race.Hisp     0.57111    0.31521      0   1.812 0.070013 .  
+## nodematch.Race.NatAm    1.08712    0.30657      0   3.546 0.000391 ***
+## nodematch.Race.Other       -Inf    0.00000      0    -Inf  &lt; 1e-04 ***
+## nodematch.Race.White    0.30392    0.62741      0   0.484 0.628101    
+## nodematch.Grade.10      1.07180    0.53553      0   2.001 0.045352 *  
+## nodematch.Grade.11      1.83540    0.51002      0   3.599 0.000320 ***
+## nodematch.Grade.12      0.98219    0.57182      0   1.718 0.085858 .  
+## nodematch.Grade.7       6.01293    1.14975      0   5.230  &lt; 1e-04 ***
+## nodematch.Grade.8       3.23593    0.64814      0   4.993  &lt; 1e-04 ***
+## nodematch.Grade.9       1.62538    0.47664      0   3.410 0.000649 ***
+## gwesp                   1.22643    0.12741      0   9.626  &lt; 1e-04 ***
+## gwesp.decay             0.49816    0.12582      0   3.959  &lt; 1e-04 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## 
+##  Warning: The following terms have infinite coefficient estimates:
+##   nodematch.Race.Black nodematch.Race.Other
+```
+
+---
+## Results
+
+- Another problem is that several of our parameters are estimated as `\(-Inf\)`.
+
+- Check Our Summary Statistics
+
+
+```r
+summary(mesa~edges+nodefactor("Race")+
+            nodefactor("Sex", levels="F")+
+            nodefactor("Grade", levels=c("8","9","10","11","12"))+
+            nodematch("Sex")+
+            nodematch("Race",diff=TRUE)+
+            nodematch("Grade",diff=TRUE)+
+            gwesp(decay=0.25)
+        )
+#Also can:
+mixingmatrix(mesa, "Race")
+```
+---
+## Check Our Summary Statistics
+
+
+```
+##                 edges  nodefactor.Race.Hisp nodefactor.Race.NatAm nodefactor.Race.Other nodefactor.Race.White      nodefactor.Sex.F 
+##                   203                   178                   156                     1                    45                   235 
+##    nodefactor.Grade.8    nodefactor.Grade.9   nodefactor.Grade.10   nodefactor.Grade.11   nodefactor.Grade.12         nodematch.Sex 
+##                    75                    65                    36                    49                    28                   132 
+##  nodematch.Race.Black   nodematch.Race.Hisp  nodematch.Race.NatAm  nodematch.Race.Other  nodematch.Race.White    nodematch.Grade.10 
+##                     0                    53                    46                     0                     4                     9 
+##    nodematch.Grade.11    nodematch.Grade.12     nodematch.Grade.7     nodematch.Grade.8     nodematch.Grade.9                 esp#1 
+##                    17                     6                    75                    33                    23                    70 
+##                 esp#2                 esp#3                 esp#4                 esp#5                 esp#6                 esp#7 
+##                    36                    13                     0                     1                     0                     0 
+##                 esp#8                 esp#9                esp#10                esp#11                esp#12                esp#13 
+##                     0                     0                     0                     0                     0                     0 
+##                esp#14                esp#15                esp#16                esp#17                esp#18                esp#19 
+##                     0                     0                     0                     0                     0                     0 
+##                esp#20                esp#21                esp#22                esp#23                esp#24                esp#25 
+##                     0                     0                     0                     0                     0                     0 
+##                esp#26                esp#27                esp#28                esp#29                esp#30 
+##                     0                     0                     0                     0                     0
+```
+---
+## Remove the Categories with Empty Cells:
+
+```r
+m3&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
+            nodefactor("Sex", levels="F")+
+            nodefactor("Grade", levels=c("8","9","10","11","12"))+
+            nodematch("Sex")+
+            nodematch("Race",levels=c("White","Hisp","NatAm"),diff=TRUE)+
+            nodematch("Grade",diff=TRUE)+
+            gwesp(decay=0.25),
+            control=control.ergm(seed=6886,		MCMC.samplesize=10000, MCMLE.maxit=50	)
+            )
+summary(m3)
+```
+---
+
+## Results
+
+&lt;img src="images/M3_table.png" width="650px" style="display: block; margin: auto;" /&gt;
+
+---
+## Summary of Results
+
+- Sociality increases by grade.
+- Grade-based selective mixing is consistently assortative (i.e., the selective
+mixing coefficient is positive), but is strongest among 7th graders and declines with seniority.
+- The triad closure (GWESP) coefficient is  positive. 
+
+
+---
+## Interpreting GWESP coefficient
+- Two nodes `\(i\)` and `\(j\)` have an edgewise shared partner when they are (1) connected to each other and (2) both `\(i\)` and j are also connected to a third individual `\(k\)`. 
+- If `\(i\)` and `\(j\)` were also connected to node `\(l\)`, then `\(i\)` and `\(j\)` would have two edgewise shared partners. 
+- When nodes have edgewise shared partnerships, they form triangles.
+- The GWESP term models the tendency for ties that close triangles to be more likely than ties that do not close triangles.
+- The GWESP term gradually decreases as pairs of individuals have more existing shared partners.
+---
+## Interpreting GWESP coefficient
+
+`$$\begin{eqnarray}
+\omega=e^\alpha\sum\limits_{i=1}^{n-2}(1-(1-e^{-\alpha})^i)p_i,
+\end{eqnarray}$$`
+
+where `\(\alpha\)` is the decay parameter, `\(p_i\)` is the number of actor pairs who have exactly `\(i\)` shared edgewise partners, and `\(n\)` is the numebr of nodes in the network. 
+
+- The maximum number of edgewise-shared partners for any pair of nodes is `\(n-2\)`.
+---
+## Interpreting GWESP coefficient
+
+Goal: calculate the change in GWESP statistic that will result from adding a particular tie.
+
+Depends on (1) the number of triangles that the tie closes and (2) the existing number of edgewise shared partnerships that the nodes involved in the triangles already belong to.
+
+- Adding a tie that closes no triangles has no effect on GWESP.
+
+---
+
+- Adding a tie that closes one triangle and no nodes in the group have any existing ESPs will 
+add *three* ties with one edgewise shared partnership (1 and `\(2\)` share partner `\(3\)`, `\(1\)` and `\(3\)` share partner `\(2\)`, and `\(2\)` and `\(3\)` share partner `\(1\)`:
+
+
+&lt;img src="09_ergm_application_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="09_ergm_application_files/figure-html/unnamed-chunk-19-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+## Interpreting GWESP coefficient
+
+- Consider a GWESP coefficient of `\(1.8\)`. 
+- If a tie will close one triangle, and all actor pairs in that triangle currently
+have no shared partners, the log-odds of the tie are increased by `\(5.4\)` (1.8*3), because it would add an edgewise shared partner to three different pairs) relative to an otherwise similar tie that would not close a triangle. 
+- Can calculate other scenarios, but not very intuitive.
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
