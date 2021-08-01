@@ -96,6 +96,16 @@ All the class materials will be posted/updated here.
           </dl>
         </td>
       </tr>
+      <tr>
+        <td>Aug 3</td>
+        <td>Temporal ERGMs</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day11_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
