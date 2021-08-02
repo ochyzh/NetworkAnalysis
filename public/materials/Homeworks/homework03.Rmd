@@ -1,0 +1,89 @@
+---
+title: 'Network Analysis II - Homework #3'
+author: "Your Name"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Make sure to replace "Your Name" in the YAML (top of this script) with your name.
+
+## International Trade network
+
+2. Run the code in the chunk below to load the data.  You can run this code by pressing the green arrow in the top right corner of the chunk. If you get an error, please make sure you set your R directory to the same directory where you saved the data (you can do so by using the `Session` pull-down menu in RStudio). 
+
+```{r, message=F, include=FALSE}
+library(statnet)
+library(devtools)
+install_github("ochyzh/networkdata")
+library(networkdata)
+data("trade_example")
+
+```
+
+3. Check the class of each object in the data. Type your code in the chunk below.
+
+```{r}
+#Type code here.
+
+```
+
+
+4. In the empty chunk below, type in the commands to: (1) look at the first 10 rows and the first 10 columns of the exports network; (2) check to see if the data contain any edge-level attributes using the `list.edge.attributes()` command; (3) look at the first 10 rows and columns of any edge-level attributes.
+
+
+```{r}
+#Type code here:
+
+
+```
+
+
+5. Set `CONT` as the network attribute of the network `tradenet`. 
+
+```{r}
+#Type code below:
+
+
+```
+
+
+6. Estimate an LDM on trade while accounting for the edge-level covariate of contiguity.  Remember to load the `latentnet` library and to specify the variance prior. Save the results as an .rds file to speed up building of the html file later.
+
+```{r, eval=F, warning=F, message=F}
+#Type code here:
+
+
+```
+
+7. Does your model have good convergence?  How do you know?  If your model does not have good convergence, then re-estimate it increasing burnin and the number of iterations (add options `control=ergmm.control(burnin = 20000), sample.size=50000`). Note that as you increase burnin, your model will take longer to run. Depending on your processor, it can take hours (consider running it overnight). Save the results as an .rds file to speed up building of the html file later.
+
+
+```{r, eval=F}
+#Type code here
+
+
+
+
+```
+
+
+8. Once you achieve good convergence OR have run a model with the options of at least  20000 burnin and 50000 `sample.size`, extract the two-dimensional latent coordinates for each node in the chunk below.  Plot countries' latent positions. Label countries with their three letter abbreviations using `cname`.
+
+```{r}
+#Type code here
+
+```
+
+
+9. Knit the RMarkdown file (press the "Knit" button above) and read through the corresponding html file.  
+
+Note: 
+
+This homework is supposed to be mainly a code reading exercise. You should not have to program extensively. Instead, you have to figure out which pieces you need to copy and adjust. 
+
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html file with it. 
