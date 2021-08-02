@@ -106,6 +106,16 @@ All the class materials will be posted/updated here.
           </dl>
         </td>
       </tr>
+      <tr>
+        <td>Aug 4</td>
+        <td>Latent Space Models</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/11_latent_space.html" target=_blank>latent space </a>  | <a href="../materials/Slides/11_latent_space.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day12_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
