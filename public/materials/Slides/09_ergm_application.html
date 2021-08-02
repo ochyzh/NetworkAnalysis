@@ -4,9 +4,9 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
@@ -261,6 +261,15 @@ Note: option `diff` specifies whether there can be differences in probability of
 
 - Use `absdiff` instead of `nodematch` for continuous variables (e.g. wealth).
 ---
+## Selective Mixing: Interpretation
+
+- To calculate the probability of a tie between two women, set `nodefactor("Sex", levels="F")=1` and `nodematch("Sex")=1`, and all other variables to the values of interest. 
+
+- To calculate the probability of a tie between two men, set `nodefactor("Sex", levels="F")=0` and `nodematch("Sex")=1`, and all other variables to the values of interest. 
+
+- To calculate the probability of a tie between a woman and a man, set `nodefactor("Sex", levels="F")=1` and `nodematch("Sex")=0`, and all other variables to the values of interest.  
+
+---
 ## Triad Closure
 
 "For the reasons described above, we investigate triad closure using the
@@ -314,32 +323,58 @@ mcmc.diagnostics(m2)
 ```
 ##  Results:
 ## 
-##                        Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges                 -10.22281    1.17910      0  -8.670  &lt; 1e-04 ***
-## nodefactor.Race.Black   0.61845    0.24268      0   2.548 0.010822 *  
-## nodefactor.Race.Hisp   -0.49867    0.23138      0  -2.155 0.031144 *  
-## nodefactor.Race.NatAm  -0.47808    0.20968      0  -2.280 0.022603 *  
-## nodefactor.Race.Other  -1.54877    0.96497      0  -1.605 0.108496    
-## nodefactor.Sex.F        0.13086    0.06715      0   1.949 0.051314 .  
-## nodefactor.Grade.8      1.45656    0.66174      0   2.201 0.027729 *  
-## nodefactor.Grade.9      2.22394    0.62197      0   3.576 0.000349 ***
-## nodefactor.Grade.10     2.55889    0.62167      0   4.116  &lt; 1e-04 ***
-## nodefactor.Grade.11     2.30632    0.62423      0   3.695 0.000220 ***
-## nodefactor.Grade.12     2.93496    0.62202      0   4.718  &lt; 1e-04 ***
-## nodematch.Sex           0.52444    0.13175      0   3.980  &lt; 1e-04 ***
-## nodematch.Race.Black       -Inf    0.00000      0    -Inf  &lt; 1e-04 ***
-## nodematch.Race.Hisp     0.57111    0.31521      0   1.812 0.070013 .  
-## nodematch.Race.NatAm    1.08712    0.30657      0   3.546 0.000391 ***
-## nodematch.Race.Other       -Inf    0.00000      0    -Inf  &lt; 1e-04 ***
-## nodematch.Race.White    0.30392    0.62741      0   0.484 0.628101    
-## nodematch.Grade.10      1.07180    0.53553      0   2.001 0.045352 *  
-## nodematch.Grade.11      1.83540    0.51002      0   3.599 0.000320 ***
-## nodematch.Grade.12      0.98219    0.57182      0   1.718 0.085858 .  
-## nodematch.Grade.7       6.01293    1.14975      0   5.230  &lt; 1e-04 ***
-## nodematch.Grade.8       3.23593    0.64814      0   4.993  &lt; 1e-04 ***
-## nodematch.Grade.9       1.62538    0.47664      0   3.410 0.000649 ***
-## gwesp                   1.22643    0.12741      0   9.626  &lt; 1e-04 ***
-## gwesp.decay             0.49816    0.12582      0   3.959  &lt; 1e-04 ***
+##                        Estimate Std. Error MCMC % z value
+## edges                 -10.22281    1.17910      0  -8.670
+## nodefactor.Race.Black   0.61845    0.24268      0   2.548
+## nodefactor.Race.Hisp   -0.49867    0.23138      0  -2.155
+## nodefactor.Race.NatAm  -0.47808    0.20968      0  -2.280
+## nodefactor.Race.Other  -1.54877    0.96497      0  -1.605
+## nodefactor.Sex.F        0.13086    0.06715      0   1.949
+## nodefactor.Grade.8      1.45656    0.66174      0   2.201
+## nodefactor.Grade.9      2.22394    0.62197      0   3.576
+## nodefactor.Grade.10     2.55889    0.62167      0   4.116
+## nodefactor.Grade.11     2.30632    0.62423      0   3.695
+## nodefactor.Grade.12     2.93496    0.62202      0   4.718
+## nodematch.Sex           0.52444    0.13175      0   3.980
+## nodematch.Race.Black       -Inf    0.00000      0    -Inf
+## nodematch.Race.Hisp     0.57111    0.31521      0   1.812
+## nodematch.Race.NatAm    1.08712    0.30657      0   3.546
+## nodematch.Race.Other       -Inf    0.00000      0    -Inf
+## nodematch.Race.White    0.30392    0.62741      0   0.484
+## nodematch.Grade.10      1.07180    0.53553      0   2.001
+## nodematch.Grade.11      1.83540    0.51002      0   3.599
+## nodematch.Grade.12      0.98219    0.57182      0   1.718
+## nodematch.Grade.7       6.01293    1.14975      0   5.230
+## nodematch.Grade.8       3.23593    0.64814      0   4.993
+## nodematch.Grade.9       1.62538    0.47664      0   3.410
+## gwesp                   1.22643    0.12741      0   9.626
+## gwesp.decay             0.49816    0.12582      0   3.959
+##                       Pr(&gt;|z|)    
+## edges                  &lt; 1e-04 ***
+## nodefactor.Race.Black 0.010822 *  
+## nodefactor.Race.Hisp  0.031144 *  
+## nodefactor.Race.NatAm 0.022603 *  
+## nodefactor.Race.Other 0.108496    
+## nodefactor.Sex.F      0.051314 .  
+## nodefactor.Grade.8    0.027729 *  
+## nodefactor.Grade.9    0.000349 ***
+## nodefactor.Grade.10    &lt; 1e-04 ***
+## nodefactor.Grade.11   0.000220 ***
+## nodefactor.Grade.12    &lt; 1e-04 ***
+## nodematch.Sex          &lt; 1e-04 ***
+## nodematch.Race.Black   &lt; 1e-04 ***
+## nodematch.Race.Hisp   0.070013 .  
+## nodematch.Race.NatAm  0.000391 ***
+## nodematch.Race.Other   &lt; 1e-04 ***
+## nodematch.Race.White  0.628101    
+## nodematch.Grade.10    0.045352 *  
+## nodematch.Grade.11    0.000320 ***
+## nodematch.Grade.12    0.085858 .  
+## nodematch.Grade.7      &lt; 1e-04 ***
+## nodematch.Grade.8      &lt; 1e-04 ***
+## nodematch.Grade.9     0.000649 ***
+## gwesp                  &lt; 1e-04 ***
+## gwesp.decay            &lt; 1e-04 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -373,24 +408,60 @@ mixingmatrix(mesa, "Race")
 
 
 ```
-##                 edges  nodefactor.Race.Hisp nodefactor.Race.NatAm nodefactor.Race.Other nodefactor.Race.White      nodefactor.Sex.F 
-##                   203                   178                   156                     1                    45                   235 
-##    nodefactor.Grade.8    nodefactor.Grade.9   nodefactor.Grade.10   nodefactor.Grade.11   nodefactor.Grade.12         nodematch.Sex 
-##                    75                    65                    36                    49                    28                   132 
-##  nodematch.Race.Black   nodematch.Race.Hisp  nodematch.Race.NatAm  nodematch.Race.Other  nodematch.Race.White    nodematch.Grade.10 
-##                     0                    53                    46                     0                     4                     9 
-##    nodematch.Grade.11    nodematch.Grade.12     nodematch.Grade.7     nodematch.Grade.8     nodematch.Grade.9                 esp#1 
-##                    17                     6                    75                    33                    23                    70 
-##                 esp#2                 esp#3                 esp#4                 esp#5                 esp#6                 esp#7 
-##                    36                    13                     0                     1                     0                     0 
-##                 esp#8                 esp#9                esp#10                esp#11                esp#12                esp#13 
-##                     0                     0                     0                     0                     0                     0 
-##                esp#14                esp#15                esp#16                esp#17                esp#18                esp#19 
-##                     0                     0                     0                     0                     0                     0 
-##                esp#20                esp#21                esp#22                esp#23                esp#24                esp#25 
-##                     0                     0                     0                     0                     0                     0 
-##                esp#26                esp#27                esp#28                esp#29                esp#30 
-##                     0                     0                     0                     0                     0
+##                 edges  nodefactor.Race.Hisp 
+##                   203                   178 
+## nodefactor.Race.NatAm nodefactor.Race.Other 
+##                   156                     1 
+## nodefactor.Race.White      nodefactor.Sex.F 
+##                    45                   235 
+##    nodefactor.Grade.8    nodefactor.Grade.9 
+##                    75                    65 
+##   nodefactor.Grade.10   nodefactor.Grade.11 
+##                    36                    49 
+##   nodefactor.Grade.12         nodematch.Sex 
+##                    28                   132 
+##  nodematch.Race.Black   nodematch.Race.Hisp 
+##                     0                    53 
+##  nodematch.Race.NatAm  nodematch.Race.Other 
+##                    46                     0 
+##  nodematch.Race.White    nodematch.Grade.10 
+##                     4                     9 
+##    nodematch.Grade.11    nodematch.Grade.12 
+##                    17                     6 
+##     nodematch.Grade.7     nodematch.Grade.8 
+##                    75                    33 
+##     nodematch.Grade.9                 esp#1 
+##                    23                    70 
+##                 esp#2                 esp#3 
+##                    36                    13 
+##                 esp#4                 esp#5 
+##                     0                     1 
+##                 esp#6                 esp#7 
+##                     0                     0 
+##                 esp#8                 esp#9 
+##                     0                     0 
+##                esp#10                esp#11 
+##                     0                     0 
+##                esp#12                esp#13 
+##                     0                     0 
+##                esp#14                esp#15 
+##                     0                     0 
+##                esp#16                esp#17 
+##                     0                     0 
+##                esp#18                esp#19 
+##                     0                     0 
+##                esp#20                esp#21 
+##                     0                     0 
+##                esp#22                esp#23 
+##                     0                     0 
+##                esp#24                esp#25 
+##                     0                     0 
+##                esp#26                esp#27 
+##                     0                     0 
+##                esp#28                esp#29 
+##                     0                     0 
+##                esp#30 
+##                     0
 ```
 ---
 ## Remove the Categories with Empty Cells:
