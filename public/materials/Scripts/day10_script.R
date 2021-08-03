@@ -42,3 +42,6 @@ war[[1]][1:3,1:3]
 class(contiguity)
 dim(contiguity)
 contiguity[1:3,1:3]
+
+
+
