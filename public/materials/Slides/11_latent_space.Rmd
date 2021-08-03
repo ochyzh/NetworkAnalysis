@@ -635,7 +635,9 @@ $$
 $$
 
 * $a_{i} + b_{j}  + \epsilon_{ij}$, are additive random effects and account for sender, receiver, and within-dyad dependence
-* multiplicative effects, $\textbf{u}_{i}^{T} \textbf{D} \textbf{v}_{j}$, capture higher-order dependence patterns that are left over in $\theta$ after accounting for any known covariate information
+* multiplicative effects, $\textbf{u}_{i}^{T} \textbf{D} \textbf{v}_{j}$, capture higher-order dependence patterns that are left over in $\theta$ after accounting for any known covariate information 
+* Can think of $\textbf{u}_{i}^{T} \textbf{D} \textbf{v}_{j}$ as an interaction between sender- and receiver-, and dyad- random effects.
+
 
 ---
 
@@ -656,7 +658,7 @@ $$
   + sample $\beta \; | \;  \textbf{X}, \theta, \textbf{a}, \textbf{b}, \textbf{U}, \textbf{V}, \Sigma_{ab}, \rho, \text{ and } \sigma_{\epsilon}^{2}$ (Normal)
   + sample $\textbf{a}, \textbf{b} \; | \; \beta, \textbf{X}, \theta, \textbf{U}, \textbf{V}, \Sigma_{ab}, \rho, \text{ and } \sigma_{\epsilon}^{2}$ (Normal)
   + sample $\Sigma_{ab} \; | \; \beta, \textbf{X}, \theta, \textbf{a}, \textbf{b}, \textbf{U}, \textbf{V}, \rho, \text{ and } \sigma_{\epsilon}^{2}$ (Inverse-Wishart)
-  + update $\rho$ using a Metropolis-Hastings step with proposal $p^{*} | p  \sim$ truncated normal$_{[-1,1]}(\rho, \sigma_{\epsilon}^{2})$
+  + update $\rho$ using a Metropolis-Hastings step with proposal $p^{*} | p  \sim$ truncated normal $_{[-1,1]}(\rho, \sigma_{\epsilon}^{2})$
   + sample $\sigma_{\epsilon}^{2} \; | \; \beta, \textbf{X}, \theta, \textbf{a}, \textbf{b}, \textbf{U}, \textbf{V}, \Sigma_{ab}, \text{ and } \rho$ (Inverse-Gamma)
   + For each $k \in K$:
     * Sample $\textbf{U}_{[,k]} \; | \; \beta, \textbf{X}, \theta, \textbf{a}, \textbf{b}, \textbf{U}_{[,-k]}, \textbf{V}, \Sigma_{ab}, \rho, \text{ and } \sigma_{\epsilon}^{2}$ (Normal)
