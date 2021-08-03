@@ -116,6 +116,16 @@ All the class materials will be posted/updated here.
           </dl>
         </td>
       </tr>
+      <tr>
+        <td>Aug 5</td>
+        <td>SOAMs</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/12_soam.html" target=_blank>soams </a>  | <a href="../materials/Slides/12_soam.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day13_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
