@@ -644,7 +644,7 @@ Note: cannot use coordinates, because networks are not of equal size, include di
 
 ## Quick snapshots
 
-&lt;img src="10_tergm_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_tergm_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -944,6 +944,59 @@ summary(tergm_Duque)
 ## Results
 
 &lt;img src="images/Duque_res.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+---
+## Temporal Terms
+
+- `delrecip(mutuality = FALSE, lag = 1)`:  checks for delayed reciprocity. For
+example, if node `\(j\)` is tied to node `\(i\)` at `\(t = 1\)`, does this lead to a reciprocation of that tie back
+from `\(i\)` to `\(j\)` at `\(t = 2\)`? If mutuality = TRUE is set, this extends not only to ties, but also non-ties. The lag argument controls the size of the temporal lag: with `\(lag = 1\)`, reciprocity over one consecutive time period is checked. Note that as lag increases, the number of time steps on the dependent variable decreases.
+
+- `memory(type = "stability", lag = 1)`: controls for the impact of a previous network on the current network. Four different types of memory terms are available: positive autoregression (type = "autoregression") checks whether previous ties are carried over to the current network; dyadic stability (type = "stability") checks whether both edges and
+non-edges are stable between the previous and the current network; edge loss (type = "loss")
+checks whether ties in the previous network have been dissolved and no longer exist in the
+current network; and edge innovation (type = "innovation") checks whether previously unconnected nodes have the tendency to become tied in the current network. 
+
+---
+## Temporal Terms Cont'd
+
+- `timecov(x = NULL, minimum = 1, maximum = NULL, transform = function(t) t)`: checks for linear or non-linear time trends with regard to edge formation. Optionally, this can be combined with a covariate to create an interaction effect between a dyadic covariate and time in order to test whether the importance of a covariate increases or decreases over time. In
+the default case, edges modeled as being linearly increasingly important over time. By tweaking the transform function, arbitrary functional forms of time can be tested. For example, transform = sqrt (for a geometrically decreasing time effect), transform = function(x) x^2 (for a geometrically increasing time effect), transform = function(t) t (for a linear
+time trend) or polynomial functional forms (e.g., 0 + (1 * t) + (1 * t^2)) can be used.
+
+---
+#Example with Time Vars
+
+```r
+#This runs for 5 min:
+tergm_Duque1&lt;-btergm(dipl_ties ~ edges + istar(2) + ostar(2) + mutual + triangles+
+                  absdiff("dem")+
+                  +nodeicov("dem")+
+                  +edgecov(allies)+
+                  +edgecov(contig)+
+                  timecov(),
+                  R=1000)
+
+summary(tergm_Duque1)
+```
+
+---
+#Example with Time Vars
+
+```
+##                        Estimate    2.5%   97.5%
+## edges                 -4.915580 -5.2673 -4.5906
+## istar2                 0.029973  0.0283  0.0333
+## ostar2                 0.031485  0.0289  0.0353
+## mutual                 2.428539  2.2767  2.5464
+## triangle               0.011518  0.0102  0.0126
+## absdiff.dem           -0.298055 -0.3669 -0.2392
+## nodeicov.dem          -0.122282 -0.2013 -0.0506
+## edgecov.allies[[i]]    1.199983  1.0998  1.3312
+## edgecov.contig[[i]]    1.837357  1.6100  2.1092
+## edgecov.timecov1[[i]] -0.126189 -0.2050 -0.0802
+```
+
 
 
 ---
