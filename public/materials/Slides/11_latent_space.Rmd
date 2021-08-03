@@ -636,7 +636,7 @@ $$
 
 * $a_{i} + b_{j}  + \epsilon_{ij}$, are additive random effects and account for sender, receiver, and within-dyad dependence
 * multiplicative effects, $\textbf{u}_{i}^{T} \textbf{D} \textbf{v}_{j}$, capture higher-order dependence patterns that are left over in $\theta$ after accounting for any known covariate information 
-* Can think of $\textbf{u}_{i}^{T} \textbf{D} \textbf{v}_{j}$ as an interaction between sender- and receiver-, and dyad- random effects.
+* Can think of $\textbf{u}_{i}^{T} \textbf{D} \textbf{v}_{j}$ as an interaction or a term that models additional structures that include higher orders of $\epsilon_{i,j}$, such as $\epsilon_{i,j},\epsilon_{j,i}$ or $\epsilon_{i,j}, \epsilon_{j,k}, \epsilon_{k,i}$
 
 
 ---
