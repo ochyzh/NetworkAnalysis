@@ -491,6 +491,9 @@ tergmFit &lt;- btergm(
 	nodecov('cinc') + absdiff("cinc") +
 	gwesp(.5, fixed = TRUE)
 	)
+
+#check model fit:
+#GOF1&lt;-gof(tergmFit)
 ```
 
 ---
@@ -503,14 +506,14 @@ summary(tergmFit)
 
 ```
 ##                           Estimate    2.5%   97.5%
-## edges                   -5.3675652 -5.5108 -5.2266
-## edgecov.war[[i]]         1.0547194  0.7522  1.3258
-## edgecov.contiguity[[i]] -0.2176738 -0.3391 -0.0962
-## nodecov.polity           0.0774665  0.0644  0.0883
-## absdiff.polity          -0.0099237 -0.0163 -0.0030
-## nodecov.cinc            -5.5272184 -7.6859 -3.1217
-## absdiff.cinc            21.0799677 18.9045 23.1091
-## gwesp.fixed.0.5          2.2031934  2.1109  2.2925
+## edges                   -5.3675652 -5.5202 -5.2208
+## edgecov.war[[i]]         1.0547194  0.7438  1.3382
+## edgecov.contiguity[[i]] -0.2176738 -0.3353 -0.1089
+## nodecov.polity           0.0774665  0.0655  0.0895
+## absdiff.polity          -0.0099237 -0.0161 -0.0025
+## nodecov.cinc            -5.5272184 -7.9541 -3.3051
+## absdiff.cinc            21.0799677 18.9316 23.3665
+## gwesp.fixed.0.5          2.2031934  2.0987  2.2957
 ```
 
 ---
@@ -981,7 +984,7 @@ summary(tergm_Duque1)
 ```
 
 ---
-#Example with Time Vars
+## Example with Time Vars
 
 ```
 ##                        Estimate    2.5%   97.5%
@@ -996,7 +999,10 @@ summary(tergm_Duque1)
 ## edgecov.contig[[i]]    1.837357  1.6100  2.1092
 ## edgecov.timecov1[[i]] -0.126189 -0.2050 -0.0802
 ```
+---
+## Your Turn
 
+Re-specify the model to account for delayed reciprocity and stability. Estimate your new model.
 
 
 ---

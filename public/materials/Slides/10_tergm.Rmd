@@ -332,7 +332,7 @@ knitr::include_graphics("images/btergm.png")
 
 ```{r tergmload, echo=FALSE, eval=TRUE}
 suppressWarnings(suppressMessages(library(btergm)))
-load('data/tergmFit_pseudo.rda')
+#load('data/tergmFit_pseudo.rda')
 ```
 
 ```{r tergmfit, echo=TRUE, eval=FALSE}
@@ -345,6 +345,9 @@ tergmFit <- btergm(
 	nodecov('cinc') + absdiff("cinc") +
 	gwesp(.5, fixed = TRUE)
 	)
+
+#check model fit:
+#GOF1<-gof(tergmFit)
 ```
 
 ---
@@ -634,12 +637,15 @@ summary(tergm_Duque1)
 ```
 
 ---
-#Example with Time Vars
+## Example with Time Vars
 ```{r, echo=F}
 tergm_Duque1<-readRDS("data/tergm_Duque1.rds")
 summary(tergm_Duque1)
 ```
+---
+## Your Turn
 
+Re-specify the model to account for delayed reciprocity and stability. Estimate your new model.
 
 
 ---
