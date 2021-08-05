@@ -101,7 +101,7 @@ All the class materials will be posted/updated here.
         <td>Temporal ERGMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/10_tergms_yourturn.R"target=_blank> your turn answers </a>
+          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/10_tergms_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/10_tergms_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>
           </dd>
           </dl>
         </td>

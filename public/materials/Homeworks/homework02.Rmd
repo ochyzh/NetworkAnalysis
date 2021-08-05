@@ -53,11 +53,10 @@ Notice that the network of lawyer relationships is saved with the name `lazega.s
 
 6. In the empty code chunk below, type in the commands to estimate an ergm with `lazega.s` as the dependent variable, and `edges`, node-level effects of `Seniority` and `Practice` and commonality of `Practice`, `Gender`, and `Office`. Save this model as an object named `m1`. Look at the summary of your model results.
 
-Note that node-level effects are specified using `nodecov()` (e.g. `nodecov("Practice")`), while commonality effects are specified using `nodematch` (e.g., `nodematch("Practice")`).
+Note that node-level effects are specified using `nodecov()` or `nodefactor` (e.g. `nodefactor("Practice")`, `nodecov("Seniority)`), while commonality effects are specified using `nodematch` (e.g., `nodematch("Practice")`).
 
 ```{r, warning=F, message=F}
 #Type code below:
-
 
 
 ```
@@ -77,6 +76,8 @@ The chunk below shows the code to calculate the predicted probability of a tie f
 #         coef(m1)[['nodematch.Office']])
 
 #Type your code here:
+
+
 
 ```
 

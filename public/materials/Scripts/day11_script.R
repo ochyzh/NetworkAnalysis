@@ -113,3 +113,12 @@ m1<-btergm(dipl_ties~edges+ istar(2)+ostar(2)+mutual+
              edgecov(allies)+
              edgecov(contig))
 
+m2<-btergm(dipl_ties~edges+ istar(2)+ostar(2)+mutual+
+             triangle+
+             absdiff("dem")+
+             nodeicov('dem')+
+             edgecov(allies)+
+             edgecov(contig)+
+             delrecip()+
+             memory(type="stability"))
+summary(m2)
