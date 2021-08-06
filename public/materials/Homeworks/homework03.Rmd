@@ -57,7 +57,10 @@ data("trade_example")
 #Type code here:
 
 
+
 ```
+
+
 
 7. Does your model have good convergence?  How do you know?  If your model does not have good convergence, then re-estimate it increasing burnin and the number of iterations (add options `control=ergmm.control(burnin = 20000), sample.size=50000`). Note that as you increase burnin, your model will take longer to run. Depending on your processor, it can take hours (consider running it overnight). Save the results as an .rds file to speed up building of the html file later.
 
