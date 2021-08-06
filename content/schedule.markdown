@@ -121,7 +121,7 @@ All the class materials will be posted/updated here.
         <td>SOAMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/12_soam.html" target=_blank>soams </a>  | <a href="../materials/Slides/12_soam.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day13_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/12_soam.html" target=_blank>soams </a>  | <a href="../materials/Slides/12_soam.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day14_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
