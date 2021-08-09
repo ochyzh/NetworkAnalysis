@@ -338,11 +338,11 @@ The primes indicate the elements in the formulae that are under control of actor
 ---
 ## Interpretation of Parameters: Network Function 
 
-- The parameter estimate of -2 on the outdegree tells us that, if we ignore all other variables, the baseline probability of a tie in this network is $\exp{-2}/(1+\exp{-2})=0.12$.
+- The parameter estimate of -2 on the outdegree tells us that, if we ignore all other variables, the baseline probability of a tie in this network is $\exp{(-2)}/(1+\exp{(-2)})=0.12$.
 
-- The parameter estimate of 2.5 on the reciprocity tells us that the probability of a reciprocated tie is $\exp{-2+2.5}/(1+\exp{-2+2.5})=0.62$.
+- The parameter estimate of 2.5 on the reciprocity tells us that the probability of a reciprocated tie is $\exp{(-2+2.5)}/(1+\exp{(-2+2.5)})=0.62$.
 
-- The positive similarity effect indicates that actors tend to form ties with similar others rather than to dissimilar ones. The probability of a tie to a maximally similar actor is $\exp{-2+1}/(1+\exp{-2+1})=0.26$ vs that of the baseline probability of $0.12$.
+- The positive similarity effect indicates that actors tend to form ties with similar others rather than to dissimilar ones. The probability of a tie to a maximally similar actor is $\exp{(-2+1)}/(1+\exp{(-2+1)})=0.26$ vs that of the baseline probability of $0.12$.
 
 ---
 ## Interpretation of Parameters: Behavior Function 
