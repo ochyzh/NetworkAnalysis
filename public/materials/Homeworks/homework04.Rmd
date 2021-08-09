@@ -1,0 +1,85 @@
+---
+title: 'Network Analysis II - Homework #4'
+author: "Your Name"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Make sure to replace "Your Name" in the YAML (top of this script) with your name.
+
+## International Alliance network
+
+2. You will be using the data `ally_data` from the `networkdata` package. Run the code in the chunk below to load the data. Remember to update the package to the most recent version.  
+
+```{r, message=F}
+library(devtools)
+install_github("ochyzh/networkdata")
+library(networkdata)
+data(ally_data)
+
+
+```
+
+3. Check the class and the dimensions of each object that makes up the data. Look at the first 10 rows and columns of `W` and the first 10 rows of `ally_data`. Type your code in the chunk below. 
+
+```{r}
+#Type code here.
+
+```
+
+
+4. In class, we wrote the code to estimate an lsgm with 1 edge-level covariate X using a pseudo-likelihood.  Edit the chunk below so that the resulting pseudo-likelihood can include 2 edge-level covariates X1 and X2 (i.e., the goal is to run an lsgm with `tot_trade` and `mil_ratio` as exogenous covariates). 
+
+
+```{r}
+#Type code here:
+#Likelihood
+loglik<-function(par,X,W,Y){
+b0<-par[1]
+b1<-par[2]
+eta<-par[3]
+xbeta<-b0+b1*X
+kappa<-exp(xbeta)/(1+exp(xbeta)) #logit of Xb
+A_i=log(kappa/(1-kappa))+eta*W%*%(Y-kappa) #Eqn 2
+p_i<- exp(A_i)/(1+exp(A_i)) #Eqn 1, also Eqn 4
+PL<-Y*log(p_i)+(1-Y)*log(1-p_i) #Eqn 3
+ell <- -sum(PL)
+#cat("ell",ell, fill=TRUE)
+return(ell)
+}
+
+
+```
+
+
+5. Estimate an lsgm with `defense` as the dependent variable, with `tot_trade` and `mil_ratio` as the exogenous edge-level covariates, and `W` as the matrix that measure connectivities among defense edges. 
+
+```{r}
+#Type code below:
+
+
+```
+
+6. Looking just at the direction of the coefficients, do you find the same results as Chyzh and Kaiser (2019)?
+
+7. Ungraded *Bonus* question: change the code from class to estimate the standard errors for your model.
+
+```{r}
+#Type code here:
+
+
+```
+
+
+8. Knit the RMarkdown file (press the "Knit" button above) and read through the corresponding html file.  
+
+Note: 
+
+This homework is supposed to be mainly a code reading exercise with a little bit of coding. You simply have to figure out which pieces you need to copy and adjust. 
+
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html file with it. 
