@@ -128,7 +128,7 @@ All the class materials will be posted/updated here.
       </tr>
             <tr>
         <td>Aug 10</td>
-        <td>SOAMs</td>
+        <td>LSGM</td>
         <td>
           <dl>
           <dd><a href="../materials/Slides/13_lsgm.html" target=_blank>lsgm </a>  | <a href="../materials/Slides/13_lsgm.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day16_script.R"target=_blank> code from class </a>
