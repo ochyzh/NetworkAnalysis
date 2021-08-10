@@ -117,11 +117,21 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Aug 5</td>
+        <td>Aug 5, 9</td>
         <td>SOAMs</td>
         <td>
           <dl>
           <dd><a href="../materials/Slides/12_soam.html" target=_blank>soams </a>  | <a href="../materials/Slides/12_soam.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day14_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+            <tr>
+        <td>Aug 10</td>
+        <td>SOAMs</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/13_lsgm.html" target=_blank>lsgm </a>  | <a href="../materials/Slides/13_lsgm.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day16_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
