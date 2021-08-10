@@ -428,17 +428,10 @@ NBeff <- includeEffects(NBeff, name = "drinkingbeh",
 
 6. Suppose an individual has 2 friends, one with a drink score of 5 and another with a drink score of 2. What is the probability that this individual will move from drinking=3 to drinking=2, accounting for homophily?
 
-```{r, echo=F, eval=F}
 
-myalgorithm2 <- sienaAlgorithmCreate(projname = 's50CoEv_2' )
-m2 <- siena07(myalgorithm2, data = NBdata,
-      effects = NBeff, batch=TRUE,returnDeps=TRUE) #the returnDeps argument saves simulated networks
-saveRDS(m2, "data/m2.rds")
-
-```
 ---
 ## Results
-```{r}
+```{r, echo=FALSE}
 m2<-readRDS("data/m2.rds")
 summary(m2)
 
@@ -604,11 +597,12 @@ dim(dipl_ties[[2]])
 ```{r,echo=TRUE, eval=FALSE}
 library(tidyverse)
 #get the full list of actors:
-myactors<-unique(do.call("c",lapply(dipl_ties,names)))
-dyads<-expand.grid(myactors,myactors)
+myactors<-sort(as.numeric(unique(do.call("c",lapply(dipl_ties[1:3],names)))))
+n<-length(myactors)
 
-dipl<-array(10, dim = c( 194, 194, 3 ),
+dipl<-array(10, dim = c(n,n, 3 ),
 	dimnames=list(myactors,myactors,seq(from=1970,to=1980,by=5)))
+dipl[1:10,1:10,1]
 
 for(t in 1:3){
     d<-dipl_ties[[t]]
@@ -617,7 +611,6 @@ for(t in 1:3){
 		a1 = names(d)[i]
 		a2 = colnames(d)[j]
 		val = as.numeric(as.character(d[i,j]))
-		
 		dipl[i,j,t] <- val
 		dipl[j,i,t] <- val
 	  }}
@@ -631,20 +624,49 @@ dipl <- sienaDependent(dipl)
 
 ## Your Turn
 
-1. Set up `allies` and `contig` as edge-level covariates (use the first three time periods).
+1. Set up `allies` and `contig` as edge-level covariates (use the first two time periods).
 
-2. Set up `polity` as a time-varying node-level covariate (use the first three time periods).
+2. Set up `polity` as a time-varying node-level covariate (use the first two time periods).
 
-3. Estimate a model that includes the following covariates: outdegree, reciprocity, transitive triplets, polity alter, polity ego, polity diff., contiguity, and allies.
+3. Estimate a model that includes the following covariates: degree, transTies, polity similarity, contiguity, and allies.
 
 
-```{r, eval=FALSE, echo=FALSE}
-myalgorithm <- sienaAlgorithmCreate(projname = 'Dties')
-ans <- siena07(myalgorithm, data = mydata, effects = myeff1)
-saveRDS(ans,"ans.rds")
+
+
+---
+## Results
+```{r, echo=FALSE}
+ans<- readRDS("data/ans.rds")
+summary(ans)
+```
+---
+
+## Goodness of Fit: Indegree
+```{r, echo=FALSE, eval=FALSE}
+gofI_dipl <- sienaGOF(ans, IndegreeDistribution, verbose=TRUE, join=TRUE,
+     varName="dipl")
+plot(gofI_dipl)
+```
+
+```{r, echo=FALSE, out.width= "400px",fig.align="center"}
+gofI_dipl<-readRDS("data/gofI_dipl")
+plot(gofI_dipl)
 ```
 
 
+
+---
+## Goodness of Fit: Triad Census
+```{r, eval=FALSE, out.width= "400px",fig.align="center"}
+gofTC_dipl <- sienaGOF(ans, TriadCensus, verbose=TRUE, join=TRUE,
+     varName="dipl")
+plot(gofTC_dipl)
+```
+
+```{r, echo=FALSE, out.width= "400px",fig.align="center"}
+gofTC<-readRDS("data/gofTC_dipl")
+plot(gofTC)
+```
 
 
 ---

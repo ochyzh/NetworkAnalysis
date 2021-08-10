@@ -1,0 +1,462 @@
+---
+title: Advanced Network Analysis
+subtitle: A Local Structure Graph Model
+author: "Olga Chyzh [www.olgachyzh.com]"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+exclude: true
+
+```{r  setup, message=FALSE, warning=FALSE, include=FALSE}
+options(
+  htmltools.dir.version = FALSE, # for blogdown
+  width = 80,
+  tibble.width = 80
+)
+
+knitr::opts_chunk$set(
+  fig.align = "center",  warning=FALSE, message=FALSE
+)
+
+
+
+```
+
+---
+
+## Readings 
+
+- Emily Casleton, Daniel Nordman, and Mark S. Kaiser. A local structure model
+for network analysis. *Statistics and Its Interface*, 2(10), 2017.
+
+- Olga V. Chyzh and Mark S. Kaiser. Network analysis using a local structure
+graph model. *Political Analysis*, 27(4):397{414, 2019.
+
+---
+
+## Motivation
+
+- Do edges among red nodes affect the formation of edges among turquoise nodes?
+
+- If nodes $6$ and $7$ formed and edge, would that make it more likely that nodes $3$ and $4$ form an edge?
+
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width='450px', fig.align='center'}
+rm(list=ls())
+set.seed(1712)
+library(igraph)
+el <- matrix( c("1", "2", 
+                "1", "3",
+                "2","3",
+                "4","1",
+                "4","3",
+                "5","6",
+                "5","7",
+                "7","6"), nc = 2, byrow = TRUE)
+g<-graph_from_edgelist(el, directed=F)
+E(g)$lty<-c(1,1,1,1,2,1,1,2)
+V(g)$color<-ifelse(V(g)$name %in% c("1","2","3","4"), "turquoise", "red")
+plot(g, edge.curved=0, edge.arrow.size=1, edge.color="black")
+
+
+
+```
+
+
+---
+
+## The Estimator
+
+- Suppose $i$ is an potential edge in a network of potential edges (realized and unrealized);
+
+- Then $s_i=(u_i,v_i)$ is $i$'s location in Cartesian space.
+
+- Denote the binary random variable, $y(s_i)=y_i$, so that:
+
+$$
+y(s_i)=
+\begin{cases}
+1& \text{ if } \text{edge } s_i \text{ is present}\\
+0& \text{ if } \text{edge } s_i \text{ is absent}.\\
+\end{cases}
+$$
+
+- Define $i$'s neighbors as $N_i=\{s_j: s_j \text{ is a neighbor of } s_i\}$.
+- Make a Markov assumption of conditional spatial independence:
+
+$$\begin{align}
+f(y(s_i)|{\textbf{y}(s_j):s_j \neq s_i})=f(y(s_i)|\textbf{y}(N_i))
+\end{align}$$
+
+- If connectivities between edges are continuous, then the Markov assumption is redundant.
+
+---
+
+## The DV
+
+
+```{r, eval=T, echo=F}
+load("data/LSGM_data.Rdata")
+
+```
+
+
+
+---
+
+## Set Up the Connectivity Matrix, W
+
+- Start with an adjacency matrix among all potential edge-pairs.
+
+- Code two edges as connected if they connect opposite-colored pairs of same-colored nodes.
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "450px",fig.align="center"}
+knitr::include_graphics("images/diff_color.png")
+```
+
+
+
+
+---
+
+## Set Up the Connectivity Matrix, W
+
+```{r}
+W[1:10, 25:35]
+
+```
+
+---
+
+## The Binary Conditional Distribution
+
+$$\begin{align}
+\tag{1}
+\text{P}(Y_i=y_i|\pmb{y}(N_i))=\exp\left[A_i(\pmb{y}(N_i))y_i-B_i(\pmb{y}(N_i))\right],
+\end{align}$$
+
+where $A_i$ is a natural parameter function and $B_i=\log[1+\exp(A_i(y(N_i)))],$ and $\textbf{y}\left(N_i\right)$ is a vector of values of the binary random variables (edges) of $i$'s neighbors.
+
+---
+
+## The Natural Parameter Function
+\begin{align}
+\tag{2}
+A_i\left(\pmb{y}\left(N_i\right)\right)=\log\left(\frac{\kappa_{i}}{1-\kappa_{i}}\right)+\eta\sum_{j \in N_i}{w_{ij}\left(y_{j}-\kappa_{j}\right)},
+\end{align}
+
+where $\log\left(\frac{\kappa_i}{1-\kappa_i}\right)=\pmb{X}_i^{T}\pmb{\beta}$, $\pmb{X}_i$ is a column vector of $k$ exogenous covariates, $\pmb{\beta}$ is a $k$ by 1 vector of estimation parameters, $w_{ij}$ is the $ij^{th}$ element of a matrix of connectivities among edges \textbf{W}, and $\eta$ is its parameter.
+
+- When $y_j>\kappa_j$, then the dependence term makes a positive contribution to $A_i(\textbf{y}(N_i))$---complementary processes;
+- When $y_j<\kappa_j$, then the dependence term makes a negative contribution to $A_i(\textbf{y}(N_i))$---substitution-type processes;
+- Key condition: $w_{ij}=w_{ji}$.
+- Model does not require (prohibits) row-standardization of $\textbf{w}$.
+
+---
+
+## Estimation
+
+
+$$\begin{align}
+\tag{3}
+\log PL=\sum\limits_i\{y_i\log(p_i)+(1-y_i)\log(1-p_i))\},
+\end{align}$$
+
+
+where:
+$$\begin{align}
+\tag{4}
+p_i=\frac{\exp[A_i(y(N_i))]}{1+\exp[A_i(y(N_i))]}
+\end{align}$$
+
+---
+
+## Let's Program This
+
+```{r}
+#Likelihood
+loglik<-function(par,W,Y){
+b0<-par[1]
+eta<-par[2]
+xbeta<-b0
+kappa<-exp(xbeta)/(1+exp(xbeta)) #logit of Xb
+A_i=log(kappa/(1-kappa))+eta*W%*%(Y-kappa) #Eqn 2
+p_i<- exp(A_i)/(1+exp(A_i)) #Eqn 1, also Eqn 4
+PL<-Y*log(p_i)+(1-Y)*log(1-p_i) #Eqn 3
+ell <- -sum(PL)
+#cat("ell",ell, fill=TRUE)
+return(ell)
+}
+```
+
+---
+
+## Let's Estimate
+```{r}
+m1<-optim(par=c(0,0),loglik,W=W,Y=Y)
+m1
+
+```
+
+
+---
+## Simulate Networks Based on m1
+
+1. Function `spatbin.genone` generates a value for $y$ for a single observation.
+
+2. Function `spatbin.onegibbs` applies `spatbin.genone` to update every observation of $y$.
+
+3. Function `spatbin.genfield` applies `spatbin.onegibbs` to generate $M$ networks.
+
+
+```{r}
+spatbin.genone<-function(coeffs,w,curys){
+b0<-coeffs[1]
+eta<-coeffs[2]
+xbeta<- b0
+kappa<-exp(xbeta)/(1+exp(xbeta))
+A_i=log(kappa/(1-kappa))+eta*w%*%(curys-kappa)
+p_i<- exp(A_i)/(1+exp(A_i))
+y<- rbinom(n=length(curys), size=1, prob=p_i)
+return(y)
+}
+
+
+```
+
+---
+
+```{r}
+spatbin.onegibbs<-function(coeffs,w,curys){
+cnt<-0
+n<-length(curys)
+newys<-NULL
+repeat{
+	cnt<-cnt+1
+	ny<-spatbin.genone(coeffs=coeffs,w=w,curys=curys)
+	curys[cnt]<-ny[cnt]
+	if(cnt==n) break
+	}
+newys<-curys
+return(newys)
+}
+```
+
+---
+
+```{r}
+spatbin.genfield<-function(coeffs,w,y0s,M){
+curys<-y0s
+cnt<-0
+res<-as.data.frame(y0s)
+repeat{
+	cnt<-cnt+1
+	newys<-spatbin.onegibbs(coeffs=coeffs,w=w,curys=curys)
+	curys<-newys
+	res<-cbind(res,curys)
+	if(cnt==M) break
+	}
+
+return(res)
+}
+```
+
+
+---
+
+```{r}
+n<-length(Y)
+y0s=rbinom(n=n, size=1, prob=.5)
+sims<-spatbin.genfield(coeffs=m1$par,w=W,y0s=y0s,M=1000)
+#Take every 10th simulated network, i.e. burnin=10, thinning=10
+sims<-sims[,seq(from=10, to=ncol(sims),by=10)]
+```
+
+---
+
+## Obtaining Standard Errors
+
+1. Estimate the model on simulated networks (after burnin and thinning);
+
+2. The standard errors are the standard deviations of the estimated coefficients.
+
+---
+
+## Obtaining Standard Errors
+
+```{r}
+sim_est<-function(Y){
+ res<-optim(par=m1$par,loglik,W=W,Y=as.matrix(Y)) 
+ return(c(res$par,res$convergence))
+}
+
+library(parallel)
+sim_est<-do.call("rbind",mclapply(sims, sim_est))
+#Drop results if didn't converge (models that converged have convergence=0)
+sim_est<-sim_est[sim_est[,3]==0,]
+
+#Get sds of the estimates:
+boot_se<-apply(sim_est,2,sd)
+mytable<-cbind("coeff"=m1$par,"se"=boot_se[-3],"z-value"=(m1$par/boot_se[-3]))
+mytable
+
+```
+
+---
+
+## Application: International Alliances
+
+```{r}
+#Open the data:
+mydata<-read.csv("data/alliances.csv", header=TRUE)
+mydata$tot_trade<-log(mydata$tot_trade+1)
+mydata<-mydata[mydata$year==2007,]
+mydata[1:5,]
+
+#Prepare W:
+d <- read.csv("data/W2007.csv")
+d[1:5,1:5]
+d[,1]<-NULL  #remove first column from similarity matrix
+d[is.na(d)]<-0
+d<-d/(1000*(ncol(d)-1))
+W<-as.matrix(d)
+
+```
+
+---
+
+## Likelihood (1 X)
+
+```{r}
+#Likelihood
+loglik<-function(par,X,W,Y){
+b0<-par[1]
+b1<-par[2]
+eta<-par[3]
+xbeta<-b0+b1*X
+kappa<-exp(xbeta)/(1+exp(xbeta)) #logit of Xb
+A_i=log(kappa/(1-kappa))+eta*W%*%(Y-kappa) #Eqn 2
+p_i<- exp(A_i)/(1+exp(A_i)) #Eqn 1, also Eqn 4
+PL<-Y*log(p_i)+(1-Y)*log(1-p_i) #Eqn 3
+ell <- -sum(PL)
+#cat("ell",ell, fill=TRUE)
+return(ell)
+}
+```
+
+---
+
+## Let's Estimate
+```{r}
+X=mydata$tot_trade
+Y=mydata$defense
+m1<-optim(par=c(0,0,0),loglik,X=X,W=W,Y=Y)
+m1
+
+```
+
+---
+
+## Standard Errors
+
+```{r}
+spatbin.genone<-function(coeffs,X,w,curys){
+b0<-coeffs[1]
+b1<-coeffs[2]
+eta<-coeffs[3]
+xbeta<- b0+b1*X
+kappa<-exp(xbeta)/(1+exp(xbeta))
+A_i=log(kappa/(1-kappa))+eta*w%*%(curys-kappa)
+p_i<- exp(A_i)/(1+exp(A_i))
+y<- rbinom(n=length(curys), size=1, prob=p_i)
+return(y)
+}
+
+
+```
+
+---
+
+```{r}
+spatbin.onegibbs<-function(coeffs,X,w,curys){
+cnt<-0
+n<-length(curys)
+newys<-NULL
+repeat{
+	cnt<-cnt+1
+	ny<-spatbin.genone(coeffs=coeffs,X=X,w=w,curys=curys)
+	curys[cnt]<-ny[cnt]
+	if(cnt==n) break
+	}
+newys<-curys
+return(newys)
+}
+```
+
+---
+
+```{r}
+spatbin.genfield<-function(coeffs,X,w,y0s,M){
+curys<-y0s
+cnt<-0
+res<-as.data.frame(y0s)
+repeat{
+	cnt<-cnt+1
+	newys<-spatbin.onegibbs(coeffs=coeffs,X=X,w=w,curys=curys)
+	curys<-newys
+	res<-cbind(res,curys)
+	if(cnt==M) break
+	}
+
+return(res)
+}
+```
+
+
+---
+#Simulate 1000 Random Networks
+
+```{r, eval=F}
+n<-length(Y)
+y0s=rbinom(n=n, size=1, prob=.5)
+sims<-spatbin.genfield(coeffs=m1$par,X=X,w=W,y0s=y0s,M=1000)
+#Take every 10th simulated network, i.e. burnin=10, thinning=10
+sims<-sims[,seq(from=10, to=ncol(sims),by=10)]
+saveRDS(sims, "sims.rds")
+```
+
+---
+
+#Estimate an LSGM on Each of the Simulated Networks
+```{r, eval=F}
+sims<-readRDS("data/sims.rds")
+sim_est<-function(Y){
+ res<-optim(par=m1$par,loglik,X=X,W=W,Y=as.matrix(Y)) 
+ return(c(res$par,res$convergence))
+}
+
+library(parallel)
+sim_est<-do.call("rbind",mclapply(sims, sim_est))
+#Drop results if didn't converge (models that converged have convergence=0)
+sim_est<-sim_est[sim_est[,4]==0,]
+saveRDS(sim_est,"sim_est.rds")
+
+```
+
+---
+
+## Calculate SEs and Make a Table
+```{r}
+#Get sds of the estimates:
+sim_est<-readRDS("data/sim_est.rds")
+boot_se<-apply(sim_est,2,sd)
+mytable<-cbind("coeff"=m1$par,"se"=boot_se[-4],"z-value"=(m1$par/boot_se[-4]))
+mytable
+```
+

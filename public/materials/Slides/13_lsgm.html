@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced Network Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Advanced Network Analysis
+## A Local Structure Graph Model
+### Olga Chyzh [www.olgachyzh.com]
+
+---
+
+
+exclude: true
+
+
+
+---
+
+## Readings 
+
+- Emily Casleton, Daniel Nordman, and Mark S. Kaiser. A local structure model
+for network analysis. *Statistics and Its Interface*, 2(10), 2017.
+
+- Olga V. Chyzh and Mark S. Kaiser. Network analysis using a local structure
+graph model. *Political Analysis*, 27(4):397{414, 2019.
+
+---
+
+## Motivation
+
+- Do edges among red nodes affect the formation of edges among turquoise nodes?
+
+- If nodes `\(6\)` and `\(7\)` formed and edge, would that make it more likely that nodes `\(3\)` and `\(4\)` form an edge?
+
+
+&lt;img src="13_lsgm_files/figure-html/unnamed-chunk-1-1.png" width="450px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## The Estimator
+
+- Suppose `\(i\)` is an potential edge in a network of potential edges (realized and unrealized);
+
+- Then `\(s_i=(u_i,v_i)\)` is `\(i\)`'s location in Cartesian space.
+
+- Denote the binary random variable, `\(y(s_i)=y_i\)`, so that:
+
+$$
+y(s_i)=
+`\begin{cases}
+1&amp; \text{ if } \text{edge } s_i \text{ is present}\\
+0&amp; \text{ if } \text{edge } s_i \text{ is absent}.\\
+\end{cases}`
+$$
+
+- Define `\(i\)`'s neighbors as `\(N_i=\{s_j: s_j \text{ is a neighbor of } s_i\}\)`.
+- Make a Markov assumption of conditional spatial independence:
+
+`$$\begin{align}
+f(y(s_i)|{\textbf{y}(s_j):s_j \neq s_i})=f(y(s_i)|\textbf{y}(N_i))
+\end{align}$$`
+
+- If connectivities between edges are continuous, then the Markov assumption is redundant.
+
+---
+
+## The DV
+
+
+
+
+
+
+---
+
+## Set Up the Connectivity Matrix, W
+
+- Start with an adjacency matrix among all potential edge-pairs.
+
+- Code two edges as connected if they connect opposite-colored pairs of same-colored nodes.
+
+&lt;img src="images/diff_color.png" width="450px" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+## Set Up the Connectivity Matrix, W
+
+
+```r
+W[1:10, 25:35]
+```
+
+```
+##    51 52 53 54 56 57 61 62 63 64 65
+## 12  0  0  0  0  1  1  0  0  0  0  1
+## 13  0  0  0  0  1  1  0  0  0  0  1
+## 14  0  0  0  0  1  1  0  0  0  0  1
+## 15  0  0  0  0  0  0  0  0  0  0  0
+## 16  0  0  0  0  0  0  0  0  0  0  0
+## 17  0  0  0  0  0  0  0  0  0  0  0
+## 21  0  0  0  0  1  1  0  0  0  0  1
+## 23  0  0  0  0  1  1  0  0  0  0  1
+## 24  0  0  0  0  1  1  0  0  0  0  1
+## 25  0  0  0  0  0  0  0  0  0  0  0
+```
+
+---
+
+## The Binary Conditional Distribution
+
+`$$\begin{align}
+\tag{1}
+\text{P}(Y_i=y_i|\pmb{y}(N_i))=\exp\left[A_i(\pmb{y}(N_i))y_i-B_i(\pmb{y}(N_i))\right],
+\end{align}$$`
+
+where `\(A_i\)` is a natural parameter function and `\(B_i=\log[1+\exp(A_i(y(N_i)))],\)` and `\(\textbf{y}\left(N_i\right)\)` is a vector of values of the binary random variables (edges) of `\(i\)`'s neighbors.
+
+---
+
+## The Natural Parameter Function
+`\begin{align}
+\tag{2}
+A_i\left(\pmb{y}\left(N_i\right)\right)=\log\left(\frac{\kappa_{i}}{1-\kappa_{i}}\right)+\eta\sum_{j \in N_i}{w_{ij}\left(y_{j}-\kappa_{j}\right)},
+\end{align}`
+
+where `\(\log\left(\frac{\kappa_i}{1-\kappa_i}\right)=\pmb{X}_i^{T}\pmb{\beta}\)`, `\(\pmb{X}_i\)` is a column vector of `\(k\)` exogenous covariates, `\(\pmb{\beta}\)` is a `\(k\)` by 1 vector of estimation parameters, `\(w_{ij}\)` is the `\(ij^{th}\)` element of a matrix of connectivities among edges \textbf{W}, and `\(\eta\)` is its parameter.
+
+- When `\(y_j&gt;\kappa_j\)`, then the dependence term makes a positive contribution to `\(A_i(\textbf{y}(N_i))\)`---complementary processes;
+- When `\(y_j&lt;\kappa_j\)`, then the dependence term makes a negative contribution to `\(A_i(\textbf{y}(N_i))\)`---substitution-type processes;
+- Key condition: `\(w_{ij}=w_{ji}\)`.
+- Model does not require (prohibits) row-standardization of `\(\textbf{w}\)`.
+
+---
+
+## Estimation
+
+
+`$$\begin{align}
+\tag{3}
+\log PL=\sum\limits_i\{y_i\log(p_i)+(1-y_i)\log(1-p_i))\},
+\end{align}$$`
+
+
+where:
+`$$\begin{align}
+\tag{4}
+p_i=\frac{\exp[A_i(y(N_i))]}{1+\exp[A_i(y(N_i))]}
+\end{align}$$`
+
+---
+
+## Let's Program This
+
+
+```r
+#Likelihood
+loglik&lt;-function(par,W,Y){
+b0&lt;-par[1]
+eta&lt;-par[2]
+xbeta&lt;-b0
+kappa&lt;-exp(xbeta)/(1+exp(xbeta)) #logit of Xb
+A_i=log(kappa/(1-kappa))+eta*W%*%(Y-kappa) #Eqn 2
+p_i&lt;- exp(A_i)/(1+exp(A_i)) #Eqn 1, also Eqn 4
+PL&lt;-Y*log(p_i)+(1-Y)*log(1-p_i) #Eqn 3
+ell &lt;- -sum(PL)
+#cat("ell",ell, fill=TRUE)
+return(ell)
+}
+```
+
+---
+
+## Let's Estimate
+
+```r
+m1&lt;-optim(par=c(0,0),loglik,W=W,Y=Y)
+m1
+```
+
+```
+## $par
+## [1] -3.1572208  0.8955375
+## 
+## $value
+## [1] 13.72339
+## 
+## $counts
+## function gradient 
+##       95       NA 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL
+```
+
+
+---
+## Simulate Networks Based on m1
+
+1. Function `spatbin.genone` generates a value for `\(y\)` for a single observation.
+
+2. Function `spatbin.onegibbs` applies `spatbin.genone` to update every observation of `\(y\)`.
+
+3. Function `spatbin.genfield` applies `spatbin.onegibbs` to generate `\(M\)` networks.
+
+
+
+```r
+spatbin.genone&lt;-function(coeffs,w,curys){
+b0&lt;-coeffs[1]
+eta&lt;-coeffs[2]
+xbeta&lt;- b0
+kappa&lt;-exp(xbeta)/(1+exp(xbeta))
+A_i=log(kappa/(1-kappa))+eta*w%*%(curys-kappa)
+p_i&lt;- exp(A_i)/(1+exp(A_i))
+y&lt;- rbinom(n=length(curys), size=1, prob=p_i)
+return(y)
+}
+```
+
+---
+
+
+```r
+spatbin.onegibbs&lt;-function(coeffs,w,curys){
+cnt&lt;-0
+n&lt;-length(curys)
+newys&lt;-NULL
+repeat{
+	cnt&lt;-cnt+1
+	ny&lt;-spatbin.genone(coeffs=coeffs,w=w,curys=curys)
+	curys[cnt]&lt;-ny[cnt]
+	if(cnt==n) break
+	}
+newys&lt;-curys
+return(newys)
+}
+```
+
+---
+
+
+```r
+spatbin.genfield&lt;-function(coeffs,w,y0s,M){
+curys&lt;-y0s
+cnt&lt;-0
+res&lt;-as.data.frame(y0s)
+repeat{
+	cnt&lt;-cnt+1
+	newys&lt;-spatbin.onegibbs(coeffs=coeffs,w=w,curys=curys)
+	curys&lt;-newys
+	res&lt;-cbind(res,curys)
+	if(cnt==M) break
+	}
+
+return(res)
+}
+```
+
+
+---
+
+
+```r
+n&lt;-length(Y)
+y0s=rbinom(n=n, size=1, prob=.5)
+sims&lt;-spatbin.genfield(coeffs=m1$par,w=W,y0s=y0s,M=1000)
+#Take every 10th simulated network, i.e. burnin=10, thinning=10
+sims&lt;-sims[,seq(from=10, to=ncol(sims),by=10)]
+```
+
+---
+
+## Obtaining Standard Errors
+
+1. Estimate the model on simulated networks (after burnin and thinning);
+
+2. The standard errors are the standard deviations of the estimated coefficients.
+
+---
+
+## Obtaining Standard Errors
+
+
+```r
+sim_est&lt;-function(Y){
+ res&lt;-optim(par=m1$par,loglik,W=W,Y=as.matrix(Y)) 
+ return(c(res$par,res$convergence))
+}
+
+library(parallel)
+sim_est&lt;-do.call("rbind",mclapply(sims, sim_est))
+#Drop results if didn't converge (models that converged have convergence=0)
+sim_est&lt;-sim_est[sim_est[,3]==0,]
+
+#Get sds of the estimates:
+boot_se&lt;-apply(sim_est,2,sd)
+mytable&lt;-cbind("coeff"=m1$par,"se"=boot_se[-3],"z-value"=(m1$par/boot_se[-3]))
+mytable
+```
+
+```
+##           coeff        se     z-value
+## [1,] -3.1572208  13.80388 -0.22871980
+## [2,]  0.8955375 111.93631  0.00800042
+```
+
+---
+
+## Application: International Alliances
+
+
+```r
+#Open the data:
+mydata&lt;-read.csv("data/alliances.csv", header=TRUE)
+mydata$tot_trade&lt;-log(mydata$tot_trade+1)
+mydata&lt;-mydata[mydata$year==2007,]
+mydata[1:5,]
+```
+
+```
+##     ccode1 ccode2 edge defense mil_ratio tot_trade joint_dem year
+## 62       2     20    1       1 0.7231990 13.206734         1 2007
+## 75       2     31    2       1 0.9936821  8.084750         1 2007
+## 227      2     42    5       1 0.9553047  9.289209         1 2007
+## 268      2     51    6       1 0.9852507  8.164573         1 2007
+## 305      2     52    7       1 0.9901861  9.332562         1 2007
+```
+
+```r
+#Prepare W:
+d &lt;- read.csv("data/W2007.csv")
+d[1:5,1:5]
+```
+
+```
+##   edge_01 edge_diff1 edge_diff2 edge_diff5  edge_diff6
+## 1       1      0.000      1.943      2.031 2.287000060
+## 2       2      1.943      0.000      0.088 0.344000012
+## 3       5      2.031      0.088      0.000 0.256000012
+## 4       6      2.287      0.344      0.256 0.000000000
+## 5       7      2.281      0.338      0.250 0.005999982
+```
+
+```r
+d[,1]&lt;-NULL  #remove first column from similarity matrix
+d[is.na(d)]&lt;-0
+d&lt;-d/(1000*(ncol(d)-1))
+W&lt;-as.matrix(d)
+```
+
+---
+
+## Likelihood (1 X)
+
+
+```r
+#Likelihood
+loglik&lt;-function(par,X,W,Y){
+b0&lt;-par[1]
+b1&lt;-par[2]
+eta&lt;-par[3]
+xbeta&lt;-b0+b1*X
+kappa&lt;-exp(xbeta)/(1+exp(xbeta)) #logit of Xb
+A_i=log(kappa/(1-kappa))+eta*W%*%(Y-kappa) #Eqn 2
+p_i&lt;- exp(A_i)/(1+exp(A_i)) #Eqn 1, also Eqn 4
+PL&lt;-Y*log(p_i)+(1-Y)*log(1-p_i) #Eqn 3
+ell &lt;- -sum(PL)
+#cat("ell",ell, fill=TRUE)
+return(ell)
+}
+```
+
+---
+
+## Let's Estimate
+
+```r
+X=mydata$tot_trade
+Y=mydata$defense
+m1&lt;-optim(par=c(0,0,0),loglik,X=X,W=W,Y=Y)
+m1
+```
+
+```
+## $par
+## [1] -1.87989394  0.02858699  0.21006227
+## 
+## $value
+## [1] 470.4555
+## 
+## $counts
+## function gradient 
+##      112       NA 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL
+```
+
+---
+
+## Standard Errors
+
+
+```r
+spatbin.genone&lt;-function(coeffs,X,w,curys){
+b0&lt;-coeffs[1]
+b1&lt;-coeffs[2]
+eta&lt;-coeffs[3]
+xbeta&lt;- b0+b1*X
+kappa&lt;-exp(xbeta)/(1+exp(xbeta))
+A_i=log(kappa/(1-kappa))+eta*w%*%(curys-kappa)
+p_i&lt;- exp(A_i)/(1+exp(A_i))
+y&lt;- rbinom(n=length(curys), size=1, prob=p_i)
+return(y)
+}
+```
+
+---
+
+
+```r
+spatbin.onegibbs&lt;-function(coeffs,X,w,curys){
+cnt&lt;-0
+n&lt;-length(curys)
+newys&lt;-NULL
+repeat{
+	cnt&lt;-cnt+1
+	ny&lt;-spatbin.genone(coeffs=coeffs,X=X,w=w,curys=curys)
+	curys[cnt]&lt;-ny[cnt]
+	if(cnt==n) break
+	}
+newys&lt;-curys
+return(newys)
+}
+```
+
+---
+
+
+```r
+spatbin.genfield&lt;-function(coeffs,X,w,y0s,M){
+curys&lt;-y0s
+cnt&lt;-0
+res&lt;-as.data.frame(y0s)
+repeat{
+	cnt&lt;-cnt+1
+	newys&lt;-spatbin.onegibbs(coeffs=coeffs,X=X,w=w,curys=curys)
+	curys&lt;-newys
+	res&lt;-cbind(res,curys)
+	if(cnt==M) break
+	}
+
+return(res)
+}
+```
+
+
+---
+#Simulate 1000 Random Networks
+
+
+```r
+n&lt;-length(Y)
+y0s=rbinom(n=n, size=1, prob=.5)
+sims&lt;-spatbin.genfield(coeffs=m1$par,X=X,w=W,y0s=y0s,M=1000)
+#Take every 10th simulated network, i.e. burnin=10, thinning=10
+sims&lt;-sims[,seq(from=10, to=ncol(sims),by=10)]
+saveRDS(sims, "sims.rds")
+```
+
+---
+
+#Estimate an LSGM on Each of the Simulated Networks
+
+```r
+sims&lt;-readRDS("data/sims.rds")
+sim_est&lt;-function(Y){
+ res&lt;-optim(par=m1$par,loglik,X=X,W=W,Y=as.matrix(Y)) 
+ return(c(res$par,res$convergence))
+}
+
+library(parallel)
+sim_est&lt;-do.call("rbind",mclapply(sims, sim_est))
+#Drop results if didn't converge (models that converged have convergence=0)
+sim_est&lt;-sim_est[sim_est[,4]==0,]
+saveRDS(sim_est,"sim_est.rds")
+```
+
+---
+
+## Calculate SEs and Make a Table
+
+```r
+#Get sds of the estimates:
+sim_est&lt;-readRDS("data/sim_est.rds")
+boot_se&lt;-apply(sim_est,2,sd)
+mytable&lt;-cbind("coeff"=m1$par,"se"=boot_se[-4],"z-value"=(m1$par/boot_se[-4]))
+mytable
+```
+
+```
+##            coeff           se      z-value
+## [1,] -1.87989394 2.318147e-01 -8.109467983
+## [2,]  0.02858699 3.253597e-02  0.878627107
+## [3,]  0.21006227 2.832822e+03  0.000074153
+```
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
