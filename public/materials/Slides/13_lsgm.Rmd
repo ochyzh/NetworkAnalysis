@@ -512,3 +512,20 @@ mytable<-cbind("coeff"=m1$par,"se"=boot_se[-4],"z-value"=(m1$par/boot_se[-4]))
 mytable
 ```
 
+
+---
+
+## Package LSGM
+
+Note: the package is in beta testing
+
+```{r, eval=F}
+library(devtools)
+install_github("ochyzh/lsgm")
+library(lsgm)
+data(W)
+data(toy_data)
+lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
+
+```
+

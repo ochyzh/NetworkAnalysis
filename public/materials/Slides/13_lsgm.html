@@ -555,6 +555,23 @@ mytable
 ## [3,]  0.936193299 2.832822e+03  0.0003304808
 ```
 
+
+---
+
+## Package LSGM
+
+Note: the package is in beta testing
+
+
+```r
+library(devtools)
+install_github("ochyzh/lsgm")
+library(lsgm)
+data(W)
+data(toy_data)
+lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
+```
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
