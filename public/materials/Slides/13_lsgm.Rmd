@@ -102,7 +102,39 @@ f(y(s_i)|{\textbf{y}(s_j):s_j \neq s_i})=f(y(s_i)|\textbf{y}(N_i))
 
 
 ```{r, eval=T, echo=F}
-load("data/LSGM_data.Rdata")
+library(networkdata)
+data(lsgm_data)
+
+nodes<-as.numeric(as.character(V(g)$name))
+node_net<-expand.grid(node1=nodes,node2=nodes)
+node_net<-subset(node_net, subset=node1!=node2)
+node_net$edge<-paste(node_net$node1,node_net$node2, sep="")
+node_net$color1<-ifelse(node_net$node1 %in% c("1","2","3","4"), "turquoise", "red")
+node_net$color2<-ifelse(node_net$node2 %in% c("1","2","3","4"), "turquoise", "red")
+node_net$ecolor<-"different"
+node_net$ecolor[node_net$color1=="red" & node_net$color2=="red"]<-"red"
+node_net$ecolor[node_net$color1=="turquoise" & node_net$color2=="turquoise"]<-"turquoise"
+
+W<-matrix(0,ncol=nrow(node_net),nrow=nrow(node_net))
+rownames(W)<-sort(node_net$edge)
+colnames(W)<-sort(node_net$edge)
+
+for (i in rownames(W)){
+  for (j in rownames(W)){
+   val1<-node_net$ecolor[node_net$edge==i] 
+   val2<-node_net$ecolor[node_net$edge==j]
+     if (i!=j & val1=="red" & val2=="turquoise") {
+    W[i,j]=1
+   } else if (i!=j & val1=="turquoise" & val2=="red") {
+     W[i,j]=1
+   }
+   }
+}
+
+edge_id<-sort(node_net$edge)
+Y<-rep(0, length(edge_id))
+Y<-as.numeric(edge_id %in% c("12", "13", "14","23", "56","57"))
+cbind(edge_id,Y)[1:10,]
 
 ```
 
@@ -199,7 +231,7 @@ return(ell)
 
 ## Let's Estimate
 ```{r}
-m1<-optim(par=c(0,0),loglik,W=W,Y=Y)
+m1<-optim(par=c(0,0),loglik,W=Wmat,Y=Y)
 m1
 
 ```
@@ -314,18 +346,18 @@ mytable
 
 ```{r}
 #Open the data:
-mydata<-read.csv("data/alliances.csv", header=TRUE)
-mydata$tot_trade<-log(mydata$tot_trade+1)
-mydata<-mydata[mydata$year==2007,]
-mydata[1:5,]
+data("ally_data")
+ally_data$tot_trade<-log(ally_data$tot_trade+1)
+ally_data<-ally_data[ally_data$year==2007,]
+ally_data[1:5,]
 
 #Prepare W:
-d <- read.csv("data/W2007.csv")
-d[1:5,1:5]
-d[,1]<-NULL  #remove first column from similarity matrix
-d[is.na(d)]<-0
-d<-d/(1000*(ncol(d)-1))
-W<-as.matrix(d)
+W2007 <- W
+W2007[1:5,1:5]
+#W2007[,1]<-NULL  #remove first column from similarity matrix
+W2007[is.na(W2007)]<-0
+W2007<-W2007/(1000*(ncol(W2007)-1))
+W2007<-as.matrix(W2007)
 
 ```
 
@@ -354,8 +386,8 @@ return(ell)
 
 ## Let's Estimate
 ```{r}
-X=mydata$tot_trade
-Y=mydata$defense
+X=ally_data$tot_trade
+Y=ally_data$defense
 m1<-optim(par=c(0,0,0),loglik,X=X,W=W,Y=Y)
 m1
 
