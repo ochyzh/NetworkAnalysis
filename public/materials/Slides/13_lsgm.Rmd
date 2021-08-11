@@ -236,15 +236,33 @@ m1
 
 ```
 
+---
+## Estimating Standard Errors
+
+Need to simulate $Y$ based on our parameter estimates:
+
+- Start from a vector of initial $y_0=\{y_{01}, y_{02},\ldots, y_{0n}\}$ drawn from a
+binomial distribution;
+
+- Moving row-wise, for i = 1, ..., n, individually simulate/update each observation as a function of previously simulated observations:
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "450px",fig.align="center"}
+knitr::include_graphics("images/Gibbs.png")
+```
+
+- n individual updates provide 1 full Gibbs iteration
+
+- Use the result of step 2 as the new initial values and repeat step 2 to
+obtain M simulated networks $y$ (can burn-in, thin, etc.).
 
 ---
 ## Simulate Networks Based on m1
 
-1. Function `spatbin.genone` generates a value for $y$ for a single observation.
+1. Function `spatbin.genone` simulates/updates a value for $y$ for a single observation--step 2
 
-2. Function `spatbin.onegibbs` applies `spatbin.genone` to update every observation of $y$.
+2. Function `spatbin.onegibbs` applies `spatbin.genone` to update every observation of $y$--step 3
 
-3. Function `spatbin.genfield` applies `spatbin.onegibbs` to generate $M$ networks.
+3. Function `spatbin.genfield` applies `spatbin.onegibbs` to generate $M$ networks --step 4 
 
 
 ```{r}
@@ -393,8 +411,10 @@ m1
 
 ```
 
----
 
+
+
+---
 ## Standard Errors
 
 ```{r}
