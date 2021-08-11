@@ -216,7 +216,8 @@ p_i=\frac{\exp[A_i(y(N_i))]}{1+\exp[A_i(y(N_i))]}
 loglik<-function(par,W,Y){
 b0<-par[1]
 eta<-par[2]
-xbeta<-b0
+X<-rep(1,length(Y))
+xbeta<-as.matrix(X)%*%b0
 kappa<-exp(xbeta)/(1+exp(xbeta)) #logit of Xb
 A_i=log(kappa/(1-kappa))+eta*W%*%(Y-kappa) #Eqn 2
 p_i<- exp(A_i)/(1+exp(A_i)) #Eqn 1, also Eqn 4
@@ -269,7 +270,8 @@ obtain M simulated networks $y$ (can burn-in, thin, etc.).
 spatbin.genone<-function(coeffs,w,curys){
 b0<-coeffs[1]
 eta<-coeffs[2]
-xbeta<- b0
+X<-rep(1,length(Y))
+xbeta<-as.matrix(X)%*%b0
 kappa<-exp(xbeta)/(1+exp(xbeta))
 A_i=log(kappa/(1-kappa))+eta*w%*%(curys-kappa)
 p_i<- exp(A_i)/(1+exp(A_i))
