@@ -1,0 +1,157 @@
+---
+title: Advanced Network Analysis
+subtitle: Model Comparison Using ROC Curves
+author: "Olga Chyzh [www.olgachyzh.com]"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+exclude: true
+
+```{r  setup, message=FALSE, warning=FALSE, include=FALSE}
+options(
+  htmltools.dir.version = FALSE, # for blogdown
+  width = 80,
+  tibble.width = 80
+)
+
+knitr::opts_chunk$set(
+  fig.align = "center",  warning=FALSE, message=FALSE
+)
+
+
+```
+
+---
+## ROC Curves
+
+- An ROC curve (receiver operating characteristic curve) is a graph showing the performance of a classification model at all classification thresholds. This curve plots two parameters:
+
+    - True Positive Rate (recall or sensitivity): $$TPR=\frac{TP}{TP+FN}=\frac{correct\ ones}{total\ ones}$$
+    - False Positive Rate (specificity): $$FPR= \frac{FP}{FP+TN}=\frac{incorrect\ ones}{total\ zeroes}$$
+
+---
+
+```{r, out.width= "700px",fig.align="center", echo=FALSE}
+knitr::include_graphics("images/ROC_example.png")
+```
+    
+---
+## What We Need (Binary DV)
+
+- Our DV (in vector form)
+
+- The predicted probability for each observation based on our model
+
+
+---
+## Example: ERGM
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(sna)
+library(ergm)
+data(sampson)
+
+m1 = ergm(samplike ~ edges + nodematch('group'))
+summary(m1)
+
+pred_ergm<-predict(m1,
+  conditional = TRUE,
+  type = "response",
+  nsim = 100,
+  output = "matrix"
+)
+
+myDV<-as.matrix(samplike) %>% data.frame() %>% mutate(name1=row.names(.)) %>% 
+  pivot_longer(cols=-name1, names_to="name2", values_to="Y") 
+
+pred_ergm %>% data.frame() %>% mutate(name1=row.names(.)) %>% 
+  pivot_longer(cols=-name1, names_to="name2", values_to="p") %>% left_join(myDV, by=c("name1","name2")) ->mydat
+
+```
+
+
+
+---
+## Make a Plot
+
+```{r, message=FALSE, eval=FALSE}
+#install.packages("ROCR")
+library(ROCR)
+pred <- prediction(mydat$p, mydat$Y)
+perf <- performance(pred,"tpr","fpr")
+ergmplot<-plot(perf,colorize=TRUE)
+```
+---
+## Make a Plot
+
+```{r, message=FALSE, eval=TRUE, echo=FALSE}
+#install.packages("ROCR")
+library(ROCR)
+pred <- prediction(mydat$p, mydat$Y)
+perf <- performance(pred,"tpr","fpr")
+ergmplot<-plot(perf,colorize=TRUE)
+```
+
+
+---
+## Your Turn
+
+Change the model specification (add an endogenous variable), estimate the new model, and re-make the plot.
+
+---
+
+## Your Turn
+
+1. Transform the data as necessary to estimate an AME model that matches `m1` in specification.
+
+2. Estimate the AME model.
+
+
+---
+
+## Let's Make an ROC Plot
+```{r, eval=F, echo=T}
+lfmFit<-readRDS("data/lfmFit_sampson.rds")
+
+#Get predicted probabilities from AME:
+theta<-lfmFit$'EZ' #logged odds ratios for each obs
+plogis(as.matrix(theta)) %>% as.data.frame() %>% #convert to probabilities
+  mutate(name1=row.names(.)) %>%
+  pivot_longer(cols=c(1:18),names_to="name2", values_to="p")->p
+
+as.matrix(samplike) %>% as.data.frame() %>% mutate(name1=row.names(.)) %>% 
+  pivot_longer(cols=-name1, names_to="name2", values_to="Y") %>% left_join(p, by=c("name1","name2"))->mydat1
+
+pred1 <- prediction(mydat1$p, mydat1$Y)
+perf1 <- performance(pred,"tpr","fpr")
+plot(perf1,colorize=TRUE, smooth=FALSE)
+ 
+```
+
+---
+## Let's Make an ROC Plot
+```{r, eval=T, echo=F}
+lfmFit<-readRDS("data/lfmFit_sampson.rds")
+
+#Get predicted probabilities from AME:
+theta<-lfmFit$'EZ' #logged odds ratios for each obs
+plogis(as.matrix(theta)) %>% as.data.frame() %>% #convert to probabilities
+  mutate(name1=row.names(.)) %>%
+  pivot_longer(cols=c(1:18),names_to="name2", values_to="p")->p
+
+as.matrix(samplike) %>% as.data.frame() %>% mutate(name1=row.names(.)) %>% 
+  pivot_longer(cols=-name1, names_to="name2", values_to="Y") %>% left_join(p, by=c("name1","name2"))->mydat1
+
+pred1 <- prediction(mydat1$p, mydat1$Y)
+perf1 <- performance(pred,"tpr","fpr")
+plot(perf1,colorize=TRUE, smooth=FALSE)
+ 
+```

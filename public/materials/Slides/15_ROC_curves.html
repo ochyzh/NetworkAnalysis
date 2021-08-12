@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced Network Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Advanced Network Analysis
+## Model Comparison Using ROC Curves
+### Olga Chyzh [www.olgachyzh.com]
+
+---
+
+
+exclude: true
+
+
+
+---
+## ROC Curves
+
+- An ROC curve (receiver operating characteristic curve) is a graph showing the performance of a classification model at all classification thresholds. This curve plots two parameters:
+
+    - True Positive Rate (recall or sensitivity): `$$TPR=\frac{TP}{TP+FN}=\frac{correct\ ones}{total\ ones}$$`
+    - False Positive Rate (specificity): `$$FPR= \frac{FP}{FP+TN}=\frac{incorrect\ ones}{total\ zeroes}$$`
+
+---
+
+&lt;img src="images/ROC_example.png" width="700px" style="display: block; margin: auto;" /&gt;
+    
+---
+## What We Need (Binary DV)
+
+- Our DV (in vector form)
+
+- The predicted probability for each observation based on our model
+
+
+---
+## Example: ERGM
+
+
+```r
+library(tidyverse)
+library(magrittr)
+library(sna)
+library(ergm)
+data(sampson)
+
+m1 = ergm(samplike ~ edges + nodematch('group'))
+summary(m1)
+```
+
+```
+## Call:
+## ergm(formula = samplike ~ edges + nodematch("group"))
+## 
+## Maximum Likelihood Results:
+## 
+##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## edges            -2.0015     0.2131      0  -9.393   &lt;1e-04 ***
+## nodematch.group   2.6481     0.3026      0   8.751   &lt;1e-04 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##      Null Deviance: 424.2  on 306  degrees of freedom
+##  Residual Deviance: 276.9  on 304  degrees of freedom
+##  
+## AIC: 280.9  BIC: 288.3  (Smaller is better. MC Std. Err. = 0)
+```
+
+```r
+pred_ergm&lt;-predict(m1,
+  conditional = TRUE,
+  type = "response",
+  nsim = 100,
+  output = "matrix"
+)
+
+myDV&lt;-as.matrix(samplike) %&gt;% data.frame() %&gt;% mutate(name1=row.names(.)) %&gt;% 
+  pivot_longer(cols=-name1, names_to="name2", values_to="Y") 
+
+pred_ergm %&gt;% data.frame() %&gt;% mutate(name1=row.names(.)) %&gt;% 
+  pivot_longer(cols=-name1, names_to="name2", values_to="p") %&gt;% left_join(myDV, by=c("name1","name2")) -&gt;mydat
+```
+
+
+
+---
+## Make a Plot
+
+
+```r
+#install.packages("ROCR")
+library(ROCR)
+pred &lt;- prediction(mydat$p, mydat$Y)
+perf &lt;- performance(pred,"tpr","fpr")
+ergmplot&lt;-plot(perf,colorize=TRUE)
+```
+---
+## Make a Plot
+
+&lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+## Your Turn
+
+Change the model specification (add an endogenous variable), estimate the new model, and re-make the plot.
+
+---
+
+## Your Turn
+
+1. Transform the data as necessary to estimate an AME model that matches `m1` in specification.
+
+2. Estimate the AME model.
+
+
+---
+
+## Let's Make an ROC Plot
+
+```r
+lfmFit&lt;-readRDS("data/lfmFit_sampson.rds")
+
+#Get predicted probabilities from AME:
+theta&lt;-lfmFit$'EZ' #logged odds ratios for each obs
+plogis(as.matrix(theta)) %&gt;% as.data.frame() %&gt;% #convert to probabilities
+  mutate(name1=row.names(.)) %&gt;%
+  pivot_longer(cols=c(1:18),names_to="name2", values_to="p")-&gt;p
+
+as.matrix(samplike) %&gt;% as.data.frame() %&gt;% mutate(name1=row.names(.)) %&gt;% 
+  pivot_longer(cols=-name1, names_to="name2", values_to="Y") %&gt;% left_join(p, by=c("name1","name2"))-&gt;mydat1
+
+pred1 &lt;- prediction(mydat1$p, mydat1$Y)
+perf1 &lt;- performance(pred,"tpr","fpr")
+plot(perf1,colorize=TRUE, smooth=FALSE)
+```
+
+---
+## Let's Make an ROC Plot
+&lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced Network Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Advanced Network Analysis
+## Ego ERGMs
+### Olga Chyzh [www.olgachyzh.com]
+
+---
+
+
+exclude: true
+
+
+
+---
+
+## Recommended Readings
+
+- Salter-Townshend, Michael and Brendan Thomas Murphy. 2015. Role analysis in networks using mixtures of exponential random graph models." *Journal of Computational and Graphical Statistics* 24(2): 520--538.
+
+- Box-Steffensmeier, Janet M., Benjamin W. Campbell, Dino P. Christenson, Zachary Navabi. (2018): Role analysis using the ego-ERGM: A Look at environmental interest group coalitions. *Social Networks* 52: 213--227. 
+
+- Campbell, Benjamin W. (2018): Inferring Latent Roles in Longitudinal Networks.
+*Political Analysis* 26(3): 292--311.
+
+---
+
+## The Core Idea
+
+- Most current work on clustering nodes in a network focuses on community finding, based on the ratio of between to within linkage densities.
+
+- An Ego-ERGM is a statistical model-based method of clustering nodes based on the role they play in the network.
+
+- For example, identify the most central or high degree nodes, or nodes whose connections are distinct in some other way, i. e. discriminate on different patterns of connectivity.
+
+- Model the set of all ego-networks using ERGMs, then perform a model-based clustering of these ego-networks and, thus nodes within them.
+
+- Simultaneously estimate both the node clustering assignments and the ERGM parameters in the clusters.
+
+---
+
+## Ego-Networks
+
+Define ego-networks for each node in the network:
+
+1. Select a node; this is referred to as the ego.
+2. Include the alters (nodes connected to the ego).
+3. Include the connections between the alters.
+
+Nodes performing differing local roles will have markedly different ego-networks and nodes performing similar roles will have similar ego-networks.
+
+&lt;img src="images/roles_demo.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Can You Identify Ego Networks?
+
+&lt;img src="images/communities.png" width="300px" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+## Example: Lazega Lawyers
+
+&lt;img src="images/table1.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+##Replicate Example from the Article
+
+
+```r
+library(network)
+library(sna)
+library(ergm)
+library(devtools)
+install_github("ochyzh/networkdata")
+library(networkdata)
+data(lazega)
+```
+
+
+---
+
+
+
+```r
+m1 &lt;- ego_ergm(net = lazega,
+                         form = c("edges", "mutual",
+                                  'desp(.8, type="OSP")',
+                                  'desp(.8, type="ISP")'),
+                         core_size = 1,
+                         min_size = 5,
+                         roles = 3,
+                         forking = FALSE,
+                         ncpus = 1,
+                         directed = TRUE,
+                         edge_covariates = FALSE,
+                         seed = 12345,
+                         steps = 50,
+                         tol = 1e-06)
+saveRDS(m1,file="data/m1_ego.rds")
+```
+
+
+---
+
+```r
+m1&lt;-readRDS("data/m1_ego.rds")
+m1$group.theta
+```
+
+```
+##           [,1]     [,2]       [,3]       [,4]
+## [1,]  1.740699 1.447842 -0.3398682 -0.1047873
+## [2,] -9.542963 1.514716  8.7070389  1.2591454
+## [3,]  1.358836 0.928196 -0.4409083 -0.4892306
+```
+
+```r
+m1$role_assignments
+```
+
+```
+##     Id Role
+## 1   V1    1
+## 2   V2    3
+## 3   V3    3
+## 4   V4    1
+## 5   V5    1
+## 6   V6    3
+## 7   V7    1
+## 8   V8    1
+## 9   V9    1
+## 10 V10    3
+## 11 V11    1
+## 12 V12    1
+## 13 V13    1
+## 14 V14    3
+## 15 V15    1
+## 16 V16    3
+## 17 V17    1
+## 18 V18    3
+## 19 V19    1
+## 20 V20    1
+## 21 V21    1
+## 22 V22    3
+## 23 V23    3
+## 24 V24    3
+## 25 V25    1
+## 26 V26    3
+## 27 V27    1
+## 28 V28    3
+## 29 V29    3
+## 30 V30    3
+## 31 V31    3
+## 32 V32    3
+## 33 V33    3
+## 34 V34    1
+## 35 V35    3
+## 36 V36    1
+## 37 V37    1
+## 38 V38    3
+## 39 V39    2
+## 40 V40    3
+## 41 V41    1
+## 42 V42    3
+## 43 V43    3
+## 44 V44    3
+## 45 V45    3
+## 46 V46    3
+## 47 V47    3
+## 48 V48    3
+## 49 V49    3
+## 50 V50    3
+## 51 V51    1
+## 52 V52    3
+## 53 V53    3
+## 54 V54    3
+## 55 V55    3
+## 56 V56    1
+## 57 V57    3
+## 58 V59    3
+## 59 V60    3
+## 60 V61    3
+## 61 V62    3
+## 62 V63    3
+## 63 V64    3
+## 64 V65    3
+## 65 V66    3
+## 66 V67    3
+## 67 V68    3
+## 68 V69    3
+## 69 V70    3
+## 70 V71    3
+```
+
+```r
+nrow(m1$role_assignments)
+```
+
+```
+## [1] 70
+```
+---
+## Replicate the Table
+
+```r
+length(v.attrs$Status[-58]) #It kicks out node 58 (degree=0?)
+```
+
+```
+## [1] 70
+```
+
+```r
+table(v.attrs$Status[-58],m1$role_assignments[,2])
+```
+
+```
+##    
+##      1  2  3
+##   1 18  0 18
+##   2  4  1 29
+```
+---
+## Plot
+
+```r
+plot(lazega,
+        displaylabels = FALSE,
+        # size of nodes based on vector vertexSize
+        vertex.cex = m1$role_assignments[,2],
+        # color of nodes based on vertex attribute: group
+        vertex.col = 'Status',
+        edge.col="gray"
+)
+```
+---
+## Plot
+&lt;img src="14_ego_ergms_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+---
+## Your Turn
+
+1. Load the `sampson` dataset from the `sna` library.
+
+2. How many different roles do you think are in these data?
+
+3. Estimate an ego ERGM on `samplike` data. 
+
+4. Cross-tabulate the roles you identified with the `group` vertex attribute. Does it seem like the model is picking up differences based on groups?
+
+5. Cross-tabulate the roles you identified with the `cloisterville` vertex attribute. Does it seem like the model is picking up differences based on whether monks attended Cloisterville?
+
+6. Make a network graph, coloring nodes by role and using node size to show group belonging.
+
+
+ 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
