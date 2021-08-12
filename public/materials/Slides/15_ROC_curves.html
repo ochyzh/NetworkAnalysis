@@ -83,14 +83,17 @@ pred_ergm&lt;-predict(m1,
   nsim = 100,
   output = "matrix"
 )
+```
+---
+## Get Y and Predicted Probabilities
 
+```r
 myDV&lt;-as.matrix(samplike) %&gt;% data.frame() %&gt;% mutate(name1=row.names(.)) %&gt;% 
   pivot_longer(cols=-name1, names_to="name2", values_to="Y") 
 
 pred_ergm %&gt;% data.frame() %&gt;% mutate(name1=row.names(.)) %&gt;% 
   pivot_longer(cols=-name1, names_to="name2", values_to="p") %&gt;% left_join(myDV, by=c("name1","name2")) -&gt;mydat
 ```
-
 
 
 ---
@@ -107,7 +110,7 @@ ergmplot&lt;-plot(perf,colorize=TRUE)
 ---
 ## Make a Plot
 
-&lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -147,7 +150,7 @@ plot(perf1,colorize=TRUE, smooth=FALSE)
 
 ---
 ## Let's Make an ROC Plot
-&lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
