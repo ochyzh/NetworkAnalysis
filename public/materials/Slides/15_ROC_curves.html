@@ -144,7 +144,7 @@ as.matrix(samplike) %&gt;% as.data.frame() %&gt;% mutate(name1=row.names(.)) %&g
   pivot_longer(cols=-name1, names_to="name2", values_to="Y") %&gt;% left_join(p, by=c("name1","name2"))-&gt;mydat1
 
 pred1 &lt;- prediction(mydat1$p, mydat1$Y)
-perf1 &lt;- performance(pred,"tpr","fpr")
+perf1 &lt;- performance(pred1,"tpr","fpr")
 plot(perf1,colorize=TRUE, smooth=FALSE)
 ```
 
