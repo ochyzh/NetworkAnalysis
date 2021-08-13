@@ -141,7 +141,8 @@ All the class materials will be posted/updated here.
         <td>Other Topics</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/14_ego_ergms.html" target=_blank>ego ergms </a>  | <a href="../materials/Slides/15_ROC_curves.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Slides/15_ROC_curves.html" target=_blank> ROC curves </a>  | <a href="../materials/Slides/15_ROC_curves.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day18_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/14_ego_ergms.html" target=_blank>ego ergms </a>  | <a href="../materials/Slides/15_ROC_curves.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Slides/15_ROC_curves.html" target=_blank> ROC curves </a>  | <a href="../materials/Slides/15_ROC_curves.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day18_script.R"target=_blank>
+          |<a href="../materials/Scripts/day19_script.R"target=_blank>code from class </a>|<a href="../materials/YourTurnAnswers/15_ROC_yourturn.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>

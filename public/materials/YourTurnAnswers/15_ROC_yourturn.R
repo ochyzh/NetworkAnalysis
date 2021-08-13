@@ -1,3 +1,5 @@
+library(tidyverse)
+library(magrittr)
 library(amen)
 library(network)
 data(sampson)

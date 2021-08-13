@@ -57,5 +57,5 @@ exp(-1.2946*(2-3)-1.5840*(2-3)^2)/(1+exp(-1.2946*(2-3)-1.5840*(2-3)^2))
 #What is the probability that this individual will move from drinking=3 to drinking=2, accounting for homophily?
 
 #This change would result in no change in the average score of friends, which is
-#(7+2)/2=3.5 or 0.5 on the demeaned scale.
-exp(-1.2946*(2-3)-1.5840*(2-3)^2+3.3212*0.5)/(1+exp(-1.2946*(2-3)-1.5840*(2-3)^2+3.3212*0.5))
+#(7+2)/2=3.5 or 0.5 on the demeaned scale. Since the average score did not change, we set this value to 0.
+exp(-1.2946*(2-3)-1.5840*(2-3)^2+3.3212*0.5)/(1+exp(-1.2946*(2-3)-1.5840*(2-3)^2+3.3212*0))
