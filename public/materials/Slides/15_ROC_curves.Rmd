@@ -115,7 +115,8 @@ Change the model specification (add an endogenous variable), estimate the new mo
 
 1. Transform the data as necessary to estimate an AME model that matches `m1` in specification.
 
-2. Estimate the AME model.
+2. Estimate the AME model equivalent to m1. 
+
 
 
 ---
@@ -158,3 +159,39 @@ perf1 <- performance(pred1,"tpr","fpr")
 plot(perf1,colorize=TRUE)
  
 ```
+
+---
+## Put These Together
+
+```{r, eval=FALSE, echo=TRUE}
+
+library(ggplot2)
+
+ggdata<-rbind.data.frame(cbind.data.frame(x=unlist(perf@x.values),y=unlist(perf@y.values), model="ERGM"),
+                         cbind.data.frame(x=unlist(perf1@x.values),y=unlist(perf1@y.values), model="AME"))
+ggplot(data=ggdata)+geom_step(aes(x=x, y=y, color=model)) + 
+  ylab("True Positive Rate")+
+  xlab("False Positive rate")+
+  theme_bw() 
+
+```
+---
+## Put These Together
+
+```{r, eval=TRUE, echo=FALSE}
+
+library(ggplot2)
+
+ggdata<-rbind.data.frame(cbind.data.frame(x=unlist(perf@x.values),y=unlist(perf@y.values), model="ERGM"),
+                         cbind.data.frame(x=unlist(perf1@x.values),y=unlist(perf1@y.values), model="AME"))
+ggplot(data=ggdata)+geom_step(aes(x=x, y=y, color=model)) + 
+  ylab("True Positive Rate")+
+  xlab("False Positive rate")+
+  theme_bw() 
+
+```
+---
+
+## Your Turn
+
+1. Re-specify the ERGM to increase the classification power. Plot the ROCs for the two models again.

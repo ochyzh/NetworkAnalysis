@@ -124,7 +124,8 @@ Change the model specification (add an endogenous variable), estimate the new mo
 
 1. Transform the data as necessary to estimate an AME model that matches `m1` in specification.
 
-2. Estimate the AME model.
+2. Estimate the AME model equivalent to m1. 
+
 
 
 ---
@@ -151,6 +152,30 @@ plot(perf1,colorize=TRUE, smooth=FALSE)
 ---
 ## Let's Make an ROC Plot
 &lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+## Put These Together
+
+
+```r
+library(ggplot2)
+
+ggdata&lt;-rbind.data.frame(cbind.data.frame(x=unlist(perf@x.values),y=unlist(perf@y.values), model="ERGM"),
+                         cbind.data.frame(x=unlist(perf1@x.values),y=unlist(perf1@y.values), model="AME"))
+ggplot(data=ggdata)+geom_step(aes(x=x, y=y, color=model)) + 
+  ylab("True Positive Rate")+
+  xlab("False Positive rate")+
+  theme_bw() 
+```
+---
+## Put These Together
+
+&lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+---
+
+## Your Turn
+
+1. Re-specify the ERGM to increase the classification power. Plot the ROCs for the two models again.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
