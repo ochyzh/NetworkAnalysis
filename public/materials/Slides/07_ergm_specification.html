@@ -4,7 +4,7 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -37,7 +37,7 @@ b. Have similar ideology.
 ---
 
 ## ERGM Specification: Ground Rules
-1. Your dependent variable must be a network object with binary edges. The `network` command creates network objects from edgelists or adjacency matrices. Pay attention to whether you are working with a directed or an undirected network.
+[1] Your dependent variable must be a network object with binary edges. The `network` command creates network objects from edgelists or adjacency matrices. Pay attention to whether you are working with a directed or an undirected network.
 
 
 ```r
@@ -56,7 +56,8 @@ mynet&lt;-network(el, matrix.type="edgelist",
 
 ---
 ## ERGM Specification: Ground Rules
-2. All edge-level/dyadic covariates must be stored as matrix objects and defined as *network attributes* using `set.network.attribute` command. Make sure your vertices are named/sorted the same way in all datasets.
+
+[2] All edge-level/dyadic covariates must be stored as matrix objects and defined as *network attributes* using `set.network.attribute` command. Make sure your vertices are named/sorted the same way in all datasets.
 
 
 ```r
@@ -67,7 +68,8 @@ set.network.attribute(mynet,"dist",edist)
 ```
 ---
 ## ERGM Specification: Ground Rules
-3. All node-level covariates must be defined as *vertex attributes* using `set.vertex.attribute` command. Again, pay attention to names/order in which your nodes are sorted in the data.
+
+[3] All node-level covariates must be defined as *vertex attributes* using `set.vertex.attribute` command. Again, pay attention to names/order in which your nodes are sorted in the data.
 
 
 ```r
@@ -93,9 +95,10 @@ set.vertex.attribute(mynet,"ideol",dwnom$dwnom)
   + ideology
   + state sponsorship
   
-- Ideological similarigty is the primary driver for rebel cooperation.
+- Ideological similarity is the primary driver for rebel cooperation.
 ---
 ## Gade et al. 2019 Hypothesis
+
 
 Ideology:
 
@@ -106,7 +109,7 @@ Power:
 - An overriding concern for capability aggregation in rebel movements will tend to
 produce *symmetric* alliances.
 - The desire of strong groups to form alliances that maximize decision-making
-autonomy vis-$\grave{a}$-vis rivals will generate *asymmetric* alliances.
+autonomy vis-a-vis rivals will generate *asymmetric* alliances.
 
 State sponsorship:
 
@@ -123,189 +126,1868 @@ gadeData #to look at the data
 ```
 
 ```
-##      Var1  Var2 coopActions           id ideol_diff.dyad powerdiff.dyad loc.dyad spons.dyad averageId.node size.node
-## 2    13th 101st    1.000000   13th_101st     0.000000000           0.20        1          1       1.000000      1.80
-## 3    AARB 101st    0.000000   AARB_101st     0.333333333           7.00        1          0       1.333333      9.00
-## 4      AF 101st    0.000000     AF_101st     0.000000000           8.00        1          0       1.000000     10.00
-## 5     ANF 101st    0.000000    ANF_101st     3.666666667           5.00        1          0       4.666667      7.00
-## 6    ASIM 101st    1.000000   ASIM_101st     1.833333333          13.00        1          0       2.833333     15.00
-## 7    ISIL 101st    0.000000   ISIL_101st     4.000000000          23.00        1          1       5.000000     25.00
-## 8    AASB 101st    0.000000   AASB_101st     1.000000000           0.50        1          1       2.000000      2.50
-## 9     ADF 101st    0.000000    ADF_101st     3.666666667           0.45        1          0       4.666667      1.55
-## 10   AASG 101st    0.000000   AASG_101st     1.556666667           1.00        0          0       2.556667      3.00
-## 11    ARC 101st    0.000000    ARC_101st     0.666666667           4.00        0          1       1.666667      6.00
-## 12     LF 101st    0.000000     LF_101st     1.333333333           6.00        1          0       2.333333      8.00
-## 13    ATB 101st    0.000000    ATB_101st     1.333333333           6.00        1          0       2.333333      8.00
-## 14    JAI 101st    0.000000    JAI_101st     2.000000000          15.00        1          0       3.000000     17.00
-## 15    AFB 101st    0.000000    AFB_101st     0.666666667           0.00        1          0       1.666667      2.00
-## 16    1st 101st    0.000000    1st_101st     0.333333333           1.10        1          0       1.333333      0.90
-## 17    AIG 101st    0.000000    AIG_101st     2.000000000           6.50        0          1       3.000000      8.50
-## 18   FSIM 101st    0.000000   FSIM_101st     2.333000000           1.50        1          1       3.333000      0.50
-## 19   Hazm 101st    0.000000   Hazm_101st     0.000000000           2.00        1          0       1.000000      4.00
-## 20    JAA 101st    0.000000    JAA_101st     4.000000000           1.20        1          0       5.000000      0.80
-## 21     LH 101st    0.000000     LH_101st     2.000000000           1.00        1          0       3.000000      1.00
-## 22    SAS 101st    0.000000    SAS_101st     0.000000000           7.00        1          0       1.000000      9.00
-## 23   AALS 101st    0.000000   AALS_101st     0.000000000           1.50        0          0       1.000000      0.50
-## 24    ASB 101st    0.000000    ASB_101st     1.000000000           1.50        0          0       2.000000      0.50
-## 25   FKUG 101st    0.000000   FKUG_101st     0.666666667           0.90        1          0       1.666667      1.10
-## 26    MSC 101st    0.000000    MSC_101st     2.556666667           1.50        0          0       3.556667      0.50
-## 27    ASL 101st    1.000000    ASL_101st     0.333333333           2.50        1          0       1.333333      4.50
-## 28 NADAZM 101st    0.000000 NADAZM_101st     0.666666667           3.00        1          0       1.666667      5.00
-## 29    SRF 101st    0.000000    SRF_101st     0.333333333          10.50        1          1       1.333333     12.50
-## 30    JMA 101st    0.000000    JMA_101st     3.667000000           1.25        1          0       4.667000      0.75
-## 31   IARB 101st    0.000000   IARB_101st     0.333300000           1.50        1          0       1.333300      0.50
-## 32  101st  13th    1.000000   101st_13th     0.000000000           0.20        1          1       1.000000      2.00
-## 34   AARB  13th    0.000000    AARB_13th     0.333333333           7.20        1          0       1.333333      9.00
-## 35     AF  13th    0.000000      AF_13th     0.000000000           8.20        1          0       1.000000     10.00
-## 36    ANF  13th    0.000000     ANF_13th     3.666666667           5.20        1          0       4.666667      7.00
-## 37   ASIM  13th    1.000000    ASIM_13th     1.833333333          13.20        1          0       2.833333     15.00
-## 38   ISIL  13th    0.000000    ISIL_13th     4.000000000          23.20        1          1       5.000000     25.00
-## 39   AASB  13th    0.000000    AASB_13th     1.000000000           0.70        1          1       2.000000      2.50
-## 40    ADF  13th    0.000000     ADF_13th     3.666666667           0.25        1          0       4.666667      1.55
-## 41   AASG  13th    0.000000    AASG_13th     1.556666667           1.20        1          0       2.556667      3.00
-## 42    ARC  13th    0.000000     ARC_13th     0.666666667           4.20        0          1       1.666667      6.00
-## 43     LF  13th    0.000000      LF_13th     1.333333333           6.20        1          0       2.333333      8.00
-## 44    ATB  13th    0.000000     ATB_13th     1.333333333           6.20        1          0       2.333333      8.00
-## 45    JAI  13th    0.000000     JAI_13th     2.000000000          15.20        1          0       3.000000     17.00
-## 46    AFB  13th    0.000000     AFB_13th     0.666666667           0.20        1          0       1.666667      2.00
-## 47    1st  13th    0.000000     1st_13th     0.333333333           0.90        0          0       1.333333      0.90
-## 48    AIG  13th    0.000000     AIG_13th     2.000000000           6.70        0          1       3.000000      8.50
-## 49   FSIM  13th    0.000000    FSIM_13th     2.333000000           1.30        1          1       3.333000      0.50
-## 50   Hazm  13th    0.000000    Hazm_13th     0.000000000           2.20        1          0       1.000000      4.00
-## 51    JAA  13th    0.000000     JAA_13th     4.000000000           1.00        1          0       5.000000      0.80
-## 52     LH  13th    0.000000      LH_13th     2.000000000           0.80        1          0       3.000000      1.00
-## 53    SAS  13th    0.000000     SAS_13th     0.000000000           7.20        1          0       1.000000      9.00
-## 54   AALS  13th    0.000000    AALS_13th     0.000000000           1.30        1          0       1.000000      0.50
-## 55    ASB  13th    0.000000     ASB_13th     1.000000000           1.30        0          0       2.000000      0.50
-## 56   FKUG  13th    0.000000    FKUG_13th     0.666666667           0.70        1          0       1.666667      1.10
-## 57    MSC  13th    0.000000     MSC_13th     2.556666667           1.30        0          0       3.556667      0.50
-## 58    ASL  13th    1.000000     ASL_13th     0.333333333           2.70        1          0       1.333333      4.50
-## 59 NADAZM  13th    0.000000  NADAZM_13th     0.666666667           3.20        1          0       1.666667      5.00
-## 60    SRF  13th    0.000000     SRF_13th     0.333333333          10.70        1          1       1.333333     12.50
-## 61    JMA  13th    0.000000     JMA_13th     3.667000000           1.05        1          0       4.667000      0.75
-## 62   IARB  13th    0.000000    IARB_13th     0.333300000           1.30        1          0       1.333300      0.50
-## 63  101st  AARB    0.000000   101st_AARB     0.333333333           7.00        1          0       1.000000      2.00
-## 64   13th  AARB    0.000000    13th_AARB     0.333333333           7.20        1          0       1.000000      1.80
-## 66     AF  AARB    1.414214      AF_AARB     0.333333333           1.00        1          1       1.000000     10.00
-## 67    ANF  AARB    1.414214     ANF_AARB     3.333333334           2.00        1          0       4.666667      7.00
-## 68   ASIM  AARB    3.162278    ASIM_AARB     1.500000000           6.00        1          1       2.833333     15.00
-## 69   ISIL  AARB    1.000000    ISIL_AARB     3.666666667          16.00        1          0       5.000000     25.00
-## 70   AASB  AARB    0.000000    AASB_AARB     0.666666667           6.50        1          1       2.000000      2.50
-## 71    ADF  AARB    0.000000     ADF_AARB     3.333333334           7.45        1          0       4.666667      1.55
-## 72   AASG  AARB    0.000000    AASG_AARB     1.223333334           6.00        1          0       2.556667      3.00
-## 73    ARC  AARB    0.000000     ARC_AARB     0.333333334           3.00        1          1       1.666667      6.00
-## 74     LF  AARB    0.000000      LF_AARB     1.000000000           1.00        1          1       2.333333      8.00
-## 75    ATB  AARB    0.000000     ATB_AARB     1.000000000           1.00        1          0       2.333333      8.00
-## 76    JAI  AARB    0.000000     JAI_AARB     1.666666667           8.00        1          0       3.000000     17.00
-## 77    AFB  AARB    0.000000     AFB_AARB     0.333333334           7.00        1          0       1.666667      2.00
-## 78    1st  AARB    0.000000     1st_AARB     0.000000000           8.10        1          0       1.333333      0.90
-## 79    AIG  AARB    1.000000     AIG_AARB     1.666666667           0.50        1          0       3.000000      8.50
-## 80   FSIM  AARB    0.000000    FSIM_AARB     1.999666667           8.50        1          0       3.333000      0.50
-## 81   Hazm  AARB    0.000000    Hazm_AARB     0.333333333           5.00        1          0       1.000000      4.00
-## 82    JAA  AARB    0.000000     JAA_AARB     3.666666667           8.20        1          0       5.000000      0.80
-## 83     LH  AARB    0.000000      LH_AARB     1.666666667           8.00        1          0       3.000000      1.00
-## 84    SAS  AARB    1.414214     SAS_AARB     0.333333333           0.00        1          1       1.000000      9.00
-## 85   AALS  AARB    0.000000    AALS_AARB     0.333333333           8.50        1          1       1.000000      0.50
-## 86    ASB  AARB    0.000000     ASB_AARB     0.666666667           8.50        1          0       2.000000      0.50
-## 87   FKUG  AARB    0.000000    FKUG_AARB     0.333333334           7.90        1          0       1.666667      1.10
-## 88    MSC  AARB    0.000000     MSC_AARB     2.223333334           8.50        1          1       3.556667      0.50
-## 89    ASL  AARB    0.000000     ASL_AARB     0.000000000           4.50        1          0       1.333333      4.50
-## 90 NADAZM  AARB    0.000000  NADAZM_AARB     0.333333334           4.00        1          0       1.666667      5.00
-## 91    SRF  AARB    0.000000     SRF_AARB     0.000000000           3.50        1          1       1.333333     12.50
-## 92    JMA  AARB    0.000000     JMA_AARB     3.333666667           8.25        1          0       4.667000      0.75
-## 93   IARB  AARB    0.000000    IARB_AARB     0.000033333           8.50        1          1       1.333300      0.50
-##    spons_actor.node
-## 2                 1
-## 3                 1
-## 4                 1
-## 5                 0
-## 6                 1
-## 7                 0
-## 8                 0
-## 9                 0
-## 10                0
-## 11                1
-## 12                1
-## 13                1
-## 14                1
-## 15                1
-## 16                1
-## 17                0
-## 18                0
-## 19                1
-## 20                0
-## 21                0
-## 22                0
-## 23                0
-## 24                0
-## 25                1
-## 26                0
-## 27                1
-## 28                1
-## 29                1
-## 30                0
-## 31                0
-## 32                1
-## 34                1
-## 35                1
-## 36                0
-## 37                1
-## 38                0
-## 39                0
-## 40                0
-## 41                0
-## 42                1
-## 43                1
-## 44                1
-## 45                1
-## 46                1
-## 47                1
-## 48                0
-## 49                0
-## 50                1
-## 51                0
-## 52                0
-## 53                0
-## 54                0
-## 55                0
-## 56                1
-## 57                0
-## 58                1
-## 59                1
-## 60                1
-## 61                0
-## 62                0
-## 63                1
-## 64                1
-## 66                1
-## 67                0
-## 68                1
-## 69                0
-## 70                0
-## 71                0
-## 72                0
-## 73                1
-## 74                1
-## 75                1
-## 76                1
-## 77                1
-## 78                1
-## 79                0
-## 80                0
-## 81                1
-## 82                0
-## 83                0
-## 84                0
-## 85                0
-## 86                0
-## 87                1
-## 88                0
-## 89                1
-## 90                1
-## 91                1
-## 92                0
-## 93                0
-##  [ reached 'max' / getOption("max.print") -- omitted 840 rows ]
+##       Var1   Var2 coopActions           id ideol_diff.dyad powerdiff.dyad
+## 2     13th  101st    1.000000   13th_101st     0.000000000           0.20
+## 3     AARB  101st    0.000000   AARB_101st     0.333333333           7.00
+## 4       AF  101st    0.000000     AF_101st     0.000000000           8.00
+## 5      ANF  101st    0.000000    ANF_101st     3.666666667           5.00
+## 6     ASIM  101st    1.000000   ASIM_101st     1.833333333          13.00
+## 7     ISIL  101st    0.000000   ISIL_101st     4.000000000          23.00
+## 8     AASB  101st    0.000000   AASB_101st     1.000000000           0.50
+## 9      ADF  101st    0.000000    ADF_101st     3.666666667           0.45
+## 10    AASG  101st    0.000000   AASG_101st     1.556666667           1.00
+## 11     ARC  101st    0.000000    ARC_101st     0.666666667           4.00
+## 12      LF  101st    0.000000     LF_101st     1.333333333           6.00
+## 13     ATB  101st    0.000000    ATB_101st     1.333333333           6.00
+## 14     JAI  101st    0.000000    JAI_101st     2.000000000          15.00
+## 15     AFB  101st    0.000000    AFB_101st     0.666666667           0.00
+## 16     1st  101st    0.000000    1st_101st     0.333333333           1.10
+## 17     AIG  101st    0.000000    AIG_101st     2.000000000           6.50
+## 18    FSIM  101st    0.000000   FSIM_101st     2.333000000           1.50
+## 19    Hazm  101st    0.000000   Hazm_101st     0.000000000           2.00
+## 20     JAA  101st    0.000000    JAA_101st     4.000000000           1.20
+## 21      LH  101st    0.000000     LH_101st     2.000000000           1.00
+## 22     SAS  101st    0.000000    SAS_101st     0.000000000           7.00
+## 23    AALS  101st    0.000000   AALS_101st     0.000000000           1.50
+## 24     ASB  101st    0.000000    ASB_101st     1.000000000           1.50
+## 25    FKUG  101st    0.000000   FKUG_101st     0.666666667           0.90
+## 26     MSC  101st    0.000000    MSC_101st     2.556666667           1.50
+## 27     ASL  101st    1.000000    ASL_101st     0.333333333           2.50
+## 28  NADAZM  101st    0.000000 NADAZM_101st     0.666666667           3.00
+## 29     SRF  101st    0.000000    SRF_101st     0.333333333          10.50
+## 30     JMA  101st    0.000000    JMA_101st     3.667000000           1.25
+## 31    IARB  101st    0.000000   IARB_101st     0.333300000           1.50
+## 32   101st   13th    1.000000   101st_13th     0.000000000           0.20
+## 34    AARB   13th    0.000000    AARB_13th     0.333333333           7.20
+## 35      AF   13th    0.000000      AF_13th     0.000000000           8.20
+## 36     ANF   13th    0.000000     ANF_13th     3.666666667           5.20
+## 37    ASIM   13th    1.000000    ASIM_13th     1.833333333          13.20
+## 38    ISIL   13th    0.000000    ISIL_13th     4.000000000          23.20
+## 39    AASB   13th    0.000000    AASB_13th     1.000000000           0.70
+## 40     ADF   13th    0.000000     ADF_13th     3.666666667           0.25
+## 41    AASG   13th    0.000000    AASG_13th     1.556666667           1.20
+## 42     ARC   13th    0.000000     ARC_13th     0.666666667           4.20
+## 43      LF   13th    0.000000      LF_13th     1.333333333           6.20
+## 44     ATB   13th    0.000000     ATB_13th     1.333333333           6.20
+## 45     JAI   13th    0.000000     JAI_13th     2.000000000          15.20
+## 46     AFB   13th    0.000000     AFB_13th     0.666666667           0.20
+## 47     1st   13th    0.000000     1st_13th     0.333333333           0.90
+## 48     AIG   13th    0.000000     AIG_13th     2.000000000           6.70
+## 49    FSIM   13th    0.000000    FSIM_13th     2.333000000           1.30
+## 50    Hazm   13th    0.000000    Hazm_13th     0.000000000           2.20
+## 51     JAA   13th    0.000000     JAA_13th     4.000000000           1.00
+## 52      LH   13th    0.000000      LH_13th     2.000000000           0.80
+## 53     SAS   13th    0.000000     SAS_13th     0.000000000           7.20
+## 54    AALS   13th    0.000000    AALS_13th     0.000000000           1.30
+## 55     ASB   13th    0.000000     ASB_13th     1.000000000           1.30
+## 56    FKUG   13th    0.000000    FKUG_13th     0.666666667           0.70
+## 57     MSC   13th    0.000000     MSC_13th     2.556666667           1.30
+## 58     ASL   13th    1.000000     ASL_13th     0.333333333           2.70
+## 59  NADAZM   13th    0.000000  NADAZM_13th     0.666666667           3.20
+## 60     SRF   13th    0.000000     SRF_13th     0.333333333          10.70
+## 61     JMA   13th    0.000000     JMA_13th     3.667000000           1.05
+## 62    IARB   13th    0.000000    IARB_13th     0.333300000           1.30
+## 63   101st   AARB    0.000000   101st_AARB     0.333333333           7.00
+## 64    13th   AARB    0.000000    13th_AARB     0.333333333           7.20
+## 66      AF   AARB    1.414214      AF_AARB     0.333333333           1.00
+## 67     ANF   AARB    1.414214     ANF_AARB     3.333333334           2.00
+## 68    ASIM   AARB    3.162278    ASIM_AARB     1.500000000           6.00
+## 69    ISIL   AARB    1.000000    ISIL_AARB     3.666666667          16.00
+## 70    AASB   AARB    0.000000    AASB_AARB     0.666666667           6.50
+## 71     ADF   AARB    0.000000     ADF_AARB     3.333333334           7.45
+## 72    AASG   AARB    0.000000    AASG_AARB     1.223333334           6.00
+## 73     ARC   AARB    0.000000     ARC_AARB     0.333333334           3.00
+## 74      LF   AARB    0.000000      LF_AARB     1.000000000           1.00
+## 75     ATB   AARB    0.000000     ATB_AARB     1.000000000           1.00
+## 76     JAI   AARB    0.000000     JAI_AARB     1.666666667           8.00
+## 77     AFB   AARB    0.000000     AFB_AARB     0.333333334           7.00
+## 78     1st   AARB    0.000000     1st_AARB     0.000000000           8.10
+## 79     AIG   AARB    1.000000     AIG_AARB     1.666666667           0.50
+## 80    FSIM   AARB    0.000000    FSIM_AARB     1.999666667           8.50
+## 81    Hazm   AARB    0.000000    Hazm_AARB     0.333333333           5.00
+## 82     JAA   AARB    0.000000     JAA_AARB     3.666666667           8.20
+## 83      LH   AARB    0.000000      LH_AARB     1.666666667           8.00
+## 84     SAS   AARB    1.414214     SAS_AARB     0.333333333           0.00
+## 85    AALS   AARB    0.000000    AALS_AARB     0.333333333           8.50
+## 86     ASB   AARB    0.000000     ASB_AARB     0.666666667           8.50
+## 87    FKUG   AARB    0.000000    FKUG_AARB     0.333333334           7.90
+## 88     MSC   AARB    0.000000     MSC_AARB     2.223333334           8.50
+## 89     ASL   AARB    0.000000     ASL_AARB     0.000000000           4.50
+## 90  NADAZM   AARB    0.000000  NADAZM_AARB     0.333333334           4.00
+## 91     SRF   AARB    0.000000     SRF_AARB     0.000000000           3.50
+## 92     JMA   AARB    0.000000     JMA_AARB     3.333666667           8.25
+## 93    IARB   AARB    0.000000    IARB_AARB     0.000033333           8.50
+## 94   101st     AF    0.000000     101st_AF     0.000000000           8.00
+## 95    13th     AF    0.000000      13th_AF     0.000000000           8.20
+## 96    AARB     AF    1.414214      AARB_AF     0.333333333           1.00
+## 98     ANF     AF    1.000000       ANF_AF     3.666666667           3.00
+## 99    ASIM     AF    2.645751      ASIM_AF     1.833333333           5.00
+## 100   ISIL     AF    0.000000      ISIL_AF     4.000000000          15.00
+## 101   AASB     AF    0.000000      AASB_AF     1.000000000           7.50
+## 102    ADF     AF    0.000000       ADF_AF     3.666666667           8.45
+## 103   AASG     AF    0.000000      AASG_AF     1.556666667           7.00
+## 104    ARC     AF    0.000000       ARC_AF     0.666666667           4.00
+## 105     LF     AF    0.000000        LF_AF     1.333333333           2.00
+## 106    ATB     AF    2.449490       ATB_AF     1.333333333           2.00
+## 107    JAI     AF    1.000000       JAI_AF     2.000000000           7.00
+## 108    AFB     AF    0.000000       AFB_AF     0.666666667           8.00
+## 109    1st     AF    0.000000       1st_AF     0.333333333           9.10
+## 110    AIG     AF    0.000000       AIG_AF     2.000000000           1.50
+## 111   FSIM     AF    0.000000      FSIM_AF     2.333000000           9.50
+## 112   Hazm     AF    0.000000      Hazm_AF     0.000000000           6.00
+## 113    JAA     AF    0.000000       JAA_AF     4.000000000           9.20
+## 114     LH     AF    0.000000        LH_AF     2.000000000           9.00
+## 115    SAS     AF    1.000000       SAS_AF     0.000000000           1.00
+## 116   AALS     AF    0.000000      AALS_AF     0.000000000           9.50
+## 117    ASB     AF    0.000000       ASB_AF     1.000000000           9.50
+## 118   FKUG     AF    0.000000      FKUG_AF     0.666666667           8.90
+## 119    MSC     AF    0.000000       MSC_AF     2.556666667           9.50
+## 120    ASL     AF    0.000000       ASL_AF     0.333333333           5.50
+## 121 NADAZM     AF    0.000000    NADAZM_AF     0.666666667           5.00
+## 122    SRF     AF    0.000000       SRF_AF     0.333333333           2.50
+## 123    JMA     AF    0.000000       JMA_AF     3.667000000           9.25
+## 124   IARB     AF    0.000000      IARB_AF     0.333300000           9.50
+## 125  101st    ANF    0.000000    101st_ANF     3.666666667           5.00
+## 126   13th    ANF    0.000000     13th_ANF     3.666666667           5.20
+## 127   AARB    ANF    1.414214     AARB_ANF     3.333333334           2.00
+## 128     AF    ANF    1.000000       AF_ANF     3.666666667           3.00
+## 130   ASIM    ANF    9.380832     ASIM_ANF     1.833333334           8.00
+## 131   ISIL    ANF    3.464102     ISIL_ANF     0.333333333          18.00
+## 132   AASB    ANF    1.414214     AASB_ANF     2.666666667           4.50
+## 133    ADF    ANF    3.000000      ADF_ANF     0.000000000           5.45
+## 134   AASG    ANF    2.236068     AASG_ANF     2.110000000           4.00
+## 135    ARC    ANF    1.414214      ARC_ANF     3.000000000           1.00
+## 136     LF    ANF    1.000000       LF_ANF     2.333333334           1.00
+## 137    ATB    ANF    2.645751      ATB_ANF     2.333333334           1.00
+## 138    JAI    ANF    3.000000      JAI_ANF     1.666666667          10.00
+## 139    AFB    ANF    1.414214      AFB_ANF     3.000000000           5.00
+## 140    1st    ANF    1.000000      1st_ANF     3.333333334           6.10
+## 141    AIG    ANF    1.732051      AIG_ANF     1.666666667           1.50
+## 142   FSIM    ANF    1.732051     FSIM_ANF     1.333666667           6.50
+## 143   Hazm    ANF    1.000000     Hazm_ANF     3.666666667           3.00
+## 144    JAA    ANF    1.414214      JAA_ANF     0.333333333           6.20
+## 145     LH    ANF    2.000000       LH_ANF     1.666666667           6.00
+## 146    SAS    ANF    2.449490      SAS_ANF     3.666666667           2.00
+## 147   AALS    ANF    0.000000     AALS_ANF     3.666666667           6.50
+## 148    ASB    ANF    0.000000      ASB_ANF     2.666666667           6.50
+## 149   FKUG    ANF    0.000000     FKUG_ANF     3.000000000           5.90
+## 150    MSC    ANF    0.000000      MSC_ANF     1.110000000           6.50
+## 151    ASL    ANF    3.741657      ASL_ANF     3.333333334           2.50
+## 152 NADAZM    ANF    0.000000   NADAZM_ANF     3.000000000           2.00
+## 153    SRF    ANF    0.000000      SRF_ANF     3.333333334           5.50
+## 154    JMA    ANF    0.000000      JMA_ANF     0.000333333           6.25
+## 155   IARB    ANF    0.000000     IARB_ANF     3.333366667           6.50
+## 156  101st   ASIM    1.000000   101st_ASIM     1.833333333          13.00
+## 157   13th   ASIM    1.000000    13th_ASIM     1.833333333          13.20
+## 158   AARB   ASIM    3.162278    AARB_ASIM     1.500000000           6.00
+## 159     AF   ASIM    2.645751      AF_ASIM     1.833333333           5.00
+## 160    ANF   ASIM    9.380832     ANF_ASIM     1.833333334           8.00
+## 162   ISIL   ASIM    1.732051    ISIL_ASIM     2.166666667          10.00
+## 163   AASB   ASIM    2.236068    AASB_ASIM     0.833333333          12.50
+## 164    ADF   ASIM    1.414214     ADF_ASIM     1.833333334          13.45
+## 165   AASG   ASIM    2.828427    AASG_ASIM     0.276666666          12.00
+## 166    ARC   ASIM    1.732051     ARC_ASIM     1.166666666           9.00
+## 167     LF   ASIM    1.000000      LF_ASIM     0.500000000           7.00
+## 168    ATB   ASIM    4.358899     ATB_ASIM     0.500000000           7.00
+## 169    JAI   ASIM    3.605551     JAI_ASIM     0.166666667           2.00
+## 170    AFB   ASIM    3.741657     AFB_ASIM     1.166666666          13.00
+## 171    1st   ASIM    1.000000     1st_ASIM     1.500000000          14.10
+## 172    AIG   ASIM    0.000000     AIG_ASIM     0.166666667           6.50
+## 173   FSIM   ASIM    1.732051    FSIM_ASIM     0.499666667          14.50
+## 174   Hazm   ASIM    1.414214    Hazm_ASIM     1.833333333          11.00
+## 175    JAA   ASIM    1.000000     JAA_ASIM     2.166666667          14.20
+## 176     LH   ASIM    2.645751      LH_ASIM     0.166666667          14.00
+## 177    SAS   ASIM    5.477226     SAS_ASIM     1.833333333           6.00
+## 178   AALS   ASIM    1.414214    AALS_ASIM     1.833333333          14.50
+## 179    ASB   ASIM    1.000000     ASB_ASIM     0.833333333          14.50
+## 180   FKUG   ASIM    1.000000    FKUG_ASIM     1.166666666          13.90
+## 181    MSC   ASIM    1.414214     MSC_ASIM     0.723333334          14.50
+## 182    ASL   ASIM    2.000000     ASL_ASIM     1.500000000          10.50
+## 183 NADAZM   ASIM    0.000000  NADAZM_ASIM     1.166666666          10.00
+## 184    SRF   ASIM    0.000000     SRF_ASIM     1.500000000           2.50
+## 185    JMA   ASIM    0.000000     JMA_ASIM     1.833666667          14.25
+## 186   IARB   ASIM    1.000000    IARB_ASIM     1.500033333          14.50
+## 187  101st   ISIL    0.000000   101st_ISIL     4.000000000          23.00
+## 188   13th   ISIL    0.000000    13th_ISIL     4.000000000          23.20
+## 189   AARB   ISIL    1.000000    AARB_ISIL     3.666666667          16.00
+## 190     AF   ISIL    0.000000      AF_ISIL     4.000000000          15.00
+## 191    ANF   ISIL    3.464102     ANF_ISIL     0.333333333          18.00
+## 192   ASIM   ISIL    1.732051    ASIM_ISIL     2.166666667          10.00
+## 194   AASB   ISIL    0.000000    AASB_ISIL     3.000000000          22.50
+## 195    ADF   ISIL    0.000000     ADF_ISIL     0.333333333          23.45
+## 196   AASG   ISIL    0.000000    AASG_ISIL     2.443333333          22.00
+## 197    ARC   ISIL    0.000000     ARC_ISIL     3.333333333          19.00
+## 198     LF   ISIL    0.000000      LF_ISIL     2.666666667          17.00
+## 199    ATB   ISIL    1.000000     ATB_ISIL     2.666666667          17.00
+## 200    JAI   ISIL    1.000000     JAI_ISIL     2.000000000           8.00
+## 201    AFB   ISIL    0.000000     AFB_ISIL     3.333333333          23.00
+## 202    1st   ISIL    0.000000     1st_ISIL     3.666666667          24.10
+## 203    AIG   ISIL    2.000000     AIG_ISIL     2.000000000          16.50
+## 204   FSIM   ISIL    0.000000    FSIM_ISIL     1.667000000          24.50
+## 205   Hazm   ISIL    0.000000    Hazm_ISIL     4.000000000          21.00
+## 206    JAA   ISIL    0.000000     JAA_ISIL     0.000000000          24.20
+## 207     LH   ISIL    0.000000      LH_ISIL     2.000000000          24.00
+## 208    SAS   ISIL    1.000000     SAS_ISIL     4.000000000          16.00
+## 209   AALS   ISIL    0.000000    AALS_ISIL     4.000000000          24.50
+## 210    ASB   ISIL    0.000000     ASB_ISIL     3.000000000          24.50
+## 211   FKUG   ISIL    0.000000    FKUG_ISIL     3.333333333          23.90
+## 212    MSC   ISIL    0.000000     MSC_ISIL     1.443333333          24.50
+## 213    ASL   ISIL    0.000000     ASL_ISIL     3.666666667          20.50
+## 214 NADAZM   ISIL    0.000000  NADAZM_ISIL     3.333333333          20.00
+## 215    SRF   ISIL    0.000000     SRF_ISIL     3.666666667          12.50
+## 216    JMA   ISIL    0.000000     JMA_ISIL     0.333000000          24.25
+## 217   IARB   ISIL    0.000000    IARB_ISIL     3.666700000          24.50
+## 218  101st   AASB    0.000000   101st_AASB     1.000000000           0.50
+## 219   13th   AASB    0.000000    13th_AASB     1.000000000           0.70
+## 220   AARB   AASB    0.000000    AARB_AASB     0.666666667           6.50
+## 221     AF   AASB    0.000000      AF_AASB     1.000000000           7.50
+## 222    ANF   AASB    1.414214     ANF_AASB     2.666666667           4.50
+## 223   ASIM   AASB    2.236068    ASIM_AASB     0.833333333          12.50
+## 224   ISIL   AASB    0.000000    ISIL_AASB     3.000000000          22.50
+## 226    ADF   AASB    1.000000     ADF_AASB     2.666666667           0.95
+## 227   AASG   AASB    0.000000    AASG_AASB     0.556666667           0.50
+## 228    ARC   AASB    0.000000     ARC_AASB     0.333333333           3.50
+## 229     LF   AASB    0.000000      LF_AASB     0.333333333           5.50
+## 230    ATB   AASB    1.000000     ATB_AASB     0.333333333           5.50
+## 231    JAI   AASB    1.414214     JAI_AASB     1.000000000          14.50
+## 232    AFB   AASB    0.000000     AFB_AASB     0.333333333           0.50
+## 233    1st   AASB    0.000000     1st_AASB     0.666666667           1.60
+## 234    AIG   AASB    0.000000     AIG_AASB     1.000000000           6.00
+## 235   FSIM   AASB    0.000000    FSIM_AASB     1.333000000           2.00
+## 236   Hazm   AASB    0.000000    Hazm_AASB     1.000000000           1.50
+## 237    JAA   AASB    0.000000     JAA_AASB     3.000000000           1.70
+## 238     LH   AASB    0.000000      LH_AASB     1.000000000           1.50
+## 239    SAS   AASB    0.000000     SAS_AASB     1.000000000           6.50
+## 240   AALS   AASB    0.000000    AALS_AASB     1.000000000           2.00
+## 241    ASB   AASB    0.000000     ASB_AASB     0.000000000           2.00
+## 242   FKUG   AASB    0.000000    FKUG_AASB     0.333333333           1.40
+## 243    MSC   AASB    0.000000     MSC_AASB     1.556666667           2.00
+## 244    ASL   AASB    0.000000     ASL_AASB     0.666666667           2.00
+## 245 NADAZM   AASB    0.000000  NADAZM_AASB     0.333333333           2.50
+## 246    SRF   AASB    0.000000     SRF_AASB     0.666666667          10.00
+## 247    JMA   AASB    0.000000     JMA_AASB     2.667000000           1.75
+## 248   IARB   AASB    0.000000    IARB_AASB     0.666700000           2.00
+## 249  101st    ADF    0.000000    101st_ADF     3.666666667           0.45
+## 250   13th    ADF    0.000000     13th_ADF     3.666666667           0.25
+## 251   AARB    ADF    0.000000     AARB_ADF     3.333333334           7.45
+## 252     AF    ADF    0.000000       AF_ADF     3.666666667           8.45
+## 253    ANF    ADF    3.000000      ANF_ADF     0.000000000           5.45
+## 254   ASIM    ADF    1.414214     ASIM_ADF     1.833333334          13.45
+## 255   ISIL    ADF    0.000000     ISIL_ADF     0.333333333          23.45
+## 256   AASB    ADF    1.000000     AASB_ADF     2.666666667           0.95
+## 258   AASG    ADF    0.000000     AASG_ADF     2.110000000           1.45
+## 259    ARC    ADF    0.000000      ARC_ADF     3.000000000           4.45
+## 260     LF    ADF    1.414214       LF_ADF     2.333333334           6.45
+## 261    ATB    ADF    0.000000      ATB_ADF     2.333333334           6.45
+## 262    JAI    ADF    1.000000      JAI_ADF     1.666666667          15.45
+## 263    AFB    ADF    0.000000      AFB_ADF     3.000000000           0.45
+## 264    1st    ADF    0.000000      1st_ADF     3.333333334           0.65
+## 265    AIG    ADF    0.000000      AIG_ADF     1.666666667           6.95
+## 266   FSIM    ADF    0.000000     FSIM_ADF     1.333666667           1.05
+## 267   Hazm    ADF    0.000000     Hazm_ADF     3.666666667           2.45
+## 268    JAA    ADF    0.000000      JAA_ADF     0.333333333           0.75
+## 269     LH    ADF    0.000000       LH_ADF     1.666666667           0.55
+## 270    SAS    ADF    0.000000      SAS_ADF     3.666666667           7.45
+## 271   AALS    ADF    0.000000     AALS_ADF     3.666666667           1.05
+## 272    ASB    ADF    0.000000      ASB_ADF     2.666666667           1.05
+## 273   FKUG    ADF    0.000000     FKUG_ADF     3.000000000           0.45
+## 274    MSC    ADF    0.000000      MSC_ADF     1.110000000           1.05
+## 275    ASL    ADF    0.000000      ASL_ADF     3.333333334           2.95
+## 276 NADAZM    ADF    0.000000   NADAZM_ADF     3.000000000           3.45
+## 277    SRF    ADF    0.000000      SRF_ADF     3.333333334          10.95
+## 278    JMA    ADF    0.000000      JMA_ADF     0.000333333           0.80
+## 279   IARB    ADF    0.000000     IARB_ADF     3.333366667           1.05
+## 280  101st   AASG    0.000000   101st_AASG     1.556666667           1.00
+## 281   13th   AASG    0.000000    13th_AASG     1.556666667           1.20
+## 282   AARB   AASG    0.000000    AARB_AASG     1.223333334           6.00
+## 283     AF   AASG    0.000000      AF_AASG     1.556666667           7.00
+## 284    ANF   AASG    2.236068     ANF_AASG     2.110000000           4.00
+## 285   ASIM   AASG    2.828427    ASIM_AASG     0.276666666          12.00
+## 286   ISIL   AASG    0.000000    ISIL_AASG     2.443333333          22.00
+## 287   AASB   AASG    0.000000    AASB_AASG     0.556666667           0.50
+## 288    ADF   AASG    0.000000     ADF_AASG     2.110000000           1.45
+## 290    ARC   AASG    1.000000     ARC_AASG     0.890000000           3.00
+## 291     LF   AASG    0.000000      LF_AASG     0.223333334           5.00
+## 292    ATB   AASG    0.000000     ATB_AASG     0.223333334           5.00
+## 293    JAI   AASG    1.414214     JAI_AASG     0.443333333          14.00
+## 294    AFB   AASG    1.000000     AFB_AASG     0.890000000           1.00
+## 295    1st   AASG    0.000000     1st_AASG     1.223333334           2.10
+## 296    AIG   AASG    0.000000     AIG_AASG     0.443333333           5.50
+## 297   FSIM   AASG    0.000000    FSIM_AASG     0.776333333           2.50
+## 298   Hazm   AASG    0.000000    Hazm_AASG     1.556666667           1.00
+## 299    JAA   AASG    0.000000     JAA_AASG     2.443333333           2.20
+## 300     LH   AASG    0.000000      LH_AASG     0.443333333           2.00
+## 301    SAS   AASG    0.000000     SAS_AASG     1.556666667           6.00
+## 302   AALS   AASG    0.000000    AALS_AASG     1.556666667           2.50
+## 303    ASB   AASG    0.000000     ASB_AASG     0.556666667           2.50
+## 304   FKUG   AASG    0.000000    FKUG_AASG     0.890000000           1.90
+## 305    MSC   AASG    0.000000     MSC_AASG     1.000000000           2.50
+## 306    ASL   AASG    1.000000     ASL_AASG     1.223333334           1.50
+## 307 NADAZM   AASG    0.000000  NADAZM_AASG     0.890000000           2.00
+## 308    SRF   AASG    0.000000     SRF_AASG     1.223333334           9.50
+## 309    JMA   AASG    0.000000     JMA_AASG     2.110333333           2.25
+## 310   IARB   AASG    0.000000    IARB_AASG     1.223366667           2.50
+## 311  101st    ARC    0.000000    101st_ARC     0.666666667           4.00
+## 312   13th    ARC    0.000000     13th_ARC     0.666666667           4.20
+## 313   AARB    ARC    0.000000     AARB_ARC     0.333333334           3.00
+## 314     AF    ARC    0.000000       AF_ARC     0.666666667           4.00
+## 315    ANF    ARC    1.414214      ANF_ARC     3.000000000           1.00
+## 316   ASIM    ARC    1.732051     ASIM_ARC     1.166666666           9.00
+## 317   ISIL    ARC    0.000000     ISIL_ARC     3.333333333          19.00
+## 318   AASB    ARC    0.000000     AASB_ARC     0.333333333           3.50
+## 319    ADF    ARC    0.000000      ADF_ARC     3.000000000           4.45
+## 320   AASG    ARC    1.000000     AASG_ARC     0.890000000           3.00
+## 322     LF    ARC    0.000000       LF_ARC     0.666666666           2.00
+## 323    ATB    ARC    0.000000      ATB_ARC     0.666666666           2.00
+## 324    JAI    ARC    2.449490      JAI_ARC     1.333333333          11.00
+## 325    AFB    ARC    0.000000      AFB_ARC     0.000000000           4.00
+## 326    1st    ARC    0.000000      1st_ARC     0.333333334           5.10
+## 327    AIG    ARC    0.000000      AIG_ARC     1.333333333           2.50
+## 328   FSIM    ARC    0.000000     FSIM_ARC     1.666333333           5.50
+## 329   Hazm    ARC    0.000000     Hazm_ARC     0.666666667           2.00
+## 330    JAA    ARC    0.000000      JAA_ARC     3.333333333           5.20
+## 331     LH    ARC    0.000000       LH_ARC     1.333333333           5.00
+## 332    SAS    ARC    0.000000      SAS_ARC     0.666666667           3.00
+## 333   AALS    ARC    0.000000     AALS_ARC     0.666666667           5.50
+## 334    ASB    ARC    0.000000      ASB_ARC     0.333333333           5.50
+## 335   FKUG    ARC    0.000000     FKUG_ARC     0.000000000           4.90
+## 336    MSC    ARC    0.000000      MSC_ARC     1.890000000           5.50
+## 337    ASL    ARC    0.000000      ASL_ARC     0.333333334           1.50
+## 338 NADAZM    ARC    0.000000   NADAZM_ARC     0.000000000           1.00
+## 339    SRF    ARC    0.000000      SRF_ARC     0.333333334           6.50
+## 340    JMA    ARC    0.000000      JMA_ARC     3.000333333           5.25
+## 341   IARB    ARC    0.000000     IARB_ARC     0.333366667           5.50
+## 342  101st     LF    0.000000     101st_LF     1.333333333           6.00
+## 343   13th     LF    0.000000      13th_LF     1.333333333           6.20
+## 344   AARB     LF    0.000000      AARB_LF     1.000000000           1.00
+## 345     AF     LF    0.000000        AF_LF     1.333333333           2.00
+## 346    ANF     LF    1.000000       ANF_LF     2.333333334           1.00
+## 347   ASIM     LF    1.000000      ASIM_LF     0.500000000           7.00
+## 348   ISIL     LF    0.000000      ISIL_LF     2.666666667          17.00
+## 349   AASB     LF    0.000000      AASB_LF     0.333333333           5.50
+## 350    ADF     LF    1.414214       ADF_LF     2.333333334           6.45
+## 351   AASG     LF    0.000000      AASG_LF     0.223333334           5.00
+## 352    ARC     LF    0.000000       ARC_LF     0.666666666           2.00
+## 354    ATB     LF    0.000000       ATB_LF     0.000000000           0.00
+## 355    JAI     LF    0.000000       JAI_LF     0.666666667           9.00
+## 356    AFB     LF    0.000000       AFB_LF     0.666666666           6.00
+## 357    1st     LF    0.000000       1st_LF     1.000000000           7.10
+## 358    AIG     LF    0.000000       AIG_LF     0.666666667           0.50
+## 359   FSIM     LF    0.000000      FSIM_LF     0.999666667           7.50
+## 360   Hazm     LF    0.000000      Hazm_LF     1.333333333           4.00
+## 361    JAA     LF    0.000000       JAA_LF     2.666666667           7.20
+## 362     LH     LF    0.000000        LH_LF     0.666666667           7.00
+## 363    SAS     LF    0.000000       SAS_LF     1.333333333           1.00
+## 364   AALS     LF    0.000000      AALS_LF     1.333333333           7.50
+## 365    ASB     LF    0.000000       ASB_LF     0.333333333           7.50
+## 366   FKUG     LF    1.000000      FKUG_LF     0.666666666           6.90
+## 367    MSC     LF    0.000000       MSC_LF     1.223333334           7.50
+## 368    ASL     LF    0.000000       ASL_LF     1.000000000           3.50
+## 369 NADAZM     LF    0.000000    NADAZM_LF     0.666666666           3.00
+## 370    SRF     LF    0.000000       SRF_LF     1.000000000           4.50
+## 371    JMA     LF    0.000000       JMA_LF     2.333666667           7.25
+## 372   IARB     LF    0.000000      IARB_LF     1.000033333           7.50
+## 373  101st    ATB    0.000000    101st_ATB     1.333333333           6.00
+## 374   13th    ATB    0.000000     13th_ATB     1.333333333           6.20
+## 375   AARB    ATB    0.000000     AARB_ATB     1.000000000           1.00
+## 376     AF    ATB    2.449490       AF_ATB     1.333333333           2.00
+## 377    ANF    ATB    2.645751      ANF_ATB     2.333333334           1.00
+## 378   ASIM    ATB    4.358899     ASIM_ATB     0.500000000           7.00
+## 379   ISIL    ATB    1.000000     ISIL_ATB     2.666666667          17.00
+## 380   AASB    ATB    1.000000     AASB_ATB     0.333333333           5.50
+## 381    ADF    ATB    0.000000      ADF_ATB     2.333333334           6.45
+## 382   AASG    ATB    0.000000     AASG_ATB     0.223333334           5.00
+## 383    ARC    ATB    0.000000      ARC_ATB     0.666666666           2.00
+## 384     LF    ATB    0.000000       LF_ATB     0.000000000           0.00
+## 386    JAI    ATB    1.000000      JAI_ATB     0.666666667           9.00
+## 387    AFB    ATB    0.000000      AFB_ATB     0.666666666           6.00
+## 388    1st    ATB    0.000000      1st_ATB     1.000000000           7.10
+## 389    AIG    ATB    0.000000      AIG_ATB     0.666666667           0.50
+## 390   FSIM    ATB    1.000000     FSIM_ATB     0.999666667           7.50
+## 391   Hazm    ATB    0.000000     Hazm_ATB     1.333333333           4.00
+## 392    JAA    ATB    0.000000      JAA_ATB     2.666666667           7.20
+## 393     LH    ATB    1.000000       LH_ATB     0.666666667           7.00
+## 394    SAS    ATB    1.414214      SAS_ATB     1.333333333           1.00
+## 395   AALS    ATB    0.000000     AALS_ATB     1.333333333           7.50
+## 396    ASB    ATB    0.000000      ASB_ATB     0.333333333           7.50
+## 397   FKUG    ATB    1.000000     FKUG_ATB     0.666666666           6.90
+## 398    MSC    ATB    0.000000      MSC_ATB     1.223333334           7.50
+## 399    ASL    ATB    0.000000      ASL_ATB     1.000000000           3.50
+## 400 NADAZM    ATB    0.000000   NADAZM_ATB     0.666666666           3.00
+## 401    SRF    ATB    0.000000      SRF_ATB     1.000000000           4.50
+## 402    JMA    ATB    1.000000      JMA_ATB     2.333666667           7.25
+## 403   IARB    ATB    0.000000     IARB_ATB     1.000033333           7.50
+## 404  101st    JAI    0.000000    101st_JAI     2.000000000          15.00
+## 405   13th    JAI    0.000000     13th_JAI     2.000000000          15.20
+## 406   AARB    JAI    0.000000     AARB_JAI     1.666666667           8.00
+## 407     AF    JAI    1.000000       AF_JAI     2.000000000           7.00
+## 408    ANF    JAI    3.000000      ANF_JAI     1.666666667          10.00
+## 409   ASIM    JAI    3.605551     ASIM_JAI     0.166666667           2.00
+## 410   ISIL    JAI    1.000000     ISIL_JAI     2.000000000           8.00
+## 411   AASB    JAI    1.414214     AASB_JAI     1.000000000          14.50
+## 412    ADF    JAI    1.000000      ADF_JAI     1.666666667          15.45
+## 413   AASG    JAI    1.414214     AASG_JAI     0.443333333          14.00
+## 414    ARC    JAI    2.449490      ARC_JAI     1.333333333          11.00
+## 415     LF    JAI    0.000000       LF_JAI     0.666666667           9.00
+## 416    ATB    JAI    1.000000      ATB_JAI     0.666666667           9.00
+## 418    AFB    JAI    1.000000      AFB_JAI     1.333333333          15.00
+## 419    1st    JAI    1.000000      1st_JAI     1.666666667          16.10
+## 420    AIG    JAI    0.000000      AIG_JAI     0.000000000           8.50
+## 421   FSIM    JAI    0.000000     FSIM_JAI     0.333000000          16.50
+## 422   Hazm    JAI    0.000000     Hazm_JAI     2.000000000          13.00
+## 423    JAA    JAI    0.000000      JAA_JAI     2.000000000          16.20
+## 424     LH    JAI    0.000000       LH_JAI     0.000000000          16.00
+## 425    SAS    JAI    0.000000      SAS_JAI     2.000000000           8.00
+## 426   AALS    JAI    0.000000     AALS_JAI     2.000000000          16.50
+## 427    ASB    JAI    0.000000      ASB_JAI     1.000000000          16.50
+## 428   FKUG    JAI    0.000000     FKUG_JAI     1.333333333          15.90
+## 429    MSC    JAI    0.000000      MSC_JAI     0.556666667          16.50
+## 430    ASL    JAI    0.000000      ASL_JAI     1.666666667          12.50
+## 431 NADAZM    JAI    0.000000   NADAZM_JAI     1.333333333          12.00
+## 432    SRF    JAI    0.000000      SRF_JAI     1.666666667           4.50
+## 433    JMA    JAI    0.000000      JMA_JAI     1.667000000          16.25
+## 434   IARB    JAI    0.000000     IARB_JAI     1.666700000          16.50
+## 435  101st    AFB    0.000000    101st_AFB     0.666666667           0.00
+## 436   13th    AFB    0.000000     13th_AFB     0.666666667           0.20
+## 437   AARB    AFB    0.000000     AARB_AFB     0.333333334           7.00
+## 438     AF    AFB    0.000000       AF_AFB     0.666666667           8.00
+## 439    ANF    AFB    1.414214      ANF_AFB     3.000000000           5.00
+## 440   ASIM    AFB    3.741657     ASIM_AFB     1.166666666          13.00
+## 441   ISIL    AFB    0.000000     ISIL_AFB     3.333333333          23.00
+## 442   AASB    AFB    0.000000     AASB_AFB     0.333333333           0.50
+## 443    ADF    AFB    0.000000      ADF_AFB     3.000000000           0.45
+## 444   AASG    AFB    1.000000     AASG_AFB     0.890000000           1.00
+## 445    ARC    AFB    0.000000      ARC_AFB     0.000000000           4.00
+## 446     LF    AFB    0.000000       LF_AFB     0.666666666           6.00
+## 447    ATB    AFB    0.000000      ATB_AFB     0.666666666           6.00
+## 448    JAI    AFB    1.000000      JAI_AFB     1.333333333          15.00
+## 450    1st    AFB    1.000000      1st_AFB     0.333333334           1.10
+## 451    AIG    AFB    1.000000      AIG_AFB     1.333333333           6.50
+## 452   FSIM    AFB    0.000000     FSIM_AFB     1.666333333           1.50
+## 453   Hazm    AFB    0.000000     Hazm_AFB     0.666666667           2.00
+## 454    JAA    AFB    0.000000      JAA_AFB     3.333333333           1.20
+## 455     LH    AFB    0.000000       LH_AFB     1.333333333           1.00
+## 456    SAS    AFB    0.000000      SAS_AFB     0.666666667           7.00
+## 457   AALS    AFB    0.000000     AALS_AFB     0.666666667           1.50
+## 458    ASB    AFB    0.000000      ASB_AFB     0.333333333           1.50
+## 459   FKUG    AFB    0.000000     FKUG_AFB     0.000000000           0.90
+## 460    MSC    AFB    0.000000      MSC_AFB     1.890000000           1.50
+## 461    ASL    AFB    0.000000      ASL_AFB     0.333333334           2.50
+## 462 NADAZM    AFB    0.000000   NADAZM_AFB     0.000000000           3.00
+## 463    SRF    AFB    0.000000      SRF_AFB     0.333333334          10.50
+## 464    JMA    AFB    0.000000      JMA_AFB     3.000333333           1.25
+## 465   IARB    AFB    0.000000     IARB_AFB     0.333366667           1.50
+## 466  101st    1st    0.000000    101st_1st     0.333333333           1.10
+## 467   13th    1st    0.000000     13th_1st     0.333333333           0.90
+## 468   AARB    1st    0.000000     AARB_1st     0.000000000           8.10
+## 469     AF    1st    0.000000       AF_1st     0.333333333           9.10
+## 470    ANF    1st    1.000000      ANF_1st     3.333333334           6.10
+## 471   ASIM    1st    1.000000     ASIM_1st     1.500000000          14.10
+## 472   ISIL    1st    0.000000     ISIL_1st     3.666666667          24.10
+## 473   AASB    1st    0.000000     AASB_1st     0.666666667           1.60
+## 474    ADF    1st    0.000000      ADF_1st     3.333333334           0.65
+## 475   AASG    1st    0.000000     AASG_1st     1.223333334           2.10
+## 476    ARC    1st    0.000000      ARC_1st     0.333333334           5.10
+## 477     LF    1st    0.000000       LF_1st     1.000000000           7.10
+## 478    ATB    1st    0.000000      ATB_1st     1.000000000           7.10
+## 479    JAI    1st    1.000000      JAI_1st     1.666666667          16.10
+## 480    AFB    1st    1.000000      AFB_1st     0.333333334           1.10
+## 482    AIG    1st    0.000000      AIG_1st     1.666666667           7.60
+## 483   FSIM    1st    0.000000     FSIM_1st     1.999666667           0.40
+## 484   Hazm    1st    0.000000     Hazm_1st     0.333333333           3.10
+## 485    JAA    1st    0.000000      JAA_1st     3.666666667           0.10
+## 486     LH    1st    1.000000       LH_1st     1.666666667           0.10
+## 487    SAS    1st    0.000000      SAS_1st     0.333333333           8.10
+## 488   AALS    1st    0.000000     AALS_1st     0.333333333           0.40
+## 489    ASB    1st    0.000000      ASB_1st     0.666666667           0.40
+## 490   FKUG    1st    0.000000     FKUG_1st     0.333333334           0.20
+## 491    MSC    1st    0.000000      MSC_1st     2.223333334           0.40
+## 492    ASL    1st    0.000000      ASL_1st     0.000000000           3.60
+## 493 NADAZM    1st    0.000000   NADAZM_1st     0.333333334           4.10
+## 494    SRF    1st    0.000000      SRF_1st     0.000000000          11.60
+## 495    JMA    1st    0.000000      JMA_1st     3.333666667           0.15
+## 496   IARB    1st    0.000000     IARB_1st     0.000033333           0.40
+## 497  101st    AIG    0.000000    101st_AIG     2.000000000           6.50
+## 498   13th    AIG    0.000000     13th_AIG     2.000000000           6.70
+## 499   AARB    AIG    1.000000     AARB_AIG     1.666666667           0.50
+## 500     AF    AIG    0.000000       AF_AIG     2.000000000           1.50
+## 501    ANF    AIG    1.732051      ANF_AIG     1.666666667           1.50
+## 502   ASIM    AIG    0.000000     ASIM_AIG     0.166666667           6.50
+## 503   ISIL    AIG    2.000000     ISIL_AIG     2.000000000          16.50
+## 504   AASB    AIG    0.000000     AASB_AIG     1.000000000           6.00
+## 505    ADF    AIG    0.000000      ADF_AIG     1.666666667           6.95
+## 506   AASG    AIG    0.000000     AASG_AIG     0.443333333           5.50
+## 507    ARC    AIG    0.000000      ARC_AIG     1.333333333           2.50
+## 508     LF    AIG    0.000000       LF_AIG     0.666666667           0.50
+## 509    ATB    AIG    0.000000      ATB_AIG     0.666666667           0.50
+## 510    JAI    AIG    0.000000      JAI_AIG     0.000000000           8.50
+## 511    AFB    AIG    1.000000      AFB_AIG     1.333333333           6.50
+## 512    1st    AIG    0.000000      1st_AIG     1.666666667           7.60
+## 514   FSIM    AIG    0.000000     FSIM_AIG     0.333000000           8.00
+## 515   Hazm    AIG    0.000000     Hazm_AIG     2.000000000           4.50
+## 516    JAA    AIG    0.000000      JAA_AIG     2.000000000           7.70
+## 517     LH    AIG    0.000000       LH_AIG     0.000000000           7.50
+## 518    SAS    AIG    0.000000      SAS_AIG     2.000000000           0.50
+## 519   AALS    AIG    0.000000     AALS_AIG     2.000000000           8.00
+## 520    ASB    AIG    0.000000      ASB_AIG     1.000000000           8.00
+## 521   FKUG    AIG    0.000000     FKUG_AIG     1.333333333           7.40
+## 522    MSC    AIG    0.000000      MSC_AIG     0.556666667           8.00
+## 523    ASL    AIG    0.000000      ASL_AIG     1.666666667           4.00
+## 524 NADAZM    AIG    0.000000   NADAZM_AIG     1.333333333           3.50
+## 525    SRF    AIG    0.000000      SRF_AIG     1.666666667           4.00
+## 526    JMA    AIG    0.000000      JMA_AIG     1.667000000           7.75
+## 527   IARB    AIG    0.000000     IARB_AIG     1.666700000           8.00
+## 528  101st   FSIM    0.000000   101st_FSIM     2.333000000           1.50
+## 529   13th   FSIM    0.000000    13th_FSIM     2.333000000           1.30
+## 530   AARB   FSIM    0.000000    AARB_FSIM     1.999666667           8.50
+## 531     AF   FSIM    0.000000      AF_FSIM     2.333000000           9.50
+## 532    ANF   FSIM    1.732051     ANF_FSIM     1.333666667           6.50
+## 533   ASIM   FSIM    1.732051    ASIM_FSIM     0.499666667          14.50
+## 534   ISIL   FSIM    0.000000    ISIL_FSIM     1.667000000          24.50
+## 535   AASB   FSIM    0.000000    AASB_FSIM     1.333000000           2.00
+## 536    ADF   FSIM    0.000000     ADF_FSIM     1.333666667           1.05
+## 537   AASG   FSIM    0.000000    AASG_FSIM     0.776333333           2.50
+## 538    ARC   FSIM    0.000000     ARC_FSIM     1.666333333           5.50
+## 539     LF   FSIM    0.000000      LF_FSIM     0.999666667           7.50
+## 540    ATB   FSIM    1.000000     ATB_FSIM     0.999666667           7.50
+## 541    JAI   FSIM    0.000000     JAI_FSIM     0.333000000          16.50
+## 542    AFB   FSIM    0.000000     AFB_FSIM     1.666333333           1.50
+## 543    1st   FSIM    0.000000     1st_FSIM     1.999666667           0.40
+## 544    AIG   FSIM    0.000000     AIG_FSIM     0.333000000           8.00
+## 546   Hazm   FSIM    1.000000    Hazm_FSIM     2.333000000           3.50
+## 547    JAA   FSIM    0.000000     JAA_FSIM     1.667000000           0.30
+## 548     LH   FSIM    0.000000      LH_FSIM     0.333000000           0.50
+## 549    SAS   FSIM    0.000000     SAS_FSIM     2.333000000           8.50
+## 550   AALS   FSIM    0.000000    AALS_FSIM     2.333000000           0.00
+## 551    ASB   FSIM    0.000000     ASB_FSIM     1.333000000           0.00
+## 552   FKUG   FSIM    0.000000    FKUG_FSIM     1.666333333           0.60
+## 553    MSC   FSIM    0.000000     MSC_FSIM     0.223666667           0.00
+## 554    ASL   FSIM    0.000000     ASL_FSIM     1.999666667           4.00
+## 555 NADAZM   FSIM    0.000000  NADAZM_FSIM     1.666333333           4.50
+## 556    SRF   FSIM    0.000000     SRF_FSIM     1.999666667          12.00
+## 557    JMA   FSIM    0.000000     JMA_FSIM     1.334000000           0.25
+## 558   IARB   FSIM    0.000000    IARB_FSIM     1.999700000           0.00
+## 559  101st   Hazm    0.000000   101st_Hazm     0.000000000           2.00
+## 560   13th   Hazm    0.000000    13th_Hazm     0.000000000           2.20
+## 561   AARB   Hazm    0.000000    AARB_Hazm     0.333333333           5.00
+## 562     AF   Hazm    0.000000      AF_Hazm     0.000000000           6.00
+## 563    ANF   Hazm    1.000000     ANF_Hazm     3.666666667           3.00
+## 564   ASIM   Hazm    1.414214    ASIM_Hazm     1.833333333          11.00
+## 565   ISIL   Hazm    0.000000    ISIL_Hazm     4.000000000          21.00
+## 566   AASB   Hazm    0.000000    AASB_Hazm     1.000000000           1.50
+## 567    ADF   Hazm    0.000000     ADF_Hazm     3.666666667           2.45
+## 568   AASG   Hazm    0.000000    AASG_Hazm     1.556666667           1.00
+## 569    ARC   Hazm    0.000000     ARC_Hazm     0.666666667           2.00
+## 570     LF   Hazm    0.000000      LF_Hazm     1.333333333           4.00
+## 571    ATB   Hazm    0.000000     ATB_Hazm     1.333333333           4.00
+## 572    JAI   Hazm    0.000000     JAI_Hazm     2.000000000          13.00
+## 573    AFB   Hazm    0.000000     AFB_Hazm     0.666666667           2.00
+## 574    1st   Hazm    0.000000     1st_Hazm     0.333333333           3.10
+## 575    AIG   Hazm    0.000000     AIG_Hazm     2.000000000           4.50
+## 576   FSIM   Hazm    1.000000    FSIM_Hazm     2.333000000           3.50
+## 578    JAA   Hazm    0.000000     JAA_Hazm     4.000000000           3.20
+## 579     LH   Hazm    0.000000      LH_Hazm     2.000000000           3.00
+## 580    SAS   Hazm    0.000000     SAS_Hazm     0.000000000           5.00
+## 581   AALS   Hazm    0.000000    AALS_Hazm     0.000000000           3.50
+## 582    ASB   Hazm    0.000000     ASB_Hazm     1.000000000           3.50
+## 583   FKUG   Hazm    0.000000    FKUG_Hazm     0.666666667           2.90
+## 584    MSC   Hazm    0.000000     MSC_Hazm     2.556666667           3.50
+## 585    ASL   Hazm    0.000000     ASL_Hazm     0.333333333           0.50
+## 586 NADAZM   Hazm    0.000000  NADAZM_Hazm     0.666666667           1.00
+## 587    SRF   Hazm    0.000000     SRF_Hazm     0.333333333           8.50
+## 588    JMA   Hazm    0.000000     JMA_Hazm     3.667000000           3.25
+## 589   IARB   Hazm    0.000000    IARB_Hazm     0.333300000           3.50
+## 590  101st    JAA    0.000000    101st_JAA     4.000000000           1.20
+## 591   13th    JAA    0.000000     13th_JAA     4.000000000           1.00
+## 592   AARB    JAA    0.000000     AARB_JAA     3.666666667           8.20
+## 593     AF    JAA    0.000000       AF_JAA     4.000000000           9.20
+## 594    ANF    JAA    1.414214      ANF_JAA     0.333333333           6.20
+## 595   ASIM    JAA    1.000000     ASIM_JAA     2.166666667          14.20
+## 596   ISIL    JAA    0.000000     ISIL_JAA     0.000000000          24.20
+## 597   AASB    JAA    0.000000     AASB_JAA     3.000000000           1.70
+## 598    ADF    JAA    0.000000      ADF_JAA     0.333333333           0.75
+## 599   AASG    JAA    0.000000     AASG_JAA     2.443333333           2.20
+## 600    ARC    JAA    0.000000      ARC_JAA     3.333333333           5.20
+## 601     LF    JAA    0.000000       LF_JAA     2.666666667           7.20
+## 602    ATB    JAA    0.000000      ATB_JAA     2.666666667           7.20
+## 603    JAI    JAA    0.000000      JAI_JAA     2.000000000          16.20
+## 604    AFB    JAA    0.000000      AFB_JAA     3.333333333           1.20
+## 605    1st    JAA    0.000000      1st_JAA     3.666666667           0.10
+## 606    AIG    JAA    0.000000      AIG_JAA     2.000000000           7.70
+## 607   FSIM    JAA    0.000000     FSIM_JAA     1.667000000           0.30
+## 608   Hazm    JAA    0.000000     Hazm_JAA     4.000000000           3.20
+## 610     LH    JAA    1.000000       LH_JAA     2.000000000           0.20
+## 611    SAS    JAA    0.000000      SAS_JAA     4.000000000           8.20
+## 612   AALS    JAA    0.000000     AALS_JAA     4.000000000           0.30
+## 613    ASB    JAA    0.000000      ASB_JAA     3.000000000           0.30
+## 614   FKUG    JAA    0.000000     FKUG_JAA     3.333333333           0.30
+## 615    MSC    JAA    0.000000      MSC_JAA     1.443333333           0.30
+## 616    ASL    JAA    0.000000      ASL_JAA     3.666666667           3.70
+## 617 NADAZM    JAA    0.000000   NADAZM_JAA     3.333333333           4.20
+## 618    SRF    JAA    0.000000      SRF_JAA     3.666666667          11.70
+## 619    JMA    JAA    0.000000      JMA_JAA     0.333000000           0.05
+## 620   IARB    JAA    0.000000     IARB_JAA     3.666700000           0.30
+## 621  101st     LH    0.000000     101st_LH     2.000000000           1.00
+## 622   13th     LH    0.000000      13th_LH     2.000000000           0.80
+## 623   AARB     LH    0.000000      AARB_LH     1.666666667           8.00
+## 624     AF     LH    0.000000        AF_LH     2.000000000           9.00
+## 625    ANF     LH    2.000000       ANF_LH     1.666666667           6.00
+## 626   ASIM     LH    2.645751      ASIM_LH     0.166666667          14.00
+## 627   ISIL     LH    0.000000      ISIL_LH     2.000000000          24.00
+## 628   AASB     LH    0.000000      AASB_LH     1.000000000           1.50
+## 629    ADF     LH    0.000000       ADF_LH     1.666666667           0.55
+## 630   AASG     LH    0.000000      AASG_LH     0.443333333           2.00
+## 631    ARC     LH    0.000000       ARC_LH     1.333333333           5.00
+## 632     LF     LH    0.000000        LF_LH     0.666666667           7.00
+## 633    ATB     LH    1.000000       ATB_LH     0.666666667           7.00
+## 634    JAI     LH    0.000000       JAI_LH     0.000000000          16.00
+## 635    AFB     LH    0.000000       AFB_LH     1.333333333           1.00
+## 636    1st     LH    1.000000       1st_LH     1.666666667           0.10
+## 637    AIG     LH    0.000000       AIG_LH     0.000000000           7.50
+## 638   FSIM     LH    0.000000      FSIM_LH     0.333000000           0.50
+## 639   Hazm     LH    0.000000      Hazm_LH     2.000000000           3.00
+## 640    JAA     LH    1.000000       JAA_LH     2.000000000           0.20
+## 642    SAS     LH    0.000000       SAS_LH     2.000000000           8.00
+## 643   AALS     LH    0.000000      AALS_LH     2.000000000           0.50
+## 644    ASB     LH    0.000000       ASB_LH     1.000000000           0.50
+## 645   FKUG     LH    0.000000      FKUG_LH     1.333333333           0.10
+## 646    MSC     LH    0.000000       MSC_LH     0.556666667           0.50
+## 647    ASL     LH    1.000000       ASL_LH     1.666666667           3.50
+## 648 NADAZM     LH    0.000000    NADAZM_LH     1.333333333           4.00
+## 649    SRF     LH    0.000000       SRF_LH     1.666666667          11.50
+## 650    JMA     LH    0.000000       JMA_LH     1.667000000           0.25
+## 651   IARB     LH    0.000000      IARB_LH     1.666700000           0.50
+## 652  101st    SAS    0.000000    101st_SAS     0.000000000           7.00
+## 653   13th    SAS    0.000000     13th_SAS     0.000000000           7.20
+## 654   AARB    SAS    1.414214     AARB_SAS     0.333333333           0.00
+## 655     AF    SAS    1.000000       AF_SAS     0.000000000           1.00
+## 656    ANF    SAS    2.449490      ANF_SAS     3.666666667           2.00
+## 657   ASIM    SAS    5.477226     ASIM_SAS     1.833333333           6.00
+## 658   ISIL    SAS    1.000000     ISIL_SAS     4.000000000          16.00
+## 659   AASB    SAS    0.000000     AASB_SAS     1.000000000           6.50
+## 660    ADF    SAS    0.000000      ADF_SAS     3.666666667           7.45
+## 661   AASG    SAS    0.000000     AASG_SAS     1.556666667           6.00
+## 662    ARC    SAS    0.000000      ARC_SAS     0.666666667           3.00
+## 663     LF    SAS    0.000000       LF_SAS     1.333333333           1.00
+## 664    ATB    SAS    1.414214      ATB_SAS     1.333333333           1.00
+## 665    JAI    SAS    0.000000      JAI_SAS     2.000000000           8.00
+## 666    AFB    SAS    0.000000      AFB_SAS     0.666666667           7.00
+## 667    1st    SAS    0.000000      1st_SAS     0.333333333           8.10
+## 668    AIG    SAS    0.000000      AIG_SAS     2.000000000           0.50
+## 669   FSIM    SAS    0.000000     FSIM_SAS     2.333000000           8.50
+## 670   Hazm    SAS    0.000000     Hazm_SAS     0.000000000           5.00
+## 671    JAA    SAS    0.000000      JAA_SAS     4.000000000           8.20
+## 672     LH    SAS    0.000000       LH_SAS     2.000000000           8.00
+## 674   AALS    SAS    0.000000     AALS_SAS     0.000000000           8.50
+## 675    ASB    SAS    0.000000      ASB_SAS     1.000000000           8.50
+## 676   FKUG    SAS    0.000000     FKUG_SAS     0.666666667           7.90
+## 677    MSC    SAS    0.000000      MSC_SAS     2.556666667           8.50
+## 678    ASL    SAS    0.000000      ASL_SAS     0.333333333           4.50
+## 679 NADAZM    SAS    0.000000   NADAZM_SAS     0.666666667           4.00
+## 680    SRF    SAS    0.000000      SRF_SAS     0.333333333           3.50
+## 681    JMA    SAS    0.000000      JMA_SAS     3.667000000           8.25
+## 682   IARB    SAS    0.000000     IARB_SAS     0.333300000           8.50
+## 683  101st   AALS    0.000000   101st_AALS     0.000000000           1.50
+## 684   13th   AALS    0.000000    13th_AALS     0.000000000           1.30
+## 685   AARB   AALS    0.000000    AARB_AALS     0.333333333           8.50
+## 686     AF   AALS    0.000000      AF_AALS     0.000000000           9.50
+## 687    ANF   AALS    0.000000     ANF_AALS     3.666666667           6.50
+## 688   ASIM   AALS    1.414214    ASIM_AALS     1.833333333          14.50
+## 689   ISIL   AALS    0.000000    ISIL_AALS     4.000000000          24.50
+## 690   AASB   AALS    0.000000    AASB_AALS     1.000000000           2.00
+## 691    ADF   AALS    0.000000     ADF_AALS     3.666666667           1.05
+## 692   AASG   AALS    0.000000    AASG_AALS     1.556666667           2.50
+## 693    ARC   AALS    0.000000     ARC_AALS     0.666666667           5.50
+## 694     LF   AALS    0.000000      LF_AALS     1.333333333           7.50
+## 695    ATB   AALS    0.000000     ATB_AALS     1.333333333           7.50
+## 696    JAI   AALS    0.000000     JAI_AALS     2.000000000          16.50
+## 697    AFB   AALS    0.000000     AFB_AALS     0.666666667           1.50
+## 698    1st   AALS    0.000000     1st_AALS     0.333333333           0.40
+## 699    AIG   AALS    0.000000     AIG_AALS     2.000000000           8.00
+## 700   FSIM   AALS    0.000000    FSIM_AALS     2.333000000           0.00
+## 701   Hazm   AALS    0.000000    Hazm_AALS     0.000000000           3.50
+## 702    JAA   AALS    0.000000     JAA_AALS     4.000000000           0.30
+## 703     LH   AALS    0.000000      LH_AALS     2.000000000           0.50
+## 704    SAS   AALS    0.000000     SAS_AALS     0.000000000           8.50
+## 706    ASB   AALS    0.000000     ASB_AALS     1.000000000           0.00
+## 707   FKUG   AALS    0.000000    FKUG_AALS     0.666666667           0.60
+## 708    MSC   AALS    0.000000     MSC_AALS     2.556666667           0.00
+## 709    ASL   AALS    0.000000     ASL_AALS     0.333333333           4.00
+## 710 NADAZM   AALS    0.000000  NADAZM_AALS     0.666666667           4.50
+## 711    SRF   AALS    0.000000     SRF_AALS     0.333333333          12.00
+## 712    JMA   AALS    0.000000     JMA_AALS     3.667000000           0.25
+## 713   IARB   AALS    0.000000    IARB_AALS     0.333300000           0.00
+## 714  101st    ASB    0.000000    101st_ASB     1.000000000           1.50
+## 715   13th    ASB    0.000000     13th_ASB     1.000000000           1.30
+## 716   AARB    ASB    0.000000     AARB_ASB     0.666666667           8.50
+## 717     AF    ASB    0.000000       AF_ASB     1.000000000           9.50
+## 718    ANF    ASB    0.000000      ANF_ASB     2.666666667           6.50
+## 719   ASIM    ASB    1.000000     ASIM_ASB     0.833333333          14.50
+## 720   ISIL    ASB    0.000000     ISIL_ASB     3.000000000          24.50
+## 721   AASB    ASB    0.000000     AASB_ASB     0.000000000           2.00
+## 722    ADF    ASB    0.000000      ADF_ASB     2.666666667           1.05
+## 723   AASG    ASB    0.000000     AASG_ASB     0.556666667           2.50
+## 724    ARC    ASB    0.000000      ARC_ASB     0.333333333           5.50
+## 725     LF    ASB    0.000000       LF_ASB     0.333333333           7.50
+## 726    ATB    ASB    0.000000      ATB_ASB     0.333333333           7.50
+## 727    JAI    ASB    0.000000      JAI_ASB     1.000000000          16.50
+## 728    AFB    ASB    0.000000      AFB_ASB     0.333333333           1.50
+## 729    1st    ASB    0.000000      1st_ASB     0.666666667           0.40
+## 730    AIG    ASB    0.000000      AIG_ASB     1.000000000           8.00
+## 731   FSIM    ASB    0.000000     FSIM_ASB     1.333000000           0.00
+## 732   Hazm    ASB    0.000000     Hazm_ASB     1.000000000           3.50
+## 733    JAA    ASB    0.000000      JAA_ASB     3.000000000           0.30
+## 734     LH    ASB    0.000000       LH_ASB     1.000000000           0.50
+## 735    SAS    ASB    0.000000      SAS_ASB     1.000000000           8.50
+## 736   AALS    ASB    0.000000     AALS_ASB     1.000000000           0.00
+## 738   FKUG    ASB    0.000000     FKUG_ASB     0.333333333           0.60
+## 739    MSC    ASB    0.000000      MSC_ASB     1.556666667           0.00
+## 740    ASL    ASB    0.000000      ASL_ASB     0.666666667           4.00
+## 741 NADAZM    ASB    0.000000   NADAZM_ASB     0.333333333           4.50
+## 742    SRF    ASB    0.000000      SRF_ASB     0.666666667          12.00
+## 743    JMA    ASB    0.000000      JMA_ASB     2.667000000           0.25
+## 744   IARB    ASB    0.000000     IARB_ASB     0.666700000           0.00
+## 745  101st   FKUG    0.000000   101st_FKUG     0.666666667           0.90
+## 746   13th   FKUG    0.000000    13th_FKUG     0.666666667           0.70
+## 747   AARB   FKUG    0.000000    AARB_FKUG     0.333333334           7.90
+## 748     AF   FKUG    0.000000      AF_FKUG     0.666666667           8.90
+## 749    ANF   FKUG    0.000000     ANF_FKUG     3.000000000           5.90
+## 750   ASIM   FKUG    1.000000    ASIM_FKUG     1.166666666          13.90
+## 751   ISIL   FKUG    0.000000    ISIL_FKUG     3.333333333          23.90
+## 752   AASB   FKUG    0.000000    AASB_FKUG     0.333333333           1.40
+## 753    ADF   FKUG    0.000000     ADF_FKUG     3.000000000           0.45
+## 754   AASG   FKUG    0.000000    AASG_FKUG     0.890000000           1.90
+## 755    ARC   FKUG    0.000000     ARC_FKUG     0.000000000           4.90
+## 756     LF   FKUG    1.000000      LF_FKUG     0.666666666           6.90
+## 757    ATB   FKUG    1.000000     ATB_FKUG     0.666666666           6.90
+## 758    JAI   FKUG    0.000000     JAI_FKUG     1.333333333          15.90
+## 759    AFB   FKUG    0.000000     AFB_FKUG     0.000000000           0.90
+## 760    1st   FKUG    0.000000     1st_FKUG     0.333333334           0.20
+## 761    AIG   FKUG    0.000000     AIG_FKUG     1.333333333           7.40
+## 762   FSIM   FKUG    0.000000    FSIM_FKUG     1.666333333           0.60
+## 763   Hazm   FKUG    0.000000    Hazm_FKUG     0.666666667           2.90
+## 764    JAA   FKUG    0.000000     JAA_FKUG     3.333333333           0.30
+## 765     LH   FKUG    0.000000      LH_FKUG     1.333333333           0.10
+## 766    SAS   FKUG    0.000000     SAS_FKUG     0.666666667           7.90
+## 767   AALS   FKUG    0.000000    AALS_FKUG     0.666666667           0.60
+## 768    ASB   FKUG    0.000000     ASB_FKUG     0.333333333           0.60
+## 770    MSC   FKUG    0.000000     MSC_FKUG     1.890000000           0.60
+## 771    ASL   FKUG    0.000000     ASL_FKUG     0.333333334           3.40
+## 772 NADAZM   FKUG    0.000000  NADAZM_FKUG     0.000000000           3.90
+## 773    SRF   FKUG    0.000000     SRF_FKUG     0.333333334          11.40
+## 774    JMA   FKUG    0.000000     JMA_FKUG     3.000333333           0.35
+## 775   IARB   FKUG    0.000000    IARB_FKUG     0.333366667           0.60
+## 776  101st    MSC    0.000000    101st_MSC     2.556666667           1.50
+## 777   13th    MSC    0.000000     13th_MSC     2.556666667           1.30
+## 778   AARB    MSC    0.000000     AARB_MSC     2.223333334           8.50
+## 779     AF    MSC    0.000000       AF_MSC     2.556666667           9.50
+## 780    ANF    MSC    0.000000      ANF_MSC     1.110000000           6.50
+## 781   ASIM    MSC    1.414214     ASIM_MSC     0.723333334          14.50
+## 782   ISIL    MSC    0.000000     ISIL_MSC     1.443333333          24.50
+## 783   AASB    MSC    0.000000     AASB_MSC     1.556666667           2.00
+## 784    ADF    MSC    0.000000      ADF_MSC     1.110000000           1.05
+## 785   AASG    MSC    0.000000     AASG_MSC     1.000000000           2.50
+## 786    ARC    MSC    0.000000      ARC_MSC     1.890000000           5.50
+## 787     LF    MSC    0.000000       LF_MSC     1.223333334           7.50
+## 788    ATB    MSC    0.000000      ATB_MSC     1.223333334           7.50
+## 789    JAI    MSC    0.000000      JAI_MSC     0.556666667          16.50
+## 790    AFB    MSC    0.000000      AFB_MSC     1.890000000           1.50
+## 791    1st    MSC    0.000000      1st_MSC     2.223333334           0.40
+## 792    AIG    MSC    0.000000      AIG_MSC     0.556666667           8.00
+## 793   FSIM    MSC    0.000000     FSIM_MSC     0.223666667           0.00
+## 794   Hazm    MSC    0.000000     Hazm_MSC     2.556666667           3.50
+## 795    JAA    MSC    0.000000      JAA_MSC     1.443333333           0.30
+## 796     LH    MSC    0.000000       LH_MSC     0.556666667           0.50
+## 797    SAS    MSC    0.000000      SAS_MSC     2.556666667           8.50
+## 798   AALS    MSC    0.000000     AALS_MSC     2.556666667           0.00
+## 799    ASB    MSC    0.000000      ASB_MSC     1.556666667           0.00
+## 800   FKUG    MSC    0.000000     FKUG_MSC     1.890000000           0.60
+## 802    ASL    MSC    0.000000      ASL_MSC     2.223333334           4.00
+## 803 NADAZM    MSC    0.000000   NADAZM_MSC     1.890000000           4.50
+## 804    SRF    MSC    0.000000      SRF_MSC     2.223333334          12.00
+## 805    JMA    MSC    0.000000      JMA_MSC     1.110333333           0.25
+## 806   IARB    MSC    0.000000     IARB_MSC     2.223366667           0.00
+## 807  101st    ASL    1.000000    101st_ASL     0.333333333           2.50
+## 808   13th    ASL    1.000000     13th_ASL     0.333333333           2.70
+## 809   AARB    ASL    0.000000     AARB_ASL     0.000000000           4.50
+## 810     AF    ASL    0.000000       AF_ASL     0.333333333           5.50
+## 811    ANF    ASL    3.741657      ANF_ASL     3.333333334           2.50
+## 812   ASIM    ASL    2.000000     ASIM_ASL     1.500000000          10.50
+## 813   ISIL    ASL    0.000000     ISIL_ASL     3.666666667          20.50
+## 814   AASB    ASL    0.000000     AASB_ASL     0.666666667           2.00
+## 815    ADF    ASL    0.000000      ADF_ASL     3.333333334           2.95
+## 816   AASG    ASL    1.000000     AASG_ASL     1.223333334           1.50
+## 817    ARC    ASL    0.000000      ARC_ASL     0.333333334           1.50
+## 818     LF    ASL    0.000000       LF_ASL     1.000000000           3.50
+## 819    ATB    ASL    0.000000      ATB_ASL     1.000000000           3.50
+## 820    JAI    ASL    0.000000      JAI_ASL     1.666666667          12.50
+## 821    AFB    ASL    0.000000      AFB_ASL     0.333333334           2.50
+## 822    1st    ASL    0.000000      1st_ASL     0.000000000           3.60
+## 823    AIG    ASL    0.000000      AIG_ASL     1.666666667           4.00
+## 824   FSIM    ASL    0.000000     FSIM_ASL     1.999666667           4.00
+## 825   Hazm    ASL    0.000000     Hazm_ASL     0.333333333           0.50
+## 826    JAA    ASL    0.000000      JAA_ASL     3.666666667           3.70
+## 827     LH    ASL    1.000000       LH_ASL     1.666666667           3.50
+## 828    SAS    ASL    0.000000      SAS_ASL     0.333333333           4.50
+## 829   AALS    ASL    0.000000     AALS_ASL     0.333333333           4.00
+## 830    ASB    ASL    0.000000      ASB_ASL     0.666666667           4.00
+## 831   FKUG    ASL    0.000000     FKUG_ASL     0.333333334           3.40
+## 832    MSC    ASL    0.000000      MSC_ASL     2.223333334           4.00
+## 834 NADAZM    ASL    1.000000   NADAZM_ASL     0.333333334           0.50
+## 835    SRF    ASL    1.000000      SRF_ASL     0.000000000           8.00
+## 836    JMA    ASL    0.000000      JMA_ASL     3.333666667           3.75
+## 837   IARB    ASL    0.000000     IARB_ASL     0.000033333           4.00
+## 838  101st NADAZM    0.000000 101st_NADAZM     0.666666667           3.00
+## 839   13th NADAZM    0.000000  13th_NADAZM     0.666666667           3.20
+## 840   AARB NADAZM    0.000000  AARB_NADAZM     0.333333334           4.00
+## 841     AF NADAZM    0.000000    AF_NADAZM     0.666666667           5.00
+## 842    ANF NADAZM    0.000000   ANF_NADAZM     3.000000000           2.00
+## 843   ASIM NADAZM    0.000000  ASIM_NADAZM     1.166666666          10.00
+## 844   ISIL NADAZM    0.000000  ISIL_NADAZM     3.333333333          20.00
+## 845   AASB NADAZM    0.000000  AASB_NADAZM     0.333333333           2.50
+## 846    ADF NADAZM    0.000000   ADF_NADAZM     3.000000000           3.45
+## 847   AASG NADAZM    0.000000  AASG_NADAZM     0.890000000           2.00
+## 848    ARC NADAZM    0.000000   ARC_NADAZM     0.000000000           1.00
+## 849     LF NADAZM    0.000000    LF_NADAZM     0.666666666           3.00
+## 850    ATB NADAZM    0.000000   ATB_NADAZM     0.666666666           3.00
+## 851    JAI NADAZM    0.000000   JAI_NADAZM     1.333333333          12.00
+## 852    AFB NADAZM    0.000000   AFB_NADAZM     0.000000000           3.00
+## 853    1st NADAZM    0.000000   1st_NADAZM     0.333333334           4.10
+## 854    AIG NADAZM    0.000000   AIG_NADAZM     1.333333333           3.50
+## 855   FSIM NADAZM    0.000000  FSIM_NADAZM     1.666333333           4.50
+## 856   Hazm NADAZM    0.000000  Hazm_NADAZM     0.666666667           1.00
+## 857    JAA NADAZM    0.000000   JAA_NADAZM     3.333333333           4.20
+## 858     LH NADAZM    0.000000    LH_NADAZM     1.333333333           4.00
+## 859    SAS NADAZM    0.000000   SAS_NADAZM     0.666666667           4.00
+## 860   AALS NADAZM    0.000000  AALS_NADAZM     0.666666667           4.50
+## 861    ASB NADAZM    0.000000   ASB_NADAZM     0.333333333           4.50
+## 862   FKUG NADAZM    0.000000  FKUG_NADAZM     0.000000000           3.90
+## 863    MSC NADAZM    0.000000   MSC_NADAZM     1.890000000           4.50
+## 864    ASL NADAZM    1.000000   ASL_NADAZM     0.333333334           0.50
+## 866    SRF NADAZM    0.000000   SRF_NADAZM     0.333333334           7.50
+## 867    JMA NADAZM    0.000000   JMA_NADAZM     3.000333333           4.25
+## 868   IARB NADAZM    0.000000  IARB_NADAZM     0.333366667           4.50
+## 869  101st    SRF    0.000000    101st_SRF     0.333333333          10.50
+## 870   13th    SRF    0.000000     13th_SRF     0.333333333          10.70
+## 871   AARB    SRF    0.000000     AARB_SRF     0.000000000           3.50
+## 872     AF    SRF    0.000000       AF_SRF     0.333333333           2.50
+## 873    ANF    SRF    0.000000      ANF_SRF     3.333333334           5.50
+## 874   ASIM    SRF    0.000000     ASIM_SRF     1.500000000           2.50
+## 875   ISIL    SRF    0.000000     ISIL_SRF     3.666666667          12.50
+## 876   AASB    SRF    0.000000     AASB_SRF     0.666666667          10.00
+## 877    ADF    SRF    0.000000      ADF_SRF     3.333333334          10.95
+## 878   AASG    SRF    0.000000     AASG_SRF     1.223333334           9.50
+## 879    ARC    SRF    0.000000      ARC_SRF     0.333333334           6.50
+## 880     LF    SRF    0.000000       LF_SRF     1.000000000           4.50
+## 881    ATB    SRF    0.000000      ATB_SRF     1.000000000           4.50
+## 882    JAI    SRF    0.000000      JAI_SRF     1.666666667           4.50
+## 883    AFB    SRF    0.000000      AFB_SRF     0.333333334          10.50
+## 884    1st    SRF    0.000000      1st_SRF     0.000000000          11.60
+## 885    AIG    SRF    0.000000      AIG_SRF     1.666666667           4.00
+## 886   FSIM    SRF    0.000000     FSIM_SRF     1.999666667          12.00
+## 887   Hazm    SRF    0.000000     Hazm_SRF     0.333333333           8.50
+## 888    JAA    SRF    0.000000      JAA_SRF     3.666666667          11.70
+## 889     LH    SRF    0.000000       LH_SRF     1.666666667          11.50
+## 890    SAS    SRF    0.000000      SAS_SRF     0.333333333           3.50
+## 891   AALS    SRF    0.000000     AALS_SRF     0.333333333          12.00
+## 892    ASB    SRF    0.000000      ASB_SRF     0.666666667          12.00
+## 893   FKUG    SRF    0.000000     FKUG_SRF     0.333333334          11.40
+## 894    MSC    SRF    0.000000      MSC_SRF     2.223333334          12.00
+## 895    ASL    SRF    1.000000      ASL_SRF     0.000000000           8.00
+## 896 NADAZM    SRF    0.000000   NADAZM_SRF     0.333333334           7.50
+## 898    JMA    SRF    0.000000      JMA_SRF     3.333666667          11.75
+## 899   IARB    SRF    0.000000     IARB_SRF     0.000033333          12.00
+## 900  101st    JMA    0.000000    101st_JMA     3.667000000           1.25
+## 901   13th    JMA    0.000000     13th_JMA     3.667000000           1.05
+## 902   AARB    JMA    0.000000     AARB_JMA     3.333666667           8.25
+## 903     AF    JMA    0.000000       AF_JMA     3.667000000           9.25
+## 904    ANF    JMA    0.000000      ANF_JMA     0.000333333           6.25
+## 905   ASIM    JMA    0.000000     ASIM_JMA     1.833666667          14.25
+## 906   ISIL    JMA    0.000000     ISIL_JMA     0.333000000          24.25
+## 907   AASB    JMA    0.000000     AASB_JMA     2.667000000           1.75
+## 908    ADF    JMA    0.000000      ADF_JMA     0.000333333           0.80
+## 909   AASG    JMA    0.000000     AASG_JMA     2.110333333           2.25
+## 910    ARC    JMA    0.000000      ARC_JMA     3.000333333           5.25
+## 911     LF    JMA    0.000000       LF_JMA     2.333666667           7.25
+## 912    ATB    JMA    1.000000      ATB_JMA     2.333666667           7.25
+## 913    JAI    JMA    0.000000      JAI_JMA     1.667000000          16.25
+## 914    AFB    JMA    0.000000      AFB_JMA     3.000333333           1.25
+## 915    1st    JMA    0.000000      1st_JMA     3.333666667           0.15
+## 916    AIG    JMA    0.000000      AIG_JMA     1.667000000           7.75
+## 917   FSIM    JMA    0.000000     FSIM_JMA     1.334000000           0.25
+## 918   Hazm    JMA    0.000000     Hazm_JMA     3.667000000           3.25
+## 919    JAA    JMA    0.000000      JAA_JMA     0.333000000           0.05
+## 920     LH    JMA    0.000000       LH_JMA     1.667000000           0.25
+## 921    SAS    JMA    0.000000      SAS_JMA     3.667000000           8.25
+## 922   AALS    JMA    0.000000     AALS_JMA     3.667000000           0.25
+## 923    ASB    JMA    0.000000      ASB_JMA     2.667000000           0.25
+## 924   FKUG    JMA    0.000000     FKUG_JMA     3.000333333           0.35
+## 925    MSC    JMA    0.000000      MSC_JMA     1.110333333           0.25
+## 926    ASL    JMA    0.000000      ASL_JMA     3.333666667           3.75
+## 927 NADAZM    JMA    0.000000   NADAZM_JMA     3.000333333           4.25
+## 928    SRF    JMA    0.000000      SRF_JMA     3.333666667          11.75
+## 930   IARB    JMA    0.000000     IARB_JMA     3.333700000           0.25
+## 931  101st   IARB    0.000000   101st_IARB     0.333300000           1.50
+## 932   13th   IARB    0.000000    13th_IARB     0.333300000           1.30
+## 933   AARB   IARB    0.000000    AARB_IARB     0.000033333           8.50
+## 934     AF   IARB    0.000000      AF_IARB     0.333300000           9.50
+## 935    ANF   IARB    0.000000     ANF_IARB     3.333366667           6.50
+## 936   ASIM   IARB    1.000000    ASIM_IARB     1.500033333          14.50
+## 937   ISIL   IARB    0.000000    ISIL_IARB     3.666700000          24.50
+## 938   AASB   IARB    0.000000    AASB_IARB     0.666700000           2.00
+## 939    ADF   IARB    0.000000     ADF_IARB     3.333366667           1.05
+## 940   AASG   IARB    0.000000    AASG_IARB     1.223366667           2.50
+## 941    ARC   IARB    0.000000     ARC_IARB     0.333366667           5.50
+## 942     LF   IARB    0.000000      LF_IARB     1.000033333           7.50
+## 943    ATB   IARB    0.000000     ATB_IARB     1.000033333           7.50
+## 944    JAI   IARB    0.000000     JAI_IARB     1.666700000          16.50
+## 945    AFB   IARB    0.000000     AFB_IARB     0.333366667           1.50
+## 946    1st   IARB    0.000000     1st_IARB     0.000033333           0.40
+## 947    AIG   IARB    0.000000     AIG_IARB     1.666700000           8.00
+## 948   FSIM   IARB    0.000000    FSIM_IARB     1.999700000           0.00
+## 949   Hazm   IARB    0.000000    Hazm_IARB     0.333300000           3.50
+## 950    JAA   IARB    0.000000     JAA_IARB     3.666700000           0.30
+## 951     LH   IARB    0.000000      LH_IARB     1.666700000           0.50
+## 952    SAS   IARB    0.000000     SAS_IARB     0.333300000           8.50
+## 953   AALS   IARB    0.000000    AALS_IARB     0.333300000           0.00
+## 954    ASB   IARB    0.000000     ASB_IARB     0.666700000           0.00
+## 955   FKUG   IARB    0.000000    FKUG_IARB     0.333366667           0.60
+## 956    MSC   IARB    0.000000     MSC_IARB     2.223366667           0.00
+## 957    ASL   IARB    0.000000     ASL_IARB     0.000033333           4.00
+## 958 NADAZM   IARB    0.000000  NADAZM_IARB     0.333366667           4.50
+## 959    SRF   IARB    0.000000     SRF_IARB     0.000033333          12.00
+## 960    JMA   IARB    0.000000     JMA_IARB     3.333700000           0.25
+##     loc.dyad spons.dyad averageId.node size.node spons_actor.node
+## 2          1          1       1.000000      1.80                1
+## 3          1          0       1.333333      9.00                1
+## 4          1          0       1.000000     10.00                1
+## 5          1          0       4.666667      7.00                0
+## 6          1          0       2.833333     15.00                1
+## 7          1          1       5.000000     25.00                0
+## 8          1          1       2.000000      2.50                0
+## 9          1          0       4.666667      1.55                0
+## 10         0          0       2.556667      3.00                0
+## 11         0          1       1.666667      6.00                1
+## 12         1          0       2.333333      8.00                1
+## 13         1          0       2.333333      8.00                1
+## 14         1          0       3.000000     17.00                1
+## 15         1          0       1.666667      2.00                1
+## 16         1          0       1.333333      0.90                1
+## 17         0          1       3.000000      8.50                0
+## 18         1          1       3.333000      0.50                0
+## 19         1          0       1.000000      4.00                1
+## 20         1          0       5.000000      0.80                0
+## 21         1          0       3.000000      1.00                0
+## 22         1          0       1.000000      9.00                0
+## 23         0          0       1.000000      0.50                0
+## 24         0          0       2.000000      0.50                0
+## 25         1          0       1.666667      1.10                1
+## 26         0          0       3.556667      0.50                0
+## 27         1          0       1.333333      4.50                1
+## 28         1          0       1.666667      5.00                1
+## 29         1          1       1.333333     12.50                1
+## 30         1          0       4.667000      0.75                0
+## 31         1          0       1.333300      0.50                0
+## 32         1          1       1.000000      2.00                1
+## 34         1          0       1.333333      9.00                1
+## 35         1          0       1.000000     10.00                1
+## 36         1          0       4.666667      7.00                0
+## 37         1          0       2.833333     15.00                1
+## 38         1          1       5.000000     25.00                0
+## 39         1          1       2.000000      2.50                0
+## 40         1          0       4.666667      1.55                0
+## 41         1          0       2.556667      3.00                0
+## 42         0          1       1.666667      6.00                1
+## 43         1          0       2.333333      8.00                1
+## 44         1          0       2.333333      8.00                1
+## 45         1          0       3.000000     17.00                1
+## 46         1          0       1.666667      2.00                1
+## 47         0          0       1.333333      0.90                1
+## 48         0          1       3.000000      8.50                0
+## 49         1          1       3.333000      0.50                0
+## 50         1          0       1.000000      4.00                1
+## 51         1          0       5.000000      0.80                0
+## 52         1          0       3.000000      1.00                0
+## 53         1          0       1.000000      9.00                0
+## 54         1          0       1.000000      0.50                0
+## 55         0          0       2.000000      0.50                0
+## 56         1          0       1.666667      1.10                1
+## 57         0          0       3.556667      0.50                0
+## 58         1          0       1.333333      4.50                1
+## 59         1          0       1.666667      5.00                1
+## 60         1          1       1.333333     12.50                1
+## 61         1          0       4.667000      0.75                0
+## 62         1          0       1.333300      0.50                0
+## 63         1          0       1.000000      2.00                1
+## 64         1          0       1.000000      1.80                1
+## 66         1          1       1.000000     10.00                1
+## 67         1          0       4.666667      7.00                0
+## 68         1          1       2.833333     15.00                1
+## 69         1          0       5.000000     25.00                0
+## 70         1          1       2.000000      2.50                0
+## 71         1          0       4.666667      1.55                0
+## 72         1          0       2.556667      3.00                0
+## 73         1          1       1.666667      6.00                1
+## 74         1          1       2.333333      8.00                1
+## 75         1          0       2.333333      8.00                1
+## 76         1          0       3.000000     17.00                1
+## 77         1          0       1.666667      2.00                1
+## 78         1          0       1.333333      0.90                1
+## 79         1          0       3.000000      8.50                0
+## 80         1          0       3.333000      0.50                0
+## 81         1          0       1.000000      4.00                1
+## 82         1          0       5.000000      0.80                0
+## 83         1          0       3.000000      1.00                0
+## 84         1          1       1.000000      9.00                0
+## 85         1          1       1.000000      0.50                0
+## 86         1          0       2.000000      0.50                0
+## 87         1          0       1.666667      1.10                1
+## 88         1          1       3.556667      0.50                0
+## 89         1          0       1.333333      4.50                1
+## 90         1          0       1.666667      5.00                1
+## 91         1          1       1.333333     12.50                1
+## 92         1          0       4.667000      0.75                0
+## 93         1          1       1.333300      0.50                0
+## 94         1          0       1.000000      2.00                1
+## 95         1          0       1.000000      1.80                1
+## 96         1          1       1.333333      9.00                1
+## 98         1          0       4.666667      7.00                0
+## 99         1          1       2.833333     15.00                1
+## 100        1          0       5.000000     25.00                0
+## 101        1          1       2.000000      2.50                0
+## 102        1          0       4.666667      1.55                0
+## 103        0          0       2.556667      3.00                0
+## 104        0          1       1.666667      6.00                1
+## 105        1          1       2.333333      8.00                1
+## 106        1          0       2.333333      8.00                1
+## 107        1          0       3.000000     17.00                1
+## 108        1          0       1.666667      2.00                1
+## 109        1          0       1.333333      0.90                1
+## 110        0          0       3.000000      8.50                0
+## 111        1          0       3.333000      0.50                0
+## 112        1          0       1.000000      4.00                1
+## 113        1          0       5.000000      0.80                0
+## 114        0          0       3.000000      1.00                0
+## 115        1          1       1.000000      9.00                0
+## 116        1          1       1.000000      0.50                0
+## 117        0          0       2.000000      0.50                0
+## 118        1          0       1.666667      1.10                1
+## 119        0          1       3.556667      0.50                0
+## 120        1          0       1.333333      4.50                1
+## 121        1          0       1.666667      5.00                1
+## 122        1          1       1.333333     12.50                1
+## 123        1          0       4.667000      0.75                0
+## 124        1          1       1.333300      0.50                0
+## 125        1          0       1.000000      2.00                1
+## 126        1          0       1.000000      1.80                1
+## 127        1          0       1.333333      9.00                1
+## 128        1          0       1.000000     10.00                1
+## 130        1          0       2.833333     15.00                1
+## 131        1          0       5.000000     25.00                0
+## 132        1          0       2.000000      2.50                0
+## 133        1          0       4.666667      1.55                0
+## 134        1          0       2.556667      3.00                0
+## 135        1          0       1.666667      6.00                1
+## 136        1          0       2.333333      8.00                1
+## 137        1          0       2.333333      8.00                1
+## 138        1          0       3.000000     17.00                1
+## 139        1          0       1.666667      2.00                1
+## 140        1          0       1.333333      0.90                1
+## 141        1          0       3.000000      8.50                0
+## 142        1          0       3.333000      0.50                0
+## 143        1          0       1.000000      4.00                1
+## 144        1          0       5.000000      0.80                0
+## 145        1          0       3.000000      1.00                0
+## 146        1          0       1.000000      9.00                0
+## 147        1          0       1.000000      0.50                0
+## 148        1          0       2.000000      0.50                0
+## 149        1          0       1.666667      1.10                1
+## 150        1          0       3.556667      0.50                0
+## 151        1          0       1.333333      4.50                1
+## 152        1          0       1.666667      5.00                1
+## 153        1          0       1.333333     12.50                1
+## 154        1          0       4.667000      0.75                0
+## 155        1          0       1.333300      0.50                0
+## 156        1          0       1.000000      2.00                1
+## 157        1          0       1.000000      1.80                1
+## 158        1          1       1.333333      9.00                1
+## 159        1          1       1.000000     10.00                1
+## 160        1          0       4.666667      7.00                0
+## 162        1          0       5.000000     25.00                0
+## 163        1          1       2.000000      2.50                0
+## 164        1          0       4.666667      1.55                0
+## 165        1          0       2.556667      3.00                0
+## 166        1          1       1.666667      6.00                1
+## 167        1          1       2.333333      8.00                1
+## 168        1          0       2.333333      8.00                1
+## 169        1          0       3.000000     17.00                1
+## 170        1          0       1.666667      2.00                1
+## 171        1          0       1.333333      0.90                1
+## 172        1          0       3.000000      8.50                0
+## 173        1          0       3.333000      0.50                0
+## 174        1          0       1.000000      4.00                1
+## 175        1          0       5.000000      0.80                0
+## 176        1          0       3.000000      1.00                0
+## 177        1          1       1.000000      9.00                0
+## 178        1          1       1.000000      0.50                0
+## 179        1          0       2.000000      0.50                0
+## 180        1          0       1.666667      1.10                1
+## 181        1          1       3.556667      0.50                0
+## 182        1          0       1.333333      4.50                1
+## 183        1          0       1.666667      5.00                1
+## 184        1          1       1.333333     12.50                1
+## 185        1          0       4.667000      0.75                0
+## 186        1          1       1.333300      0.50                0
+## 187        1          1       1.000000      2.00                1
+## 188        1          1       1.000000      1.80                1
+## 189        1          0       1.333333      9.00                1
+## 190        1          0       1.000000     10.00                1
+## 191        1          0       4.666667      7.00                0
+## 192        1          0       2.833333     15.00                1
+## 194        1          1       2.000000      2.50                0
+## 195        1          0       4.666667      1.55                0
+## 196        1          0       2.556667      3.00                0
+## 197        1          1       1.666667      6.00                1
+## 198        1          0       2.333333      8.00                1
+## 199        1          0       2.333333      8.00                1
+## 200        1          0       3.000000     17.00                1
+## 201        1          0       1.666667      2.00                1
+## 202        1          0       1.333333      0.90                1
+## 203        1          1       3.000000      8.50                0
+## 204        1          1       3.333000      0.50                0
+## 205        1          0       1.000000      4.00                1
+## 206        1          0       5.000000      0.80                0
+## 207        1          0       3.000000      1.00                0
+## 208        1          0       1.000000      9.00                0
+## 209        1          0       1.000000      0.50                0
+## 210        1          0       2.000000      0.50                0
+## 211        1          0       1.666667      1.10                1
+## 212        1          0       3.556667      0.50                0
+## 213        1          0       1.333333      4.50                1
+## 214        1          0       1.666667      5.00                1
+## 215        1          1       1.333333     12.50                1
+## 216        1          0       4.667000      0.75                0
+## 217        1          0       1.333300      0.50                0
+## 218        1          1       1.000000      2.00                1
+## 219        1          1       1.000000      1.80                1
+## 220        1          1       1.333333      9.00                1
+## 221        1          1       1.000000     10.00                1
+## 222        1          0       4.666667      7.00                0
+## 223        1          1       2.833333     15.00                1
+## 224        1          1       5.000000     25.00                0
+## 226        1          0       4.666667      1.55                0
+## 227        0          0       2.556667      3.00                0
+## 228        0          1       1.666667      6.00                1
+## 229        1          0       2.333333      8.00                1
+## 230        1          0       2.333333      8.00                1
+## 231        1          0       3.000000     17.00                1
+## 232        1          0       1.666667      2.00                1
+## 233        1          0       1.333333      0.90                1
+## 234        0          1       3.000000      8.50                0
+## 235        1          1       3.333000      0.50                0
+## 236        1          0       1.000000      4.00                1
+## 237        1          0       5.000000      0.80                0
+## 238        1          0       3.000000      1.00                0
+## 239        1          1       1.000000      9.00                0
+## 240        1          0       1.000000      0.50                0
+## 241        0          0       2.000000      0.50                0
+## 242        1          0       1.666667      1.10                1
+## 243        0          1       3.556667      0.50                0
+## 244        1          0       1.333333      4.50                1
+## 245        1          0       1.666667      5.00                1
+## 246        1          1       1.333333     12.50                1
+## 247        1          0       4.667000      0.75                0
+## 248        1          0       1.333300      0.50                0
+## 249        1          0       1.000000      2.00                1
+## 250        1          0       1.000000      1.80                1
+## 251        1          0       1.333333      9.00                1
+## 252        1          0       1.000000     10.00                1
+## 253        1          0       4.666667      7.00                0
+## 254        1          0       2.833333     15.00                1
+## 255        1          0       5.000000     25.00                0
+## 256        1          0       2.000000      2.50                0
+## 258        1          0       2.556667      3.00                0
+## 259        1          0       1.666667      6.00                1
+## 260        1          0       2.333333      8.00                1
+## 261        1          0       2.333333      8.00                1
+## 262        1          0       3.000000     17.00                1
+## 263        1          0       1.666667      2.00                1
+## 264        1          0       1.333333      0.90                1
+## 265        1          0       3.000000      8.50                0
+## 266        1          0       3.333000      0.50                0
+## 267        1          0       1.000000      4.00                1
+## 268        1          0       5.000000      0.80                0
+## 269        1          0       3.000000      1.00                0
+## 270        1          0       1.000000      9.00                0
+## 271        1          0       1.000000      0.50                0
+## 272        1          0       2.000000      0.50                0
+## 273        1          0       1.666667      1.10                1
+## 274        1          0       3.556667      0.50                0
+## 275        1          0       1.333333      4.50                1
+## 276        1          0       1.666667      5.00                1
+## 277        1          0       1.333333     12.50                1
+## 278        1          0       4.667000      0.75                0
+## 279        1          0       1.333300      0.50                0
+## 280        0          0       1.000000      2.00                1
+## 281        1          0       1.000000      1.80                1
+## 282        1          0       1.333333      9.00                1
+## 283        0          0       1.000000     10.00                1
+## 284        1          0       4.666667      7.00                0
+## 285        1          0       2.833333     15.00                1
+## 286        1          0       5.000000     25.00                0
+## 287        0          0       2.000000      2.50                0
+## 288        1          0       4.666667      1.55                0
+## 290        1          0       1.666667      6.00                1
+## 291        0          0       2.333333      8.00                1
+## 292        0          0       2.333333      8.00                1
+## 293        1          0       3.000000     17.00                1
+## 294        1          0       1.666667      2.00                1
+## 295        0          0       1.333333      0.90                1
+## 296        1          0       3.000000      8.50                0
+## 297        0          0       3.333000      0.50                0
+## 298        1          0       1.000000      4.00                1
+## 299        0          0       5.000000      0.80                0
+## 300        0          0       3.000000      1.00                0
+## 301        0          0       1.000000      9.00                0
+## 302        0          0       1.000000      0.50                0
+## 303        0          0       2.000000      0.50                0
+## 304        0          0       1.666667      1.10                1
+## 305        0          0       3.556667      0.50                0
+## 306        1          0       1.333333      4.50                1
+## 307        0          0       1.666667      5.00                1
+## 308        0          0       1.333333     12.50                1
+## 309        0          0       4.667000      0.75                0
+## 310        0          0       1.333300      0.50                0
+## 311        0          1       1.000000      2.00                1
+## 312        0          1       1.000000      1.80                1
+## 313        1          1       1.333333      9.00                1
+## 314        0          1       1.000000     10.00                1
+## 315        1          0       4.666667      7.00                0
+## 316        1          1       2.833333     15.00                1
+## 317        1          1       5.000000     25.00                0
+## 318        0          1       2.000000      2.50                0
+## 319        1          0       4.666667      1.55                0
+## 320        1          0       2.556667      3.00                0
+## 322        0          1       2.333333      8.00                1
+## 323        0          0       2.333333      8.00                1
+## 324        1          0       3.000000     17.00                1
+## 325        1          0       1.666667      2.00                1
+## 326        0          0       1.333333      0.90                1
+## 327        1          1       3.000000      8.50                0
+## 328        0          1       3.333000      0.50                0
+## 329        1          0       1.000000      4.00                1
+## 330        0          0       5.000000      0.80                0
+## 331        0          0       3.000000      1.00                0
+## 332        0          1       1.000000      9.00                0
+## 333        0          0       1.000000      0.50                0
+## 334        1          0       2.000000      0.50                0
+## 335        0          0       1.666667      1.10                1
+## 336        0          1       3.556667      0.50                0
+## 337        1          0       1.333333      4.50                1
+## 338        0          0       1.666667      5.00                1
+## 339        0          1       1.333333     12.50                1
+## 340        0          0       4.667000      0.75                0
+## 341        0          0       1.333300      0.50                0
+## 342        1          0       1.000000      2.00                1
+## 343        1          0       1.000000      1.80                1
+## 344        1          1       1.333333      9.00                1
+## 345        1          1       1.000000     10.00                1
+## 346        1          0       4.666667      7.00                0
+## 347        1          1       2.833333     15.00                1
+## 348        1          0       5.000000     25.00                0
+## 349        1          0       2.000000      2.50                0
+## 350        1          0       4.666667      1.55                0
+## 351        0          0       2.556667      3.00                0
+## 352        0          1       1.666667      6.00                1
+## 354        1          0       2.333333      8.00                1
+## 355        1          0       3.000000     17.00                1
+## 356        1          0       1.666667      2.00                1
+## 357        1          0       1.333333      0.90                1
+## 358        0          0       3.000000      8.50                0
+## 359        1          0       3.333000      0.50                0
+## 360        1          0       1.000000      4.00                1
+## 361        1          0       5.000000      0.80                0
+## 362        0          0       3.000000      1.00                0
+## 363        1          1       1.000000      9.00                0
+## 364        1          0       1.000000      0.50                0
+## 365        0          0       2.000000      0.50                0
+## 366        1          0       1.666667      1.10                1
+## 367        0          1       3.556667      0.50                0
+## 368        1          0       1.333333      4.50                1
+## 369        1          0       1.666667      5.00                1
+## 370        1          1       1.333333     12.50                1
+## 371        1          0       4.667000      0.75                0
+## 372        1          1       1.333300      0.50                0
+## 373        1          0       1.000000      2.00                1
+## 374        1          0       1.000000      1.80                1
+## 375        1          0       1.333333      9.00                1
+## 376        1          0       1.000000     10.00                1
+## 377        1          0       4.666667      7.00                0
+## 378        1          0       2.833333     15.00                1
+## 379        1          0       5.000000     25.00                0
+## 380        1          0       2.000000      2.50                0
+## 381        1          0       4.666667      1.55                0
+## 382        0          0       2.556667      3.00                0
+## 383        0          0       1.666667      6.00                1
+## 384        1          0       2.333333      8.00                1
+## 386        1          0       3.000000     17.00                1
+## 387        1          0       1.666667      2.00                1
+## 388        1          0       1.333333      0.90                1
+## 389        0          0       3.000000      8.50                0
+## 390        1          0       3.333000      0.50                0
+## 391        1          0       1.000000      4.00                1
+## 392        1          0       5.000000      0.80                0
+## 393        0          0       3.000000      1.00                0
+## 394        1          0       1.000000      9.00                0
+## 395        1          0       1.000000      0.50                0
+## 396        0          0       2.000000      0.50                0
+## 397        1          0       1.666667      1.10                1
+## 398        0          0       3.556667      0.50                0
+## 399        1          0       1.333333      4.50                1
+## 400        1          0       1.666667      5.00                1
+## 401        1          0       1.333333     12.50                1
+## 402        1          0       4.667000      0.75                0
+## 403        1          0       1.333300      0.50                0
+## 404        1          0       1.000000      2.00                1
+## 405        1          0       1.000000      1.80                1
+## 406        1          0       1.333333      9.00                1
+## 407        1          0       1.000000     10.00                1
+## 408        1          0       4.666667      7.00                0
+## 409        1          0       2.833333     15.00                1
+## 410        1          0       5.000000     25.00                0
+## 411        1          0       2.000000      2.50                0
+## 412        1          0       4.666667      1.55                0
+## 413        1          0       2.556667      3.00                0
+## 414        1          0       1.666667      6.00                1
+## 415        1          0       2.333333      8.00                1
+## 416        1          0       2.333333      8.00                1
+## 418        1          0       1.666667      2.00                1
+## 419        1          0       1.333333      0.90                1
+## 420        1          0       3.000000      8.50                0
+## 421        1          0       3.333000      0.50                0
+## 422        1          0       1.000000      4.00                1
+## 423        1          0       5.000000      0.80                0
+## 424        1          0       3.000000      1.00                0
+## 425        1          0       1.000000      9.00                0
+## 426        1          0       1.000000      0.50                0
+## 427        1          0       2.000000      0.50                0
+## 428        1          0       1.666667      1.10                1
+## 429        1          0       3.556667      0.50                0
+## 430        1          0       1.333333      4.50                1
+## 431        1          0       1.666667      5.00                1
+## 432        1          0       1.333333     12.50                1
+## 433        1          0       4.667000      0.75                0
+## 434        1          0       1.333300      0.50                0
+## 435        1          0       1.000000      2.00                1
+## 436        1          0       1.000000      1.80                1
+## 437        1          0       1.333333      9.00                1
+## 438        1          0       1.000000     10.00                1
+## 439        1          0       4.666667      7.00                0
+## 440        1          0       2.833333     15.00                1
+## 441        1          0       5.000000     25.00                0
+## 442        1          0       2.000000      2.50                0
+## 443        1          0       4.666667      1.55                0
+## 444        1          0       2.556667      3.00                0
+## 445        1          0       1.666667      6.00                1
+## 446        1          0       2.333333      8.00                1
+## 447        1          0       2.333333      8.00                1
+## 448        1          0       3.000000     17.00                1
+## 450        1          0       1.333333      0.90                1
+## 451        1          0       3.000000      8.50                0
+## 452        1          0       3.333000      0.50                0
+## 453        1          0       1.000000      4.00                1
+## 454        1          0       5.000000      0.80                0
+## 455        1          0       3.000000      1.00                0
+## 456        1          0       1.000000      9.00                0
+## 457        1          0       1.000000      0.50                0
+## 458        1          0       2.000000      0.50                0
+## 459        1          0       1.666667      1.10                1
+## 460        1          0       3.556667      0.50                0
+## 461        1          0       1.333333      4.50                1
+## 462        1          0       1.666667      5.00                1
+## 463        1          0       1.333333     12.50                1
+## 464        1          0       4.667000      0.75                0
+## 465        1          0       1.333300      0.50                0
+## 466        1          0       1.000000      2.00                1
+## 467        0          0       1.000000      1.80                1
+## 468        1          0       1.333333      9.00                1
+## 469        1          0       1.000000     10.00                1
+## 470        1          0       4.666667      7.00                0
+## 471        1          0       2.833333     15.00                1
+## 472        1          0       5.000000     25.00                0
+## 473        1          0       2.000000      2.50                0
+## 474        1          0       4.666667      1.55                0
+## 475        0          0       2.556667      3.00                0
+## 476        0          0       1.666667      6.00                1
+## 477        1          0       2.333333      8.00                1
+## 478        1          0       2.333333      8.00                1
+## 479        1          0       3.000000     17.00                1
+## 480        1          0       1.666667      2.00                1
+## 482        0          0       3.000000      8.50                0
+## 483        1          0       3.333000      0.50                0
+## 484        1          0       1.000000      4.00                1
+## 485        1          0       5.000000      0.80                0
+## 486        1          0       3.000000      1.00                0
+## 487        1          0       1.000000      9.00                0
+## 488        1          0       1.000000      0.50                0
+## 489        0          0       2.000000      0.50                0
+## 490        1          0       1.666667      1.10                1
+## 491        0          0       3.556667      0.50                0
+## 492        1          0       1.333333      4.50                1
+## 493        1          0       1.666667      5.00                1
+## 494        1          0       1.333333     12.50                1
+## 495        1          0       4.667000      0.75                0
+## 496        1          0       1.333300      0.50                0
+## 497        0          1       1.000000      2.00                1
+## 498        0          1       1.000000      1.80                1
+## 499        1          0       1.333333      9.00                1
+## 500        0          0       1.000000     10.00                1
+## 501        1          0       4.666667      7.00                0
+## 502        1          0       2.833333     15.00                1
+## 503        1          1       5.000000     25.00                0
+## 504        0          1       2.000000      2.50                0
+## 505        1          0       4.666667      1.55                0
+## 506        1          0       2.556667      3.00                0
+## 507        1          1       1.666667      6.00                1
+## 508        0          0       2.333333      8.00                1
+## 509        0          0       2.333333      8.00                1
+## 510        1          0       3.000000     17.00                1
+## 511        1          0       1.666667      2.00                1
+## 512        0          0       1.333333      0.90                1
+## 514        0          1       3.333000      0.50                0
+## 515        1          0       1.000000      4.00                1
+## 516        0          0       5.000000      0.80                0
+## 517        0          0       3.000000      1.00                0
+## 518        0          0       1.000000      9.00                0
+## 519        0          0       1.000000      0.50                0
+## 520        1          0       2.000000      0.50                0
+## 521        0          0       1.666667      1.10                1
+## 522        0          0       3.556667      0.50                0
+## 523        1          0       1.333333      4.50                1
+## 524        0          0       1.666667      5.00                1
+## 525        0          1       1.333333     12.50                1
+## 526        0          0       4.667000      0.75                0
+## 527        0          0       1.333300      0.50                0
+## 528        1          1       1.000000      2.00                1
+## 529        1          1       1.000000      1.80                1
+## 530        1          0       1.333333      9.00                1
+## 531        1          0       1.000000     10.00                1
+## 532        1          0       4.666667      7.00                0
+## 533        1          0       2.833333     15.00                1
+## 534        1          1       5.000000     25.00                0
+## 535        1          1       2.000000      2.50                0
+## 536        1          0       4.666667      1.55                0
+## 537        0          0       2.556667      3.00                0
+## 538        0          1       1.666667      6.00                1
+## 539        1          0       2.333333      8.00                1
+## 540        1          0       2.333333      8.00                1
+## 541        1          0       3.000000     17.00                1
+## 542        1          0       1.666667      2.00                1
+## 543        1          0       1.333333      0.90                1
+## 544        0          1       3.000000      8.50                0
+## 546        1          0       1.000000      4.00                1
+## 547        1          0       5.000000      0.80                0
+## 548        0          0       3.000000      1.00                0
+## 549        1          0       1.000000      9.00                0
+## 550        1          0       1.000000      0.50                0
+## 551        0          0       2.000000      0.50                0
+## 552        1          0       1.666667      1.10                1
+## 553        0          0       3.556667      0.50                0
+## 554        1          0       1.333333      4.50                1
+## 555        1          0       1.666667      5.00                1
+## 556        1          1       1.333333     12.50                1
+## 557        1          0       4.667000      0.75                0
+## 558        1          0       1.333300      0.50                0
+## 559        1          0       1.000000      2.00                1
+## 560        1          0       1.000000      1.80                1
+## 561        1          0       1.333333      9.00                1
+## 562        1          0       1.000000     10.00                1
+## 563        1          0       4.666667      7.00                0
+## 564        1          0       2.833333     15.00                1
+## 565        1          0       5.000000     25.00                0
+## 566        1          0       2.000000      2.50                0
+## 567        1          0       4.666667      1.55                0
+## 568        1          0       2.556667      3.00                0
+## 569        1          0       1.666667      6.00                1
+## 570        1          0       2.333333      8.00                1
+## 571        1          0       2.333333      8.00                1
+## 572        1          0       3.000000     17.00                1
+## 573        1          0       1.666667      2.00                1
+## 574        1          0       1.333333      0.90                1
+## 575        1          0       3.000000      8.50                0
+## 576        1          0       3.333000      0.50                0
+## 578        1          0       5.000000      0.80                0
+## 579        1          0       3.000000      1.00                0
+## 580        1          0       1.000000      9.00                0
+## 581        1          0       1.000000      0.50                0
+## 582        1          0       2.000000      0.50                0
+## 583        1          0       1.666667      1.10                1
+## 584        1          0       3.556667      0.50                0
+## 585        1          0       1.333333      4.50                1
+## 586        1          0       1.666667      5.00                1
+## 587        1          0       1.333333     12.50                1
+## 588        1          0       4.667000      0.75                0
+## 589        1          0       1.333300      0.50                0
+## 590        1          0       1.000000      2.00                1
+## 591        1          0       1.000000      1.80                1
+## 592        1          0       1.333333      9.00                1
+## 593        1          0       1.000000     10.00                1
+## 594        1          0       4.666667      7.00                0
+## 595        1          0       2.833333     15.00                1
+## 596        1          0       5.000000     25.00                0
+## 597        1          0       2.000000      2.50                0
+## 598        1          0       4.666667      1.55                0
+## 599        0          0       2.556667      3.00                0
+## 600        0          0       1.666667      6.00                1
+## 601        1          0       2.333333      8.00                1
+## 602        1          0       2.333333      8.00                1
+## 603        1          0       3.000000     17.00                1
+## 604        1          0       1.666667      2.00                1
+## 605        1          0       1.333333      0.90                1
+## 606        0          0       3.000000      8.50                0
+## 607        1          0       3.333000      0.50                0
+## 608        1          0       1.000000      4.00                1
+## 610        1          0       3.000000      1.00                0
+## 611        1          0       1.000000      9.00                0
+## 612        1          0       1.000000      0.50                0
+## 613        0          0       2.000000      0.50                0
+## 614        1          0       1.666667      1.10                1
+## 615        0          0       3.556667      0.50                0
+## 616        1          0       1.333333      4.50                1
+## 617        1          0       1.666667      5.00                1
+## 618        1          0       1.333333     12.50                1
+## 619        1          0       4.667000      0.75                0
+## 620        1          0       1.333300      0.50                0
+## 621        1          0       1.000000      2.00                1
+## 622        1          0       1.000000      1.80                1
+## 623        1          0       1.333333      9.00                1
+## 624        0          0       1.000000     10.00                1
+## 625        1          0       4.666667      7.00                0
+## 626        1          0       2.833333     15.00                1
+## 627        1          0       5.000000     25.00                0
+## 628        1          0       2.000000      2.50                0
+## 629        1          0       4.666667      1.55                0
+## 630        0          0       2.556667      3.00                0
+## 631        0          0       1.666667      6.00                1
+## 632        0          0       2.333333      8.00                1
+## 633        0          0       2.333333      8.00                1
+## 634        1          0       3.000000     17.00                1
+## 635        1          0       1.666667      2.00                1
+## 636        1          0       1.333333      0.90                1
+## 637        0          0       3.000000      8.50                0
+## 638        0          0       3.333000      0.50                0
+## 639        1          0       1.000000      4.00                1
+## 640        1          0       5.000000      0.80                0
+## 642        1          0       1.000000      9.00                0
+## 643        0          0       1.000000      0.50                0
+## 644        0          0       2.000000      0.50                0
+## 645        1          0       1.666667      1.10                1
+## 646        0          0       3.556667      0.50                0
+## 647        1          0       1.333333      4.50                1
+## 648        1          0       1.666667      5.00                1
+## 649        1          0       1.333333     12.50                1
+## 650        1          0       4.667000      0.75                0
+## 651        1          0       1.333300      0.50                0
+## 652        1          0       1.000000      2.00                1
+## 653        1          0       1.000000      1.80                1
+## 654        1          1       1.333333      9.00                1
+## 655        1          1       1.000000     10.00                1
+## 656        1          0       4.666667      7.00                0
+## 657        1          1       2.833333     15.00                1
+## 658        1          0       5.000000     25.00                0
+## 659        1          1       2.000000      2.50                0
+## 660        1          0       4.666667      1.55                0
+## 661        0          0       2.556667      3.00                0
+## 662        0          1       1.666667      6.00                1
+## 663        1          1       2.333333      8.00                1
+## 664        1          0       2.333333      8.00                1
+## 665        1          0       3.000000     17.00                1
+## 666        1          0       1.666667      2.00                1
+## 667        1          0       1.333333      0.90                1
+## 668        0          0       3.000000      8.50                0
+## 669        1          0       3.333000      0.50                0
+## 670        1          0       1.000000      4.00                1
+## 671        1          0       5.000000      0.80                0
+## 672        1          0       3.000000      1.00                0
+## 674        1          0       1.000000      0.50                0
+## 675        0          0       2.000000      0.50                0
+## 676        1          0       1.666667      1.10                1
+## 677        0          1       3.556667      0.50                0
+## 678        1          0       1.333333      4.50                1
+## 679        1          0       1.666667      5.00                1
+## 680        1          1       1.333333     12.50                1
+## 681        1          0       4.667000      0.75                0
+## 682        1          1       1.333300      0.50                0
+## 683        0          0       1.000000      2.00                1
+## 684        1          0       1.000000      1.80                1
+## 685        1          1       1.333333      9.00                1
+## 686        1          1       1.000000     10.00                1
+## 687        1          0       4.666667      7.00                0
+## 688        1          1       2.833333     15.00                1
+## 689        1          0       5.000000     25.00                0
+## 690        1          0       2.000000      2.50                0
+## 691        1          0       4.666667      1.55                0
+## 692        0          0       2.556667      3.00                0
+## 693        0          0       1.666667      6.00                1
+## 694        1          0       2.333333      8.00                1
+## 695        1          0       2.333333      8.00                1
+## 696        1          0       3.000000     17.00                1
+## 697        1          0       1.666667      2.00                1
+## 698        1          0       1.333333      0.90                1
+## 699        0          0       3.000000      8.50                0
+## 700        1          0       3.333000      0.50                0
+## 701        1          0       1.000000      4.00                1
+## 702        1          0       5.000000      0.80                0
+## 703        0          0       3.000000      1.00                0
+## 704        1          0       1.000000      9.00                0
+## 706        0          0       2.000000      0.50                0
+## 707        1          0       1.666667      1.10                1
+## 708        0          0       3.556667      0.50                0
+## 709        1          0       1.333333      4.50                1
+## 710        1          0       1.666667      5.00                1
+## 711        1          1       1.333333     12.50                1
+## 712        1          0       4.667000      0.75                0
+## 713        1          1       1.333300      0.50                0
+## 714        0          0       1.000000      2.00                1
+## 715        0          0       1.000000      1.80                1
+## 716        1          0       1.333333      9.00                1
+## 717        0          0       1.000000     10.00                1
+## 718        1          0       4.666667      7.00                0
+## 719        1          0       2.833333     15.00                1
+## 720        1          0       5.000000     25.00                0
+## 721        0          0       2.000000      2.50                0
+## 722        1          0       4.666667      1.55                0
+## 723        0          0       2.556667      3.00                0
+## 724        1          0       1.666667      6.00                1
+## 725        0          0       2.333333      8.00                1
+## 726        0          0       2.333333      8.00                1
+## 727        1          0       3.000000     17.00                1
+## 728        1          0       1.666667      2.00                1
+## 729        0          0       1.333333      0.90                1
+## 730        1          0       3.000000      8.50                0
+## 731        0          0       3.333000      0.50                0
+## 732        1          0       1.000000      4.00                1
+## 733        0          0       5.000000      0.80                0
+## 734        0          0       3.000000      1.00                0
+## 735        0          0       1.000000      9.00                0
+## 736        0          0       1.000000      0.50                0
+## 738        0          0       1.666667      1.10                1
+## 739        0          0       3.556667      0.50                0
+## 740        1          0       1.333333      4.50                1
+## 741        0          0       1.666667      5.00                1
+## 742        0          0       1.333333     12.50                1
+## 743        0          0       4.667000      0.75                0
+## 744        0          0       1.333300      0.50                0
+## 745        1          0       1.000000      2.00                1
+## 746        1          0       1.000000      1.80                1
+## 747        1          0       1.333333      9.00                1
+## 748        1          0       1.000000     10.00                1
+## 749        1          0       4.666667      7.00                0
+## 750        1          0       2.833333     15.00                1
+## 751        1          0       5.000000     25.00                0
+## 752        1          0       2.000000      2.50                0
+## 753        1          0       4.666667      1.55                0
+## 754        0          0       2.556667      3.00                0
+## 755        0          0       1.666667      6.00                1
+## 756        1          0       2.333333      8.00                1
+## 757        1          0       2.333333      8.00                1
+## 758        1          0       3.000000     17.00                1
+## 759        1          0       1.666667      2.00                1
+## 760        1          0       1.333333      0.90                1
+## 761        0          0       3.000000      8.50                0
+## 762        1          0       3.333000      0.50                0
+## 763        1          0       1.000000      4.00                1
+## 764        1          0       5.000000      0.80                0
+## 765        1          0       3.000000      1.00                0
+## 766        1          0       1.000000      9.00                0
+## 767        1          0       1.000000      0.50                0
+## 768        0          0       2.000000      0.50                0
+## 770        0          0       3.556667      0.50                0
+## 771        1          0       1.333333      4.50                1
+## 772        1          0       1.666667      5.00                1
+## 773        1          0       1.333333     12.50                1
+## 774        1          0       4.667000      0.75                0
+## 775        1          0       1.333300      0.50                0
+## 776        0          0       1.000000      2.00                1
+## 777        0          0       1.000000      1.80                1
+## 778        1          1       1.333333      9.00                1
+## 779        0          1       1.000000     10.00                1
+## 780        1          0       4.666667      7.00                0
+## 781        1          1       2.833333     15.00                1
+## 782        1          0       5.000000     25.00                0
+## 783        0          1       2.000000      2.50                0
+## 784        1          0       4.666667      1.55                0
+## 785        0          0       2.556667      3.00                0
+## 786        0          1       1.666667      6.00                1
+## 787        0          1       2.333333      8.00                1
+## 788        0          0       2.333333      8.00                1
+## 789        1          0       3.000000     17.00                1
+## 790        1          0       1.666667      2.00                1
+## 791        0          0       1.333333      0.90                1
+## 792        0          0       3.000000      8.50                0
+## 793        0          0       3.333000      0.50                0
+## 794        1          0       1.000000      4.00                1
+## 795        0          0       5.000000      0.80                0
+## 796        0          0       3.000000      1.00                0
+## 797        0          1       1.000000      9.00                0
+## 798        0          0       1.000000      0.50                0
+## 799        0          0       2.000000      0.50                0
+## 800        0          0       1.666667      1.10                1
+## 802        1          0       1.333333      4.50                1
+## 803        0          0       1.666667      5.00                1
+## 804        0          1       1.333333     12.50                1
+## 805        0          0       4.667000      0.75                0
+## 806        0          0       1.333300      0.50                0
+## 807        1          0       1.000000      2.00                1
+## 808        1          0       1.000000      1.80                1
+## 809        1          0       1.333333      9.00                1
+## 810        1          0       1.000000     10.00                1
+## 811        1          0       4.666667      7.00                0
+## 812        1          0       2.833333     15.00                1
+## 813        1          0       5.000000     25.00                0
+## 814        1          0       2.000000      2.50                0
+## 815        1          0       4.666667      1.55                0
+## 816        1          0       2.556667      3.00                0
+## 817        1          0       1.666667      6.00                1
+## 818        1          0       2.333333      8.00                1
+## 819        1          0       2.333333      8.00                1
+## 820        1          0       3.000000     17.00                1
+## 821        1          0       1.666667      2.00                1
+## 822        1          0       1.333333      0.90                1
+## 823        1          0       3.000000      8.50                0
+## 824        1          0       3.333000      0.50                0
+## 825        1          0       1.000000      4.00                1
+## 826        1          0       5.000000      0.80                0
+## 827        1          0       3.000000      1.00                0
+## 828        1          0       1.000000      9.00                0
+## 829        1          0       1.000000      0.50                0
+## 830        1          0       2.000000      0.50                0
+## 831        1          0       1.666667      1.10                1
+## 832        1          0       3.556667      0.50                0
+## 834        1          0       1.666667      5.00                1
+## 835        1          0       1.333333     12.50                1
+## 836        1          0       4.667000      0.75                0
+## 837        1          0       1.333300      0.50                0
+## 838        1          0       1.000000      2.00                1
+## 839        1          0       1.000000      1.80                1
+## 840        1          0       1.333333      9.00                1
+## 841        1          0       1.000000     10.00                1
+## 842        1          0       4.666667      7.00                0
+## 843        1          0       2.833333     15.00                1
+## 844        1          0       5.000000     25.00                0
+## 845        1          0       2.000000      2.50                0
+## 846        1          0       4.666667      1.55                0
+## 847        0          0       2.556667      3.00                0
+## 848        0          0       1.666667      6.00                1
+## 849        1          0       2.333333      8.00                1
+## 850        1          0       2.333333      8.00                1
+## 851        1          0       3.000000     17.00                1
+## 852        1          0       1.666667      2.00                1
+## 853        1          0       1.333333      0.90                1
+## 854        0          0       3.000000      8.50                0
+## 855        1          0       3.333000      0.50                0
+## 856        1          0       1.000000      4.00                1
+## 857        1          0       5.000000      0.80                0
+## 858        1          0       3.000000      1.00                0
+## 859        1          0       1.000000      9.00                0
+## 860        1          0       1.000000      0.50                0
+## 861        0          0       2.000000      0.50                0
+## 862        1          0       1.666667      1.10                1
+## 863        0          0       3.556667      0.50                0
+## 864        1          0       1.333333      4.50                1
+## 866        1          0       1.333333     12.50                1
+## 867        1          0       4.667000      0.75                0
+## 868        1          0       1.333300      0.50                0
+## 869        1          1       1.000000      2.00                1
+## 870        1          1       1.000000      1.80                1
+## 871        1          1       1.333333      9.00                1
+## 872        1          1       1.000000     10.00                1
+## 873        1          0       4.666667      7.00                0
+## 874        1          1       2.833333     15.00                1
+## 875        1          1       5.000000     25.00                0
+## 876        1          1       2.000000      2.50                0
+## 877        1          0       4.666667      1.55                0
+## 878        0          0       2.556667      3.00                0
+## 879        0          1       1.666667      6.00                1
+## 880        1          1       2.333333      8.00                1
+## 881        1          0       2.333333      8.00                1
+## 882        1          0       3.000000     17.00                1
+## 883        1          0       1.666667      2.00                1
+## 884        1          0       1.333333      0.90                1
+## 885        0          1       3.000000      8.50                0
+## 886        1          1       3.333000      0.50                0
+## 887        1          0       1.000000      4.00                1
+## 888        1          0       5.000000      0.80                0
+## 889        1          0       3.000000      1.00                0
+## 890        1          1       1.000000      9.00                0
+## 891        1          1       1.000000      0.50                0
+## 892        0          0       2.000000      0.50                0
+## 893        1          0       1.666667      1.10                1
+## 894        0          1       3.556667      0.50                0
+## 895        1          0       1.333333      4.50                1
+## 896        1          0       1.666667      5.00                1
+## 898        1          0       4.667000      0.75                0
+## 899        1          1       1.333300      0.50                0
+## 900        1          0       1.000000      2.00                1
+## 901        1          0       1.000000      1.80                1
+## 902        1          0       1.333333      9.00                1
+## 903        1          0       1.000000     10.00                1
+## 904        1          0       4.666667      7.00                0
+## 905        1          0       2.833333     15.00                1
+## 906        1          0       5.000000     25.00                0
+## 907        1          0       2.000000      2.50                0
+## 908        1          0       4.666667      1.55                0
+## 909        0          0       2.556667      3.00                0
+## 910        0          0       1.666667      6.00                1
+## 911        1          0       2.333333      8.00                1
+## 912        1          0       2.333333      8.00                1
+## 913        1          0       3.000000     17.00                1
+## 914        1          0       1.666667      2.00                1
+## 915        1          0       1.333333      0.90                1
+## 916        0          0       3.000000      8.50                0
+## 917        1          0       3.333000      0.50                0
+## 918        1          0       1.000000      4.00                1
+## 919        1          0       5.000000      0.80                0
+## 920        1          0       3.000000      1.00                0
+## 921        1          0       1.000000      9.00                0
+## 922        1          0       1.000000      0.50                0
+## 923        0          0       2.000000      0.50                0
+## 924        1          0       1.666667      1.10                1
+## 925        0          0       3.556667      0.50                0
+## 926        1          0       1.333333      4.50                1
+## 927        1          0       1.666667      5.00                1
+## 928        1          0       1.333333     12.50                1
+## 930        1          0       1.333300      0.50                0
+## 931        1          0       1.000000      2.00                1
+## 932        1          0       1.000000      1.80                1
+## 933        1          1       1.333333      9.00                1
+## 934        1          1       1.000000     10.00                1
+## 935        1          0       4.666667      7.00                0
+## 936        1          1       2.833333     15.00                1
+## 937        1          0       5.000000     25.00                0
+## 938        1          0       2.000000      2.50                0
+## 939        1          0       4.666667      1.55                0
+## 940        0          0       2.556667      3.00                0
+## 941        0          0       1.666667      6.00                1
+## 942        1          1       2.333333      8.00                1
+## 943        1          0       2.333333      8.00                1
+## 944        1          0       3.000000     17.00                1
+## 945        1          0       1.666667      2.00                1
+## 946        1          0       1.333333      0.90                1
+## 947        0          0       3.000000      8.50                0
+## 948        1          0       3.333000      0.50                0
+## 949        1          0       1.000000      4.00                1
+## 950        1          0       5.000000      0.80                0
+## 951        1          0       3.000000      1.00                0
+## 952        1          1       1.000000      9.00                0
+## 953        1          1       1.000000      0.50                0
+## 954        0          0       2.000000      0.50                0
+## 955        1          0       1.666667      1.10                1
+## 956        0          0       3.556667      0.50                0
+## 957        1          0       1.333333      4.50                1
+## 958        1          0       1.666667      5.00                1
+## 959        1          1       1.333333     12.50                1
+## 960        1          0       4.667000      0.75                0
 ```
 ---
 ## Results
@@ -406,7 +2088,7 @@ net = as.network(
 ```r
 # Set node attributes
 for(param in nodeVars){
-	set.vertex.attribute(net, param, nodeData[,param])
+	network::set.vertex.attribute(net, param, nodeData[,param])
 }
 
 # Set network attributes:
@@ -452,9 +2134,8 @@ summary(m0)
 ##     nodecov("spons_actor.node") + absdiff("averageId.node") + 
 ##     absdiff("size.node") + edgecov("loc.dyad") + edgecov("spons.dyad"))
 ## 
-## Iterations:  7 out of 20 
+## Maximum Likelihood Results:
 ## 
-## Monte Carlo MLE Results:
 ##                          Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
 ## edges                    -7.30989    1.24208      0  -5.885  &lt; 1e-04 ***
 ## nodecov.averageId.node    0.42619    0.11065      0   3.852 0.000117 ***
@@ -470,7 +2151,7 @@ summary(m0)
 ##      Null Deviance: 644.6  on 465  degrees of freedom
 ##  Residual Deviance: 353.6  on 457  degrees of freedom
 ##  
-## AIC: 369.6    BIC: 402.8    (Smaller is better.)
+## AIC: 369.6  BIC: 402.8  (Smaller is better. MC Std. Err. = 0)
 ```
 
 ---
@@ -487,7 +2168,7 @@ m1 = ergm(
     absdiff('size.node') +
     edgecov('loc.dyad') +
     edgecov('spons.dyad')+
-		gwesp
+		gwesp(decay = .5,fixed = TRUE)
 		)
 ```
 ---
@@ -503,29 +2184,27 @@ summary(m1)
 ## ergm(formula = net ~ edges + nodecov("averageId.node") + nodecov("size.node") + 
 ##     nodecov("spons_actor.node") + absdiff("averageId.node") + 
 ##     absdiff("size.node") + edgecov("loc.dyad") + edgecov("spons.dyad") + 
-##     gwesp)
+##     gwesp(decay = 0.5, fixed = TRUE))
 ## 
-## Iterations:  4 out of 20 
+## Monte Carlo Maximum Likelihood Results:
 ## 
-## Monte Carlo MLE Results:
 ##                          Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges                    -6.96793    1.19522      0  -5.830  &lt; 1e-04 ***
-## nodecov.averageId.node    0.21949    0.08262      0   2.657  0.00789 ** 
-## nodecov.size.node         0.05958    0.01977      0   3.014  0.00258 ** 
-## nodecov.spons_actor.node  0.14499    0.21489      0   0.675  0.49986    
-## absdiff.averageId.node   -0.21550    0.11265      0  -1.913  0.05576 .  
-## absdiff.size.node        -0.06690    0.02711      0  -2.468  0.01358 *  
-## edgecov.loc.dyad          2.56820    1.01579      0   2.528  0.01146 *  
-## edgecov.spons.dyad        0.05460    0.36702      0   0.149  0.88174    
-## gwesp                     0.84757    0.32276      0   2.626  0.00864 ** 
-## gwesp.decay               0.83144    0.25561      0   3.253  0.00114 ** 
+## edges                    -7.54152    1.22584      0  -6.152  &lt; 1e-04 ***
+## nodecov.averageId.node    0.24769    0.09044      0   2.739 0.006168 ** 
+## nodecov.size.node         0.06834    0.01995      0   3.426 0.000613 ***
+## nodecov.spons_actor.node  0.19118    0.23130      0   0.827 0.408484    
+## absdiff.averageId.node   -0.22001    0.11629      0  -1.892 0.058492 .  
+## absdiff.size.node        -0.07533    0.02783      0  -2.707 0.006790 ** 
+## edgecov.loc.dyad          2.63368    1.07100      0   2.459 0.013929 *  
+## edgecov.spons.dyad        0.07522    0.37799      0   0.199 0.842263    
+## gwesp.fixed.0.5           1.25758    0.29420      0   4.275  &lt; 1e-04 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##      Null Deviance: 644.6  on 465  degrees of freedom
-##  Residual Deviance: 322.8  on 455  degrees of freedom
+##  Residual Deviance: 325.7  on 456  degrees of freedom
 ##  
-## AIC: 342.8    BIC: 384.3    (Smaller is better.)
+## AIC: 343.7  BIC: 380.9  (Smaller is better. MC Std. Err. = 0.315)
 ```
 
 ---
@@ -536,7 +2215,9 @@ AIC(m1)
 ```
 
 ```
-## [1] 342.8487
+## [1] 343.6551
+## attr(,"vcov")
+## [1] 0.09920047
 ```
 
 ```r
@@ -544,7 +2225,9 @@ BIC(m1)
 ```
 
 ```
-## [1] 384.2691
+## [1] 380.9334
+## attr(,"vcov")
+## [1] 0.09920047
 ```
 
 ```r

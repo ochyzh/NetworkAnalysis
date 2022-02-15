@@ -2,6 +2,8 @@
 title: Advanced Network Analysis
 subtitle: ERGM Specification and Implementation
 author: "Olga Chyzh [www.olgachyzh.com]"
+header-includes:
+
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -9,6 +11,7 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+
 
 exclude: true
 ---
@@ -19,6 +22,7 @@ library(statnet)
 library(devtools)
 install_github("ochyzh/networkdata")
 library(networkdata)
+
 ```
 
 
@@ -37,7 +41,7 @@ b. Have similar ideology.
 ---
 
 ## ERGM Specification: Ground Rules
-1. Your dependent variable must be a network object with binary edges. The `network` command creates network objects from edgelists or adjacency matrices. Pay attention to whether you are working with a directed or an undirected network.
+[1] Your dependent variable must be a network object with binary edges. The `network` command creates network objects from edgelists or adjacency matrices. Pay attention to whether you are working with a directed or an undirected network.
 
 ```{r rule1, echo=TRUE, eval=FALSE, message=FALSE}
 library(statnet)
@@ -54,18 +58,19 @@ mynet<-network(el, matrix.type="edgelist",
 
 ---
 ## ERGM Specification: Ground Rules
-2. All edge-level/dyadic covariates must be stored as matrix objects and defined as *network attributes* using `set.network.attribute` command. Make sure your vertices are named/sorted the same way in all datasets.
 
-```{r rule2, echo=TRUE, eval=TRUE, message=FALSE}
+[2] All edge-level/dyadic covariates must be stored as matrix objects and defined as *network attributes* using `set.network.attribute` command. Make sure your vertices are named/sorted the same way in all datasets.
+
+```{r rule2, eval=TRUE, echo=TRUE, message=FALSE}
 # Convert the object "edist" which contains euclidean distance (units in lat/long), to a matrix:
 edist <- as.matrix(edist)
 # Define network attribute
 set.network.attribute(mynet,"dist",edist)
-
 ```
 ---
 ## ERGM Specification: Ground Rules
-3. All node-level covariates must be defined as *vertex attributes* using `set.vertex.attribute` command. Again, pay attention to names/order in which your nodes are sorted in the data.
+
+[3] All node-level covariates must be defined as *vertex attributes* using `set.vertex.attribute` command. Again, pay attention to names/order in which your nodes are sorted in the data.
 
 ```{r rule3, echo=TRUE, eval=TRUE, message=FALSE}
 # Define object "dwnom" (ideology) as a vertex attribute
@@ -90,9 +95,10 @@ set.vertex.attribute(mynet,"ideol",dwnom$dwnom)
   + ideology
   + state sponsorship
   
-- Ideological similarigty is the primary driver for rebel cooperation.
+- Ideological similarity is the primary driver for rebel cooperation.
 ---
 ## Gade et al. 2019 Hypothesis
+
 
 Ideology:
 
@@ -103,7 +109,7 @@ Power:
 - An overriding concern for capability aggregation in rebel movements will tend to
 produce *symmetric* alliances.
 - The desire of strong groups to form alliances that maximize decision-making
-autonomy vis-$\grave{a}$-vis rivals will generate *asymmetric* alliances.
+autonomy vis-a-vis rivals will generate *asymmetric* alliances.
 
 State sponsorship:
 
@@ -208,7 +214,7 @@ net = as.network(
 ```{r prep4, echo=TRUE, eval=TRUE}
 # Set node attributes
 for(param in nodeVars){
-	set.vertex.attribute(net, param, nodeData[,param])
+	network::set.vertex.attribute(net, param, nodeData[,param])
 }
 
 # Set network attributes:
@@ -259,7 +265,7 @@ m1 = ergm(
     absdiff('size.node') +
     edgecov('loc.dyad') +
     edgecov('spons.dyad')+
-		gwesp
+		gwesp(decay = .5,fixed = TRUE)
 		)
 
 ```
