@@ -3,7 +3,8 @@ title: Advanced Network Analysis
 subtitle: ERGM Specification and Implementation
 author: "Olga Chyzh [www.olgachyzh.com]"
 header-includes:
-
+    - \usepackage[utf8]{inputenc}
+    - \usepackage[T1]{fontenc}
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -109,7 +110,7 @@ Power:
 - An overriding concern for capability aggregation in rebel movements will tend to
 produce *symmetric* alliances.
 - The desire of strong groups to form alliances that maximize decision-making
-autonomy vis-a-vis rivals will generate *asymmetric* alliances.
+autonomy vis- $\grave{a}$ -vis rivals will generate *asymmetric* alliances.
 
 State sponsorship:
 
