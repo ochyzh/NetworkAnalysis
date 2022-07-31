@@ -16,7 +16,7 @@ All the class materials will be posted/updated here.
     </thead>
     <tbody>
       <tr>
-        <td>July 20</td>
+        <td>Day 1</td>
         <td>Course Overview and  <br>
          Introduction to Network Analysis</td>
         <td>
@@ -27,7 +27,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>July 21</td>
+        <td>Day 2</td>
         <td>Network Centrality</td>
         <td>
           <dl>
@@ -37,7 +37,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>July 22</td>
+        <td>Day 3</td>
         <td>Community Detection</td>
         <td>
           <dl>
@@ -47,7 +47,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>July 23</td>
+        <td>Day 4</td>
         <td>Random Networks</td>
         <td>
           <dl>
@@ -57,7 +57,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>July 26-29</td>
+        <td>Days 5--6</td>
         <td>Intro to ERGMs</td>
         <td>
           <dl>
@@ -67,7 +67,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>July 29</td>
+        <td>Day 7</td>
         <td>ERGM Specification</td>
         <td>
           <dl>
@@ -77,7 +77,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>July 30</td>
+        <td>Day 8</td>
         <td>Weighted Networks</td>
         <td>
           <dl>
@@ -87,7 +87,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Aug 2</td>
+        <td>Day 9</td>
         <td>ERGM Application</td>
         <td>
           <dl>
@@ -97,7 +97,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Aug 3</td>
+        <td>Day 10</td>
         <td>Temporal ERGMs</td>
         <td>
           <dl>
@@ -107,7 +107,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Aug 4</td>
+        <td>Day 11</td>
         <td>Latent Space Models</td>
         <td>
           <dl>
@@ -117,7 +117,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Aug 5, 9</td>
+        <td>Day 12--13</td>
         <td>SOAMs</td>
         <td>
           <dl>
@@ -127,7 +127,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
             <tr>
-        <td>Aug 10-11</td>
+        <td>Day 14-15</td>
         <td>LSGM</td>
         <td>
           <dl>
@@ -137,7 +137,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Aug 12</td>
+        <td>Day 16</td>
         <td>Other Topics</td>
         <td>
           <dl>
