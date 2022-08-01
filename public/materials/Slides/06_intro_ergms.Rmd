@@ -26,8 +26,41 @@ exponential random graph models. *Political Analysis*, 19(1):66--86, 2011.
 ---
 
 ## Why ERGMs?
-- So far, we have mostly focused on descriptive rather than inferential tools.
-- May want to test hypotheses about processes that give rise to particular network structures.
+
+The fundamental problem of network analysis:
+
+- Is the network we observe an Erdos-Renyi network?
+
+    - In an Erdos-Renyi network, the probability of each edge is independent of that of other edges.
+    
+- If not, what are the endogeneous network features that define our network?
+---
+## Example: Friendship Netwok
+
+```{r, echo=TRUE, message=FALSE}
+library(igraph)
+library(sna)
+data(coleman) #Use friendship data
+coleman<-coleman[1,,]
+#convert to an -igraph- object, we'll treat it as a directed graph for now:
+coleman<-graph_from_adjacency_matrix(coleman, mode="directed", diag=FALSE) 
+edge_density(coleman)
+reciprocity(coleman) #Note that -igraph- default is an undirected graph
+
+```
+
+---
+## Friendship Data
+```{r, eval=TRUE, echo=FALSE,out.width = '60%'}
+plot(coleman, vertex.label=NA, vertex.color="blue",  vertex.size = 5,edge.arrow.size = 0.5)
+```
+
+- What are some endogenous network features of this network?
+
+---
+## Why ERGMs?
+
+- Test hypotheses about processes that give rise to particular network structures.
 
 - ERGMs provide a way to:
 	+ estimate and evaluate the effect of exogenous covariates

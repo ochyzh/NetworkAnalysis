@@ -4,7 +4,7 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Advanced Network Analysis
+]
+.subtitle[
 ## Introduction to Exponential Random Graph Models
+]
+.author[
 ### Olga Chyzh [www.olgachyzh.com]
+]
 
 ---
 
@@ -29,8 +35,50 @@ exponential random graph models. *Political Analysis*, 19(1):66--86, 2011.
 ---
 
 ## Why ERGMs?
-- So far, we have mostly focused on descriptive rather than inferential tools.
-- May want to test hypotheses about processes that give rise to particular network structures.
+
+The fundamental problem of network analysis:
+
+- Is the network we observe an Erdos-Renyi network?
+
+    - In an Erdos-Renyi network, the probability of each edge is independent of that of other edges.
+    
+- If not, what are the endogeneous network features that define our network?
+---
+## Example: Friendship Netwok
+
+
+```r
+library(igraph)
+library(sna)
+data(coleman) #Use friendship data
+coleman&lt;-coleman[1,,]
+#convert to an -igraph- object, we'll treat it as a directed graph for now:
+coleman&lt;-graph_from_adjacency_matrix(coleman, mode="directed", diag=FALSE) 
+edge_density(coleman)
+```
+
+```
+## [1] 0.04623288
+```
+
+```r
+reciprocity(coleman) #Note that -igraph- default is an undirected graph
+```
+
+```
+## [1] 0.5102881
+```
+
+---
+## Friendship Data
+&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+- What are some endogenous network features of this network?
+
+---
+## Why ERGMs?
+
+- Test hypotheses about processes that give rise to particular network structures.
 
 - ERGMs provide a way to:
 	+ estimate and evaluate the effect of exogenous covariates
@@ -317,7 +365,8 @@ network::list.vertex.attributes(samplike)
 ```
 
 ```
-## [1] "age"           "cloisterville" "group"         "na"            "vertex.names"
+## [1] "age"           "cloisterville" "group"         "na"           
+## [5] "vertex.names"
 ```
 
 ```r
@@ -342,8 +391,9 @@ samplike %v% 'group' # returns the same result as above
 
 
 ```
-##  [1] "Turks"    "Turks"    "Outcasts" "Loyal"    "Loyal"    "Loyal"    "Turks"    "Loyal"    "Loyal"    "Loyal"    "Loyal"   
-## [12] "Turks"    "Outcasts" "Turks"    "Turks"    "Turks"    "Outcasts" "Outcasts"
+##  [1] "Turks"    "Turks"    "Outcasts" "Loyal"    "Loyal"    "Loyal"   
+##  [7] "Turks"    "Loyal"    "Loyal"    "Loyal"    "Loyal"    "Turks"   
+## [13] "Outcasts" "Turks"    "Turks"    "Turks"    "Outcasts" "Outcasts"
 ```
 
 
@@ -380,7 +430,7 @@ p&lt;-plot(samplike,
 
 ## Sampson data visualization
 
-&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-12-1.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-14-1.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -410,9 +460,8 @@ summary(m1)
 ## Call:
 ## ergm(formula = samplike ~ edges)
 ## 
-## Iterations:  4 out of 20 
+## Maximum Likelihood Results:
 ## 
-## Monte Carlo MLE Results:
 ##       Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
 ## edges  -0.9072     0.1263      0  -7.183   &lt;1e-04 ***
 ## ---
@@ -421,7 +470,7 @@ summary(m1)
 ##      Null Deviance: 424.2  on 306  degrees of freedom
 ##  Residual Deviance: 367.2  on 305  degrees of freedom
 ##  
-## AIC: 369.2    BIC: 372.9    (Smaller is better.)
+## AIC: 369.2  BIC: 372.9  (Smaller is better. MC Std. Err. = 0)
 ```
 
 ---
@@ -467,9 +516,8 @@ summary(m2)
 ## Call:
 ## ergm(formula = samplike ~ edges + nodematch("group"))
 ## 
-## Iterations:  5 out of 20 
+## Maximum Likelihood Results:
 ## 
-## Monte Carlo MLE Results:
 ##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
 ## edges            -2.0015     0.2131      0  -9.393   &lt;1e-04 ***
 ## nodematch.group   2.6481     0.3026      0   8.751   &lt;1e-04 ***
@@ -479,7 +527,7 @@ summary(m2)
 ##      Null Deviance: 424.2  on 306  degrees of freedom
 ##  Residual Deviance: 276.9  on 304  degrees of freedom
 ##  
-## AIC: 280.9    BIC: 288.3    (Smaller is better.)
+## AIC: 280.9  BIC: 288.3  (Smaller is better. MC Std. Err. = 0)
 ```
 
 
@@ -521,9 +569,8 @@ summary(m3)
 ```
 
 ```
-## Iterations:  2 out of 20 
+##  Results:
 ## 
-## Monte Carlo MLE Results:
 ##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
 ## edges            -2.2611     0.2319      0  -9.750  &lt; 1e-04 ***
 ## nodematch.group   2.0289     0.3216      0   6.310  &lt; 1e-04 ***
@@ -534,7 +581,7 @@ summary(m3)
 ##      Null Deviance: 424.2  on 306  degrees of freedom
 ##  Residual Deviance: 268.4  on 303  degrees of freedom
 ##  
-## AIC: 274.4    BIC: 285.5    (Smaller is better.)
+## AIC: 274.4  BIC: 285.5  (Smaller is better. MC Std. Err. = NA)
 ```
 
 ---
@@ -636,10 +683,10 @@ mcmc.diagnostics(m3)
 ## Individual P-values (lower = worse):
 ##           edges nodematch.group          mutual 
 ##       0.2285433       0.5266497       0.2677289 
-## Joint P-value (lower = worse):  0.6613382 .
+## Joint P-value (lower = worse):  0.6572889 .
 ```
 
-&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
 
 ```
 ## 
@@ -716,7 +763,7 @@ lapply(1:length(simNets), function(i){
 ---
 ## Simulation and fit
 
-&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -760,7 +807,7 @@ plot(gofM3)
 
 ## Examining model fit
 
-&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-32-2.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-34-2.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -786,9 +833,8 @@ summary(m4)
 ```
 
 ```
-## Iterations:  2 out of 20 
+##  Results:
 ## 
-## Monte Carlo MLE Results:
 ##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
 ## edges            -4.4771     0.6316      0  -7.089  &lt; 1e-04 ***
 ## nodematch.group   2.1798     0.3186      0   6.842  &lt; 1e-04 ***
@@ -800,7 +846,7 @@ summary(m4)
 ##      Null Deviance: 424.2  on 306  degrees of freedom
 ##  Residual Deviance: 259.9  on 302  degrees of freedom
 ##  
-## AIC: 267.9    BIC: 282.8    (Smaller is better.)
+## AIC: 267.9  BIC: 282.8  (Smaller is better. MC Std. Err. = NA)
 ```
 ---
 ## Is fit getting better?
@@ -820,7 +866,7 @@ lapply(1:length(simNets), function(i){
 ---
 ## Is fit getting better?
 
-&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -840,7 +886,7 @@ plot(gofM4)
 
 ## GOF for Model 4
 
-&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-38-2.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-40-2.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -861,7 +907,7 @@ plot(gofM4_indegree)
 
 ## Did we improve in degree fit?
 
-&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-40-2.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="06_intro_ergms_files/figure-html/unnamed-chunk-42-2.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -918,9 +964,8 @@ summary(m5)
 ```
 
 ```
-## Iterations:  2 out of 20 
+##  Results:
 ## 
-## Monte Carlo MLE Results:
 ##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
 ## edges           -6.04441    0.90096      0  -6.709  &lt; 1e-04 ***
 ## nodematch.group  3.65963    0.71069      0   5.149  &lt; 1e-04 ***
@@ -933,7 +978,7 @@ summary(m5)
 ##      Null Deviance: 424.2  on 306  degrees of freedom
 ##  Residual Deviance: 248.2  on 301  degrees of freedom
 ##  
-## AIC: 258.2    BIC: 276.8    (Smaller is better.)
+## AIC: 258.2  BIC: 276.8  (Smaller is better. MC Std. Err. = NA)
 ```
 
 
@@ -978,9 +1023,8 @@ summary(m6)
 ```
 
 ```
-## Iterations:  2 out of 20 
+##  Results:
 ## 
-## Monte Carlo MLE Results:
 ##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
 ## edges            -5.3063     0.7500      0  -7.075  &lt; 1e-04 ***
 ## nodematch.group   3.0481     0.4741      0   6.430  &lt; 1e-04 ***
@@ -993,7 +1037,7 @@ summary(m6)
 ##      Null Deviance: 424.2  on 306  degrees of freedom
 ##  Residual Deviance: 254.4  on 301  degrees of freedom
 ##  
-## AIC: 264.4    BIC: 283    (Smaller is better.)
+## AIC: 264.4  BIC: 283  (Smaller is better. MC Std. Err. = NA)
 ```
 ---
 ## Geometrically Weighted Terms
@@ -1047,6 +1091,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
