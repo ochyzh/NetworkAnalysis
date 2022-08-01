@@ -17,7 +17,7 @@ Homework assignments are made available at the end of class and are due the foll
         <td>July 23</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/homework01.Rmd" target=_blank>Homework 1</a>
+          <dd><a href="../materials/homeworks/.homework01.Rmd" target=_blank>Homework 1</a>
           </dd>
           </dl>
         </td>
@@ -26,7 +26,7 @@ Homework assignments are made available at the end of class and are due the foll
         <td>July 30</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/homework02.Rmd" target=_blank>Homework 2</a>
+          <dd><a href="../materials/homeworks/.homework02.Rmd" target=_blank>Homework 2</a>
           </dd>
           </dl>
         </td>
@@ -35,7 +35,7 @@ Homework assignments are made available at the end of class and are due the foll
         <td>Aug 6</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/homework03.Rmd" target=_blank>Homework 3</a>
+          <dd><a href="../materials/homeworks/.homework03.Rmd" target=_blank>Homework 3</a>
           </dd>
           </dl>
         </td>
@@ -44,7 +44,7 @@ Homework assignments are made available at the end of class and are due the foll
         <td>Aug 13</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/homework04.Rmd" target=_blank>Homework 4</a>
+          <dd><a href="../materials/homeworks/.homework04.Rmd" target=_blank>Homework 4</a>
           </dd>
           </dl>
         </td>
