@@ -1,0 +1,103 @@
+---
+title: 'Network Analysis II - Homework #3'
+author: "Your Name"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Make sure to replace "Your Name" in the YAML (top of this script) with your name.
+
+## Lazega Law Firm network
+
+2. Run the code in the chunk below to load the `lazega` law firm data from the `sand` package. You can run this code by pressing the green arrow in the top right corner of the chunk. If the code gives you an error, make sure that you installed the package `sand`, i.e. run `install.packages("sand")`.
+
+```{r, message=F}
+library(sand)
+data(lazega)
+```
+
+3. Use `?lazega` to read the description of the data.
+
+4. Run the following chunk to convert the data from an object of class `igraph` to a `network` object.
+
+```{r, message=F}
+library(statnet)
+A <- igraph::as_adjacency_matrix(lazega)
+v.attrs <- igraph::as_data_frame(lazega, what="vertices")
+
+lazega.s <- network::as.network(as.matrix(A), directed=FALSE)
+network::set.vertex.attribute(lazega.s, "Seniority",
+                              v.attrs$Seniority)
+network::set.vertex.attribute(lazega.s, "Office",
+                              v.attrs$Office)
+network::set.vertex.attribute(lazega.s, "Practice",
+                              v.attrs$Practice)
+network::set.vertex.attribute(lazega.s, "Gender",
+                              v.attrs$Gender)
+
+```
+5. In the empty chunk below, type in the commands to: (1) look at the first 10 rows and the first 10 columns of the network of relationships among lawyers; (2) look at the all values of the vertex attributes Seniority, Office, Gender, and Practice.
+
+Notice that the network of lawyer relationships is saved with the name `lazega.s` (per chunk above).
+
+```{r}
+#Type code here:
+
+
+```
+
+
+6. In the empty code chunk below, type in the commands to estimate an ergm with `lazega.s` as the dependent variable, and `edges`, node-level effects of `Seniority` and `Practice` and commonality of `Practice`, `Gender`, and `Office`. Save this model as an object named `m1`. Look at the summary of your model results.
+
+Note that node-level effects are specified using `nodecov()` or `nodefactor` (e.g. `nodefactor("Practice")`, `nodecov("Seniority)`), while commonality effects are specified using `nodematch` (e.g., `nodematch("Practice")`).
+
+```{r, warning=F, message=F}
+#Type code below:
+
+
+```
+
+7. What is the effect of each variable on the probability of forming a tie (i.e. is it positive or negative)? [type your response here.]
+
+The chunk below shows the code to calculate the predicted probability of a tie for a node with Seniority=10, Practice=1, with a node with the same values for Practice, Gender, and Office. Modify the code to calculate the same probability for a node with Seniority=10, Practice=2 (i.e., corporate lawyer) with a node who is also in corporate, is of the same gender, and in the same office.
+
+
+```{r}
+#Make sure you saved your model from question 6 under the name `m1`. Uncomment the code in order to run (i. e., remove # in from of each line).
+#plogis(coef(m1)[['edges']] + 
+#         10*coef(m1)[['nodecov.Seniority']]+
+#         0*coef(m1)[['nodefactor.Practice.2']]+
+#         coef(m1)[['nodematch.Practice']]+
+#         coef(m1)[['nodematch.Gender']]+
+#         coef(m1)[['nodematch.Office']])
+
+#Type your code here:
+
+
+
+```
+
+
+8. The above model, of course, is equivalent to a logistic regression, as it does not model any network dependencies.  In the chunk below, specify a model that would account for all the same effects AND `gwesp(decay=.25)`
+
+```{r, warning=F, message=F}
+#Type code below:
+
+
+```
+
+9. What is the effect of edgewise shared partners? [Type your answer here].
+
+
+10. Knit the RMarkdown file (press the "Knit" button above) and read through the corresponding html file.  
+
+Note: 
+
+This homework is supposed to be mainly a code reading exercise. You should not have to program extensively. Instead, you have to figure out which pieces you need to copy and adjust. 
+
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html file with it. 
