@@ -71,7 +71,7 @@ All the class materials will be posted/updated here.
         <td>ERGM Specification</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/07_ergm_specification.html" target=_blank>ergm specification </a>  | <a href="../materials/Slides/07_ergm_specification.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/script080322.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/07_ergms_spec_yourturn.R"target=_blank> your turn answers </a>
+          <dd><a href="../materials/Slides/07_ergm_specification.html" target=_blank>ergm specification </a>  | <a href="../materials/Slides/07_ergm_specification.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/script080322.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/07_ergm_spec_yourturn.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>
