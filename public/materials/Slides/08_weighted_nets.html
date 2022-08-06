@@ -4,7 +4,7 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Advanced Network Analysis
+]
+.subtitle[
 ## ERGMs for Valued Networks
+]
+.author[
 ### Olga Chyzh [www.olgachyzh.com]
+]
 
 ---
 
@@ -35,13 +41,39 @@ networks: The generalized exponential random graph model. *PloS One*, 7(1), 2012
 - Can generalize ERGMs to modeling networks with count or rank-ordered valued edges.
 - Similar properties and estimation approach.
 ---
+
+## The Sample Space
+
+- For binary ERGMs, the sample space (or support) `\(\mathcal{Y}\)` — the set of possible networks that can occur — is usually some subset of `\(2^N\)`, the set of all possible ways in which relationships among the actors may occur.
+
+- For the sample space of valued ERGMs, we need to define `\(\mathcal{S}\)`, the set of possible values each relationship may take. For example, for count data, that’s `\(\mathcal{S}=\{0,1,…,s\}\)` if the maximum count is `\(s\)` and `\(\{0,1,…\}\)` if there is no a priori upper bound. Having specified that, `\(\mathcal{Y}\)` is defined as some subset of `\(\mathcal{S}^{N}\)`: the set of possible ways to assign to each relationship a value.
+---
 class: inverse, middle, center
 # Estimation 
+---
+## Valued ERGMs
+
+- The package `ergm.count` extends the `ergm` package to allow for modeling networks with valued edges. This is done by specifying the `response` argument with the name of the edge attribute to use as the response variable.
+
+- New concept: a reference distribution
+  + Need to think about how the values for connections we measure are distributed. The reference distribution specifies the model for the data before we add any ERGM terms.  
+
+
+```r
+help("ergm-references")
+```
+---
+## The Reference Distribution
+
+&lt;img src="images/CountDistributions.png" width="600px" style="display: block; margin: auto;" /&gt;
+
 ---
 ## Install Packages:
 
 
 ```r
+library(devtools)
+install_github("ochyzh/networkdata")
 #install.packages("ergm.count")
 library(statnet)
 library(ergm.count)
@@ -166,29 +198,9 @@ plot(net, edge.col = "black", usecurve = TRUE,
 
 &lt;img src="08_weighted_nets_files/figure-html/graph1-1.png" style="display: block; margin: auto;" /&gt;
 
+
 ---
-## Valued ERGMs
 
-- The package `ergm.count` extends the `ergm` package to allow for modeling networks with valued edges. This is done by specifying the `response` argument with the name of the edge attribute to use as the response variable.
-
-- New concept: a reference distribution
-  + Need to think about how the values for connections we measure are distributed. The reference distribution specifies the model for the data before we add any ERGM terms.  
-
-
-```r
-help("ergm-references")
-```
----
-## The Reference Distribution
-
-&lt;img src="images/CountDistributions.png" width="600px" style="display: block; margin: auto;" /&gt;
----
-## The Sample Space
-
-- For binary ERGMs, the sample space (or support) `\(\mathcal{Y}\)` — the set of possible networks that can occur — is usually some subset of `\(2^N\)`, the set of all possible ways in which relationships among the actors may occur.
-
-- For the sample space of valued ERGMs, we need to define `\(\mathcal{S}\)`, the set of possible values each relationship may take. For example, for count data, that’s `\(\mathcal{S}=\{0,1,…,s\}\)` if the maximum count is `\(s\)` and `\(\{0,1,…\}\)` if there is no a priori upper bound. Having specified that, `\(\mathcal{Y}\)` is defined as some subset of `\(\mathcal{S}^{N}\)`: the set of possible ways to assign to each relationship a value.
----
 ## Estimate a Valued ERGM
 
 
@@ -218,30 +230,37 @@ summary(m0)
 ```
 
 ```
-## Iterations:  5 out of 20 
+## Call:
+## ergm(formula = net ~ sum + nodecov("averageId.node") + nodecov("size.node") + 
+##     nodecov("spons_actor.node") + absdiff("averageId.node") + 
+##     absdiff("size.node") + edgecov("loc.dyad") + edgecov("spons.dyad"), 
+##     response = "coopActions", reference = ~Poisson)
 ## 
-## Monte Carlo MLE Results:
-##                              Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## sum                          -8.10533    1.05447      0  -7.687  &lt; 1e-04 ***
-## nodecov.sum.averageId.node    0.55962    0.04884      0  11.459  &lt; 1e-04 ***
-## nodecov.sum.size.node         0.07523    0.00605      0  12.434  &lt; 1e-04 ***
-## nodecov.sum.spons_actor.node  0.73878    0.13749      0   5.373  &lt; 1e-04 ***
-## absdiff.sum.averageId.node   -0.17780    0.04779      0  -3.720 0.000199 ***
-## absdiff.sum.size.node        -0.08958    0.01007      0  -8.897  &lt; 1e-04 ***
-## edgecov.sum.NULL              3.95933    0.99062      0   3.997  &lt; 1e-04 ***
-## edgecov.sum.NULL.1            0.58640    0.14944      0   3.924  &lt; 1e-04 ***
+## Monte Carlo Maximum Likelihood Results:
+## 
+##                               Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## sum                          -8.012597   1.117417      0  -7.171  &lt; 1e-04 ***
+## nodecov.sum.averageId.node    0.564307   0.049284      0  11.450  &lt; 1e-04 ***
+## nodecov.sum.size.node         0.074916   0.005851      0  12.803  &lt; 1e-04 ***
+## nodecov.sum.spons_actor.node  0.748998   0.140239      0   5.341  &lt; 1e-04 ***
+## absdiff.sum.averageId.node   -0.179775   0.050796      0  -3.539 0.000401 ***
+## absdiff.sum.size.node        -0.089858   0.010511      0  -8.549  &lt; 1e-04 ***
+## edgecov.sum.NULL              3.834232   1.094595      0   3.503 0.000460 ***
+## edgecov.sum.NULL              0.597594   0.149731      0   3.991  &lt; 1e-04 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##      Null Deviance:    0.0  on 465  degrees of freedom
-##  Residual Deviance: -692.7  on 457  degrees of freedom
+##  Residual Deviance: -707.2  on 457  degrees of freedom
 ##  
-## Note that the null model likelihood and deviance are defined to be 0. This means that all likelihood-based inference
-## (LRT, Analysis of Deviance, AIC, BIC, etc.) is only valid between models with the same reference distribution and
-## constraints.
+## Note that the null model likelihood and deviance are defined to be 0.
+## This means that all likelihood-based inference (LRT, Analysis of
+## Deviance, AIC, BIC, etc.) is only valid between models with the same
+## reference distribution and constraints.
 ## 
-## AIC: -676.7    BIC: -643.6    (Smaller is better.)
+## AIC: -691.2  BIC: -658.1  (Smaller is better. MC Std. Err. = 2.764)
 ```
+
 ---
 ## Interpretation
 
@@ -264,13 +283,21 @@ Calculate the expected number of links between two average rebel groups with no 
 class: inverse, middle, center
 # Accounting for Network Dependencies
 ---
-## Individual Heterogeneity
+## Individual Heterogeneity.
+
+- A count equivalent to `\(k\)`-stars:
 
 Actors may have different overall propensities to interact. This has been modeled using using degeneracy-prone terms like `\(k\)`-star counts. With valued ERGMs, a more robust measure is:
 
 `\(\pmb{g_{actor\ cov.}}(\pmb{y})=\sum\limits_{i\in N}{\frac{1}{n-2}}\sum\limits_{j,k\in\mathbb{Y_i}\land j&lt;k}{(\sqrt{\pmb{y}_{i,j}-\overline{{\sqrt{\pmb{y}}}}})(\sqrt{\pmb{y}_{i,k}-\overline{{\sqrt{\pmb{y}}}}})}\)`
 
-This is essentially a measure of covariance between the squared values of edges incident (originating) from the same actor. Implemented with the term `nodesqrtcovar`.
+This is essentially a measure of covariance between the squared values of edges incident (originating) from the same actor. Implemented with the term `nodecovar(transform="sqrt")`.
+---
+## Triadic Closure
+
+&lt;img src="images/trans_weights.jpg" width="550px" style="display: block; margin: auto;" /&gt;
+
+
 ---
 ## Triadic Closure
 `transitiveweights(twopath, combine, affect)`
@@ -287,6 +314,36 @@ This is essentially a measure of covariance between the squared values of edges 
   + `"min"`
   + `"geomean"`
 ---
+
+## Transitiveweights, Two-Path
+
+
+
+&lt;img src="08_weighted_nets_files/figure-html/unnamed-chunk-13-1.png" width="300px" style="display: block; margin: auto;" /&gt;
+
+- `\(\text{Two-Path}_{max}(2,5)=2\)`
+- `\(\text{Two-Path}_{geomean}(2,5)=\sqrt(2*5)=\sqrt(10)\)`
+   
+---
+
+## Transitiveweights, Combine
+
+
+
+&lt;img src="08_weighted_nets_files/figure-html/unnamed-chunk-15-1.png" width="300px" style="display: block; margin: auto;" /&gt;
+
+- `\(\text{Combine}_{max}=max(\text{Two-path}_{23})\)`
+- `\(\text{Combine}_{sum}=sum(\text{Two-path}_{23})\)`
+---
+## Transitiveweights, Affect
+
+For all pairs connected by two-paths:
+
+- `\(\text{Affect}_{min}=max(\text{Combine}_{ij})\)`
+- `\(\text{Affect}_{sum}=geomean(\text{Combine}_{ij})\)`
+
+---
+
 
 ## Example
 
@@ -316,30 +373,37 @@ summary(m1)
 ```
 
 ```
-## Iterations:  6 out of 20 
+## Call:
+## ergm(formula = net ~ sum + nodecov("averageId.node") + nodecov("size.node") + 
+##     nodecov("spons_actor.node") + absdiff("averageId.node") + 
+##     absdiff("size.node") + edgecov("loc.dyad") + edgecov("spons.dyad") + 
+##     transitiveweights("min", "max", "min"), response = "coopActions", 
+##     reference = ~Poisson)
 ## 
-## Monte Carlo MLE Results:
+## Monte Carlo Maximum Likelihood Results:
+## 
 ##                                Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## sum                           -7.417775   1.061091      0  -6.991  &lt; 1e-04 ***
-## nodecov.sum.averageId.node     0.550254   0.049272      0  11.168  &lt; 1e-04 ***
-## nodecov.sum.size.node          0.067013   0.005905      0  11.348  &lt; 1e-04 ***
-## nodecov.sum.spons_actor.node   0.827648   0.132379      0   6.252  &lt; 1e-04 ***
-## absdiff.sum.averageId.node    -0.160610   0.044788      0  -3.586 0.000336 ***
-## absdiff.sum.size.node         -0.077496   0.009579      0  -8.090  &lt; 1e-04 ***
-## edgecov.sum.NULL               3.782666   1.005441      0   3.762 0.000168 ***
-## edgecov.sum.NULL.1             0.523423   0.128019      0   4.089  &lt; 1e-04 ***
-## transitiveweights.min.max.min -0.635663   0.045871      0 -13.858  &lt; 1e-04 ***
+## sum                           -7.454511   1.063267      0  -7.011  &lt; 1e-04 ***
+## nodecov.sum.averageId.node     0.551644   0.049526      0  11.138  &lt; 1e-04 ***
+## nodecov.sum.size.node          0.067389   0.005726      0  11.770  &lt; 1e-04 ***
+## nodecov.sum.spons_actor.node   0.828172   0.132405      0   6.255  &lt; 1e-04 ***
+## absdiff.sum.averageId.node    -0.159866   0.044402      0  -3.600 0.000318 ***
+## absdiff.sum.size.node         -0.078650   0.009654      0  -8.147  &lt; 1e-04 ***
+## edgecov.sum.NULL               3.805675   1.017857      0   3.739 0.000185 ***
+## edgecov.sum.NULL               0.528179   0.126521      0   4.175  &lt; 1e-04 ***
+## transitiveweights.min.max.min -0.628822   0.046141      0 -13.628  &lt; 1e-04 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##      Null Deviance:    0.0  on 465  degrees of freedom
-##  Residual Deviance: -790.2  on 456  degrees of freedom
+##  Residual Deviance: -810.9  on 456  degrees of freedom
 ##  
-## Note that the null model likelihood and deviance are defined to be 0. This means that all likelihood-based inference
-## (LRT, Analysis of Deviance, AIC, BIC, etc.) is only valid between models with the same reference distribution and
-## constraints.
+## Note that the null model likelihood and deviance are defined to be 0.
+## This means that all likelihood-based inference (LRT, Analysis of
+## Deviance, AIC, BIC, etc.) is only valid between models with the same
+## reference distribution and constraints.
 ## 
-## AIC: -772.2    BIC: -734.9    (Smaller is better.)
+## AIC: -792.9  BIC: -755.7  (Smaller is better. MC Std. Err. = 1.921)
 ```
 
 ---
@@ -403,7 +467,7 @@ p&lt;-plot(net, edge.col = "black", usecurve = TRUE,
      displaylabels = TRUE)
 ```
 
-&lt;img src="08_weighted_nets_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="08_weighted_nets_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -441,7 +505,7 @@ plotSimNet = function(net, label){
 
 In the above exercise, we compared our network to only 3 simulated networks. Ideally, we would like to compare it to more than 3. Since it's difficult to look at thousands of simulated networks on a graph, a way to compare our network to thousands of such simulated networks is by summarizing the characteristics of these simulated networks, such as the sum of edges or various other measures.
 
-Notice that in the code below that, in addition to network statistics included in model `m1`, we can also summarize statistics that were not explicitly included in `m1`, such as `nodesquarecovar`. This is because our simulated networks may still exhibit vertex heterogeneity as a function of the modeled network properties (e.g. triangles), i.e. more triangles may also lead to more k-stars.
+Notice that in the code below that, in addition to network statistics included in model `m1`, we can also summarize statistics that were not explicitly included in `m1`, such as `nodecovar(transform="sqrt")`. This is because our simulated networks may still exhibit vertex heterogeneity as a function of the modeled network properties (e.g. triangles), i.e. more triangles may also lead to more k-stars.
 
 Also notice that I specified `output="stats"`. Since I only care about network summaries, I am telling the function to NOT save the actual simulated networks, but only their summary statistics. This saves memory space.
 
@@ -450,7 +514,7 @@ Also notice that I specified `output="stats"`. Since I only care about network s
 
 ```r
 # Simulate from model fit:
-simNets1000 &lt;- simulate(m1, monitor = ~nodesqrtcovar(TRUE), 
+simNets1000 &lt;- simulate(m1, monitor = ~ nodecovar(transform="sqrt"), 
     nsim = 1000, output = "stats")
 ```
 ---
@@ -461,9 +525,11 @@ colnames(simNets1000)
 ```
 
 ```
-##  [1] "sum"                           "nodecov.sum.averageId.node"    "nodecov.sum.size.node"         "nodecov.sum.spons_actor.node" 
-##  [5] "absdiff.sum.averageId.node"    "absdiff.sum.size.node"         "edgecov.sum.NULL"              "edgecov.sum.NULL"             
-##  [9] "transitiveweights.min.max.min" "nodesqrtcovar.centered"
+##  [1] "sum"                           "nodecov.sum.averageId.node"   
+##  [3] "nodecov.sum.size.node"         "nodecov.sum.spons_actor.node" 
+##  [5] "absdiff.sum.averageId.node"    "absdiff.sum.size.node"        
+##  [7] "edgecov.sum.NULL"              "edgecov.sum.NULL"             
+##  [9] "transitiveweights.min.max.min" "nodecovar"
 ```
 
 ---
@@ -472,7 +538,7 @@ colnames(simNets1000)
 
 ```r
 #How prevalent are k-stars in the observed network?
-obsNet&lt;-summary(net~sum+transitiveweights("min","max","min")+nodesqrtcovar(TRUE), 
+obsNet&lt;-summary(net~sum+transitiveweights("min","max","min")+nodecovar(transform="sqrt"), 
                 response = "coopActions")
 par(mfrow = c(2, 2))
 #1st col.=sum
@@ -486,7 +552,7 @@ abline(v = obsNet[2])
 title("Transitive Weights")
 
 # 10th col. = nodesqrtcovar
-plot(density(simNets1000[,10]), main="", xlim=c(10,80))
+plot(density(simNets1000[,10]), main="")
 abline(v = obsNet)
 title("Nodesqrtvar")
 ```
@@ -507,41 +573,46 @@ m2 &lt;- ergm(net ~ sum +
     edgecov('loc.dyad') +
     edgecov('spons.dyad')+ 
     transitiveweights("min","max","min")+
-    nodesqrtcovar(TRUE), 
+    nodecovar(transform="sqrt"), 
     response = "coopActions", reference = ~Poisson)
 ```
 ---
 ## Improve Model Specification
 
 
-
-
 ```
-## Iterations:  12 out of 20 
+## Call:
+## ergm(formula = net ~ sum + nodecov("averageId.node") + nodecov("size.node") + 
+##     nodecov("spons_actor.node") + absdiff("averageId.node") + 
+##     absdiff("size.node") + edgecov("loc.dyad") + edgecov("spons.dyad") + 
+##     transitiveweights("min", "max", "min") + nodecovar(transform = "sqrt"), 
+##     response = "coopActions", reference = ~Poisson)
 ## 
-## Monte Carlo MLE Results:
+## Monte Carlo Maximum Likelihood Results:
+## 
 ##                                Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## sum                           -4.726287   1.105867      0  -4.274  &lt; 1e-04 ***
-## nodecov.sum.averageId.node     0.296854   0.056879      0   5.219  &lt; 1e-04 ***
-## nodecov.sum.size.node          0.070925   0.006855      0  10.346  &lt; 1e-04 ***
-## nodecov.sum.spons_actor.node   0.230775   0.140995      0   1.637  0.10168    
-## absdiff.sum.averageId.node    -0.256984   0.047476      0  -5.413  &lt; 1e-04 ***
-## absdiff.sum.size.node         -0.103376   0.008632      0 -11.975  &lt; 1e-04 ***
-## edgecov.sum.NULL               3.253555   1.026670      0   3.169  0.00153 ** 
-## edgecov.sum.NULL.1             0.241622   0.159609      0   1.514  0.13007    
-## transitiveweights.min.max.min -0.690133   0.102974      0  -6.702  &lt; 1e-04 ***
-## nodesqrtcovar.centered         2.627587   0.266903      0   9.845  &lt; 1e-04 ***
+## sum                           -6.594598   1.084880      0  -6.079  &lt; 1e-04 ***
+## nodecov.sum.averageId.node     0.510330   0.047484      0  10.747  &lt; 1e-04 ***
+## nodecov.sum.size.node          0.057320   0.005981      0   9.584  &lt; 1e-04 ***
+## nodecov.sum.spons_actor.node   0.808021   0.126655      0   6.380  &lt; 1e-04 ***
+## absdiff.sum.averageId.node    -0.085453   0.036289      0  -2.355 0.018535 *  
+## absdiff.sum.size.node         -0.052703   0.009241      0  -5.703  &lt; 1e-04 ***
+## edgecov.sum.NULL               3.580399   1.020037      0   3.510 0.000448 ***
+## edgecov.sum.NULL               0.304451   0.124577      0   2.444 0.014530 *  
+## transitiveweights.min.max.min -0.432002   0.066354      0  -6.511  &lt; 1e-04 ***
+## nodecovar                     -1.109736   0.242183      0  -4.582  &lt; 1e-04 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##      Null Deviance:    0.0  on 465  degrees of freedom
-##  Residual Deviance: -932.9  on 455  degrees of freedom
+##  Residual Deviance: -832.7  on 455  degrees of freedom
 ##  
-## Note that the null model likelihood and deviance are defined to be 0. This means that all likelihood-based inference
-## (LRT, Analysis of Deviance, AIC, BIC, etc.) is only valid between models with the same reference distribution and
-## constraints.
+## Note that the null model likelihood and deviance are defined to be 0.
+## This means that all likelihood-based inference (LRT, Analysis of
+## Deviance, AIC, BIC, etc.) is only valid between models with the same
+## reference distribution and constraints.
 ## 
-## AIC: -912.9    BIC: -871.5    (Smaller is better.)
+## AIC: -812.7  BIC: -771.3  (Smaller is better. MC Std. Err. = 2.359)
 ```
 ---
 ## Your Turn
@@ -603,6 +674,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
