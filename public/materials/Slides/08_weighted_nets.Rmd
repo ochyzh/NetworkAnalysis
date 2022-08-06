@@ -508,14 +508,14 @@ Follow the steps we did for `m1` to evaluate the fit of model `m2`.  Start by si
 
 ---
 
-```{r, eval=T, echo=F,out.width= "700px",fig.align="center"}
+```{r, eval=T, echo=F,out.width= "500px",fig.align="center"}
 knitr::include_graphics("images/m2_sims.png")
 ```
 
 
 ---
 
-```{r,eval=T, echo=F, out.width= "700px",fig.align="center"}
+```{r,eval=T, echo=F, out.width= "500px",fig.align="center"}
 knitr::include_graphics("images/m2_fit.png")
 ```
 
