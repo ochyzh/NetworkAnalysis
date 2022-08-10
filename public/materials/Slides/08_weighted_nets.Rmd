@@ -271,8 +271,8 @@ E(g)$val<- c("2"," ","5")
 plot(g, size=30,edge.lty= E(g)$lty , edge.color="black" , edge.label = E(g)$val, edge.label.size=5, vertex.size=25, vertex.color="turquoise", vertex.label.cex=1, edge.label.cex=2,  edge.curved=0)
 ```
 
-- $\text{Two-Path}_{max}(2,5)=2$
-- $\text{Two-Path}_{geomean}(2,5)=\sqrt(2*5)=\sqrt(10)$
+- $\text{Two-Path}_{min}(2,5)=2$
+- $\text{Two-Path}_{geomean}(2,5)=\sqrt{(2*5)}=\sqrt{10}$
    
 ---
 
@@ -300,8 +300,8 @@ plot(g, size=30,edge.lty= E(g)$lty , edge.color="black" , edge.label = E(g)$val,
 
 For all pairs connected by two-paths:
 
-- $\text{Affect}_{min}=max(\text{Combine}_{ij})$
-- $\text{Affect}_{sum}=geomean(\text{Combine}_{ij})$
+- $\text{Affect}_{min}=min(\text{Combine}_{ij})$
+- $\text{Affect}_{geomean}=geomean(\text{Combine}_{ij})$
 
 ---
 
