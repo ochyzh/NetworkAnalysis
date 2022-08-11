@@ -1,0 +1,95 @@
+---
+title: Advanced Network Analysis
+subtitle: Network Analysis and Causal Inference
+author: "Olga Chyzh [www.olgachyzh.com]"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+
+exclude: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', message = FALSE, warning = FALSE)
+```
+
+
+
+## The Problem
+
+- Causal inference is predicated on comparing the observed to the counterfactual.
+
+    - Example: To show that the Medici rose to power due to their high network centrality, we must compare the Florentine network to a counter-factual, in which the Medici did not hold a central position.
+    
+- Often cannot change one aspect of the network while holding all else constant
+
+    - Cannot change an actor centrality without changing centrality of other actors.
+    - Example 1: Cannot observe what a policy diffusion process across US states would look like in the absence of New York and California.
+    - Example 2: What would the post-World War II international alliance network would look like without the United States?
+    
+
+---
+## Approach So Far
+
+- Find the best possible specification that generates networks similar to the observed network.
+
+- Make inferences regarding the likely processes that led to the formation of the observed network: e.g. preferential attachment, homophily.
+
+---
+
+## A Causal Approach
+
+- Find a sample of social networks, such that some features (e.g.the central nodes' transmission potential) are disabled in some of the networks, but not the others.
+
+- Examples: Covid-19 vaccine prioritization policies in the US, censorship on Twitter
+
+- Rather than inferring association (and causation) from the model's functional form, set up a (pseudo-) experiment to test an observable implication of your theory.
+
+
+---
+class: inverse, middle, center
+
+# Example: Covid-19 Transmission Under Different Vaccine Priority Scenarios
+
+---
+class: middle, center
+
+```{r,eval=T, echo=F, out.width= "600px",fig.align="center"}
+knitr::include_graphics("images/contagion1.png")
+```
+---
+class: middle, center
+
+```{r,eval=T, echo=F, out.width= "600px",fig.align="center"}
+knitr::include_graphics("images/contagion2.png")
+```
+---
+class: middle, center
+
+```{r,eval=T, echo=F, out.width= "700px",fig.align="center"}
+knitr::include_graphics("images/contagion3.png")
+```
+
+---
+## Research Design
+
+- Most similar cases: California and Oregon counties
+
+- Matching on demographic and economic variables
+
+- Treatment: California opened vaccine eligibility to grocery workers (central nodes) about 1 month earlier than Oregon.
+
+
+---
+class: middle, center
+
+```{r,eval=T, echo=F, out.width= "700px",fig.align="center"}
+knitr::include_graphics("images/trends.png")
+```
+
+
+
