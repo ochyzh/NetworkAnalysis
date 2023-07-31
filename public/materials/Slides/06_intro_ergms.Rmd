@@ -875,14 +875,14 @@ Adding one tie has a different effect on the number of edgewise shared partnersh
 ---
 ## Adding a tie that closes one triangle
 
-```{r, out.width= "1000px",fig.align="center", echo=FALSE}
+```{r, out.width= "400px",fig.align="center", echo=FALSE}
 knitr::include_graphics("images/gwesp1.png")
 ```
 
-- Adding the tie between i and j will add not just one but THREE ties with one edgewise shared partnership to the network (i and j share partner k; i and k share partner j; j and k share partner i).
+- Adding the tie between $i$ and $j$ will add not just one but THREE ties with one edgewise shared partnership to the network ( $i$ and $j$ share partner $k$; $i$ and $k$ share partner $j$; $j$ and $k$ share partner $i$).
 ---
 ## Adding a tie that closes no triangles
 
 - If a tie being modelled would not close a triangle, then after adding the tie, the nodes will still have the same number of edgewise shared partners, so the GWESP change statistic is zero.
 
----
+

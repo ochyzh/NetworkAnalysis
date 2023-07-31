@@ -220,6 +220,15 @@ Calculate the expected number of links between two average rebel groups with no 
 class: inverse, middle, center
 # Accounting for Network Dependencies
 ---
+## Network Dependencies with Valued Edges
+
+- Goal: model endogenous network dependencies
+
+- Complication: valued edges obviate intuitive network measures, such as triangles and k-stars.
+
+- Need to re-conceptualize existing measures to adapt to the context of valued edges.
+
+---
 ## Individual Heterogeneity.
 
 - A count equivalent to $k$-stars:

@@ -391,9 +391,9 @@ samplike %v% 'group' # returns the same result as above
 
 
 ```
-##  [1] "Turks"    "Turks"    "Outcasts" "Loyal"    "Loyal"    "Loyal"    "Turks"   
-##  [8] "Loyal"    "Loyal"    "Loyal"    "Loyal"    "Turks"    "Outcasts" "Turks"   
-## [15] "Turks"    "Turks"    "Outcasts" "Outcasts"
+##  [1] "Turks"    "Turks"    "Outcasts" "Loyal"    "Loyal"    "Loyal"   
+##  [7] "Turks"    "Loyal"    "Loyal"    "Loyal"    "Loyal"    "Turks"   
+## [13] "Outcasts" "Turks"    "Turks"    "Turks"    "Outcasts" "Outcasts"
 ```
 
 
@@ -687,12 +687,13 @@ mcmc.diagnostics(m3)
 ##       0.2285433       0.5266497       0.2677289 
 ## Joint P-value (lower = worse):  0.6572889 
 ## 
-## Note: MCMC diagnostics shown here are from the last round of simulation,
-##   prior to computation of final parameter estimates. Because the final
-##   estimates are refinements of those used for this simulation run, these
-##   diagnostics may understate model performance. To directly assess the
-##   performance of the final model on in-model statistics, please use the
-##   GOF command: gof(ergmFitObject, GOF=~model).
+## Note: MCMC diagnostics shown here are from the last round of
+##   simulation, prior to computation of final parameter estimates.
+##   Because the final estimates are refinements of those used for this
+##   simulation run, these diagnostics may understate model performance.
+##   To directly assess the performance of the final model on in-model
+##   statistics, please use the GOF command: gof(ergmFitObject,
+##   GOF=~model).
 ```
 ---
 ## Checking convergence
@@ -1068,15 +1069,15 @@ Adding one tie has a different effect on the number of edgewise shared partnersh
 ---
 ## Adding a tie that closes one triangle
 
-&lt;img src="images/gwesp1.png" width="1000px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/gwesp1.png" width="400px" style="display: block; margin: auto;" /&gt;
 
-- Adding the tie between i and j will add not just one but THREE ties with one edgewise shared partnership to the network (i and j share partner k; i and k share partner j; j and k share partner i).
+- Adding the tie between `\(i\)` and `\(j\)` will add not just one but THREE ties with one edgewise shared partnership to the network ( `\(i\)` and `\(j\)` share partner `\(k\)`; `\(i\)` and `\(k\)` share partner `\(j\)`; `\(j\)` and `\(k\)` share partner `\(i\)`).
 ---
 ## Adding a tie that closes no triangles
 
 - If a tie being modelled would not close a triangle, then after adding the tie, the nodes will still have the same number of edgewise shared partners, so the GWESP change statistic is zero.
 
----
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
