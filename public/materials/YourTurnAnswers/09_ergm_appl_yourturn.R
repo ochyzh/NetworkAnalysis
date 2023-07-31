@@ -4,9 +4,9 @@
 #- 2 ties with one edgewise shared partners
 #- 1 tie with two edgewise shared partners
 
-exp(.25)*(1-(1-exp(-.25))^1)*1+exp(.25)*(1-(1-exp(-.25))^2)*1
+exp(.25)*(1-(1-exp(-.25))^1)*2+exp(.25)*(1-(1-exp(-.25))^2)*1
 
-exp(1.8*2.22)
+exp(1.8*3.22)
 
 #Your Turn 2
 #Calculate the probability of a non-reciprocated tie that closes one triangle among nodes with no esps.
