@@ -4,17 +4,23 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs/header-attrs.js"></script>
-    <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.23/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Advanced Network Analysis
+]
+.subtitle[
 ## ERGM Application
+]
+.author[
 ### Olga Chyzh [www.olgachyzh.com]
+]
 
 ---
 
@@ -125,30 +131,7 @@ search.ergmTerms(keyword='sociality')
 ```
 
 ```
-## Found  8  matching ergm terms:
-## b1sociality(nodes=-1)
-##  Degree
-## 
-## b1sociality(nodes=-1, form="sum")
-##  Degree
-## 
-## b2sociality(nodes=-1)
-##  Degree
-## 
-## b2sociality(nodes=-1, form="sum")
-##  Degree
-## 
-## receiver(base=1, nodes=-1)
-##  Receiver effect
-## 
-## receiver(base=1, nodes=-1, form="sum")
-##  Receiver effect
-## 
-## sender(base=1, nodes=-1)
-##  Sender effect
-## 
-## sender(base=1, nodes=-1, form="sum")
-##  Sender effect
+## Found  0  matching ergm terms:
 ```
 ---
 ## Sociality
@@ -191,7 +174,7 @@ attribute category, regardless of category. This uniform homophily is used for s
 there are only three tie types (MM, MF, FF); with main effects included, only one degree
 of freedom remains. Second, `\(h_i\)` is the total number of ties between persons both in attribute
 category `\(i\)`. There is one such statistic for each category of the attribute. This differential
-homophily is used for race and grade 4."
+homophily is used for race and grade."
 ---
 ## Selective Mixing
 Can also use the search function to find the relevant terms.
@@ -201,45 +184,7 @@ search.ergmTerms(keyword='homophily')
 ```
 
 ```
-## Found  13  matching ergm terms:
-## b1degrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
-##  Degree range for the first mode in a bipartite (a.k.a. two-mode) network
-## 
-## b1nodematch(attr, diff=FALSE, keep=NULL, alpha=1, beta=1,)
-##  Nodal attribute-based homophily effect for the first mode in a bipartite (aka two-mode) network
-## 
-## b2degrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
-##  Degree range for the second mode in a bipartite (a.k.a. two-mode) network
-## 
-## b2nodematch(attr, diff=FALSE, keep=NULL, alpha=1, beta=1,)
-##  Nodal attribute-based homophily effect for the second mode in a bipartite (aka two-mode) network
-## 
-## degrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
-##  Degree range
-## 
-## degree(d, by=NULL, homophily=FALSE, levels=NULL)
-##  Degree
-## 
-## idegrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
-##  In-degree range
-## 
-## idegree(d, by=NULL, homophily=FALSE, levels=NULL)
-##  In-degree
-## 
-## nodematch(attr, diff=FALSE, keep=NULL, levels=NULL)
-##  Uniform homophily and differential homophily
-## 
-## nodematch(attr, diff=FALSE, keep=NULL, levels=NULL, form="sum")
-##  Uniform homophily and differential homophily
-## 
-## match()
-##  Uniform homophily and differential homophily
-## 
-## odegrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL)
-##  Out-degree range
-## 
-## odegree(d, by=NULL, homophily=FALSE, levels=NULL)
-##  Out-degree
+## Found  0  matching ergm terms:
 ```
 
 - Term `nodematch` sounds like a good candidate.
@@ -323,58 +268,32 @@ mcmc.diagnostics(m2)
 ```
 ##  Results:
 ## 
-##                        Estimate Std. Error MCMC % z value
-## edges                 -10.22281    1.17910      0  -8.670
-## nodefactor.Race.Black   0.61845    0.24268      0   2.548
-## nodefactor.Race.Hisp   -0.49867    0.23138      0  -2.155
-## nodefactor.Race.NatAm  -0.47808    0.20968      0  -2.280
-## nodefactor.Race.Other  -1.54877    0.96497      0  -1.605
-## nodefactor.Sex.F        0.13086    0.06715      0   1.949
-## nodefactor.Grade.8      1.45656    0.66174      0   2.201
-## nodefactor.Grade.9      2.22394    0.62197      0   3.576
-## nodefactor.Grade.10     2.55889    0.62167      0   4.116
-## nodefactor.Grade.11     2.30632    0.62423      0   3.695
-## nodefactor.Grade.12     2.93496    0.62202      0   4.718
-## nodematch.Sex           0.52444    0.13175      0   3.980
-## nodematch.Race.Black       -Inf    0.00000      0    -Inf
-## nodematch.Race.Hisp     0.57111    0.31521      0   1.812
-## nodematch.Race.NatAm    1.08712    0.30657      0   3.546
-## nodematch.Race.Other       -Inf    0.00000      0    -Inf
-## nodematch.Race.White    0.30392    0.62741      0   0.484
-## nodematch.Grade.10      1.07180    0.53553      0   2.001
-## nodematch.Grade.11      1.83540    0.51002      0   3.599
-## nodematch.Grade.12      0.98219    0.57182      0   1.718
-## nodematch.Grade.7       6.01293    1.14975      0   5.230
-## nodematch.Grade.8       3.23593    0.64814      0   4.993
-## nodematch.Grade.9       1.62538    0.47664      0   3.410
-## gwesp                   1.22643    0.12741      0   9.626
-## gwesp.decay             0.49816    0.12582      0   3.959
-##                       Pr(&gt;|z|)    
-## edges                  &lt; 1e-04 ***
-## nodefactor.Race.Black 0.010822 *  
-## nodefactor.Race.Hisp  0.031144 *  
-## nodefactor.Race.NatAm 0.022603 *  
-## nodefactor.Race.Other 0.108496    
-## nodefactor.Sex.F      0.051314 .  
-## nodefactor.Grade.8    0.027729 *  
-## nodefactor.Grade.9    0.000349 ***
-## nodefactor.Grade.10    &lt; 1e-04 ***
-## nodefactor.Grade.11   0.000220 ***
-## nodefactor.Grade.12    &lt; 1e-04 ***
-## nodematch.Sex          &lt; 1e-04 ***
-## nodematch.Race.Black   &lt; 1e-04 ***
-## nodematch.Race.Hisp   0.070013 .  
-## nodematch.Race.NatAm  0.000391 ***
-## nodematch.Race.Other   &lt; 1e-04 ***
-## nodematch.Race.White  0.628101    
-## nodematch.Grade.10    0.045352 *  
-## nodematch.Grade.11    0.000320 ***
-## nodematch.Grade.12    0.085858 .  
-## nodematch.Grade.7      &lt; 1e-04 ***
-## nodematch.Grade.8      &lt; 1e-04 ***
-## nodematch.Grade.9     0.000649 ***
-## gwesp                  &lt; 1e-04 ***
-## gwesp.decay            &lt; 1e-04 ***
+##                        Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## edges                 -10.22281    1.17910      0  -8.670  &lt; 1e-04 ***
+## nodefactor.Race.Black   0.61845    0.24268      0   2.548 0.010822 *  
+## nodefactor.Race.Hisp   -0.49867    0.23138      0  -2.155 0.031144 *  
+## nodefactor.Race.NatAm  -0.47808    0.20968      0  -2.280 0.022603 *  
+## nodefactor.Race.Other  -1.54877    0.96497      0  -1.605 0.108496    
+## nodefactor.Sex.F        0.13086    0.06715      0   1.949 0.051314 .  
+## nodefactor.Grade.8      1.45656    0.66174      0   2.201 0.027729 *  
+## nodefactor.Grade.9      2.22394    0.62197      0   3.576 0.000349 ***
+## nodefactor.Grade.10     2.55889    0.62167      0   4.116  &lt; 1e-04 ***
+## nodefactor.Grade.11     2.30632    0.62423      0   3.695 0.000220 ***
+## nodefactor.Grade.12     2.93496    0.62202      0   4.718  &lt; 1e-04 ***
+## nodematch.Sex           0.52444    0.13175      0   3.980  &lt; 1e-04 ***
+## nodematch.Race.Black       -Inf    0.00000      0    -Inf  &lt; 1e-04 ***
+## nodematch.Race.Hisp     0.57111    0.31521      0   1.812 0.070013 .  
+## nodematch.Race.NatAm    1.08712    0.30657      0   3.546 0.000391 ***
+## nodematch.Race.Other       -Inf    0.00000      0    -Inf  &lt; 1e-04 ***
+## nodematch.Race.White    0.30392    0.62741      0   0.484 0.628101    
+## nodematch.Grade.10      1.07180    0.53553      0   2.001 0.045352 *  
+## nodematch.Grade.11      1.83540    0.51002      0   3.599 0.000320 ***
+## nodematch.Grade.12      0.98219    0.57182      0   1.718 0.085858 .  
+## nodematch.Grade.7       6.01293    1.14975      0   5.230  &lt; 1e-04 ***
+## nodematch.Grade.8       3.23593    0.64814      0   4.993  &lt; 1e-04 ***
+## nodematch.Grade.9       1.62538    0.47664      0   3.410 0.000649 ***
+## gwesp                   1.22643    0.12741      0   9.626  &lt; 1e-04 ***
+## gwesp.decay             0.49816    0.12582      0   3.959  &lt; 1e-04 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -408,60 +327,42 @@ mixingmatrix(mesa, "Race")
 
 
 ```
-##                 edges  nodefactor.Race.Hisp 
-##                   203                   178 
-## nodefactor.Race.NatAm nodefactor.Race.Other 
-##                   156                     1 
-## nodefactor.Race.White      nodefactor.Sex.F 
-##                    45                   235 
-##    nodefactor.Grade.8    nodefactor.Grade.9 
-##                    75                    65 
-##   nodefactor.Grade.10   nodefactor.Grade.11 
-##                    36                    49 
-##   nodefactor.Grade.12         nodematch.Sex 
-##                    28                   132 
-##  nodematch.Race.Black   nodematch.Race.Hisp 
-##                     0                    53 
-##  nodematch.Race.NatAm  nodematch.Race.Other 
-##                    46                     0 
-##  nodematch.Race.White    nodematch.Grade.10 
-##                     4                     9 
-##    nodematch.Grade.11    nodematch.Grade.12 
-##                    17                     6 
-##     nodematch.Grade.7     nodematch.Grade.8 
-##                    75                    33 
-##     nodematch.Grade.9                 esp#1 
-##                    23                    70 
-##                 esp#2                 esp#3 
-##                    36                    13 
-##                 esp#4                 esp#5 
-##                     0                     1 
-##                 esp#6                 esp#7 
-##                     0                     0 
-##                 esp#8                 esp#9 
-##                     0                     0 
-##                esp#10                esp#11 
-##                     0                     0 
-##                esp#12                esp#13 
-##                     0                     0 
-##                esp#14                esp#15 
-##                     0                     0 
-##                esp#16                esp#17 
-##                     0                     0 
-##                esp#18                esp#19 
-##                     0                     0 
-##                esp#20                esp#21 
-##                     0                     0 
-##                esp#22                esp#23 
-##                     0                     0 
-##                esp#24                esp#25 
-##                     0                     0 
-##                esp#26                esp#27 
-##                     0                     0 
-##                esp#28                esp#29 
-##                     0                     0 
-##                esp#30 
-##                     0
+##                 edges  nodefactor.Race.Hisp nodefactor.Race.NatAm 
+##                   203                   178                   156 
+## nodefactor.Race.Other nodefactor.Race.White      nodefactor.Sex.F 
+##                     1                    45                   235 
+##    nodefactor.Grade.8    nodefactor.Grade.9   nodefactor.Grade.10 
+##                    75                    65                    36 
+##   nodefactor.Grade.11   nodefactor.Grade.12         nodematch.Sex 
+##                    49                    28                   132 
+##  nodematch.Race.Black   nodematch.Race.Hisp  nodematch.Race.NatAm 
+##                     0                    53                    46 
+##  nodematch.Race.Other  nodematch.Race.White    nodematch.Grade.10 
+##                     0                     4                     9 
+##    nodematch.Grade.11    nodematch.Grade.12     nodematch.Grade.7 
+##                    17                     6                    75 
+##     nodematch.Grade.8     nodematch.Grade.9                 esp#1 
+##                    33                    23                    70 
+##                 esp#2                 esp#3                 esp#4 
+##                    36                    13                     0 
+##                 esp#5                 esp#6                 esp#7 
+##                     1                     0                     0 
+##                 esp#8                 esp#9                esp#10 
+##                     0                     0                     0 
+##                esp#11                esp#12                esp#13 
+##                     0                     0                     0 
+##                esp#14                esp#15                esp#16 
+##                     0                     0                     0 
+##                esp#17                esp#18                esp#19 
+##                     0                     0                     0 
+##                esp#20                esp#21                esp#22 
+##                     0                     0                     0 
+##                esp#23                esp#24                esp#25 
+##                     0                     0                     0 
+##                esp#26                esp#27                esp#28 
+##                     0                     0                     0 
+##                esp#29                esp#30 
+##                     0                     0
 ```
 ---
 ## Remove the Categories with Empty Cells:
@@ -507,7 +408,7 @@ mixing coefficient is positive), but is strongest among 7th graders and declines
 \omega=e^\alpha\sum\limits_{i=1}^{n-2}(1-(1-e^{-\alpha})^i)p_i,
 \end{eqnarray}$$`
 
-where `\(\alpha\)` is the decay parameter, `\(p_i\)` is the number of actor pairs who have exactly `\(i\)` shared edgewise partners, and `\(n\)` is the numebr of nodes in the network. 
+where `\(\alpha\)` is the decay parameter, `\(p_i\)` is the number of actor pairs who have exactly `\(i\)` shared edgewise partners, and `\(n\)` is the number of nodes in the network. 
 
 - The maximum number of edgewise-shared partners for any pair of nodes is `\(n-2\)`.
 ---
@@ -521,22 +422,91 @@ Depends on (1) the number of triangles that the tie closes and (2) the existing 
 
 ---
 
-- Adding a tie that closes one triangle and no nodes in the group have any existing ESPs will 
-add *three* ties with one edgewise shared partnership (1 and `\(2\)` share partner `\(3\)`, `\(1\)` and `\(3\)` share partner `\(2\)`, and `\(2\)` and `\(3\)` share partner `\(1\)`:
+## Adding a Tie That Closes One Triangle
+
+Adding a tie that closes one triangle and no nodes in the group have any existing ESPs will:
+
+- add *three* ties with one edgewise shared partnership: `\(1\)` and `\(2\)` share partner `\(3\)`, `\(1\)` and `\(3\)` share partner `\(2\)`, and `\(2\)` and `\(3\)` share partner `\(1\)`
+
+- and *remove* two cases of a tie with zero shared partners: `\(1-2\)` and `\(1-3\)`.
 
 
-&lt;img src="09_ergm_application_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
-&lt;img src="09_ergm_application_files/figure-html/unnamed-chunk-19-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="09_ergm_application_files/figure-html/unnamed-chunk-19-1.png" width="300px" style="display: block; margin: auto;" /&gt;
 
 ---
-## Interpreting GWESP coefficient
+## Adding a Tie That Closes One Triangle
+
+- The corresponding change in the *gwesp* statistic for this toy network is:
+
+
+&lt;img src="images/gwesp_ex1.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+- Assume the decay parameter, `\(\alpha=.25\)`, then
+
+
+```r
+exp(.25)*(1-(1-exp(-.25))^1)*3-exp(.25)*(1-(1-exp(-.25))^0)*2
+```
+
+```
+## [1] 3
+```
+
 
 - Consider a GWESP coefficient of `\(1.8\)`. 
-- If a tie will close one triangle, and all actor pairs in that triangle currently
-have no shared partners, the log-odds of the tie are increased by `\(5.4\)` (1.8*3), because it would add an edgewise shared partner to three different pairs) relative to an otherwise similar tie that would not close a triangle. 
-- Can calculate other scenarios, but not very intuitive.
 
+- If a tie will close one triangle, and all actor pairs in that triangle currently
+have no shared partners, the log-odds of the tie are increased by `\(5.4\)` (1.8*3), and the odds of such a tie are increased by `\(exp(5.4)=\)` 221.
+
+
+---
+## Your Turn
+
+
+- Suppose a tie closes one triangle, but nodes in the triangle to be closed already have some *esp*s:
+
+
+&lt;img src="images/gwesp2.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+- Calculate the change in the *gwesp* statistic that results from this change.
+
+- Suppose the *gwesp* coefficient is `\(1.8\)`. What effect does this coefficient have on the odds of such a tie?
+
+---
+## Your Turn 2
+
+- Remember this model we estimated on the Sampson monastery data. Calculate the probability of a non-reciprocated tie that closes one triangle among nodes with no *esp*s.
+
+
+
+
+```r
+m2&lt;-ergm(samplike~edges+mutual+nodematch('group')+gwesp(.25,fixed=TRUE))
+summary(m2)
+```
+
+```
+## Call:
+## ergm(formula = samplike ~ edges + mutual + nodematch("group") + 
+##     gwesp(0.25, fixed = TRUE))
+## 
+## Monte Carlo Maximum Likelihood Results:
+## 
+##                      Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## edges                 -1.8962     0.4092      0  -4.634  &lt; 1e-04 ***
+## mutual                 1.3910     0.4863      0   2.860  0.00423 ** 
+## nodematch.group        2.2846     0.3863      0   5.914  &lt; 1e-04 ***
+## gwesp.OTP.fixed.0.25  -0.2808     0.2359      0  -1.191  0.23382    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##      Null Deviance: 424.2  on 306  degrees of freedom
+##  Residual Deviance: 267.4  on 302  degrees of freedom
+##  
+## AIC: 275.4  BIC: 290.3  (Smaller is better. MC Std. Err. = 0.2978)
+```
 
 
     </textarea>
@@ -586,6 +556,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
