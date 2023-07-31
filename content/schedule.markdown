@@ -91,7 +91,7 @@ All the class materials will be posted/updated here.
         <td>ERGM Application</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>  | <a href="../materials/Slides/09_ergm_application.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day10_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>  | <a href="../materials/Slides/09_ergm_application.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day10_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/09_ergm_appl_yourturn.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>

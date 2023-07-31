@@ -395,12 +395,12 @@ knitr::include_graphics("images/gwesp2.png")
 
 - Calculate the change in the *gwesp* statistic that results from this change.
 
-- Suppose the *gwesp* coefficient is $1.8$. What effect does this coefficient have on the odds of such a tie?
+- How many ties with one *esp*s does this tie add? How many ties with two *esp*s does this tie add?
 
 ---
 ## Your Turn 2
 
-- Remember this model we estimated on the Sampson monastery data. Calculate the probability of a non-reciprocated tie that closes one triangle among nodes with no *esp*s.
+- Remember this model we estimated on the Sampson monastery data. Calculate the probability of a non-reciprocated tie that closes one triangle among nodes with no *esp*s and from different groups.
 
 ```{r, eval=TRUE, echo=FALSE, results='hide',message=FALSE}
 data(sampson)

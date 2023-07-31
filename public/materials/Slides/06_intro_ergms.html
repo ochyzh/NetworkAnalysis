@@ -1047,37 +1047,7 @@ summary(m6)
 For an in-depth discussion on how to interpret `gwesp`, see
 https://eehh-stanford.github.io/SNA-workshop/ergm-predictions.html
 
----
-## Geometrically Weighted Terms
-
-The GWESP (Geometrically-Weighted Edgewise Shared Partnerships) statistic, which models triad closure, is calculated as follows (see Hunter 2007):
-
-&lt;img src="images/gwesp.png" width="1000px" style="display: block; margin: auto;" /&gt;
-
-Where `\(\alpha\)` is the GWESP decay parameter, and pi is the number of actor pairs who have exactly i shared (edgewise) partners. n is the number of nodes in the network; the maximum number of edgewise-shared partners for any pair of nodes in the network is `\(n-2\)`.
-
----
-## Geometrically Weighted Terms
-
-Adding one tie has a different effect on the number of edgewise shared partnerships in the network depending 
-
-- on the number of triangles that the tie closes, 
-- and the existing number of edgewise shared partnerships that the nodes involved in the triangles already belong to.
-
-
-
----
-## Adding a tie that closes one triangle
-
-&lt;img src="images/gwesp1.png" width="400px" style="display: block; margin: auto;" /&gt;
-
-- Adding the tie between `\(i\)` and `\(j\)` will add not just one but THREE ties with one edgewise shared partnership to the network ( `\(i\)` and `\(j\)` share partner `\(k\)`; `\(i\)` and `\(k\)` share partner `\(j\)`; `\(j\)` and `\(k\)` share partner `\(i\)`).
----
-## Adding a tie that closes no triangles
-
-- If a tie being modelled would not close a triangle, then after adding the tie, the nodes will still have the same number of edgewise shared partners, so the GWESP change statistic is zero.
-
-
+- We come back to this when we talk about ERGM applications later.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
