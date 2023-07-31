@@ -124,13 +124,13 @@ the probabilities to sum to 1.
 We would usually begin by maximizing the log-likelihood in order to calculate $(\hat\theta)$:
 
 \begin{align}
-	log \Pr(Y = y) = \theta^{T} g(y) + log( \mathcal{k(\theta)})
+	log \Pr(Y = y) = \theta^{T} g(y) - log( \mathcal{k(\theta,\mathcal{Y})})
 \end{align}
 
 To solve this type of problem we often use gradient descent, this requires taking the derivatives of $l(\theta | y)$:
 
 \begin{align}
-	\nabla l(\theta | y) = g(y) + \nabla log( \mathcal{k(\theta)})
+	\nabla l(\theta | y) = g(y) - \nabla log( \mathcal{k(\theta,\mathcal{Y})})
 \end{align}
 
 
@@ -851,3 +851,38 @@ summary(m6)
 For an in-depth discussion on how to interpret `gwesp`, see
 https://eehh-stanford.github.io/SNA-workshop/ergm-predictions.html
 
+---
+## Geometrically Weighted Terms
+
+The GWESP (Geometrically-Weighted Edgewise Shared Partnerships) statistic, which models triad closure, is calculated as follows (see Hunter 2007):
+
+```{r, out.width= "1000px",fig.align="center", echo=FALSE}
+knitr::include_graphics("images/gwesp.png")
+```
+
+Where $\alpha$ is the GWESP decay parameter, and pi is the number of actor pairs who have exactly i shared (edgewise) partners. n is the number of nodes in the network; the maximum number of edgewise-shared partners for any pair of nodes in the network is $n-2$.
+
+---
+## Geometrically Weighted Terms
+
+Adding one tie has a different effect on the number of edgewise shared partnerships in the network depending 
+
+- on the number of triangles that the tie closes, 
+- and the existing number of edgewise shared partnerships that the nodes involved in the triangles already belong to.
+
+
+
+---
+## Adding a tie that closes one triangle
+
+```{r, out.width= "1000px",fig.align="center", echo=FALSE}
+knitr::include_graphics("images/gwesp1.png")
+```
+
+- Adding the tie between i and j will add not just one but THREE ties with one edgewise shared partnership to the network (i and j share partner k; i and k share partner j; j and k share partner i).
+---
+## Adding a tie that closes no triangles
+
+- If a tie being modelled would not close a triangle, then after adding the tie, the nodes will still have the same number of edgewise shared partners, so the GWESP change statistic is zero.
+
+---

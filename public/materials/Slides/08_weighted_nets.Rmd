@@ -249,7 +249,7 @@ knitr::include_graphics("images/trans_weights.jpg")
   + `"max"`--- the strength of the strongest path
   + `"sum"`---the sum of path strength
   
-- `affect` ---given the combined strength pf the two-paths between $i$ and $j$, how should they affect $\pmb{Y}_{i,j}$?
+- `affect` ---given the combined strength of the two-paths between $i$ and $j$, how should they affect $\pmb{Y}_{i,j}$?
   + `"min"`
   + `"geomean"`
 ---
