@@ -40,7 +40,7 @@ network::set.vertex.attribute(lazega.s, "Gender",
                               v.attrs$Gender)
 
 ```
-5. In the empty chunk below, type in the commands to: (1) look at the first 10 rows and the first 10 columns of the network of relationships among lawyers; (2) look at the all values of the vertex attributes Seniority, Office, Gender, and Practice.
+5. In the empty chunk below, type in the commands to: (1) look at the first 10 rows and the first 10 columns of the network of relationships among lawyers; (2) look at all values of the vertex attributes Seniority, Office, Gender, and Practice.
 
 Notice that the network of lawyer relationships is saved with the name `lazega.s` (per chunk above).
 
