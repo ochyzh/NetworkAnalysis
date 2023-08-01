@@ -1,6 +1,6 @@
 ---
 title: Advanced Network Analysis
-subtitle: TERGM Introduction
+subtitle: Temporal ERGMs
 author: "Olga Chyzh [www.olgachyzh.com]"
 output:
   xaringan::moon_reader:
@@ -227,17 +227,26 @@ tErgmStats(allyDyn, "~ edges+triangle")
 ```
 
 ---
-
-
 ## Your Turn
 
-1. Format the war data from above as a `networkDynamic` object. 
+1. For this exercise, you will work with the friendship data from `library(RSiena)`. Run the following code to load the data.
 
-2. Summarize changes in the number of war initiation (edges) and triangles in the war network.
+```{r}
+library(RSiena)
+friend.data.w1 <- s501
+friend.data.w2 <- s502
+friend.data.w3 <- s503
+drink <- s50a
+smoke <- s50s
+```
 
-3. Plot the war network from 1991 and 2000 side-by-side using the `network.extract` function.
+2. Format the friendship data from as a `networkDynamic` object. 
 
-4. Make a quick movie of the war network over time using the `render.d3movie` function.
+3. Summarize changes in friendships (edges), triangles, and number of nodes with indegrees 1 nd 2, over time.
+
+4. Plot the first and the third waves of the friends network side-by-side using the `network.extract` function.
+
+5. Make a quick movie of the friends network over time using the `render.d3movie` function.
 
 
 
@@ -335,7 +344,7 @@ suppressWarnings(suppressMessages(library(btergm)))
 #load('data/tergmFit_pseudo.rda')
 ```
 
-```{r tergmfit, echo=TRUE, eval=FALSE}
+```{r tergmfit, echo=TRUE, eval=TRUE}
 library(btergm)
 
 tergmFit <- btergm(
@@ -351,7 +360,7 @@ tergmFit <- btergm(
 ```
 
 ---
-## Peaking at the results
+## Results
 
 ```{r tergmfit1, echo=TRUE, eval=TRUE}
 summary(tergmFit)
@@ -375,7 +384,6 @@ class(dipl_ties[[1]])
 
 ```
 
-Get an error that need vertex.pid (persistent identifies), as our networks are not of equal size.
 
 ---
 ## The Dependent Variable
@@ -646,6 +654,20 @@ summary(tergm_Duque1)
 ## Your Turn
 
 Re-specify the model to account for delayed reciprocity and stability. Estimate your new model.
+
+---
+## Your Turn 1
+
+1. Set up `smoke` and `drink` as vertex attributes to the friendship network.
+
+2. Estimate a temporal `ergm` that models friendships as a function of 
+- drinking and smoking behaviors, 
+- homophily (people make friends with those with similar drinking and smoking habits), 
+- reciprocity (why?)
+- triad closure (why?)
+- popularity
+
+3. Add temporal terms to model stability and delayed reciprocity.
 
 
 ---

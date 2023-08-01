@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Advanced Network Analysis
-## TERGM Introduction
+]
+.subtitle[
+## Temporal ERGMs
+]
+.author[
 ### Olga Chyzh [www.olgachyzh.com]
+]
 
 ---
 
@@ -379,17 +385,27 @@ tErgmStats(allyDyn, "~ edges+triangle")
 ```
 
 ---
-
-
 ## Your Turn
 
-1. Format the war data from above as a `networkDynamic` object. 
+1. For this exercise, you will work with the friendship data from `library(RSiena)`. Run the following code to load the data.
 
-2. Summarize changes in the number of war initiation (edges) and triangles in the war network.
 
-3. Plot the war network from 1991 and 2000 side-by-side using the `network.extract` function.
+```r
+library(RSiena)
+friend.data.w1 &lt;- s501
+friend.data.w2 &lt;- s502
+friend.data.w3 &lt;- s503
+drink &lt;- s50a
+smoke &lt;- s50s
+```
 
-4. Make a quick movie of the war network over time using the `render.d3movie` function.
+2. Format the friendship data from as a `networkDynamic` object. 
+
+3. Summarize changes in friendships (edges), triangles, and number of nodes with indegrees 1 nd 2, over time.
+
+4. Plot the first and the third waves of the friends network side-by-side using the `network.extract` function.
+
+5. Make a quick movie of the friends network over time using the `render.d3movie` function.
 
 
 
@@ -491,13 +507,37 @@ tergmFit &lt;- btergm(
 	nodecov('cinc') + absdiff("cinc") +
 	gwesp(.5, fixed = TRUE)
 	)
+```
 
+```
+##                  t=1 t=2 t=3 t=4 t=5 t=6 t=7 t=8 t=9 t=10
+## ally (row)        50  50  50  50  50  50  50  50  50   50
+## ally (col)        50  50  50  50  50  50  50  50  50   50
+## war (row)         50  50  50  50  50  50  50  50  50   50
+## war (col)         50  50  50  50  50  50  50  50  50   50
+## contiguity (row)  50  50  50  50  50  50  50  50  50   50
+## contiguity (col)  50  50  50  50  50  50  50  50  50   50
+##                             t=1 t=2 t=3 t=4 t=5 t=6 t=7 t=8 t=9 t=10
+## maximum deleted nodes (row)   0   0   0   0   0   0   0   0   0    0
+## maximum deleted nodes (col)   0   0   0   0   0   0   0   0   0    0
+## remaining rows               50  50  50  50  50  50  50  50  50   50
+## remaining columns            50  50  50  50  50  50  50  50  50   50
+##                  t=1 t=2 t=3 t=4 t=5 t=6 t=7 t=8 t=9 t=10
+## ally (row)        50  50  50  50  50  50  50  50  50   50
+## ally (col)        50  50  50  50  50  50  50  50  50   50
+## war (row)         50  50  50  50  50  50  50  50  50   50
+## war (col)         50  50  50  50  50  50  50  50  50   50
+## contiguity (row)  50  50  50  50  50  50  50  50  50   50
+## contiguity (col)  50  50  50  50  50  50  50  50  50   50
+```
+
+```r
 #check model fit:
 #GOF1&lt;-gof(tergmFit)
 ```
 
 ---
-## Peaking at the results
+## Results
 
 
 ```r
@@ -505,15 +545,15 @@ summary(tergmFit)
 ```
 
 ```
-##                           Estimate    2.5%   97.5%
-## edges                   -5.3675652 -5.5202 -5.2208
-## edgecov.war[[i]]         1.0547194  0.7438  1.3382
-## edgecov.contiguity[[i]] -0.2176738 -0.3353 -0.1089
-## nodecov.polity           0.0774665  0.0655  0.0895
-## absdiff.polity          -0.0099237 -0.0161 -0.0025
-## nodecov.cinc            -5.5272184 -7.9541 -3.3051
-## absdiff.cinc            21.0799677 18.9316 23.3665
-## gwesp.fixed.0.5          2.2031934  2.0987  2.2957
+##                            Estimate   Boot mean    2.5%   97.5%
+## edges                   -5.69586158 -5.7047e+00 -5.8479 -5.5119
+## edgecov.war[[i]]        -0.07515258 -7.0802e-02 -0.3076  0.1307
+## edgecov.contiguity[[i]]  2.54540447  2.5471e+00  2.4979  2.6105
+## nodecov.polity          -0.00027339 -1.1393e-05 -0.0059  0.0059
+## absdiff.polity           0.01865488  1.8862e-02  0.0142  0.0238
+## nodecov.cinc            -1.42023487 -1.4401e+00 -2.0456 -0.9304
+## absdiff.cinc            26.96999913  2.7027e+01 26.2251 27.8034
+## gwesp.fixed.0.5          2.24553096  2.2477e+00  2.1350  2.3379
 ```
 
 ---
@@ -551,7 +591,6 @@ class(dipl_ties[[1]])
 ## [1] "data.frame"
 ```
 
-Get an error that need vertex.pid (persistent identifies), as our networks are not of equal size.
 
 ---
 ## The Dependent Variable
@@ -647,7 +686,7 @@ Note: cannot use coordinates, because networks are not of equal size, include di
 
 ## Quick snapshots
 
-&lt;img src="10_tergm_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_tergm_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -931,16 +970,16 @@ summary(tergm_Duque)
 ## Run the Model
 
 ```
-##                      Estimate    2.5%   97.5%
-## edges               -5.377882 -5.6133 -5.1253
-## istar2               0.028279  0.0267  0.0313
-## ostar2               0.029487  0.0266  0.0340
-## mutual               2.485567  2.3500  2.5956
-## triangle             0.011750  0.0103  0.0127
-## absdiff.dem         -0.287938 -0.3656 -0.2207
-## nodeicov.dem        -0.204423 -0.2515 -0.1246
-## edgecov.allies[[i]]  1.205762  1.1238  1.3205
-## edgecov.contig[[i]]  1.765076  1.5732  2.0623
+##                      Estimate Boot mean    2.5%   97.5%
+## edges               -5.377882 -5.405644 -5.6133 -5.1253
+## istar2               0.028279  0.028712  0.0267  0.0313
+## ostar2               0.029487  0.030022  0.0266  0.0340
+## mutual               2.485567  2.482407  2.3500  2.5956
+## triangle             0.011750  0.011628  0.0103  0.0127
+## absdiff.dem         -0.287938 -0.289257 -0.3656 -0.2207
+## nodeicov.dem        -0.204423 -0.195365 -0.2515 -0.1246
+## edgecov.allies[[i]]  1.205762  1.220685  1.1238  1.3205
+## edgecov.contig[[i]]  1.765076  1.765720  1.5732  2.0623
 ```
 
 ---
@@ -987,22 +1026,36 @@ summary(tergm_Duque1)
 ## Example with Time Vars
 
 ```
-##                        Estimate    2.5%   97.5%
-## edges                 -4.915580 -5.2673 -4.5906
-## istar2                 0.029973  0.0283  0.0333
-## ostar2                 0.031485  0.0289  0.0353
-## mutual                 2.428539  2.2767  2.5464
-## triangle               0.011518  0.0102  0.0126
-## absdiff.dem           -0.298055 -0.3669 -0.2392
-## nodeicov.dem          -0.122282 -0.2013 -0.0506
-## edgecov.allies[[i]]    1.199983  1.0998  1.3312
-## edgecov.contig[[i]]    1.837357  1.6100  2.1092
-## edgecov.timecov1[[i]] -0.126189 -0.2050 -0.0802
+##                        Estimate Boot mean    2.5%   97.5%
+## edges                 -4.915580 -4.944023 -5.2673 -4.5906
+## istar2                 0.029973  0.030279  0.0283  0.0333
+## ostar2                 0.031485  0.031775  0.0289  0.0353
+## mutual                 2.428539  2.424032  2.2767  2.5464
+## triangle               0.011518  0.011492  0.0102  0.0126
+## absdiff.dem           -0.298055 -0.300189 -0.3669 -0.2392
+## nodeicov.dem          -0.122282 -0.130947 -0.2013 -0.0506
+## edgecov.allies[[i]]    1.199983  1.217104  1.0998  1.3312
+## edgecov.contig[[i]]    1.837357  1.828172  1.6100  2.1092
+## edgecov.timecov1[[i]] -0.126189 -0.127274 -0.2050 -0.0802
 ```
 ---
 ## Your Turn
 
 Re-specify the model to account for delayed reciprocity and stability. Estimate your new model.
+
+---
+## Your Turn 1
+
+1. Set up `smoke` and `drink` as vertex attributes to the friendship network.
+
+2. Estimate a temporal `ergm` that models friendships as a function of 
+- drinking and smoking behaviors, 
+- homophily (people make friends with those with similar drinking and smoking habits), 
+- reciprocity (why?)
+- triad closure (why?)
+- popularity
+
+3. Add temporal terms to model stability and delayed reciprocity.
 
 
 ---
@@ -1096,6 +1149,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
