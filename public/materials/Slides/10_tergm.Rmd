@@ -661,11 +661,11 @@ Re-specify the model to account for delayed reciprocity and stability. Estimate 
 1. Set up `smoke` and `drink` as vertex attributes to the friendship network.
 
 2. Estimate a temporal `ergm` that models friendships as a function of 
-- drinking and smoking behaviors, 
-- homophily (people make friends with those with similar drinking and smoking habits), 
-- reciprocity (why?)
-- triad closure (why?)
-- popularity
+    - drinking and smoking behaviors, 
+    - homophily (people make friends with those with similar drinking and smoking habits), 
+    - reciprocity (why?)
+    - triad closure (why?)
+    - popularity
 
 3. Add temporal terms to model stability and delayed reciprocity.
 

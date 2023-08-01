@@ -546,14 +546,14 @@ summary(tergmFit)
 
 ```
 ##                            Estimate   Boot mean    2.5%   97.5%
-## edges                   -5.69586158 -5.7047e+00 -5.8479 -5.5119
-## edgecov.war[[i]]        -0.07515258 -7.0802e-02 -0.3076  0.1307
-## edgecov.contiguity[[i]]  2.54540447  2.5471e+00  2.4979  2.6105
-## nodecov.polity          -0.00027339 -1.1393e-05 -0.0059  0.0059
-## absdiff.polity           0.01865488  1.8862e-02  0.0142  0.0238
-## nodecov.cinc            -1.42023487 -1.4401e+00 -2.0456 -0.9304
-## absdiff.cinc            26.96999913  2.7027e+01 26.2251 27.8034
-## gwesp.fixed.0.5          2.24553096  2.2477e+00  2.1350  2.3379
+## edges                   -5.69586158 -5.69973953 -5.8424 -5.4809
+## edgecov.war[[i]]        -0.07515258 -0.07292465 -0.3130  0.1482
+## edgecov.contiguity[[i]]  2.54540447  2.54635512  2.4943  2.6080
+## nodecov.polity          -0.00027339 -0.00027453 -0.0064  0.0057
+## absdiff.polity           0.01865488  0.01875071  0.0143  0.0235
+## nodecov.cinc            -1.42023487 -1.43086995 -2.1052 -0.8640
+## absdiff.cinc            26.96999913 27.00237695 26.1670 27.7765
+## gwesp.fixed.0.5          2.24553096  2.24742783  2.1249  2.3382
 ```
 
 ---
@@ -1049,11 +1049,11 @@ Re-specify the model to account for delayed reciprocity and stability. Estimate 
 1. Set up `smoke` and `drink` as vertex attributes to the friendship network.
 
 2. Estimate a temporal `ergm` that models friendships as a function of 
-- drinking and smoking behaviors, 
-- homophily (people make friends with those with similar drinking and smoking habits), 
-- reciprocity (why?)
-- triad closure (why?)
-- popularity
+    - drinking and smoking behaviors, 
+    - homophily (people make friends with those with similar drinking and smoking habits), 
+    - reciprocity (why?)
+    - triad closure (why?)
+    - popularity
 
 3. Add temporal terms to model stability and delayed reciprocity.
 
