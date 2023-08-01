@@ -294,7 +294,7 @@ smoke <- s50s
 - $Y^{t} | Y^{t-1}$ can be expressed through an ERGM distribution, which then gives us what is referred to as a TERGM:
 
 \begin{align}
-\Pr(Y^{t} | \theta, Y^{t-1}) &= \frac{ \exp( \theta^{T} g(Y^{t}, Y^{t-1}, )  )  }{ \mathcal{k}  } 
+\Pr(Y^{t} | \theta, Y^{t-1}) &= \frac{ \exp( \theta^{T} g(Y^{t}, Y^{t-1})  )  }{ \mathcal{k}  } 
 \end{align}
 
 ---
