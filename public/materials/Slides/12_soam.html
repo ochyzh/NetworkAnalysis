@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Advanced Network Analysis
+]
+.subtitle[
 ## Stochastic Actor-Oriented Models
+]
+.author[
 ### Olga Chyzh [www.olgachyzh.com]
+]
 
 ---
 
@@ -27,7 +33,18 @@ exclude: true
 
 - Christian Steglich, Tom AB Snijders, and Michael Pearson. Dynamic networks and behavior: Separating selection from in
 uence. Sociological Methodology, 40(1):329--393, 2010.
+---
+## Why Use SOAM?
 
+- Until now, we modeled networks as a function of covariates (endogenous and exogenous).
+
+- Suppose we want to know whether network ties affect behavior? (e.g., friendships and bad habits)
+
+- Or whether ties in two different networks affect each other (e.g., work and romantic relationships)
+
+- SOAMs allow for modeling network(s) and nodal behavior as two mutually constitutive outcome variables.
+
+- Can you think of other examples of mutually-constitutive networks and behavior?
 ---
 
 # SAOM
@@ -762,13 +779,13 @@ m2 &lt;- siena07(myalgorithm2, data = NBdata,
 gofI &lt;- sienaGOF(m2, IndegreeDistribution, verbose=TRUE, join=TRUE,
      varName="friendship")
 plot(gofI)
-saveRDS(gofI,"data/gofI")
+saveRDS(gofI,"./data/gofI")
 ```
 
 ---
 ## Goodness of Fit: Indegree
-&lt;img src="12_soam_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
 
+&lt;img src="images/SienaIgof.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Goodness of Fit: Outdegree
@@ -781,8 +798,9 @@ saveRDS(gofO,"data/gofO")
 ```
 
 
-&lt;img src="12_soam_files/figure-html/unnamed-chunk-27-1.png" width="400px" style="display: block; margin: auto;" /&gt;
 
+
+&lt;img src="images/SienaIgof.png" width="500px" style="display: block; margin: auto;" /&gt;
 ---
 ## Goodness of Fit: Triad Census
 
@@ -793,8 +811,33 @@ plot(gofTC)
 saveRDS(gofTC,"data/gofTC")
 ```
 
-&lt;img src="12_soam_files/figure-html/unnamed-chunk-29-1.png" width="400px" style="display: block; margin: auto;" /&gt;
+&lt;img src="12_soam_files/figure-html/unnamed-chunk-30-1.png" width="300px" style="display: block; margin: auto;" /&gt;
 
+---
+## Example: Knecht Data
+
+
+```r
+library(btergm)
+data(knecht)
+```
+
+- Longitudinal classroom friendship network and behavior (Andrea Knecht)
+
+- `friendship`--a list of adjacency matrices at four time periods
+
+- `demographics`--node-level covariates: sex, age, ethnicity, religion
+
+- `delinquency`--number of delinquencies
+
+---
+## Your Turn
+
+- Use the tools we learned during the last class to visualize the friendship network over time.
+
+- Set up the data. Treats friendships and delinquencies as two mutually-constitutive outcome variables. Recode religion as 1 if an individual is religious and 0 otherwise.
+
+Estimate a RSiena model. In addition to the default specification, specify the friendship equation as a function of religious similarity and each individual's delinqeencies. In addition to the default specification, specify the delinquency equation as a function of indegree, outdegree, and average drinking of one's friends.
 
 
 
@@ -985,11 +1028,10 @@ dipl &lt;- sienaDependent(dipl)
 ```
 ---
 
-## Goodness of Fit: Indegree
+## Goodness of Fit: Outdegree
 
 
-&lt;img src="12_soam_files/figure-html/unnamed-chunk-34-1.png" width="400px" style="display: block; margin: auto;" /&gt;
-
+&lt;img src="images/Ogof_duque.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1007,7 +1049,7 @@ plot(gofTC_dipl)
 ## This holds for the statistics: 012 021D 021U 021C 111D 111U 030T 030C 120D 120U 120C 210.
 ```
 
-&lt;img src="12_soam_files/figure-html/unnamed-chunk-36-1.png" width="400px" style="display: block; margin: auto;" /&gt;
+&lt;img src="12_soam_files/figure-html/unnamed-chunk-38-1.png" width="400px" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1067,6 +1109,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

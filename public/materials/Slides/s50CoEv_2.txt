@@ -1,0 +1,160 @@
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 02/08/2023 13:14:43
+New results follow.
+-----------------------------------
+
+RSiena version 1.3.14.4 (08 Jul 23)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 721103.
+Effects object used: NBeff 
+Model Type:
+ Standard actor-oriented model
+Behavioral Model Type:
+ Standard behavior actor-oriented model ('restrict')
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations in each period is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  constant friendship rate (period 1)             4.6960
+  2. rate:  constant friendship rate (period 2)             4.3288
+  3. eval:  outdegree (density)                            -1.4677
+  4. eval:  reciprocity                                     0.0000
+  5. eval:  smoke1 similarity                               0.0000
+  6. eval:  drinkingbeh alter                               0.0000
+  7. eval:  drinkingbeh ego                                 0.0000
+  8. eval:  drinkingbeh similarity                          0.0000
+  9. rate:  rate drinkingbeh (period 1)                     0.7057
+ 10. rate:  rate drinkingbeh (period 2)                     0.8494
+ 11. eval:  drinkingbeh linear shape                        0.3224
+ 12. eval:  drinkingbeh quadratic shape                     0.0000
+ 13. eval:  drinkingbeh indegree                            0.0000
+ 14. eval:  drinkingbeh outdegree                           0.0000
+ 15. eval:  drinkingbeh average alter                       0.0000
+
+
+Observed values of target statistics are
+  1. Amount of network change in period 1                               115.0000
+  2. Amount of network change in period 2                               106.0000
+  3. Number of ties                                                     238.0000
+  4. Number of reciprocated ties                                        160.0000
+  5. Similarity on smoke1                                                23.0371
+  6. Sum indegrees x drinkingbeh                                        -16.9733
+  7. Sum outdegrees x drinkingbeh                                        -8.9733
+  8. Similarity on drinkingbeh                                           21.9957
+  9. Amount of behavioral change in period 1 on drinkingbeh              27.0000
+ 10. Amount of behavioral change in period 2 on drinkingbeh              33.0000
+ 11. drinkingbeh centered sum                                            11.6667
+ 12. drinkingbeh sum of cent. squares                                   121.0711
+ 13. drinkingbeh indegrees                                               51.0467
+ 14. drinkingbeh outdegrees                                              52.0467
+ 15. drinkingbeh average alters                                          53.9086
+
+ 15 parameters, 15 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 3266 iterations.
+Parameter estimates based on 2266 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.   0.1600   9.8961   0.0162 
+  2.  -0.1040   8.8616  -0.0117 
+  3.   0.3560  14.5349   0.0245 
+  4.   0.0880  13.4764   0.0065 
+  5.   0.2485   5.5284   0.0449 
+  6.  -1.2433  15.9400  -0.0780 
+  7.  -1.0373  14.9303  -0.0695 
+  8.   0.1469   3.7974   0.0387 
+  9.   0.1370   4.5038   0.0304 
+ 10.   0.0940   5.0026   0.0188 
+ 11.   0.4150   9.8416   0.0422 
+ 12.   1.1769  14.4245   0.0816 
+ 13.   2.4830  25.8086   0.0962 
+ 14.   1.9230  24.7168   0.0778 
+ 15.  -0.0568  13.4779  -0.0042 
+
+Good convergence is indicated by the t-ratios being close to zero.
+
+Overall maximum convergence ratio =  0.2105 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 3266 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+Network Dynamics
+ 1. rate:  constant friendship rate (period 1)                     5.9044  (   0.9846)
+ 2. rate:  constant friendship rate (period 2)                     4.5020  (   0.7515)
+ 3. eval:  outdegree (density)                                    -2.4766  (   0.2019)
+ 4. eval:  reciprocity                                             2.7604  (   0.1949)
+ 5. eval:  smoke1 similarity                                       0.2952  (   0.2157)
+ 6. eval:  drinkingbeh alter                                      -0.0070  (   0.1816)
+ 7. eval:  drinkingbeh ego                                         0.1204  (   0.1193)
+ 8. eval:  drinkingbeh similarity                                  1.3418  (   0.9628)
+
+Behavior Dynamics
+ 9. rate:  rate drinkingbeh (period 1)                             1.2447  (   0.4542)
+10. rate:  rate drinkingbeh (period 2)                             1.7023  (   0.7152)
+11. eval:  drinkingbeh linear shape                               -1.4546  (   8.5325)
+12. eval:  drinkingbeh quadratic shape                            -1.6448  (   8.7538)
+13. eval:  drinkingbeh indegree                                   -0.9049  (   5.9582)
+14. eval:  drinkingbeh outdegree                                   1.8487  (  11.1626)
+15. eval:  drinkingbeh average alter                               3.4536  (  18.4280)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+     0.969      0.053     -0.055      0.032     -0.059     -0.068     -0.007      0.198     -0.119     -0.296     -4.109     -4.198     -2.891      5.450      8.834
+     0.072      0.565     -0.010      0.003     -0.026     -0.026     -0.009      0.008     -0.064     -0.145     -1.596     -1.689     -1.113      2.110      3.623
+    -0.276     -0.068      0.041     -0.025      0.012      0.023     -0.004     -0.158      0.031      0.065      1.160      1.257      0.878     -1.608     -2.642
+     0.166      0.018     -0.630      0.038     -0.006     -0.011      0.003      0.050     -0.020     -0.024     -0.491     -0.548     -0.408      0.722      1.152
+    -0.280     -0.161      0.265     -0.141      0.047      0.016      0.006     -0.077      0.022      0.046      0.790      0.822      0.563     -1.053     -1.743
+    -0.382     -0.191      0.634     -0.323      0.402      0.033     -0.008     -0.106      0.036      0.078      1.203      1.289      0.870     -1.628     -2.715
+    -0.057     -0.101     -0.165      0.133      0.249     -0.355      0.014      0.012      0.000      0.002      0.022     -0.018     -0.008      0.002      0.033
+     0.208      0.011     -0.815      0.269     -0.371     -0.608      0.109      0.927     -0.117     -0.275     -5.280     -5.681     -3.885      7.190     11.950
+    -0.267     -0.189      0.337     -0.226      0.224      0.436     -0.001     -0.269      0.206      0.148      2.126      2.294      1.606     -2.967     -4.828
+    -0.420     -0.271      0.447     -0.171      0.299      0.602      0.020     -0.399      0.455      0.512      4.802      4.856      3.218     -6.197    -10.205
+    -0.489     -0.249      0.673     -0.295      0.430      0.776      0.022     -0.643      0.549      0.787     72.803     73.651     48.904    -93.783   -154.795
+    -0.487     -0.257      0.711     -0.321      0.435      0.811     -0.017     -0.674      0.577      0.776      0.986     76.629     51.574    -97.459   -161.237
+    -0.493     -0.249      0.729     -0.351      0.438      0.804     -0.012     -0.677      0.594      0.755      0.962      0.989     35.500    -66.151   -108.513
+     0.496      0.252     -0.714      0.332     -0.437     -0.803      0.001      0.669     -0.585     -0.776     -0.985     -0.997     -0.995    124.603    204.982
+     0.487      0.262     -0.710      0.321     -0.438     -0.811      0.015      0.674     -0.577     -0.774     -0.984     -1.000     -0.988      0.996    339.592
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 56.14 seconds.

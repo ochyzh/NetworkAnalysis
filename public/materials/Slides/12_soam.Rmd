@@ -32,7 +32,18 @@ knitr::opts_chunk$set(
 
 - Christian Steglich, Tom AB Snijders, and Michael Pearson. Dynamic networks and behavior: Separating selection from in
 uence. Sociological Methodology, 40(1):329--393, 2010.
+---
+## Why Use SOAM?
 
+- Until now, we modeled networks as a function of covariates (endogenous and exogenous).
+
+- Suppose we want to know whether network ties affect behavior? (e.g., friendships and bad habits)
+
+- Or whether ties in two different networks affect each other (e.g., work and romantic relationships)
+
+- SOAMs allow for modeling network(s) and nodal behavior as two mutually constitutive outcome variables.
+
+- Can you think of other examples of mutually-constitutive networks and behavior?
 ---
 
 # SAOM
@@ -300,7 +311,7 @@ NBans <- siena07(myalgorithm1, data = NBdata, effects = NBeff, batch=TRUE) #with
 
 ```{r, eval=TRUE, echo=FALSE}
 
-NBans<-readRDS("data/NBans.rds")
+NBans<-readRDS("./data/NBans.rds")
 ```
 
 ---
@@ -467,16 +478,15 @@ m2 <- siena07(myalgorithm2, data = NBdata,
 gofI <- sienaGOF(m2, IndegreeDistribution, verbose=TRUE, join=TRUE,
      varName="friendship")
 plot(gofI)
-saveRDS(gofI,"data/gofI")
+saveRDS(gofI,"./data/gofI")
 ```
 
 ---
 ## Goodness of Fit: Indegree
-```{r, echo=FALSE}
-gofI<-readRDS("data/gofI")
-plot(gofI)
-```
 
+```{r, out.width= "500px",fig.align="center", echo=FALSE}
+knitr::include_graphics("images/SienaIgof.png")
+```
 
 ---
 ## Goodness of Fit: Outdegree
@@ -490,9 +500,13 @@ saveRDS(gofO,"data/gofO")
 
 ```{r, echo=FALSE, out.width= "400px",fig.align="center"}
 gofO<-readRDS("data/gofO")
-plot(gofO)
+#plot(gofO)
+
 ```
 
+```{r, out.width= "500px",fig.align="center", echo=FALSE}
+knitr::include_graphics("images/SienaIgof.png")
+```
 ---
 ## Goodness of Fit: Triad Census
 ```{r, eval=FALSE}
@@ -502,11 +516,35 @@ plot(gofTC)
 saveRDS(gofTC,"data/gofTC")
 ```
 
-```{r, echo=FALSE, out.width= "400px",fig.align="center"}
+```{r, echo=FALSE, out.width= "300px",fig.align="center"}
 gofTC<-readRDS("data/gofTC")
 plot(gofTC)
 ```
 
+---
+## Example: Knecht Data
+
+```{r, eval=FALSE, echo=TRUE}
+library(btergm)
+data(knecht)
+```
+
+- Longitudinal classroom friendship network and behavior (Andrea Knecht)
+
+- `friendship`--a list of adjacency matrices at four time periods
+
+- `demographics`--node-level covariates: sex, age, ethnicity, religion
+
+- `delinquency`--number of delinquencies
+
+---
+## Your Turn
+
+- Use the tools we learned during the last class to visualize the friendship network over time.
+
+- Set up the data. Treats friendships and delinquencies as two mutually-constitutive outcome variables. Recode religion as 1 if an individual is religious and 0 otherwise.
+
+Estimate a RSiena model. In addition to the default specification, specify the friendship equation as a function of religious similarity and each individual's delinqeencies. In addition to the default specification, specify the delinquency equation as a function of indegree, outdegree, and average drinking of one's friends.
 
 
 
@@ -641,18 +679,16 @@ summary(ans)
 ```
 ---
 
-## Goodness of Fit: Indegree
+## Goodness of Fit: Outdegree
 ```{r, echo=FALSE, eval=FALSE}
-gofI_dipl <- sienaGOF(ans, IndegreeDistribution, verbose=TRUE, join=TRUE,
+gofI_dipl <- sienaGOF(ans, OutdegreeDistribution, verbose=TRUE, join=TRUE,
      varName="dipl")
 plot(gofI_dipl)
 ```
 
-```{r, echo=FALSE, out.width= "400px",fig.align="center"}
-gofI_dipl<-readRDS("data/gofI_dipl")
-plot(gofI_dipl)
+```{r, out.width= "500px",fig.align="center", echo=FALSE}
+knitr::include_graphics("images/Ogof_duque.png")
 ```
-
 
 
 ---
