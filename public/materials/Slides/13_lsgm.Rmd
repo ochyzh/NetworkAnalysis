@@ -42,6 +42,18 @@ graph model. *Political Analysis*, 27(4):397{414, 2019.
 
 ## Motivation
 
+- Do network edges form in reaction to (anticipation) of one another?
+
+    - Did your ex start dating so soon because she didn't want you to start dating before her?
+    
+    - Do countries form alliances in response to their rivals or allies doing the same?
+    
+    - Do political parties form coalitions to balance against other (potential) coalitions?
+
+---
+
+## Formal Motivation
+
 - Do edges among red nodes affect the formation of edges among turquoise nodes?
 
 - If nodes $6$ and $7$ formed and edge, would that make it more likely that nodes $3$ and $4$ form an edge?
@@ -73,7 +85,7 @@ plot(g, edge.curved=0, edge.arrow.size=1, edge.color="black")
 
 ## The Estimator
 
-- Suppose $i$ is an potential edge in a network of potential edges (realized and unrealized);
+- Suppose $i$ is a potential edge in a network of potential edges (realized and unrealized);
 
 - Then $s_i=(u_i,v_i)$ is $i$'s location in Cartesian space.
 
@@ -102,6 +114,8 @@ f(y(s_i)|{\textbf{y}(s_j):s_j \neq s_i})=f(y(s_i)|\textbf{y}(N_i))
 
 
 ```{r, eval=T, echo=F}
+#library(devtools)
+#install_github("ochyzh/networkdata")
 library(networkdata)
 data(lsgm_data)
 
@@ -183,7 +197,7 @@ where $A_i$ is a natural parameter function and $B_i=\log[1+\exp(A_i(y(N_i)))],$
 A_i\left(\pmb{y}\left(N_i\right)\right)=\log\left(\frac{\kappa_{i}}{1-\kappa_{i}}\right)+\eta\sum_{j \in N_i}{w_{ij}\left(y_{j}-\kappa_{j}\right)},
 \end{align}
 
-where $\log\left(\frac{\kappa_i}{1-\kappa_i}\right)=\pmb{X}_i^{T}\pmb{\beta}$, $\pmb{X}_i$ is a column vector of $k$ exogenous covariates, $\pmb{\beta}$ is a $k$ by 1 vector of estimation parameters, $w_{ij}$ is the $ij^{th}$ element of a matrix of connectivities among edges \textbf{W}, and $\eta$ is its parameter.
+where $\log\left(\frac{\kappa_i}{1-\kappa_i}\right)=\pmb{X}_i^{T}\pmb{\beta}$, $\pmb{X}_i$ is a column vector of $k$ exogenous covariates, $\pmb{\beta}$ is a $k$ by 1 vector of estimation parameters, $w_{ij}$ is the $ij^{th}$ element of a matrix of connectivities among edges **W**, and $\eta$ is its parameter.
 
 - When $y_j>\kappa_j$, then the dependence term makes a positive contribution to $A_i(\textbf{y}(N_i))$---complementary processes;
 - When $y_j<\kappa_j$, then the dependence term makes a negative contribution to $A_i(\textbf{y}(N_i))$---substitution-type processes;
@@ -530,4 +544,13 @@ data(toy_data)
 lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
 
 ```
+---
+## Your Turn
+
+1. The above code estimates an lsgm with 1 edge-level covariate $X$ using a pseudo-likelihood.  Edit the code so that the resulting pseudo-likelihood can include 2 edge-level covariates $X1$ and $X2$ (i.e., the goal is to run an lsgm with `tot_trade` and `mil_ratio` as exogenous covariates).
+
+2. Estimate an lsgm with `defense` as the dependent variable, with `tot_trade` and `mil_ratio` as the exogenous edge-level covariates, and `W` as the matrix that measure connectivities among defense edges. 
+
+3. Difficult: Change the code from the above slides to estimate the standard errors for your model.
+
 

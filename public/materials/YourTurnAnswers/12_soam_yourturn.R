@@ -8,4 +8,8 @@ exp(-1*(4-3)-0.5*(4-3)^2)/(1+exp(-1*(4-3)-0.5*(4-3)^2))
 
 #  Suppose an actor has 5 friends, 3 of whom score 4 and 2 of whom score 3.
 #What is the probability of moving from 3 to 4, if we account for homophily?
+#Calculate the difference in average similarity?
+(1+1+1+0+0)/5-(0+0+0+1+1)/5
+
 exp(-1*(4-3)-0.5*(4-3)^2+2.5*.2)/(1+exp(-1*(4-3)-0.5*(4-3)^2+2.5*.2))
+
