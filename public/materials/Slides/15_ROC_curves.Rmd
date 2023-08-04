@@ -52,7 +52,7 @@ knitr::include_graphics("images/ROC_example.png")
 ---
 ## Example: ERGM
 
-```{r}
+```{r, echo=TRUE}
 library(tidyverse)
 library(magrittr)
 library(sna)
@@ -60,7 +60,7 @@ library(ergm)
 data(sampson)
 
 m1 = ergm(samplike ~ edges + nodematch('group'))
-summary(m1)
+#summary(m1)
 
 pred_ergm<-predict(m1,
   conditional = TRUE,
@@ -68,8 +68,6 @@ pred_ergm<-predict(m1,
   nsim = 100,
   output = "matrix"
 )
-
-
 ```
 ---
 ## Get Y and Predicted Probabilities
@@ -95,7 +93,7 @@ ergmplot<-plot(perf,colorize=TRUE)
 ---
 ## Make a Plot
 
-```{r, message=FALSE, eval=TRUE, echo=FALSE}
+```{r, message=FALSE, eval=TRUE, echo=FALSE, out.width= "400px",fig.align="center"}
 #install.packages("ROCR")
 library(ROCR)
 pred <- prediction(mydat$p, mydat$Y)
@@ -103,7 +101,7 @@ perf <- performance(pred,"tpr","fpr")
 ergmplot<-plot(perf,colorize=TRUE)
 ```
 
-
+Color represents cut-off.
 ---
 ## Your Turn
 
@@ -137,7 +135,6 @@ as.matrix(samplike) %>% as.data.frame() %>% mutate(name1=row.names(.)) %>%
 pred1 <- prediction(mydat1$p, mydat1$Y)
 perf1 <- performance(pred1,"tpr","fpr")
 plot(perf1,colorize=TRUE, smooth=FALSE)
- 
 ```
 
 ---

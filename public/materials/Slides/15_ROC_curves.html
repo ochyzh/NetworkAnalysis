@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Advanced Network Analysis
+]
+.subtitle[
 ## Model Comparison Using ROC Curves
+]
+.author[
 ### Olga Chyzh [www.olgachyzh.com]
+]
 
 ---
 
@@ -55,28 +61,8 @@ library(ergm)
 data(sampson)
 
 m1 = ergm(samplike ~ edges + nodematch('group'))
-summary(m1)
-```
+#summary(m1)
 
-```
-## Call:
-## ergm(formula = samplike ~ edges + nodematch("group"))
-## 
-## Maximum Likelihood Results:
-## 
-##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges            -2.0015     0.2131      0  -9.393   &lt;1e-04 ***
-## nodematch.group   2.6481     0.3026      0   8.751   &lt;1e-04 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-##      Null Deviance: 424.2  on 306  degrees of freedom
-##  Residual Deviance: 276.9  on 304  degrees of freedom
-##  
-## AIC: 280.9  BIC: 288.3  (Smaller is better. MC Std. Err. = 0)
-```
-
-```r
 pred_ergm&lt;-predict(m1,
   conditional = TRUE,
   type = "response",
@@ -110,9 +96,9 @@ ergmplot&lt;-plot(perf,colorize=TRUE)
 ---
 ## Make a Plot
 
-&lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="15_ROC_curves_files/figure-html/unnamed-chunk-5-1.png" width="400px" style="display: block; margin: auto;" /&gt;
 
-
+Color represents cut-off.
 ---
 ## Your Turn
 
@@ -223,6 +209,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
