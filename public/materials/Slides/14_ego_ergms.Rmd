@@ -138,8 +138,11 @@ nrow(m1$role_assignments)
 ---
 ## Replicate the Table
 ```{r}
-length(v.attrs$Status[-58]) #It kicks out node 58 (degree=0?)
-table(v.attrs$Status[-58],m1$role_assignments[,2])
+Status<-lazega %v% "Status"
+length(Status[-58]) #It kicks out node 58 (degree=0?)
+length(m1$role_assignments[,2])
+table(Status[-58],m1$role_assignments[,2])
+table(m1$role_assignments[,2])
 
 ```
 ---
