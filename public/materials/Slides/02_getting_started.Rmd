@@ -38,6 +38,13 @@ library(devtools)
 library(networkdata)
 ```
 
+## Why Do We Need Network Analysis?
+Suppose you walked into a dining room that hosts a luncheon at a conference you are currently attending. What table would you sit at?
+
+```{r, out.width= "400px",fig.align="center"}
+knitr::include_graphics("images/seating_chart.jpg")
+```
+---
 
 ## Today's Class
  **Network Analysis: Getting Started with the super basics**
