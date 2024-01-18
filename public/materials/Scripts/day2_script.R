@@ -22,10 +22,12 @@ library(networkdata)
 data(defAlly)
 library(tidyverse)
 #Get unique actors:
-cntries<-unique(defAlly$ccode1)
 
-defMat<- defAlly |>
-  dplyr::select(ccode1, ccode2, defAlly) |>
+email1<- emailnet |> filter(nrecipients<54 & day==6)
+users<-unique(c(email1$From, email1$To))
+
+callMat<- calldata |>
+  dplyr::select(Orig, Orig, defAlly) |>
   pivot_wider(names_from="ccode2", values_from="defAlly") |>
   dplyr::select(ccode1, "2", everything()) |>
   as.matrix()
