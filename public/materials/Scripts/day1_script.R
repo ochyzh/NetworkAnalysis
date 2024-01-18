@@ -1,21 +1,18 @@
-#install.packages("devtools")
-#install.packages("igraph")
+install.packages("devtools")
 library(devtools)
 install_github("ochyzh/networkdata")
-library(networkdata) #course-specific data package
+library(networkdata)
 library(igraph)
+data(highlandPonies)
 
 
-data("highlandPonies")
-ponies<-as.matrix(highlandPonies[1:17,2:18])
 
-#Convert matrix into an igraph object:
-pGraph<-graph_from_adjacency_matrix(ponies,
-          weighted=TRUE, mode="undirected", diag=FALSE )
+ponies<-as.matrix(highlandPonies[1:17, 2:18])
 
-plot(pGraph, vertex.color="turquoise", vertex.size=25)
+pGraph <- graph_from_adjacency_matrix(ponies, weighted=TRUE,
+                                      mode="undirected",
+                                      diag=FALSE)
 
-#A nicer plot:
 V(pGraph)$color <- ifelse(V(pGraph)$name %in% c("WT", "WH", "WS"), "azure1", "turquoise")
 ponyPlot<- plot(pGraph,
                 edge.arrow.size=.2,
