@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Advanced Network Analysis
+]
+.subtitle[
 ## Centrality
+]
+.author[
 ### Olga Chyzh [www.olgachyzh.com]
+]
 
 ---
 
@@ -25,94 +31,48 @@ class: center, middle, inverse, title-slide
 
 
 
-## Centrality
 
-- Centrality measures help understand: 
-  + **"Which node is the most important or central in this network?"**
-  + What do you mean by "important"?
-  + What do you mean by "center"?
+## Would You Win $1,000,000?
+
+Suppose you are playing the following game:
+
+If you can get all your friends to meet you at the entrance to the ROM in exactly 1 hour, you will win $1,000,000. The catch is that you can only contact one friend, and not all your friends know each other. The picture below is a visualization of your friendship network. Which friend would you call and why?
+
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-2-1.png" width="400px" style="display: block; margin: auto;" /&gt;
+ 
+
+---
+## Discussion
+
+- What criterion helps spread the message in the fewest possible steps?
+
+- What are social science applications of this game?
+
+---
+## Network Measures: Centrality
+
+- Centrality measures help understand which node is the most important or central in this network?
+
+  + What do you mean by "important"? "center"?
+  
   + Definition of "center" varies by context/purpose
+    
     + The power a person holds in an organization may be inversely proportional to the number of keys on their keyring 
+      
       + A janitor has keys to every office, and no power
+      
       + The CEO does not need a key: people always open the door for her
-
+      
+  + No unanimity on exactly what centrality is or how to measure it. 
 ---
 
-## Centrality
-
-Freeman (1979):
-
-"There is certainly no unanimity on exactly what centrality is or on its conceptual foundations, and there is little agreement on the proper procedure for its measurement."
-
----
-## Working example
-
-[Florentine marriages (Padgett &amp; Ansell 1993)](http://home.uchicago.edu/~jpadgett/papers/published/robust.pdf)
-
-
-```r
-# load datasets
-data(flo) #this dataset is available from the -network- package
-# view
-dim(flo)
-```
-
-```
-## [1] 16 16
-```
-
-```r
-rownames(flo)
-```
-
-```
-##  [1] "Acciaiuoli"   "Albizzi"      "Barbadori"    "Bischeri"     "Castellani"  
-##  [6] "Ginori"       "Guadagni"     "Lamberteschi" "Medici"       "Pazzi"       
-## [11] "Peruzzi"      "Pucci"        "Ridolfi"      "Salviati"     "Strozzi"     
-## [16] "Tornabuoni"
-```
-
-```r
-flo[1:5,1:5]
-```
-
-```
-##            Acciaiuoli Albizzi Barbadori Bischeri Castellani
-## Acciaiuoli          0       0         0        0          0
-## Albizzi             0       0         0        0          0
-## Barbadori           0       0         0        0          1
-## Bischeri            0       0         0        0          0
-## Castellani          0       0         1        0          0
-```
-
----
-
-## Florentine families
-
-
-```r
-# convert to igraph object
-library(igraph)
-g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
-plot(g)
-```
-
----
-
-## Florentine families
+## Florentine Families
 
 Who looks central? 
 
-&lt;img src="03_centrality_files/figure-html/unnamed-chunk-4-1.png" width="400px" style="display: block; margin: auto;" /&gt;
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-3-1.png" width="500px" style="display: block; margin: auto;" /&gt;
 ---
 
-## Florentine families
-
-Does simply plotting with different layouts help?
-
-&lt;img src="03_centrality_files/figure-html/unnamed-chunk-5-1.png" width="400px" style="display: block; margin: auto;" /&gt;
-
----
 ## Popular Measures of Centrality
 
 Well ... let's define centrality:
@@ -128,81 +88,41 @@ Well ... let's define centrality:
 
 - **Idea**: The nodes with more connections to others are more central
 
-
-
 - How to  measure: 
   + Undirected degree centrality: `\(\sum_{j:j \neq i} y_{i,j}\)`
   + Directed outdegree centrality: `\(\sum_{j:j \neq i} y_{j,i}\)`
   + Directed indegree centrality: `\(\sum_{j:j \neq i} y_{i,j}\)`
 
 
-
 - Though simple, degree is often a highly effective measure of the influence or importance of a node
   + In many situations, people with more connections tend to have more power
 
-
-
-- Examples where this might be useful? 
-
 ---
 
-## Degree centrality
+## Florentine Families: an Adjacency Matrix
 
-Lets calculate degree centrality in R (using the `igraph` package)
-
-
-```
-##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
-##          6          4          4          3          3          3
-```
-
----
-
-## Degree centrality
-
-Lets calculate degree centrality in R using `igraph`
-
-
-```r
-?degree
-```
-
-&lt;img src="images/degreeHelp.png" width="500px" style="display: block; margin: auto;" /&gt;
----
-
-## Degree centrality
-
-Lets calculate degree centrality in R using `igraph`
-
-
-```r
-cDegree = degree(g, mode='in', loops=FALSE)
-sort(cDegree, decreasing=TRUE)[1:6]
-```
+How would you calculate Albizzi's degree centrality?
 
 ```
-##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
-##          6          4          4          3          3          3
+##              Acciaiuoli Albizzi Barbadori Bischeri Castellani Ginori
+## Acciaiuoli            0       0         0        0          0      0
+## Albizzi               0       0         0        0          0      1
+## Barbadori             0       0         0        0          1      0
+## Bischeri              0       0         0        0          0      0
+## Castellani            0       0         1        0          0      0
+## Ginori                0       1         0        0          0      0
+## Guadagni              0       1         0        1          0      0
+## Lamberteschi          0       0         0        0          0      0
+## Medici                1       1         1        0          0      0
+## Pazzi                 0       0         0        0          0      0
+## Peruzzi               0       0         0        1          1      0
+## Pucci                 0       0         0        0          0      0
+## Ridolfi               0       0         0        0          0      0
+## Salviati              0       0         0        0          0      0
+## Strozzi               0       0         0        1          1      0
+## Tornabuoni            0       0         0        0          0      0
 ```
 
----
-## Now ...
-
-Adjust the size of nodes in the Florentine graph by degree
-
-&lt;img src="03_centrality_files/figure-html/unnamed-chunk-10-1.png" width="450px" style="display: block; margin: auto;" /&gt;
-
----
-
-
-```r
-# convert to igraph object
-g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
-set.seed(6886)
-plot(g, vertex.size=5*cDegree)
-```
-
-&lt;img src="03_centrality_files/figure-html/unnamed-chunk-11-1.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Closeness centrality
@@ -213,163 +133,7 @@ plot(g, vertex.size=5*cDegree)
   + closeness centrality: `\(\frac{1}{\sum_{j:j \neq i} d_{i,j}}\)`
 - Closeness can also be regarded as a measure of how long it will take to spread information from a node to all other nodes sequentially
 - This measure won't be useful for disconnected graphs ... why?
-- Examples where this might be useful?
 
-
----
-## Closeness centrality
-
-Lets think about how to calculate this ...
-
-- Start with getting distances between nodes
-
-
-```r
-d = distances(g)
-d[1:5,1:5]
-```
-
-```
-##            Acciaiuoli Albizzi Barbadori Bischeri Castellani
-## Acciaiuoli          0       2         2        4          3
-## Albizzi             2       0         2        2          3
-## Barbadori           2       2         0        3          1
-## Bischeri            4       2         3        0          2
-## Castellani          3       3         1        2          0
-```
-
----
-
-## Closeness centrality
-
-Why? is this
-
-
-```r
-d['Pucci',1:5]
-```
-
-```
-## Acciaiuoli    Albizzi  Barbadori   Bischeri Castellani 
-##        Inf        Inf        Inf        Inf        Inf
-```
-
-Lets fix. 
-
-
-```r
-d[d==Inf] = NA
-```
-
----
-
-## Now lets get a pseudo-measure of closeness
-
-
-```r
-avgPathDistance = sort(apply(d, 1, mean, na.rm=TRUE), decreasing=FALSE)
-
-#dump pucci
-avgPathDistance = avgPathDistance[-1]
-
-# top 6
-avgPathDistance[1:6]
-```
-
-```
-##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
-##   1.666667   1.866667   1.933333   1.933333   2.000000   2.133333
-```
-
----
-
-## Closeness centrality
-
-Lets calculate this in `igraph`
-
-
-```r
-?closeness
-```
-
-&lt;img src="images/closenessHelp.png" width="500px" style="display: block; margin: auto;" /&gt;
-
----
-
-## Closeness centrality
-
-Lets calculate this in `igraph`
-
-
-```r
-sort(closeness(g), decreasing=TRUE)[1:6]
-```
-
-```
-##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
-## 0.02439024 0.02272727 0.02222222 0.02222222 0.02173913 0.02083333
-```
-
-Compare with our hack-y calculation:
-
-
-```r
-avgPathDistance[1:6]
-```
-
-```
-##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
-##   1.666667   1.866667   1.933333   1.933333   2.000000   2.133333
-```
----
-
-## Degree vs Closeness
-
-
-```r
-sort(degree(g), decreasing=TRUE)[1:6]
-```
-
-```
-##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
-##          6          4          4          3          3          3
-```
-
-```r
-sort(closeness(g), decreasing=TRUE)[1:6]
-```
-
-```
-##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
-## 0.02439024 0.02272727 0.02222222 0.02222222 0.02173913 0.02083333
-```
----
-## Two-way Visualization Comparison
-
-Now plot adjusting node sizes by closeness centrality, and position the previous plot using node size as a function of degree to the left
-
-
-&lt;img src="images/twoway.png" width="500px" style="display: block; margin: auto;" /&gt;
-
----
-## Two-way Visualization Comparison
-
-
-```r
-CloseCent&lt;-closeness(g)
-g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
-set.seed(5574)
-LO = layout_with_fr(g) #Layout
-
-par(mfrow=c(1,2)) # plot four figures - 1 rows, 2 columns
-plot(g, vertex.size=1000*CloseCent, layout=LO, main="Closeness")
-plot(g, vertex.size=5*cDegree, layout=LO, main="Degree")
-```
-
-&lt;img src="03_centrality_files/figure-html/unnamed-chunk-22-1.png" width="500px" style="display: block; margin: auto;" /&gt;
-
-
-&lt;img src="images/twoway.png" width="400px" style="display: block; margin: auto;" /&gt;
 ---
 
 ## Betweenness
@@ -399,84 +163,6 @@ plot(g, vertex.size=5*cDegree, layout=LO, main="Degree")
   + a randomly selected path contains `\(i\)` with probability `\(\frac{g_{j,k}(i)}{g_{j,k}}\)` 
 
 - Examples where this might be useful?
-
----
-
-## Betweenness
-
-Lets calculate this in `igraph`
-
-
-```r
-?betweenness
-```
-
-&lt;img src="images/betweennessHelp.png" width="450px" style="display: block; margin: auto;" /&gt;
-
----
-
-## Betweenness
-
-Lets calculate this in `igraph`
-
-
-```r
-sort(betweenness(g), decreasing=TRUE)[1:6]
-```
-
-```
-##   Medici Guadagni  Albizzi Salviati  Ridolfi Bischeri 
-## 47.50000 23.16667 19.33333 13.00000 10.33333  9.50000
-```
-
----
-
-## Degree vs Closeness vs Betweenness
-
-
-```r
-sort(degree(g), decreasing=TRUE)[1:6]
-```
-
-```
-##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
-##          6          4          4          3          3          3
-```
-
-```r
-sort(closeness(g), decreasing=TRUE)[1:6]
-```
-
-```
-##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
-## 0.02439024 0.02272727 0.02222222 0.02222222 0.02173913 0.02083333
-```
-
-```r
-sort(betweenness(g), decreasing=TRUE)[1:6]
-```
-
-```
-##   Medici Guadagni  Albizzi Salviati  Ridolfi Bischeri 
-## 47.50000 23.16667 19.33333 13.00000 10.33333  9.50000
-```
-
-
-
----
-## Three-Way Visualization Comparison
-
-Now plot adjusting node sizes by closeness centrality, and position the previous plot using node size as a function of degree to the left
-
-
-&lt;img src="images/threeway.png" width="700px" style="display: block; margin: auto;" /&gt;
-
----
-## Three-Way Visualization Comparison
-
-
-
-&lt;img src="images/threeway.png" width="400px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -518,53 +204,81 @@ Now plot adjusting node sizes by closeness centrality, and position the previous
 
 
 ---
-## Eigenvector centrality
 
-Lets calculate this in `igraph`
+## Your Turn
 
+For each of the following networks, think of the best measure of centrality to measure the amount of influence in different contexts.
 
-```r
-?eigen_centrality
-```
+- countries connected by trade relations
+- a network of student friendships on a university campus
+- a network of legislators connected by co-sponsorships of bills
+- a network of CEOs connected based on their undergraduate institutions
 
-&lt;img src="images/eigenvectorHelp.png" width="700px" style="display: block; margin: auto;" /&gt;
+---
+class: inverse, middle, center
+# Lab: Calculate Centrality
 
 ---
 
-## Eigenvector centrality
+## Working example
 
-Lets calculate this in `igraph`
+[Florentine marriages (Padgett &amp; Ansell 1993)](http://home.uchicago.edu/~jpadgett/papers/published/robust.pdf)
 
 
 ```r
-sort(eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
+# load datasets
+data(flo) #this dataset is available from the -network- package
+flo[1:5,1:5]
 ```
 
 ```
-##     Medici    Strozzi    Ridolfi Tornabuoni   Guadagni   Bischeri 
-##  1.0000000  0.8272688  0.7937398  0.7572302  0.6718805  0.6572037
+##            Acciaiuoli Albizzi Barbadori Bischeri Castellani
+## Acciaiuoli          0       0         0        0          0
+## Albizzi             0       0         0        0          0
+## Barbadori           0       0         0        0          1
+## Bischeri            0       0         0        0          0
+## Castellani          0       0         1        0          0
 ```
 
 ---
-## Degree vs Closeness vs Betweenness vs Eigenvector
+
+## Florentine families
 
 
 ```r
-sort(degree(g), decreasing=TRUE)[1:6]
-sort(closeness(g), decreasing=TRUE)[1:6]
-sort(betweenness(g), decreasing=TRUE)[1:6]
-sort(eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
+# convert to igraph object
+library(igraph)
+g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
+plot(g)
 ```
 
+
+---
+## Degree centrality
+
+Lets calculate each centrality measure in R (using the `igraph` package)
+
+
+```r
+sort(igraph::degree(g), decreasing=TRUE)[1:6]
+```
 
 ```
 ##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
 ##          6          4          4          3          3          3
 ```
 
+```r
+sort(igraph::closeness(g), decreasing=TRUE)[1:6]
+```
+
 ```
 ##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
-## 0.02439024 0.02272727 0.02222222 0.02222222 0.02173913 0.02083333
+## 0.04000000 0.03571429 0.03448276 0.03448276 0.03333333 0.03125000
+```
+
+```r
+sort(igraph::betweenness(g), decreasing=TRUE)[1:6]
 ```
 
 ```
@@ -572,216 +286,24 @@ sort(eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
 ## 47.50000 23.16667 19.33333 13.00000 10.33333  9.50000
 ```
 
+```r
+sort(igraph::eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
+```
+
 ```
 ##     Medici    Strozzi    Ridolfi Tornabuoni   Guadagni   Bischeri 
 ##  1.0000000  0.8272688  0.7937398  0.7572302  0.6718805  0.6572037
 ```
 
 ---
-
-## Four-Way Visualization Comparison
-
-- Now plot adjusting node sizes by eigenvalue centrality, and position the previous plot using node size as a function of degree to the left
-
-&lt;img src="images/all_four.png" width="40%" style="display: block; margin: auto;" /&gt;
-
----
-
-
-```r
-LO = layout_with_fr(g) #Layout
-EigenCent&lt;-eigen_centrality(g)
-
-par(mfrow=c(2,2)) # plot four figures - 2 row, 2 columns
-plot(g, vertex.size=30*EigenCent$vector, layout=LO, main="Eigenvalue")
-plot(g, vertex.size=BetwCent, layout=LO, main="Betweenness")
-plot(g, vertex.size=1000*CloseCent, layout=LO, main="Closeness")
-plot(g, vertex.size=5*cDegree, layout=LO, main="Degree")
-```
-
----
-## Break-Out Groups
-For each of the following networks, think of the best measure of centrality to measure the amount of influence in different contexts.
-
-- countries connected by trade relations
-- a network of student friendships on a university campus
-- a network of legislators connected by co-sponsorships of bills
-- a network of CEOs connected based on their undergraduate institutions
----
-## A word from Wasserman &amp; Faust
-
-"..., we do not expect that the most fruitful development in descriptive techniques will be the continued addition of yet another definition of centrality measure or yet another subgroup definition or yet another definition of equivalence. Rather, we expect that careful assessment of the usefulness of current methods in substantive and theoretical applications will be helpful in determining when, and under what conditions, each method is useful (perhaps in conjunction with statistical assumptions). Considerable work also needs to be done on measurement properties (such as sampling variability) of the current measures."
----
-## Application: Feld (1991)
-
-Goals: 
-
-- Learn to calculate various measures of centrality
-- Continue familiarizing yourself with managing network data
-- Replicate the analysis by Feld (1991)
-
-
-
----
-
-## Feld (1991) Summary
-
-- Most people have fewer friends than their friends. Why?
-
-- The distribution of the number of friends' friends is pulled to the right by a small number of people with a lot of friends.
-
-- Other examples of the same phenomenon?
----
-
-## Plan
-
-- Step 1: Load the data.  We'll be using a dataset named *coleman* from the `sna` package.
-
-  + Notice that these are not the same data as in Feld (1991)
-  
-
-```r
-library(sna)
-data(coleman)
-#?coleman 
-```
----
-
-
-## Plan
-- Step 2: Plot the network in the fall. Notice that our data is a 2x73x73 array.
- 
-
-```r
-#coleman[1,,] #Fall
-#dim(coleman[1,,])
-library(igraph)
-pGraph&lt;-graph_from_adjacency_matrix(coleman[1,,])
-V(pGraph)$label&lt;- NA
-plot(pGraph, vertex.size=10, edge.arrow.size=.2,vertex.color="blue" )
-```
-
-&lt;img src="03_centrality_files/figure-html/unnamed-chunk-41-1.png" width="45%" style="display: block; margin: auto;" /&gt;
----
-
-## Now Let's Replicate Feld's Analysis
-
-Table 1 on p. 1466
-
-&lt;img src="images/Feld_T1.png" width="75%" style="display: block; margin: auto;" /&gt;
----
 ## Your Turn
 
-Calculate number of friends (degree centrality) for each person.
+- Plot the Florentine network, such that node size is proportionate to each centrality measure. How do they compare?
 
 
-```
-##   from_id deg
-## 1       1   5
-## 2       2   2
-## 3       3   2
-## 4       4   4
-## 5       5   2
-```
-
----
-## Table 1 Replication Cont'd
-
-1. Calculate individual's degree for Coleman data using dplyr:
-
-  
-
-```r
-deg&lt;-as_tibble(coleman[1,,]) %&gt;% 
-  mutate(from_id=row.names(coleman[1,,])) %&gt;% 
-  pivot_longer(cols=`1`:`73`,names_to="to_id",values_to="friend") %&gt;%
-  group_by(from_id) %&gt;% 
-  summarise(degree=sum(friend)) %&gt;% 
-  ungroup()
-```
-
----
-## Table 1 Replication Cont'd
-
-2. Calculate total number of friends of friends of each person.
-3. Calculate average number of friends of friends.
 
 
-```
-## # A tibble: 69 x 4
-##    from_id  ideg tot_fdeg ave_deg
-##    &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
-##  1 1           5       16    3.2 
-##  2 11          4       16    4   
-##  3 12          3       13    4.33
-##  4 13          4       15    3.75
-##  5 14          2        8    4   
-##  6 15          1        5    5   
-##  7 16          3       10    3.33
-##  8 17          2        3    1.5 
-##  9 18          3       12    4   
-## 10 19          5       17    3.4 
-## # ... with 59 more rows
-```
----
-## Table 1 Replication Cont'd
 
-2. Calculate total number of friends of friends of each person.
-3. Calculate average number of friends of friends.
-
-
-```r
-fdeg&lt;-as_tibble(coleman[1,,]) %&gt;% 
-  mutate(from_id=row.names(coleman[1,,])) %&gt;% 
-  pivot_longer(cols=`1`:`73`,names_to="to_id",values_to="friend") %&gt;%
-  filter(friend==1) %&gt;%
-  group_by(from_id)%&gt;%
-  mutate(idegree=sum(friend), to_id=to_id) %&gt;%
-  left_join(deg, by=c("to_id"="from_id")) %&gt;%
-  rename(fdegree=degree)  %&gt;%
-  mutate(tot_fdeg=sum(fdegree),ave_fdeg=mean(fdegree)) %&gt;%
-  ungroup() 
-
-fdeg %&gt;% group_by(from_id) %&gt;% summarise(ideg=first(idegree),tot_fdeg=first(tot_fdeg), ave_fdeg=first(ave_fdeg))
-```
-
-
----
-## Figure 3 Replication
-
-1. Plot individual's degree distribution for Coleman data:
-
-```r
-p&lt;-deg %&gt;% 
-  ggplot() +
-  geom_bar(aes(x=degree))+
-  xlab("Individual's Degree")+
-  theme_classic()
-```
----
-## Figure 3 Replication Cont'd
-
-2. Plot friend's degree distribution:
-
-```r
-p1&lt;-fdeg %&gt;%  ggplot() +geom_bar(aes(x=fdegree))+
-  xlab("Friend's Degree")+
-  theme_classic()
-```
-
----
-## Figure 3 Replication Cont'd
-3. Combine the plots
-
-&lt;img src="03_centrality_files/figure-html/unnamed-chunk-49-1.png" width="50%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-## Feld (1991) Figure 3
-
-
-&lt;img src="images/Feld_F3.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -832,6 +354,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
