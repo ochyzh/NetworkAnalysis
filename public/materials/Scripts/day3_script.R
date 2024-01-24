@@ -1,30 +1,36 @@
+library(igraph) #Zachary's karate club dataset is built into the igraph package.
+karate <- make_graph("Zachary") 
+mf<-max_flow(karate, source=V(karate)[1], target=V(karate)[34])
+V(karate)$color<- ifelse(V(karate) %in%  mf$partition1, 
+                         "red","pink")
+plot(karate, edge.color="black", vertex.frame.color="black")
+mf$partition1
+mf$partition2
+
 library(sna)
-library(igraph)
 data(coleman)
-library(tidyverse)
-library(magrittr)
+#make into an igraph object
+friends<-graph_from_adjacency_matrix(coleman[2,,], mode="undirected", diag=FALSE)
+friends <- igraph::delete.vertices(friends , which(igraph::degree(friends)==0))
+LO = layout_with_fr(friends) #Layout
+cfg<-cluster_fast_greedy(friends)
+modularity(cfg)
 
-pGraph<-graph_from_adjacency_matrix(coleman[1,,],
-                                    mode="undirected")
 
-plot(pGraph, vertex.label=NA, vertex.size=10)
+wc <- cluster_walktrap(friends) #community structure via short random walks
+modularity(wc)
 
-deg<-igraph::degree(pGraph)
+emailnet<-read.csv("emailnet.csv")
+employees<-read.csv("EmployeeRecords.csv")
 
-deg<-as.data.frame(deg)
-deg$from_id<-as.numeric(row.names(deg))
+email1 <-emailnet |> dplyr::filter(day==6)
 
-fdeg<-coleman[1,,] %>%
-  as.data.frame() %>%
-  mutate(from_id=as.numeric(row.names(coleman[1,,]))) %>%
-  pivot_longer(cols=`1`:`73`, names_to = "to_id", values_to="friend") %>%
-  filter(friend==1) %>%
-  group_by(from_id) %>%
-  mutate(idegree=sum(friend),to_id=as.numeric(as.character(to_id))) %>%
-  left_join(deg, by=c("to_id"="from_id")) %>%
-  mutate(tot_fdeg=sum(deg), ave_fdeg=mean(deg)) %>% ungroup()
+g<-graph_from_data_frame(email1, directed="TRUE")
+plot(g, vertex.label=NA)
 
-fdeg %>% group_by(from_id) %>%
-  summarise(ideg=first(idegree), tot_fdeg=first(tot_fdeg),
-            ave_fdeg=first(ave_fdeg))
+E(g)$Subject
+
+
+
+
 

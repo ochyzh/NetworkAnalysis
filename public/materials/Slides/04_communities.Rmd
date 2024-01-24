@@ -227,7 +227,6 @@ class: inverse, middle, center
 
 ```{r, echo=TRUE, eval=FALSE, fig.align='center', out.width='350px'}
 library(igraph) #Zachary's karate club dataset is built into the igraph package.
-data(zachary)
 karate <- make_graph("Zachary") 
 mf<-max_flow(karate, source=V(karate)[1], target=V(karate)[34])
 V(karate)$color<- ifelse(V(karate) %in%  mf$partition1, "red","pink")
