@@ -4,7 +4,7 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -27,6 +27,83 @@ class: center, middle, inverse, title-slide
 
 
 
+## Very Healthy Cereal
+
+.pull-left[
+&lt;img src="./images/total-cereal.png" width="1200px" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="./images/total-label.png" width="1200px" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## Empirical Observation
+
+- This cereal sticks to a magnet.
+&lt;img src="./images/total-magnet.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+## Why Did it Stick?
+
+- Propose a theoretical model (that includes a causal mechanism) to explain the observation.
+
+--
+
+- Suppose our causal mechanism is that this cereal sticks to a magnet because of its iron content.
+
+- A testable hypothesis: cereals that are high in iron stick to a magnet.
+
+
+
+---
+## Test
+.pull-left[
+&lt;img src="./images/honey-smacks.png" width="1200px" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="./images/honey-smacks-label.png" width="1200px" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## Does It Stick?
+- This cereal does not stick to a magnet.
+&lt;img src="./images/honey-smacks-magnet.png" width="350px" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+## Causal Effect
+
+- Unit of analysis: cereal type
+
+- Treatment variable (causal variable of interest) `\(T\)`: iron content (high/low)
+
+- Treatment group (treated units): Total cereal
+
+- Control group (untreated units): Honey Smacks cereal
+
+- Outcome variable (response variable) `\(Y\)`: whether it sticks to a magnet (yes/no).
+
+---
+## Causality
+
+- Counterfactual: Would Total cereal stick to a magnet if it did not have iron?
+
+- Two potential outcomes: `\(Y(1)\)` and `\(Y(0)\)`
+
+- Causal effect: `\(Y(1)-Y(0)\)`
+
+- Fundamental problem of causal inference: only one of the two potential outcomes is observable.
+
+- Cannot calculate individual causal effect `\(Y(1)-Y(0)\)`!
+
+- Can calculate the average treatment effect by comparing the means of a treatment and a control group.
+
+- Importance of control group: must be identical to the treatment group on all factors but the treatment.
+
+---
 
 
 ## The Problem
@@ -43,27 +120,37 @@ class: center, middle, inverse, title-slide
     
 
 ---
-## Approach So Far
-
-- Find the best possible specification that generates networks similar to the observed network.
-
-- Make inferences regarding the likely processes that led to the formation of the observed network: e.g. preferential attachment, homophily.
-
----
 
 ## A Causal Approach
 
-- Find a sample of social networks, such that some features (e.g.the central nodes' transmission potential) are disabled in some of the networks, but not the others.
+- Experiment
+    
+    - Randomly assign features to nodes/edges in networks 
+    
+    - Examples: LinkedIn experiment
 
-- Examples: Covid-19 vaccine prioritization policies in the US, censorship on Twitter
+- Natural experiment
 
-- Rather than inferring association (and causation) from the model's functional form, set up a (pseudo-) experiment to test an observable implication of your theory.
+    - Find a sample of social networks, such that some features (e.g.the central nodes' transmission potential) are disabled in some of the networks, but not the others.
 
+    - Examples: Covid-19 vaccine prioritization policies in the US, censorship on Twitter
+    
+- Simulations to study different scenarios
+
+---
+## Assumptions
+
+- Unconfoundedness
+
+- SUTVA--stable unit treatment value assumption: treatment assignments for other units do not affect the outcome for unit *i* and
+that each treatment defines a unique outcome for each unit 
+
+- Parallel trends
 
 ---
 class: inverse, middle, center
 
-# Example: Covid-19 Transmission Under Different Vaccine Priority Scenarios
+# Simulations: Covid-19 Transmission Under Different Vaccine Priority Scenarios
 
 ---
 class: middle, center
@@ -79,7 +166,12 @@ class: middle, center
 &lt;img src="images/contagion3.png" width="700px" style="display: block; margin: auto;" /&gt;
 
 ---
-## Research Design
+class: inverse, middle, center
+
+# Natural Experiment: Covid-19 Transmission Under Different Vaccine Priority Scenarios
+
+---
+## Natural Experiment
 
 - Most similar cases: California and Oregon counties
 
@@ -93,8 +185,18 @@ class: middle, center
 
 &lt;img src="images/trends.png" width="700px" style="display: block; margin: auto;" /&gt;
 
+---
+class: inverse, middle, center
 
+# Field Experiment: LinkedIn
 
+---
+
+## Field Experiment 
+
+- Randomly vary friend suggestions: weak vs. strong links
+
+- Study the effect of the treatment on job applications and new jobs
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

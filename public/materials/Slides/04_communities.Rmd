@@ -227,7 +227,7 @@ class: inverse, middle, center
 
 ```{r, echo=TRUE, eval=FALSE, fig.align='center', out.width='350px'}
 library(igraph) #Zachary's karate club dataset is built into the igraph package.
-karate <- make_graph("Zachary") 
+karate <- make_graph("Zachary") #loads the data from the igraph package
 mf<-max_flow(karate, source=V(karate)[1], target=V(karate)[34])
 V(karate)$color<- ifelse(V(karate) %in%  mf$partition1, "red","pink")
 plot(karate, edge.color="black", vertex.frame.color="black")
@@ -345,12 +345,29 @@ As you were analyzing the email data, Tethys PD sent you the resume data that th
 
 ```{r, echo=TRUE, eval=FALSE}
 library(officer)
-library(stringr)
+
 
 myfiles<-list.files()
 doc <- officer::read_docx(path = myfiles[1])
 doc_text <- officer::docx_summary(doc)$text
 doc_text <- paste(doc_text, collapse = " ")
+
+```
+
+---
+## Helpful Functions from stringr
+
+```{r, echo=TRUE, eval=FALSE}
+library(stringr)
+
+# Pattern to match everything after a specific word to a period.
+pattern <- paste0("Education","\\s(.*?)\\.")
+extracted_text <- str_extract(doc_text1,pattern)
+extracted_text
+
+# Pattern to match everything after a specific word
+pattern <- paste0("Education", " .*")
+extracted_text <- str_extract(doc_text1, pattern)
 
 ```
 

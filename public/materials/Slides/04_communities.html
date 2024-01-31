@@ -169,7 +169,7 @@ mf$partition1
 ```
 
 ```
-## + 17/34 vertices, from 97a5e68:
+## + 17/34 vertices, from fec1598:
 ##  [1]  1  2  3  4  5  6  7  8 10 11 12 13 14 17 18 20 22
 ```
 
@@ -178,7 +178,7 @@ mf$partition2
 ```
 
 ```
-## + 17/34 vertices, from 97a5e68:
+## + 17/34 vertices, from fec1598:
 ##  [1]  9 15 16 19 21 23 24 25 26 27 28 29 30 31 32 33 34
 ```
 ---
@@ -226,7 +226,7 @@ class: inverse, middle, center
 
 ```r
 library(igraph) #Zachary's karate club dataset is built into the igraph package.
-karate &lt;- make_graph("Zachary") 
+karate &lt;- make_graph("Zachary") #loads the data from the igraph package
 mf&lt;-max_flow(karate, source=V(karate)[1], target=V(karate)[34])
 V(karate)$color&lt;- ifelse(V(karate) %in%  mf$partition1, "red","pink")
 plot(karate, edge.color="black", vertex.frame.color="black")
@@ -367,12 +367,29 @@ As you were analyzing the email data, Tethys PD sent you the resume data that th
 
 ```r
 library(officer)
-library(stringr)
+
 
 myfiles&lt;-list.files()
 doc &lt;- officer::read_docx(path = myfiles[1])
 doc_text &lt;- officer::docx_summary(doc)$text
 doc_text &lt;- paste(doc_text, collapse = " ")
+```
+
+---
+## Helpful Functions from stringr
+
+
+```r
+library(stringr)
+
+# Pattern to match everything after a specific word to a period.
+pattern &lt;- paste0("Education","\\s(.*?)\\.")
+extracted_text &lt;- str_extract(doc_text1,pattern)
+extracted_text
+
+# Pattern to match everything after a specific word
+pattern &lt;- paste0("Education", " .*")
+extracted_text &lt;- str_extract(doc_text1, pattern)
 ```
 
     </textarea>

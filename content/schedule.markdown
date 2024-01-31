@@ -48,6 +48,16 @@ All the class materials will be posted/updated here.
       </tr>
       <tr>
         <td>Day 4</td>
+        <td>Causal Inference with Networks</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/16_causal_nets.html" target=_blank> causal inference with networks </a>  |<a href="../materials/Scripts/.day4_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Day 5</td>
         <td>Random Networks</td>
         <td>
           <dl>
@@ -57,7 +67,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Days 5--6</td>
+        <td>Days 6</td>
         <td>Intro to ERGMs</td>
         <td>
           <dl>
@@ -141,7 +151,7 @@ All the class materials will be posted/updated here.
         <td>Other Topics</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/14_ego_ergms.html" target=_blank>ego ergms </a>  |<a href="../materials/Slides/16_causal_nets.html" target=_blank> network causal inference  </a> | <a href="../materials/Slides/15_ROC_curves.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Slides/15_ROC_curves.html" target=_blank> ROC curves </a>  | <a href="../materials/Slides/15_ROC_curves.pdf" target=_blank>slides in pdf</a>|<a href="../materials/YourTurnAnswers/.14_ego_ergms_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/.15_ROC_yourturn.R"target=_blank> your turn answers </a>
+          <dd><a href="../materials/Slides/14_ego_ergms.html" target=_blank>ego ergms </a>  | <a href="../materials/Slides/15_ROC_curves.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Slides/15_ROC_curves.html" target=_blank> ROC curves </a>  | <a href="../materials/Slides/15_ROC_curves.pdf" target=_blank>slides in pdf</a>|<a href="../materials/YourTurnAnswers/.14_ego_ergms_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/.15_ROC_yourturn.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>
