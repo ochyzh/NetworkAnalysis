@@ -169,7 +169,7 @@ mf$partition1
 ```
 
 ```
-## + 17/34 vertices, from fec1598:
+## + 17/34 vertices, from 63d649f:
 ##  [1]  1  2  3  4  5  6  7  8 10 11 12 13 14 17 18 20 22
 ```
 
@@ -178,7 +178,7 @@ mf$partition2
 ```
 
 ```
-## + 17/34 vertices, from fec1598:
+## + 17/34 vertices, from 63d649f:
 ##  [1]  9 15 16 19 21 23 24 25 26 27 28 29 30 31 32 33 34
 ```
 ---
@@ -391,7 +391,32 @@ extracted_text
 pattern &lt;- paste0("Education", " .*")
 extracted_text &lt;- str_extract(doc_text1, pattern)
 ```
+---
+## Write a Loop to Extract Name and Educ
 
+
+
+
+```r
+Name&lt;-NULL
+Educ&lt;-NULL
+for (i in 1:length(myfiles)){
+  doc &lt;- officer::read_docx(path = myfiles[i])
+  doc_text &lt;- officer::docx_summary(doc)$text
+  Name[i]&lt;-myfiles[i] |&gt; str_remove("Bio")|&gt; str_remove("Resume")|&gt; str_remove(".docx") |&gt; 
+    str_remove_all("[^A-Za-z0-9]") |&gt; str_replace("(?&lt;=\\p{Ll})(\\p{Lu})", " \\1")
+  doc_text &lt;- paste(doc_text, collapse = " ")
+  if (str_detect(doc_text, "Education")==TRUE) {
+  Educ[i]&lt;-ifelse(str_detect(doc_text,"University of Tethys")==1,"University of Tethys",
+  ifelse(str_detect(doc_text,"Tethys University")==1,"Tethys University",
+  ifelse(str_detect(doc_text,"Abila Community College")==1,"Abila Community College",
+  ifelse(str_detect(doc_text,"Barrington University")==1,"Barrington University",
+  ifelse(str_detect(doc_text,"IT Tech University")==1,"IT Tech University",NA)))))
+  }
+ }
+
+mydata&lt;-cbind.data.frame("Name"=Name, "Educ"=Educ)
+```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

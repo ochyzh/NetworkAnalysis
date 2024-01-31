@@ -370,4 +370,31 @@ pattern <- paste0("Education", " .*")
 extracted_text <- str_extract(doc_text1, pattern)
 
 ```
+---
+## Write a Loop to Extract Name and Educ
 
+
+
+```{r, echo=TRUE, eval=FALSE}
+
+Name<-NULL
+Educ<-NULL
+for (i in 1:length(myfiles)){
+  doc <- officer::read_docx(path = myfiles[i])
+  doc_text <- officer::docx_summary(doc)$text
+  Name[i]<-myfiles[i] |> str_remove("Bio")|> str_remove("Resume")|> str_remove(".docx") |> 
+    str_remove_all("[^A-Za-z0-9]") |> str_replace("(?<=\\p{Ll})(\\p{Lu})", " \\1")
+  doc_text <- paste(doc_text, collapse = " ")
+  if (str_detect(doc_text, "Education")==TRUE) {
+  Educ[i]<-ifelse(str_detect(doc_text,"University of Tethys")==1,"University of Tethys",
+  ifelse(str_detect(doc_text,"Tethys University")==1,"Tethys University",
+  ifelse(str_detect(doc_text,"Abila Community College")==1,"Abila Community College",
+  ifelse(str_detect(doc_text,"Barrington University")==1,"Barrington University",
+  ifelse(str_detect(doc_text,"IT Tech University")==1,"IT Tech University",NA)))))
+  }
+ }
+
+mydata<-cbind.data.frame("Name"=Name, "Educ"=Educ)
+
+
+```
