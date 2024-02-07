@@ -265,6 +265,7 @@ summary(m2<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg))
 ## Spatial Regression
 
 ```{r, eval=F}
+library(spdep)
 library(spatialreg)
 
 contigmat<-read.table("./data/contigmat.txt") 
