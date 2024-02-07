@@ -1,0 +1,436 @@
+---
+title:  "Advanced Network Analysis"
+subtitle: Intro to Spatial Statistics
+author: "Olga Chyzh [www.olgachyzh.com]"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+exclude: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r  setup, message=FALSE, warning=FALSE, include=FALSE}
+options(
+  htmltools.dir.version = FALSE, # for blogdown
+  width = 80,
+  tibble.width = 80
+)
+
+knitr::opts_chunk$set(
+  fig.align = "center",  warning=FALSE, message=FALSE
+)
+
+```
+
+
+## Dependence in Observational Data
+
+- Individuals are nested in social networks
+
+    + Individual decisions are influenced by their friends.
+
+- Provinces are surrounded by other provinces
+
+    + Provinces mimic one another's policies
+
+- Country-level outcomes are often a result of negotiations with other countries:
+    
+    + Economic or environmental policies
+    
+---
+## Three Mechanisms for Spatial Dependence
+
+
+- Common exposure---similarity in outcomes is driven by an exogenous factor that affects nearby units (the effect of earthquakes on housing prices)
+
+- Homophily---similarity in outcomes is endogenous, units are similar because they self-select into the same outcome (e.g., partisan geo-sorting)
+
+- Diffusion---nearby units affect each other through learning, imitation, etc (e.g., policy diffusion)
+
+---
+
+
+ 
+
+```{r, echo=F, out.width= "800px",fig.align="center"}
+knitr::include_graphics("./images/communal_violence.png")
+```
+
+Source: van Weezel S. "On climate and conflict: Precipitation decline and communal conflict in Ethiopia and Kenya." *Journal of Peace Research*. 2019;56(4):514--528. 
+
+---
+ 
+
+```{r, echo=F, out.width= "600px",fig.align="center"}
+knitr::include_graphics("./images/elections.png")
+```
+
+Source: Chyzh, Olga V. and R. Urbatsch. 2021. "Bean Counters: The Effect of Soy Tariffs on Change in Republican Vote Share Between the 2016 and 2018 Elections."*Journal of Politics* 83 (1): 415--419.
+  
+---
+## What Explains Variation in Covid-19 Cases?
+
+```{r, echo=F, out.width= "800px",fig.align="center"}
+knitr::include_graphics("./images/covid19plot.png")
+```
+
+
+
+---
+## Common Exposure
+
+Neighboring counties have similar Covid-19 rates because of their underlying similarities, e.g. demographics, political ideology (anti-mask sentiment), etc.
+
+$$Covid19\ cases/cap_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i +u_i,$$
+
+
+
+
+---
+## Homophily: Spatial X
+
+Neighboring units tend to converge on outcomes because the causal variables (anti-vaccine sentiments) cluster by neighborhood locations (partisan geo-sorting).
+
+$$Covid19\ cases/cap_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Trump16_j} +u_i,$$
+where $\rho$ is the estimation parameter for spatial dependence, and $w_{ij}$ measures whether $i$ and $j$ are neighbors.
+
+- This is a spatial-X regression. 
+
+- $\sum\limits_{j\neq i}^{N}{w_{ij}\ Trump16_j}$ is a spatially lagged independent variable measuring the average Trump support in neighboring counties. 
+
+- The coefficient $\rho$ is a measure of spatial homophily.
+
+---
+
+## Contiguity Matrix W
+
+```{r, echo=F, out.width= "800px",fig.align="center"}
+knitr::include_graphics("./images/IA_counties.png")
+```
+
+
+
+---
+## Contiguity Matrix W
+
+```{r, echo=F}
+names<-c("Benton","Linn","Jones","Iowa","Johnson","Cedar")
+mymat<-matrix(c(0,1,0,1,0,0,
+                1,0,1,0,1,1,
+                0,1,0,0,0,1,
+                1,0,0,0,1,0,
+                0,1,0,1,0,1,
+                0,1,1,0,1,0),nrow=6,ncol=6)
+dimnames(mymat)<-list(names,names)
+mymat
+```
+
+---
+## Row Standardized W
+
+Divide by the row sum, so that each neighbor's influence decreases with the total number of neighbors.
+
+```{r, echo=F}
+round(mymat/apply(mymat,1,sum),2)
+```
+
+---
+
+
+
+## Diffusion: Spatial Y
+
+$$Covid19\ cases/cap_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Covid19\ cases/cap_j} +u_i,$$
+where $\rho$ is the estimation parameter for spatial dependence, and $w_{ij}$ measures whether $i$ and $j$ are neighbors.
+
+- This is a spatial-Y regression. 
+
+- $\sum\limits_{j\neq i}^{N}{w_{ij}\ Covid19\ cases/cap_j}$ is a spatially lagged dependent variable measuring the average number of Covid-19 cases in neighboring counties. 
+
+- The coefficient $\rho$ is a measure of spatial dependence.
+
+
+---
+
+## Spatial Y Model
+
+$$\textbf{y}= \rho\textbf{W}\textbf{y}+\textbf{X}\pmb{\beta}+\pmb{\epsilon},$$
+- $\textbf{y}$ the dependent variable, is an N x 1 vector of cross sections stacked by period;
+
+- $\rho$ is the spatial coefficient;
+
+- $\textbf{W}$ is an N x N spatial-weighting matrix;
+
+- $\textbf{X}$ contains N observations on k independent variables
+
+- $\pmb{\beta}$ is a k x 1 vector of coefficients;
+
+- $\pmb{\epsilon}$ is an N by 1 vector of stochastic components.
+
+---
+## Spatial Y Model
+
+$$\begin{bmatrix}
+y_{1} \\
+y_{2} \\
+y_{3} \\
+\vdots \\
+y_{N}
+\end{bmatrix}
+=
+\rho
+\begin{bmatrix}
+0 & W_{12} &W_{13}& \cdots & W_{1N} \\
+W_{21}& 0 &W_{23}& \cdots & W_{2N} \\
+W_{31}& W_{32} &0 & \cdots & W_{3N} \\
+\vdots & \ddots & \vdots & \ddots & \vdots \\
+W_{N1} & W_{N2} & W_{N3} & \cdots & 0
+\end{bmatrix}+\\
+\begin{bmatrix}
+x_{11} & x_{12} & \cdots & x_{1k} \\
+x_{21} & x_{22} & \cdots & x_{2k} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{N1} & x_{N2} & \cdots & x_{Nk}
+\end{bmatrix}
+\begin{bmatrix}
+\beta_1 \\
+\beta_2 \\
+\vdots \\
+\beta_k
+\end{bmatrix}+
+\begin{bmatrix}
+\epsilon_1 \\
+\epsilon_2 \\
+\vdots \\
+\epsilon_{N}
+\end{bmatrix}$$
+
+
+---
+
+## Spatial Lag Model
+
+$$\textbf{y}= \rho\textbf{W}\textbf{y}+\textbf{X}\pmb{\beta}+\pmb{\epsilon},$$
+
+By re-arranging, can isolate **y** on the left-hand side:
+
+$$\textbf{y}= [\pmb{I_{N}}-\rho\textbf{W}_{N}]^{-1}\{\textbf{X}\pmb{\beta}+\pmb{\epsilon}\}$$
+---
+## Likelihood
+
+```{r, echo=F, fig.align="center"}
+knitr::include_graphics("./images/SAR_likelihood.png")
+```
+
+---
+## Other Types of Space
+
+- Ideology
+
+- International trade
+
+- Alliances
+
+- Other examples?
+
+---
+class: inverse, middle, center
+# Lab
+---
+## Example: Spatial X
+
+```{r, eval=F}
+
+mydata<-read.csv("./data/covid_data.csv", header=TRUE) 
+mydata$trumpmarg[is.na(mydata$trumpmarg)]<-0
+contigmat<-read.table("data/contigmat.txt") |> as.matrix()
+contigmat<-contigmat/apply(contigmat,1,sum) #row-standardize
+
+mydata$W_trumpmarg<-contigmat%*%mydata$trumpmarg
+
+summary(m1<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317))
+summary(m2<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg))
+```
+
+
+
+---
+
+
+## Spatial Regression
+
+```{r, eval=F}
+library(spdep)
+library(spatialreg)
+
+contigmat<-read.table("data/contigmat.txt") 
+contigmat<-as.matrix(contigmat)
+W1<-mat2listw(contigmat, row.names = NULL, style="M", zero.policy = TRUE)
+summary(W1$neighbours)
+
+W2<-nb2listw(W1$neighbours, glist=NULL, style="W", zero.policy=TRUE)
+
+m3 <- lagsarlm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317, W2, zero.policy=TRUE)
+summary(m3)
+
+
+```
+
+
+---
+## Your Turn 1
+
+Suppose you want to test whether variable *urb2010* is spatially clustered.
+
+1. Calculate a measure of the average urbanization in neighboring states.
+
+2. Estimate a model that accounts for clustering in urbanization.
+
+3. Is the effect of neighbor's urbanization positive or negative?
+
+4. Is this effect statistically significant?
+
+---
+## Your Turn 2
+
+Suppose you want to test whether variable *votech* (the change in Republican vote share between the 2016 and 2018 Congressional election) is spatially clustered.
+
+1. Calculate a measure of the average change in Republican vote share in neighboring states.
+
+2. Estimate a model of *votech* as a function of *urb2010*, *medinc1317*, *perc_HS_GED*, *perclatino1317* and *trumpmarg*.
+
+3. Estimate the same model plus a the average change in Republican vote share in neighboring states.
+
+---
+## Making Maps
+
+```{r}
+library(tidyverse)
+library(mapproj)
+library(maps)
+library(mapdata)
+states <- map_data("state")
+
+head(states)
+```
+
+---
+## What You Need
+
+- Latitude/longitude points for all map boundaries
+
+- Need to know to which boundary/state lat/long points belong
+
+- Need to know the order to connect points within each group
+
+---
+## A Basin (Rather Hideous) Map
+
+```{r}
+library(ggplot2)
+ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=region),color="black", size=.5)
+
+```
+
+---
+## A Bit Nicer of a Map
+
+```{r, eval=FALSE}
+#Set theme options:
+theme_set(theme_grey() + theme(axis.text=element_blank(),
+                               axis.ticks=element_blank(),
+                               axis.title.x=element_blank(),
+                               axis.title.y=element_blank(),
+                               panel.grid.major = element_blank(),
+                               panel.grid.minor = element_blank(),
+                               panel.border = element_blank(),
+                               panel.background = element_blank(),
+                               legend.position="none"))
+ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=region),color="black", size=.5)+ coord_map()
+```
+
+---
+## Polygon instead of Path
+
+```{r}
+ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=region),color="black", size=.5)+ coord_map()
+```
+
+
+---
+## Incorporate Information About States
+
+- Add other geographic information (e.g., counties) by adding geometric layers to the plot
+
+- Add non-geographic information by altering the fill color for each state 
+
+    - Use geom = "polygon" to treat states as solid shapes to add color
+    
+    - Incorporate numeric information using color shade or intensity
+    
+    - Incorporate categorical informaion using color hue
+    
+---
+## Categorical Information Using Hue
+
+If a categorical variable is assigned as the fill color then ggplot will assign different hues for each category. 
+
+Let’s load in a state regions dataset:
+
+```{r}
+statereg<- read.csv("./data/statereg.csv")
+
+head(statereg)
+
+```
+
+---
+## Join the Data
+
+```{r}
+states.class.map <- left_join(states, statereg, by = c("region" = "State"))
+head(states.class.map)
+```
+
+---
+## Plot the Regions
+
+```{r}
+ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=region, fill = StateGroups), colour = I("black"))+ coord_map()+theme(legend.position="bottom")
+```
+
+---
+## Your Turn 
+
+1. Read in the animal.csv data:
+
+```{r, eval=FALSE}
+animal <- read.csv("./data/animal.csv")
+```
+
+2. Plot the location of animal sightings on a map of the region
+3. On this plot, try to color points by class of animal and/or status of animal
+4. **Advanced**: Could we indicate time somehow?
+
+
+```{r, echo=F, eval=FALSE}
+ggplot() +
+    geom_path(data = states, aes(x = long, y = lat, group = group)) +   geom_point(data = animal, aes(x = Longitude, y = Latitude)) +   
+    geom_point(aes(x, y), shape = "x", size = 5, data = rig) + 
+    geom_text(aes(x, y), label = "BP Oil Rig", size = 5, data = rig, hjust = -0.1) + 
+    xlim(c(-91, -80)) + 
+    ylim(c(22, 32)) + coord_map()
+```
+
+
+
+
+
+
+
+
