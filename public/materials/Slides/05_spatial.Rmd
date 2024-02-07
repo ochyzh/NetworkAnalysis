@@ -249,9 +249,9 @@ class: inverse, middle, center
 mydata<-read.csv("./data/covid_data.csv", header=TRUE) 
 mydata$trumpmarg[is.na(mydata$trumpmarg)]<-0
 contigmat<-read.table("data/contigmat.txt") |> as.matrix()
-contigmat<-contigmat/apply(contigmat,1,sum) #row-standardize
+contigmat1<-contigmat/apply(contigmat,1,sum) #row-standardize
 
-mydata$W_trumpmarg<-contigmat%*%mydata$trumpmarg
+mydata$W_trumpmarg<-contigmat1%*%mydata$trumpmarg
 
 summary(m1<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317))
 summary(m2<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg))
@@ -265,20 +265,57 @@ summary(m2<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg))
 ## Spatial Regression
 
 ```{r, eval=F}
-library(spdep)
 library(spatialreg)
 
-contigmat<-read.table("data/contigmat.txt") 
+contigmat<-read.table("./data/contigmat.txt") 
 contigmat<-as.matrix(contigmat)
-W1<-mat2listw(contigmat, row.names = NULL, style="M", zero.policy = TRUE)
+W1<-mat2listw(contigmat, row.names = NULL, style="W", zero.policy = TRUE)
 summary(W1$neighbours)
 
 W2<-nb2listw(W1$neighbours, glist=NULL, style="W", zero.policy=TRUE)
 
-m3 <- lagsarlm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317, W2, zero.policy=TRUE)
+m3 <- lagsarlm(data=mydata, cases_pc~log(totpop1317)+urb2010+trumpmarg+medinc1317, W2, zero.policy=TRUE)
 summary(m3)
 
 
+```
+
+---
+## Interpretation
+
+Set up a hypothetical scenario:
+
+- Expected change in Covid-19 cases that would result from increasing urbanization in Johnson county, IA
+
+```{r, eval=F}
+names<-c("benton","linn","jones","iowa","johnson","cedar")
+mymat<-matrix(c(0,1,0,1,0,0,
+                1,0,1,0,1,1,
+                0,1,0,0,0,1,
+                1,0,0,0,1,0,
+                0,1,0,1,0,1,
+                0,1,1,0,1,0),nrow=6,ncol=6)
+dimnames(mymat)<-list(names,names)
+mymat<-round(mymat/apply(mymat,1,sum),2)
+d<-dplyr::filter(mydata, state=="IA" & county %in% names)
+
+```
+
+---
+
+
+```{r, eval=F}
+
+
+I<- diag(6)
+X0<-cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317)
+X1<-cbind(1,log(d$totpop1317), 1, d$trumpmarg, d$medinc1317)
+A<-solve(I-coef(m3)[1]*mymat)
+Yhat0<- A%*%(X0%*%coef(m3)[-1])
+Yhat1<- A%*%(X1%*%coef(m3)[-1])
+
+Y_ch<-Yhat1-Yhat0
+Y_ch
 ```
 
 
@@ -405,7 +442,12 @@ ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=region,
 ```
 
 ---
-## Your Turn 
+## Your Turn
+
+Use color to show the expected change in Covid-19 cases that result from increasing urbanization in Johnson county, IA on a map.
+
+---
+## Your Turn (Advanced)
 
 1. Read in the animal.csv data:
 
