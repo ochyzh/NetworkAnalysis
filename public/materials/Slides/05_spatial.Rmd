@@ -303,14 +303,17 @@ d<-dplyr::filter(mydata, state=="IA" & county %in% names)
 ```
 
 ---
-
+## Set up A Comparison by Shocking One of the Units on X 
 
 ```{r, eval=F}
 
 
 I<- diag(6)
 X0<-cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317)
-X1<-cbind(1,log(d$totpop1317), 1, d$trumpmarg, d$medinc1317)
+
+urb<-d$urb2010
+urb[4]<-1
+X1<-cbind(1,log(d$totpop1317), urb, d$trumpmarg, d$medinc1317)
 A<-solve(I-coef(m3)[1]*mymat)
 Yhat0<- A%*%(X0%*%coef(m3)[-1])
 Yhat1<- A%*%(X1%*%coef(m3)[-1])

@@ -262,6 +262,7 @@ summary(m2&lt;-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg
 
 
 ```r
+library(spdep)
 library(spatialreg)
 
 contigmat&lt;-read.table("./data/contigmat.txt") 
@@ -297,13 +298,16 @@ d&lt;-dplyr::filter(mydata, state=="IA" &amp; county %in% names)
 ```
 
 ---
-
+## Set up A Comparison by Shocking One of the Units on X 
 
 
 ```r
 I&lt;- diag(6)
 X0&lt;-cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317)
-X1&lt;-cbind(1,log(d$totpop1317), 1, d$trumpmarg, d$medinc1317)
+
+urb&lt;-d$urb2010
+urb[4]&lt;-1
+X1&lt;-cbind(1,log(d$totpop1317), urb, d$trumpmarg, d$medinc1317)
 A&lt;-solve(I-coef(m3)[1]*mymat)
 Yhat0&lt;- A%*%(X0%*%coef(m3)[-1])
 Yhat1&lt;- A%*%(X1%*%coef(m3)[-1])
