@@ -21,3 +21,4 @@ ponyPlot<- plot(pGraph,
                 vertex.label=V(pGraph)$names,
                 vertex.label.color="black", layout=layout_with_fr,
                 edge.width=E(pGraph)$weight/5, edge.curved=.08)
+
