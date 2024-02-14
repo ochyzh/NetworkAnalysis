@@ -26,7 +26,7 @@ Homework assignments and data are posted here.
         <td>Feb 16</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/.homework02.Rmd" target=_blank>Homework 2</a>
+          <dd><a href="../materials/homeworks/POL2578_homework01.html" target=_blank>Homework 2</a>| <a href="../materials/homeworks/POL2578_homework02.html" target=_blank>Homework 2 rmd </a>| <a href="../materials/homeworks/hw2_data.zip" target=_blank> data (zipped) </a>
           </dd>
           </dl>
         </td>
