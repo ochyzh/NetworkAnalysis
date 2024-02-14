@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Network Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Network Analysis
+]
+.subtitle[
+## Models for Binary DVs
+]
+.author[
+### Olga Chyzh [www.olgachyzh.com]
+]
+
+---
+
+
+
+
+## Agenda
+
+- Logistic Regression
+
+- Odds vs. Probabilities
+
+- Maximum Likelihood Estimation
+
+- Probit
+
+
+---
+## Why Logit?
+
+- An alternative to the linear probability model
+
+- Constraints the range of `\(\hat{y}\)` to plausible values (between 0 and 1).
+
+- Accounts for error heteroskedasticity in estimating standard errors.
+---
+
+## Binary Dependent Variable
+
+Consider the following model:
+
+$$
+Heart Attack = \beta_0+ \beta_1 Aspirin+u
+$$
+
+- Problem: *Heart Attack* takes on binary values of 0 (no heart attack) and 1 (heart attack)
+
+- Goal: rather than fitting a line, fit a curve such that the possible values are contrained between 0 and 1.
+
+---
+## Goal
+
+&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-1-1.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+## Need to Transform Y
+
+- While *Heart Attack* is binary, the *odds of having a heart attack*, `\(O\)`,  are continuous and take on values between 0 and `\(+\infty\)`, `\(0&lt;O&lt;+\infty\)`
+
+---
+
+## Calculating Odds
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Heart Attk &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; No Heart Attk &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Total &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Aspirin &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 104 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10933 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11037 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Placebo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 189 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10845 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11034 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 293 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21778 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22071 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+`$$O(HA|Aspirin)=\frac{104}{10933}=0.0095$$`
+`$$O(HA|\neg Aspirin)=\frac{189}{10845}=0.0174$$`
+
+
+---
+## Need to Transform Y
+
+- Even better, the *log(odds of heart attack)* are also continuous and take on values between `\(-\infty\)` and `\(+\infty\)`.
+
+- If we transform our DV from *Heart Attack* to *log(Odds of Heart Attack)*, we can use OLS to estimate it, then apply a reverse transformation to interpret the results:
+
+$$
+log(Odds\; of\; HA) = \beta_0+ \beta_1 Aspirin
+$$
+
+
+---
+## Calculating Odds
+
+Can also calculate odds from probabilities:
+`$$P(HA|Aspirin)=\frac{104}{11037}=0.0094$$`
+`$$P(HA|\neg Aspirin)=\frac{189}{11034}=0.0171$$`
+
+$$
+\begin{align}
+O(HA|Aspirin)&amp;=\frac{P(HA|Aspirin)}{P(\neg HA| Aspirin)}=\frac{P(HA|Aspirin)}{1-P(HA|Aspirin)}\\&amp;=\frac{0.0094}{1-0.0094}=0.0095
+\end{align}
+$$
+
+
+And probabilities from odds:
+
+$$
+P(HA|Aspirin)=\frac{O(HA|Aspirin)}{1+O(HA|Aspirin)}=\frac{0.0095}{1+0.0095}=0.0094
+$$
+
+- This is the formula to convert the results of the `\(logged(odds)\)` regression to probabilities.
+
+---
+## Logistic Regression
+
+
+`$$\begin{align}
+&amp;\log(O(HA|Asp)) =\log\left(\frac{P(HA|Asp)}{1-P(HA|Asp)}\right)= \beta_0+ \beta_1 Aspirin\\
+&amp;O(HA|Asp) = \frac{P(HA|Asp)}{1-P(HA|Asp)}=e^{(\beta_0+ \beta_1 Aspirin)}\\
+&amp;P(HA|Asp)=\frac{e^{(\beta_0+ \beta_1 Aspirin)}}{1+e^{(\beta_0+ \beta_1 Aspirin)}}\\
+&amp;P(\neg HA|Asp)=1-\frac{e^{(\beta_0+ \beta_1 Aspirin)}}{1+e^{(\beta_0+ \beta_1 Aspirin)}}
+\end{align}$$`
+Or, in general terms:
+
+$$
+\begin{align}
+&amp;P(Y=1|X)=\frac{e^{(\beta_0+ \beta_1 X)}}{1+e^{(\beta_0+ \beta_1 X)}}\\
+&amp;P(Y=0|X)=1-\frac{e^{(\beta_0+ \beta_1 X)}}{1+e^{(\beta_0+ \beta_1 X)}}
+\end{align}
+$$
+---
+## Example 2: Effect of GRE Scores on Admission
+
+
+&lt;img src="./images/GRE_data.png" width="300px" style="display: block; margin: auto;" /&gt;
+
+---
+## Effect of GRE Scores on Admission
+
+Suppose we want to estimate the following model:
+
+$$
+\text{P(Admit=1|GRE)}=logit(\alpha+\beta_1\text{GRE})
+$$
+Problem: how can we find `\(\alpha\)` and `\(\beta_1\)`?
+
+---
+## Maximum Likelihood Estimation
+
+[1] Write out the probability for each observation (called "likelihood"):
+&lt;img src="./images/GRE_ML.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+
+[2] The joint probability (called "the joint likelihood") of all the probabilities (assuming independent observations) is the product of these probabilities:
+
+$$
+\prod{p_i^{y_i}(1-p_i)^{(1-y_i)}}
+$$
+---
+## Likelihood
+
+&lt;img src="./images/likelihood.png" width="500px" style="display: block; margin: auto;" /&gt;&lt;img src="./images/likelihood1.png" width="500px" style="display: block; margin: auto;" /&gt;&lt;img src="./images/likelihood2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+## Maximum Likelihood Estimation
+
+$$
+\prod{p_i^{y_i}(1-p_i)^{(1-y_i)}},
+$$
+where `\(p_i=\frac{e^{(\beta_0+ \beta_1 x_i)}}{1+e^{(\beta_0+ \beta_1 x_i)}},\)`
+
+- Unlike with OLS, where we calculated `\(\beta_k\)` using the formulae we derived, we find `\(\beta_k\)` using numerical optimization (essentially by guessing).
+
+- To help computer optimizers (the product of `\(p_i\)` can become very small), we take advantage of the fact that the maximum of the product and the logged product are the same, and take the log of the joint likelihood:
+
+
+$$
+log(\prod{p_i^{y_i}(1-p_i)^{(1-y_i)}})=\sum{y_ilog(p_i)}+\sum{(1-y_i)log(1-p_i)},
+$$
+---
+class: inverse, middle, center
+# A Latent Variable Model for Binary Variables
+---
+## Your Turn
+
+Using R, the z-table, or Google, find the p-values that correspond to the following
+z-scores: -3,-2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3. What do
+these values tell you? Use these values to sketch (yes, on paper with a pencil!) the cumulative density function for the normal distribution.
+---
+## Normal CDF
+&lt;img src="./images/normal_cdf.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+## Logistic CDF
+&lt;img src="./images/Logistic_cdf.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+## Both
+&lt;img src="./images/Both_cdfs.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+## Another Way to Think of BRMs
+
+- Suppose there is an unobserved or *latent* variable `\(y^*\)` ranging from `\(-\infty\)` to `\(+\infty\)` that generates the observed `\(y\)`. 
+
+- Observations with larger values of `\(y^*\)` are observed as `\(y=1\)`, while those with smaller values of `\(y^*\)` are observed as `\(y=0\)`.
+
+    - E. g., consider college admissions decisions or civil wars
+    
+- Assume that the latent `\(y^*\)` is linearly related to the observed `\(x\)`s through the structural model:
+
+$$
+y^*_i=\pmb{x}_i\pmb{\beta}+\epsilon_i
+$$
+---
+## A Latent Variable Model
+
+The latent `\(y^*\)` is linked to the observed binary variable `\(y\)` by the measurement equation:
+
+`$$\begin{equation}
+y_i=\begin{cases}{1 \; \text{  if } y^*_i&gt;\tau\\ 
+0 \; \text{  if } y^*_i\leq \tau}
+\end{cases}
+\end{equation}$$`
+
+where `\(\tau\)` is the threshold or cutpoint. Assume `\(\tau=0\)`.
+
+- Since `\(y^*\)` is unobserved, we use ML estimation.
+
+- Assume `\(E(\epsilon| \textbf{x})=0\)` and that the error is normally distributed with variance `\(Var(\epsilon| \textbf{x})=1\)`. 
+
+    - This assumption is arbitrary, but it is necessary only for estimation. The final results do not depend on it.
+
+---
+
+## A Latent Variable Model
+
+&lt;img src="./images/Fig3.4.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+---
+## A Latent Variable Model
+
+- On average, we observe `\(y=1\)` when `\(E(y^*| x)&gt; 0\)` and `\(y=0\)` otherwise.
+
+      - Even when `\(E(y^*| x)&gt; 0\)`, it is possible to observe `\(y=0\)`, especially is the error is large and negative. 
+
+- Since `\(y=1\)` when `\(y^*&gt;0\)`:
+
+`$$\begin{align}
+P(y=1| \textbf{x})&amp;= P(y^*&gt;0| \textbf{x})\\&amp;=P(\textbf{x}\pmb{\beta}+\epsilon&gt;0 \;|\;\textbf{x})\\
+&amp;=P(\epsilon&gt;-\textbf{x}\pmb{\beta}\;|\;\textbf{x})\\
+&amp;=P(\epsilon\leq \textbf{x}\pmb{\beta}\;|\;\textbf{x})\\
+&amp;=\Phi(\textbf{x}\pmb{\beta})
+\end{align}$$`
+- Note that we must change the direction of the inequality in step 4, because the normal cdf expresses the probability of a variable being less than some value.
+
+- Note that `\(\Phi(\textbf{x}\pmb{\beta})\)` stands for the normal cdf.
+
+- Congratulations, we just derived a probit regression.
+
+---
+
+## Plot of `\(y^*\)` and P(y=1| x) in the BRM
+
+&lt;img src="./images/Fig3.6.png" width="400px" style="display: block; margin: auto;" /&gt;
+    
+---
+## Probit Likelihood
+
+Define `\(p_i\)` as the probability of observing whatever value of `\(y\)` was actually observed for a given observation:
+
+`$$\begin{equation}
+p_i=\begin{cases}{P(y=1\;|\;\textbf{x}_i) \; \text{  if } y_i=1 \text{ is observed}\\ 
+1-P(y=1\;|\;\textbf{x}_i) \; \text{  if } y_i=0 \text{ is observed}}
+\end{cases}
+\end{equation}$$`
+
+Then, as before, the likelihood is the product of these probabilities:
+
+`$$\begin{align}
+L(\pmb{\beta}| \pmb{y, X})&amp;=\prod\limits_{i=1}^N{p_i} \\
+&amp;=\prod\limits_{y=1}{P(y=1\;|\;\textbf{x}_i)}\prod\limits_{y=0}{1-P(y=1\;|\;\textbf{x}_i)}\\
+&amp;=\prod\limits_{y=1}\Phi(\pmb{x}_i\pmb{\beta})\prod\limits_{y=0}[1-\Phi(\pmb{x}_i\pmb{\beta})]
+\end{align}$$`
+---
+
+## Log-Likelihood
+
+Taking a log of the likelihood gives:
+
+`$$\ln{L}(\pmb{\beta| y, X})=\sum\limits_{y=1}ln\Phi(\pmb{x}_i\pmb{\beta})+\sum\limits_{y=}ln[1-\Phi(\pmb{x}_i\pmb{\beta})]$$`
+- Amemiya (1985, 273-4) proves that under plausible conditions, the likelihood function is globally concave which ensures the uniqueness of ML estimates. 
+
+- These estimates are consistent, asymptotically normal, and asymptotically efficient.
+
+
+
+
+
+---
+class: inverse, middle, center
+
+# Lab: Maximum Likelihood Estimation
+---
+## Effect of GRE Scores on Admission
+
+Suppose we want to estimate the following model:
+
+`$$\begin{equation}
+\text{Admit}=logit(\alpha+\beta_1\text{GRE}+\beta_2\text{GPA}+\beta_3\text{Rank2}\\
++\beta_4\text{Rank3}+\beta_5\text{Rank4})
+\end{equation}$$`
+
+- Why did we omit Rank1?
+
+- The data are available at "https://stats.idre.ucla.edu/stat/data/binary.csv"
+
+---
+## Maximum Likelihood Estimation 
+
+
+```r
+library(tidyverse)
+library(magrittr)
+mydata &lt;- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+
+#Program the likelihood:
+MyLogLike&lt;-function(Y,X,par){
+xbeta&lt;-X%*%par
+p&lt;-exp(xbeta)/(1+exp(xbeta))
+loglike&lt;-Y*log(p)+(1-Y)*(log(1-p))
+sum_ll= -sum(loglike)
+return(sum_ll)
+}
+```
+
+---
+## Use -optim- to Find `\(\beta_j\)`
+
+
+```r
+X&lt;- mydata %&gt;% mutate(cons=1, rank2=as.numeric(rank==2), 
+                      rank3=as.numeric(rank==3), 
+                      rank4=as.numeric(rank==4)) %&gt;% 
+  select(cons, gre, gpa, rank2, rank3, rank4) %&gt;% as.matrix()
+Y&lt;-mydata$admit
+
+par=rep(0,6)
+myres &lt;- optim(par,            # starting value for prob
+   MyLogLike,      # the log-likelihood function
+   method="BFGS",               # optimization method
+   hessian=TRUE,                # return numerical Hessian
+   control=list(reltol=1e-10),    # maximize instead of minimize
+   X=X,Y=Y)                 # the data
+
+myres$par
+
+#Check 
+summary(m1&lt;-glm(admit~gre+ gpa+ factor(rank), data=mydata, 
+                family=binomial))
+```
+
+---
+## OLS Using Numerical Optimization
+
+- Though OLS coefficients can be found using an analytical solution `\(\beta=(X'X)^{-1}X'Y\)`, they may also be found using numerical optimization.
+
+- To demonstrate, consider the following model:
+
+`$$\log{\text{(wage)}}=\alpha+\beta_1\text{jc}+\beta_2\text{univ}+\beta_3\text{exper}+\epsilon$$`
+
+- These data can be accessed from the package "wooldridge" using -data("twoyear")-.
+---
+## OLS Using Numerical Optimization
+
+
+```r
+library(wooldridge)
+data("twoyear")
+m2&lt;-lm(lwage~jc+univ+exper, data=twoyear)
+summary(m1)
+
+#Program the likelihood:
+myOLS&lt;-function(pars,X,Y) {
+ xbeta&lt;-X%*%pars
+ SSE&lt;-sum((Y-xbeta)^2)
+ return(SSE)
+}
+
+X&lt;-twoyear  %&gt;% mutate(cons=1) %&gt;% select(cons,jc,univ,exper) %&gt;% 
+  as.matrix()
+Y&lt;-twoyear$lwage
+
+pars=rep(0,4)
+myres &lt;- optim(pars,            # starting value for prob
+              myOLS,      # the function to optimize
+              method="BFGS",               # optimization method
+              Y=Y, X=X)                 # the data
+
+myres$par
+```
+
+
+---
+## Interpreting Logit Results
+
+- Logit coefficients tell the direction of the effects, but not their magnitude.
+
+- In fact, the values of the logit  (and probit) coefficients are artificially induced by the model assumptions about the mean and variance of `\(\epsilon\)`.
+
+    - If we change these assumptions, the coefficient estimates will change too.
+
+- However, the estimates of probability of `\(Y=1\)` and `\(Y=0\)` are invariant to the model assumptions. Hence, always interpret coefficient effects in logit (and probit) by calculating predicted probabilities or related quantities (example to follow). 
+
+- As with OLS, can perform a significance hypothesis test by dividing the coefficient by it's standard error.
+
+---
+## Interpreting Logit Results
+
+
+```r
+mydata &lt;- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+summary(m1&lt;-glm(admit~gre+ gpa+ factor(rank), data=mydata, 
+                family=binomial))
+```
+
+```
+## 
+## Call:
+## glm(formula = admit ~ gre + gpa + factor(rank), family = binomial, 
+##     data = mydata)
+## 
+## Coefficients:
+##                Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)   -3.989979   1.139951  -3.500 0.000465 ***
+## gre            0.002264   0.001094   2.070 0.038465 *  
+## gpa            0.804038   0.331819   2.423 0.015388 *  
+## factor(rank)2 -0.675443   0.316490  -2.134 0.032829 *  
+## factor(rank)3 -1.340204   0.345306  -3.881 0.000104 ***
+## factor(rank)4 -1.551464   0.417832  -3.713 0.000205 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 499.98  on 399  degrees of freedom
+## Residual deviance: 458.52  on 394  degrees of freedom
+## AIC: 470.52
+## 
+## Number of Fisher Scoring iterations: 4
+```
+
+
+---
+## Interpreting Logit Results
+
+Calculate and plot predicted probabilities of admission (first example), varying GPA and school rank. Hold GRE at its mean of 500.
+
+
+```r
+mycoeff&lt;-m1$coeff
+gpa&lt;-seq(from=min(mydata$gpa),to=max(mydata$gpa),by=.1)
+
+#Calculate the probability of an admission for a student with average GRE (500) from a tier 1 school:
+p1&lt;-(exp(mycoeff[1]+500*mycoeff[2]+gpa*mycoeff[3]))/(1+exp(mycoeff[1]+500*mycoeff[2]+gpa*mycoeff[3]))
+
+#Calculate the probability of an admission for a student with average GRE (500) from a tier 2 school:
+p2&lt;-(exp(mycoeff[1]+500*mycoeff[2]+gpa*mycoeff[3]+mycoeff[4]))/(1+exp(mycoeff[1]+500*mycoeff[2]+gpa*mycoeff[3]+mycoeff[4]))
+
+#Calculate the probability of an admission for a student with average GRE (500) from a tier 3 school:
+p3&lt;-(exp(mycoeff[1]+500*mycoeff[2]+gpa*mycoeff[3]+mycoeff[5]))/(1+exp(mycoeff[1]+500*mycoeff[2]+gpa*mycoeff[3]+mycoeff[5]))
+
+#Calculate the probability of an admission for a student with average GRE (500) from a tier 4 school:
+p4&lt;-(exp(mycoeff[1]+500*mycoeff[2]+gpa*mycoeff[3]+mycoeff[6]))/(1+exp(mycoeff[1]+500*mycoeff[2]+gpa*mycoeff[3]+mycoeff[6]))
+
+
+#Plot these predicted probabilities:
+ggplot() + geom_line(aes(x=gpa, y=p1), ) + geom_line(aes(x=gpa,y=p2)) +geom_line(aes(x=gpa,y=p3))+geom_line(aes(x=gpa,y=p4))+
+				   labs(y = "P(Admissions)") +theme_bw()
+```
+
+---
+
+## Effect of GPA on Admissions by Rank
+&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Example 2
+
+- On January 28, 1986, the NASA shuttle orbiter mission STS-51-L and the tenth flight of Space Shuttle Challenger
+(OV-99) broke apart 73 seconds into its flight, killing all seven crew members, which consisted of five NASA astronauts and
+two payload specialists.
+
+- The spacecraft disintegrated over the Atlantic Ocean, off the coast of Cape Canaveral, Florida, at 11:39 EST (16:39 UTC).
+
+- Disintegration of the vehicle began after an O-ring seal in its right solid rocket booster (SRB) failed at liftoff.
+
+- Due to McAuliffe’s (first teacher in space) presence on the mission, NASA arranged for many US public schools to view the
+launch live on NASA TV.
+
+- Source: Wikipedia
+
+---
+&lt;img src="./images/challenger.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Why Did the O-ring Fail?
+
+- What causes O-ring failures during space shuttle launches?
+
+- Research Hypothesis: Temperature at launch affects the probability
+of o-ring failures.
+
+---
+
+## Data on Space Shuttle Launches
+
+
+```
+##    flight_date failure temp
+## 1   1981-04-12       0   66
+## 17  1981-11-12       1   70
+## 2   1982-03-22       0   69
+## 3   1982-11-11       0   68
+## 4   1983-04-04       0   67
+## 5   1983-06-18       0   72
+## 6   1983-08-30       0   73
+## 7   1983-11-28       0   70
+## 18  1984-02-03       1   57
+## 19  1984-04-06       1   63
+## 20  1984-08-30       1   70
+## 8   1984-10-05       0   78
+## 9   1984-11-08       0   67
+## 22  1985-01-24       2   53
+## 10  1985-04-12       0   67
+## 11  1985-04-29       0   75
+## 12  1985-06-17       0   70
+## 13  1985-07-29       0   81
+## 14  1985-08-27       0   76
+## 15  1985-10-03       0   79
+## 23  1985-10-30       2   75
+## 16  1985-11-26       0   76
+## 21  1986-01-12       1   58
+```
+
+---
+
+## Your Turn
+
+- Estimate a logistic regression of failures on temperature.
+
+- In order to interpret the result, calculate and plot the expected probability of an o-ring failure by temperature. Overlay your plot with a scatterplot of the data.
+
+- What is your conclusion? What would you say if I told you that the Challenger was launched at 31 degrees F?
+
+---
+## Your Turn 1
+
+- Open the data from the social pressure experiment.
+
+- Estimate a linear probability model and a logistic regression. Calculate the effect of social pressure on the probability of voting from the logistic regression. How does this quantity compare to the coefficient on the same variable from the libear probability model.
+
+- Which model do you prefer and why?
+
+---
+## Your Turn 2
+
+- Write a maximum likelihood function to estimate a probit.
+
+- Calculate and plot predicted probabilities of admission (first example), varying GPA and school rank. Hold GRE at its mean of 500. Do this "by hand", do not use the -predict- function.
+
+
+&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-19-1.png" width="300px" style="display: block; margin: auto;" /&gt;
+---
+## Your Turn 2: Michelin Star Restaurants
+
+- The data "MichelinNY.csv" contains information on the price, food, decor, and service ratings on 164 NY restaurants, and whether the restaurant received a Michelin star. Open the data and estimate the following model (can use the -glm- function):
+
+`$$\begin{equation}
+\text{Michelin Star}=\text{Probit}(\alpha+\beta_1\text{Price}+\beta_2\text{Food}+\\
+\beta_3\text{Service}+\beta_4\text{Decor}+\epsilon)
+\end{equation}$$`
+
+- Looking only at the regression table, what factors affect the probability of getting a Michelin star?
+
+- Plot the predicted probabilities of getting a Michelin star by food rating for three price points (Mean, Mean-1sd, Mean+1sd). Hold Service and Decor at their median values.
+
+---
+
+&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-20-1.png" width="600px" style="display: block; margin: auto;" /&gt;
+---
+## Your Turn 3
+
+- Open the data on space shuttle launches.
+
+- Estimate the effect of temperature at launch on the probability of at least one o-ring failure using a probit. Estimate the same probability using a logit.
+
+- Plot the predicted probability of a failure by temperature from both models (overlay them on the same graph). How do they compare?
+
+- Use the -predict- function to add confidence bands.
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
