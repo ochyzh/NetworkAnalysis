@@ -71,7 +71,7 @@ All the class materials will be posted/updated here.
         <td>Models for Binary DVs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank>intro ergms </a>  |<a href="../materials/Slides/data/space_shuttles.txt "target=_blank> space shuttle data </a>|<a href="../materials/Slides/data/MichelinNY.csv "target=_blank> Michelin data </a>
+          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank> binary dvs </a>  |<a href="../materials/Slides/data/space_shuttles.txt "target=_blank> space shuttle data </a>|<a href="../materials/Slides/data/MichelinNY.csv "target=_blank> Michelin data </a>
           </dd>
           </dl>
         </td>
