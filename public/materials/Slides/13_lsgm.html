@@ -160,6 +160,25 @@ W[1:10, 25:35]
 where `\(A_i\)` is a natural parameter function and `\(B_i=\log[1+\exp(A_i(y(N_i)))],\)` and `\(\textbf{y}\left(N_i\right)\)` is a vector of values of the binary random variables (edges) of `\(i\)`'s neighbors.
 
 ---
+## The Binary Conditional Distribution
+
+`$$\begin{align}
+\tag{1}
+\text{P}(Y_i=y_i|\pmb{y}(N_i))=\exp\left[A_i(\pmb{y}(N_i))y_i-B_i(\pmb{y}(N_i))\right],
+\end{align}$$`
+
+where `\(A_i\)` is a natural parameter function and `\(B_i=\log[1+\exp(A_i(y(N_i)))],\)` and `\(\textbf{y}\left(N_i\right)\)` is a vector of values of the binary random variables (edges) of `\(i\)`'s neighbors.
+
+Remember that the exponent of a difference is the ratio of exponents, `\(\exp(A-B)=\frac{\exp(A)}{\exp(B)}\)`:
+
+`$$\begin{align}
+\tag{1}
+\text{P}(Y_i=y_i|\pmb{y}(N_i))=&amp;\frac{\exp[A_i(\pmb{y}(N_i))y_i]}{\exp[B_i(\pmb{y}(N_i))]}\\
+=&amp;\frac{\exp[A_i(\pmb{y}(N_i))y_i]}{\exp[\log[1+\exp(A_i(\pmb{y}(N_i))y_i]]}\\
+=&amp;\frac{\exp[A_i(\pmb{y}(N_i))y_i]}{1+\exp[A_i(\pmb{y}(N_i))y_i]},
+\end{align}$$`
+
+---
 
 ## The Natural Parameter Function
 `\begin{align}

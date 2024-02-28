@@ -1,68 +1,43 @@
-#install.packages("statnet")
-library(statnet)
-library(sna)
-
-data(sampson)
-m3<-ergm(samplike~edges+nodematch('group')+mutual)
-summary(m3)
-
-#What is the prob of a tie for two nodes that
-#are in diff groups and there is no tie from i to j?
-xbeta<-m3$coef[1]
-p<-exp(xbeta)/(1+exp(xbeta))
-plogis(coef(m3)[['edges']])
-
-#What is the prob of a tie for two nodes that
-#are same group and there is no tie from i to j?
-xbeta<-m3$coef[1]+m3$coef[2]
-p<-exp(xbeta)/(1+exp(xbeta))
-plogis(coef(m3)[['edges']]+coef(m3)[['nodematch.group']])
-
-#What is the prob of a tie for two nodes that
-#are same group and there is a tie from i to j?
-xbeta<-m3$coef[1]+m3$coef[2]+m3$coef[3]
-p<-exp(xbeta)/(1+exp(xbeta))
-
-#What is the prob of a tie for two nodes that
-#are diff groups and there is a tie from i to j?
-xbeta<-m3$coef[1]+m3$coef[3]
-p<-exp(xbeta)/(1+exp(xbeta))
-
-mcmc.diagnostics(m3)
-simNets<-simulate(m3, nsim=5)
+#library(devtools)
+#install_github("ochyzh/networkdata")
+library(networkdata)
+data(lsgm_data)
 
 
-p<-plot(samplike, vertex.cex=degree(samplike,
-        cmode="indegree")/2,
-        vertex.col='group')
-plot(simNets[[1]], vertex.cex=degree(simNets[[1]],
-        cmode="indegree")/2,
-     vertex.col='group', coord=p)
-plot(simNets[[2]], vertex.cex=degree(simNets[[2]],
-                                     cmode="indegree")/2,
-     vertex.col='group', coord=p)
+#Logit likelihood:
+MyLogLike<-function(Y,par){
+  X<-rep(1,length(Y)) #constant
+  xbeta<-as.matrix(X)%*%par
+  p<-exp(xbeta)/(1+exp(xbeta))
+  loglike<-Y*log(p)+(1-Y)*(log(1-p))
+  sum_ll= -sum(loglike)
+  return(sum_ll)
+}
 
 
-gofM3<-gof(m3, GOF=~idegree+odegree+espartners+distance-model)
-par(mfrow=c(2,2))
-plot(gofM3)
+#Likelihood for LSGM with intercept only:
+loglik<-function(par,W,Y){
+  b0<-par[1] #intercept
+  eta<-par[2] #spatial coefficient
+  xbeta<-as.matrix(X)%*%b0  #
+  kappa<-exp(xbeta)/(1+exp(xbeta)) #logit of Xb
+  A_i=log(kappa/(1-kappa))+eta*W%*%(Y-kappa) #Eqn 2
+  p_i<- exp(A_i)/(1+exp(A_i)) #Eqn 1, also Eqn 4
+  PL<-Y*log(p_i)+(1-Y)*log(1-p_i) #Eqn 3
+  ell <- -sum(PL)
+  #cat("ell",ell, fill=TRUE)
+  return(ell)
+}
 
+par=0
+m0<-optim(par=c(0),MyLogLike,Y=Y)
+m0
+m0<-glm(Y~1, family=binomial)
 
+mean(Y)
+plogis(m0$par) #reverse logistic transformation
+phat=exp(m0$par)/(1+exp(m0$par))
+phat
 
-#Your Turn
-data(coleman)
-friends<-as.network.matrix(coleman[1,,],
-                           matrix.type="adjacency",
-                           directed=TRUE)
-m11<-ergm(friends~edges)
-summary(m11)
-plogis(coef(m11))
-
-m12<-ergm(friends~edges+mutual)
-summary(m12)
-
-plogis(coef(m12)[['edges']]+coef(m12)[['mutual']])
-
-
-
-
+m1<-optim(par=c(0,0),loglik,W=Wmat,Y=Y)
+m1
