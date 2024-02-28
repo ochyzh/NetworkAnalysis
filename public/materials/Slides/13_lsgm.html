@@ -254,17 +254,17 @@ binomial distribution;
 
 - n individual updates provide 1 full Gibbs iteration
 
-- Use the result of step 2 as the new initial values and repeat step 2 to
-obtain M simulated networks `\(y\)` (can burn-in, thin, etc.).
+- Use the result of the first Gibbs iteration as the new initial values and repeat to
+obtain M Gibbs networks `\(y\)` (can burn-in, thin, etc.).
 
 ---
 ## Simulate Networks Based on m1
 
-1. Function `spatbin.genone` simulates/updates a value for `\(y\)` for a single observation--step 2
+1. Function *spatbin.genone* simulates/updates a value for `\(y\)` for a single observation--step 2
 
-2. Function `spatbin.onegibbs` applies `spatbin.genone` to update every observation of `\(y\)`--step 3
+2. Function *spatbin.onegibbs* applies *spatbin.genone* to update every observation of `\(y\)`--step 3
 
-3. Function `spatbin.genfield` applies `spatbin.onegibbs` to generate `\(M\)` networks --step 4 
+3. Function *spatbin.genfield* applies *spatbin.onegibbs* to generate `\(M\)` networks --step 4 
 
 
 
@@ -577,7 +577,6 @@ mytable
 
 
 ---
-
 ## Package LSGM
 
 Note: the package is in beta testing
@@ -594,9 +593,9 @@ lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
 ---
 ## Your Turn
 
-1. The above code estimates an lsgm with 1 edge-level covariate `\(X\)` using a pseudo-likelihood.  Edit the code so that the resulting pseudo-likelihood can include 2 edge-level covariates `\(X1\)` and `\(X2\)` (i.e., the goal is to run an lsgm with `tot_trade` and `mil_ratio` as exogenous covariates).
+1. The above code estimates an lsgm with 1 edge-level covariate `\(X\)` using a pseudo-likelihood.  Edit the code so that the resulting pseudo-likelihood can include 2 edge-level covariates `\(X1\)` and `\(X2\)` (i.e., the goal is to run an lsgm with *tot_trade* and *mil_ratio* as exogenous covariates).
 
-2. Estimate an lsgm with `defense` as the dependent variable, with `tot_trade` and `mil_ratio` as the exogenous edge-level covariates, and `W` as the matrix that measure connectivities among defense edges. 
+2. Estimate an lsgm with *defense* as the dependent variable, with *tot_trade* and *mil_ratio* as the exogenous edge-level covariates, and *W* as the matrix that measure connectivities among defense edges. 
 
 3. Difficult: Change the code from the above slides to estimate the standard errors for your model.
 

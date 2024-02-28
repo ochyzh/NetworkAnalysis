@@ -77,67 +77,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Day 7</td>
-        <td>ERGM Specification</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/Slides/07_ergm_specification.html" target=_blank>ergm specification </a>  | <a href="../materials/Slides/07_ergm_specification.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.script080322.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.07_ergm_spec_yourturn.R"target=_blank> your turn answers </a>
-          </dd>
-          </dl>
-        </td>
-      </tr>
-      <tr>
-        <td>Day 8</td>
-        <td>Weighted Networks</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day9_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.08_valued_ergms_yourturn.R"target=_blank> your turn answers </a>
-          </dd>
-          </dl>
-        </td>
-      </tr>
-      <tr>
-        <td>Day 9</td>
-        <td>ERGM Application</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>  | <a href="../materials/Slides/09_ergm_application.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day10_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.09_ergm_appl_yourturn.R"target=_blank> your turn answers </a>
-          </dd>
-          </dl>
-        </td>
-      </tr>
-      <tr>
-        <td>Day 10</td>
-        <td>Temporal ERGMs</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/10_tergm.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/Scripts/.day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.10_tergm_friends_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/.10_tergms_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>
-          </dd>
-          </dl>
-        </td>
-      </tr>
-      <tr>
-        <td>Day 11</td>
-        <td>Latent Space Models</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/Slides/11_latent_space.html" target=_blank>latent space </a>  | <a href="../materials/Slides/11_latent_space.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day12_script.R"target=_blank> code from class </a>
-          </dd>
-          </dl>
-        </td>
-      </tr>
-      <tr>
-        <td>Day 12--13</td>
-        <td>SOAMs</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/Slides/12_soam.html" target=_blank>soams </a>  | <a href="../materials/Slides/12_soam.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/12_soam.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn.R"target=_blank> your turn answers (1st exercise) </a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn_knecht.R"target=_blank> your turn answers (Knecht exercise) </a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn2.R"target=_blank> your turn answers (3rd exercise) </a>
-          </dd>
-          </dl>
-        </td>
-      </tr>
-            <tr>
-        <td>Day 14-15</td>
+        <td>Day 7-8</td>
         <td>LSGM</td>
         <td>
           <dl>
@@ -147,7 +87,67 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Day 16</td>
+        <td>Day 9</td>
+        <td>ERGM Specification</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/07_ergm_specification.html" target=_blank>ergm specification </a>  | <a href="../materials/Slides/07_ergm_specification.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.script080322.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.07_ergm_spec_yourturn.R"target=_blank> your turn answers </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Day 10</td>
+        <td>Weighted Networks</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day9_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.08_valued_ergms_yourturn.R"target=_blank> your turn answers </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Day 11</td>
+        <td>ERGM Application</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>  | <a href="../materials/Slides/09_ergm_application.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day10_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.09_ergm_appl_yourturn.R"target=_blank> your turn answers </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Day 12</td>
+        <td>Temporal ERGMs</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/10_tergm.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/Scripts/.day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.10_tergm_friends_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/.10_tergms_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Day 13</td>
+        <td>Latent Space Models</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/11_latent_space.html" target=_blank>latent space </a>  | <a href="../materials/Slides/11_latent_space.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day12_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Day 14</td>
+        <td>SOAMs</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/12_soam.html" target=_blank>soams </a>  | <a href="../materials/Slides/12_soam.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/12_soam.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn.R"target=_blank> your turn answers (1st exercise) </a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn_knecht.R"target=_blank> your turn answers (Knecht exercise) </a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn2.R"target=_blank> your turn answers (3rd exercise) </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Day 15</td>
         <td>Other Topics</td>
         <td>
           <dl>

@@ -1,25 +1,34 @@
-#install.packages("statnet")
-library(statnet)
+library(tidyverse)
+library(magrittr)
+mydata <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
 
-data(sampson)
-samplike
 
-adjMat<-as.matrix.network(samplike)
+#Program the likelihood:
+MyLogLike<-function(Y,X,par){
+  xbeta<-X%*%par #xbeta
+  p<-exp(xbeta)/(1+exp(xbeta)) #write out p(y=1|x)
+  loglike<-Y*log(p)+(1-Y)*(log(1-p))  #logged likelihood for one obs
+  sum_ll= -sum(loglike) #sum of logged likelihoods
+  return(sum_ll)
+}
 
-as.network.matrix(adjMat, matrix.type = "adjacency",
-                  directed=TRUE)
+X<- mydata %>% mutate(cons=1, rank2=as.numeric(rank==2),
+                      rank3=as.numeric(rank==3),
+                      rank4=as.numeric(rank==4)) %>%
+  select(cons, gre, gpa, rank2, rank3, rank4) %>% as.matrix()
+Y<-mydata$admit
+par=rep(0,6)
 
-network::get.vertex.attribute(samplike, 'group')
 
-vertexSize<-degree(samplike, cmode="indegree")
-plot(samplike, vertex.cex=vertexSize/2, vertex.col='group')
+myres <- optim(par,            # starting value for prob
+               MyLogLike,      # the log-likelihood function
+               method="BFGS",               # optimization method
+               hessian=TRUE,                # return numerical Hessian
+               control=list(reltol=1e-10),    # tolerance
+               X=X,Y=Y)                 # the data
+myres$par
 
-m1<-ergm(samplike~edges)
-summary(m1)
 
-plogis(coef(m1)[['edges']])
-
-m2<-ergm(samplike~edges+nodematch('group'))
-summary(m2)
-
-plogis(coef(m2)[['edges']])
+summary(m1<-glm(admit~gre+ gpa+ factor(rank), data=mydata,
+                family=binomial))
+cbind(myres$par, coef(m1))

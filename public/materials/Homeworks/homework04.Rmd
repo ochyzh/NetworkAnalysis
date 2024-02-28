@@ -24,7 +24,7 @@ data(ally_data)
 
 ```
 
-3. Check the class and the dimensions of each object that makes up the data. Look at the first 10 rows and columns of `W` and the first 10 rows of `ally_data`. Type your code in the chunk below. 
+3. Check the class and the dimensions of each object that makes up the data. Look at the first 10 rows and columns of *W* and the first 10 rows of *ally_data*. Type your code in the chunk below. 
 
 ```{r}
 #Type code here.
@@ -32,7 +32,7 @@ data(ally_data)
 ```
 
 
-4. In class, we wrote the code to estimate an lsgm with 1 edge-level covariate X using a pseudo-likelihood.  Edit the chunk below so that the resulting pseudo-likelihood can include 2 edge-level covariates X1 and X2 (i.e., the goal is to run an lsgm with `tot_trade` and `mil_ratio` as exogenous covariates). 
+4. In class, we wrote the code to estimate an lsgm with 1 edge-level covariate X using a pseudo-likelihood.  Edit the chunk below so that the resulting pseudo-likelihood can include 2 edge-level covariates X1 and X2 (i.e., the goal is to run an lsgm with *tot_trade* and *mil_ratio* as exogenous covariates). 
 
 
 ```{r}
