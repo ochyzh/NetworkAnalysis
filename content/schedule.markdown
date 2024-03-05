@@ -81,7 +81,7 @@ All the class materials will be posted/updated here.
         <td>LSGM</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/13_lsgm.html" target=_blank>lsgm </a>  | <a href="../materials/Slides/13_lsgm.Rmd" target=_blank>slides in Rmd</a>| <a href="../materials/Slides/Niemanetal_PS2017.pdf" target=_blank> troop placement example </a>
+          <dd><a href="../materials/Slides/13_lsgm.html" target=_blank>lsgm </a>  | <a href="../materials/Slides/13_lsgm.Rmd" target=_blank>slides in Rmd </a>| <a href="../materials/Slides/Niemanetal_PS2017.pdf" target=_blank> troop placement example </a> | <a href="../materials/Slides/data/chechen_attacks.csv" target=_blank> chechen attacks </a> | <a href="../materials/Slides/data/vilMat.csv" target=_blank> village distance matrix </a>
           </dd>
           </dl>
         </td>

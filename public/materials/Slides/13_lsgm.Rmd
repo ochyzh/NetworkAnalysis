@@ -243,28 +243,46 @@ p_i=\frac{\exp[A_i(y(N_i))]}{1+\exp[A_i(y(N_i))]}
 
 ## Let's Program This
 
+.pull-left[
+
+### Logit:
 ```{r}
-#Likelihood
-loglik<-function(par,W,Y){
-b0<-par[1]
-eta<-par[2]
-X<-rep(1,length(Y))
-xbeta<-as.matrix(X)%*%b0
+loglik_logit<-function(par,Y){
+  b0<-par[1] #starting value for constant
+  X<-rep(1,length(Y)) #constant
+  xbeta<-as.matrix(X)%*%b0 #natural parameter
+  kappa<-exp(xbeta)/(1+exp(xbeta)) #p_i, natural parameter function
+  L<-Y*log(kappa)+(1-Y)*(log(1-kappa)) #log-likelihood
+  ell= -sum(L) #sum log-likelihoods
+  cat("ell",ell, fill=TRUE) #print sum to screen
+  return(ell)
+}
+```
+]
+
+.pull-right[
+### LSGM:
+```{r}
+loglik_lsgm<-function(par,Y,W){
+b0<-par[1] #starting value for constant
+eta<-par[2] #starting value for spatial paramenter
+X<-rep(1,length(Y)) #constant
+xbeta<-as.matrix(X)%*%b0 #natural parameter
 kappa<-exp(xbeta)/(1+exp(xbeta)) #logit of Xb
-A_i=log(kappa/(1-kappa))+eta*W%*%(Y-kappa) #Eqn 2
+A_i=log(kappa/(1-kappa))+eta*W%*%(Y-kappa) #Eqn 2--natural parameter function
 p_i<- exp(A_i)/(1+exp(A_i)) #Eqn 1, also Eqn 4
-PL<-Y*log(p_i)+(1-Y)*log(1-p_i) #Eqn 3
-ell <- -sum(PL)
-#cat("ell",ell, fill=TRUE)
+PL<-Y*log(p_i)+(1-Y)*log(1-p_i) #Eqn 3, log psedo-likelihood
+ell <- -sum(PL) #sum log pseudolikelihoods
+cat("ell",ell, fill=TRUE) #print sum to screen
 return(ell)
 }
 ```
-
+]
 ---
 
-## Let's Estimate
+## Estimate
 ```{r}
-m1<-optim(par=c(0,0),loglik,W=Wmat,Y=Y)
+m1<-optim(par=c(0,0),loglik_lsgm,W=Wmat,Y=Y)
 m1
 
 ```
@@ -376,7 +394,7 @@ sims<-sims[,seq(from=10, to=ncol(sims),by=10)]
 
 ```{r}
 sim_est<-function(Y){
- res<-optim(par=m1$par,loglik,W=W,Y=as.matrix(Y)) 
+ res<-optim(par=m1$par,loglik_lsgm,W=W,Y=as.matrix(Y)) 
  return(c(res$par,res$convergence))
 }
 
@@ -570,4 +588,50 @@ lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
 
 3. Difficult: Change the code from the above slides to estimate the standard errors for your model.
 
+---
+## Challenge Yourself: Insurgent Attacks
 
+1. Download the *chechen_attacks* data that contains daily insurgent attacks in Chechnya and the *vilMat* matrix of distances among Chechen villages.
+
+2. Use the *leaflet* package to visualize attacks by village.
+
+3. Your goal is to estimate *attacks* as a function of other contemporaneous attacks, as well as population and a 7-day rolling sum of previous attacks. Because your data has a temporal component, you need to edit the likelihood to accommodate it.
+
+---
+
+```{r, eval=F}
+library(leaflet)
+library(lubridate)
+library(tidyverse)
+chechen_attacks<- read.csv("./data/chechen_attacks.csv") |> dplyr::select(village, date, attack, rollattk7, pop_2002, lat, lon) |>
+  dplyr::mutate(date=ymd(date)) |>
+  dplyr::filter(date>="2000-03-08")
+
+chechen_attacks |>
+  group_by(village) |>
+  summarise(attacks=sum(attack), lon=first(lon), lat=first(lat)) |>
+  leaflet() |> addTiles() |>
+  addCircleMarkers(~lon, ~lat, radius = ~2*sqrt(attacks), popup = ~attacks, color="blue",fillColor="blue" ) 
+
+
+```
+
+---
+
+
+```{r, echo=F, eval=T}
+library(leaflet)
+library(lubridate)
+library(tidyverse)
+chechen_attacks<- read.csv("./data/chechen_attacks.csv") |> dplyr::select(village, date, attack, rollattk7, pop_2002, lat, lon) |>
+  dplyr::mutate(date=ymd(date)) |>
+  dplyr::filter(date>="2000-03-08")
+
+chechen_attacks |>
+  group_by(village) |>
+  summarise(attacks=sum(attack), lon=first(lon), lat=first(lat)) |>
+  leaflet() |> addTiles() |>
+  addCircleMarkers(~lon, ~lat, radius = ~2*sqrt(attacks), popup = ~attacks, color="blue",fillColor="blue" ) 
+
+
+```
