@@ -87,37 +87,17 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Day 9</td>
-        <td>ERGM Specification</td>
+        <td>Day 9-10</td>
+        <td>ERGMs </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/07_ergm_specification.html" target=_blank>ergm specification </a>  | <a href="../materials/Slides/07_ergm_specification.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.script080322.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.07_ergm_spec_yourturn.R"target=_blank> your turn answers </a>
+          <dd><a href="../materials/Slides/06_intro_ergms.html" target=_blank> intro to ergms </a> | <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> | <a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>
           </dd>
           </dl>
         </td>
       </tr>
-      <tr>
-        <td>Day 10</td>
-        <td>Weighted Networks</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day9_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.08_valued_ergms_yourturn.R"target=_blank> your turn answers </a>
-          </dd>
-          </dl>
-        </td>
-      </tr>
-      <tr>
-        <td>Day 11</td>
-        <td>ERGM Application</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>  | <a href="../materials/Slides/09_ergm_application.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day10_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.09_ergm_appl_yourturn.R"target=_blank> your turn answers </a>
-          </dd>
-          </dl>
-        </td>
-      </tr>
-      <tr>
-        <td>Day 12</td>
+<tr>
+<td>Day 11</td>
         <td>Temporal ERGMs</td>
         <td>
           <dl>
@@ -125,9 +105,9 @@ All the class materials will be posted/updated here.
           </dd>
           </dl>
         </td>
-      </tr>
-      <tr>
-        <td>Day 13</td>
+</tr>
+    <tr>
+        <td>Day 12</td>
         <td>Latent Space Models</td>
         <td>
           <dl>
@@ -137,6 +117,16 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
+<td>Day 13</td>
+        <td>Weighted Networks</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day9_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.08_valued_ergms_yourturn.R"target=_blank> your turn answers </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+        <tr>
         <td>Day 14</td>
         <td>SOAMs</td>
         <td>
