@@ -35,7 +35,7 @@ Homework assignments and data are posted here.
         <td>Mar 22</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/.homework03.Rmd" target=_blank>Homework 3</a>
+          <dd><a href="../materials/homeworks/POL2578_homework03.Rmd" target=_blank> Homework 3</a>
           </dd>
           </dl>
         </td>

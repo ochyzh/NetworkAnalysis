@@ -1,0 +1,54 @@
+---
+title: 'Network Analysis - Homework #3'
+author: "Your Name"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+1. Make sure to replace "Your Name" in the YAML (top of this script) with your name.
+
+
+2. Load the `email` and `employees` data from the first assignment. Subset the email data to emails with 4 or fewer recipients. Aggregate the data so that you have a single observation per sender-recipient dyad, that is, get a list of senders and recipients in which a sender sent at least one email to the recipient over the two week period. Join these data with employee data.
+
+3. Plot the resulting network using `igraph`. Use vertex colors to represent employee position. 
+
+4. Set up your data to run an ergm. You will be modeling the probability of an email link between pairs of employees and as a function of employee position in the company, whether two employees hold the same position, served in the same branch of the military, and are of the same gender. To do this, you need to set us the email network as an object of class `network` and position, military experience, and gender as vertex attributes to this network. 
+
+When defining vertex attributes, it is crucial to keep track of the vertex order (you don't want to assign attributes to the wrong verteces). To do so, I recommend that you make an object `nodes_attrs` that contains unique rows for each sender, their position, military experience, and gender; sort `nodes_attrs` in the same order as you did your email data above (e.g., alphabetically by email address); then define each attribute as a network attribute to your email network.
+
+5. Look at the first 10 rows and the first 10 columns of the network of emails; (2) look at the all values of the vertex attributes *vertex.names*, *Position*, *Gender*, and *Military Experience*.
+
+6. Estimate an ergm with `emails` as the dependent variable, and `edges`, node-level effects of `Position` and commonality of `Position`, `Gender`, and `Military Service`. 
+
+Note that node-level effects are specified using `nodefactor` (e.g. `nodefactor("Position")`), while commonality effects are specified using `nodematch` (e.g., `nodematch("Position")`).
+
+7. What is the effect of each variable on the probability of forming a tie (i.e. is it positive or negative)? [type your response here.]
+
+Calculate the predicted probability of an email between two administrators of the same gender and military experience. Modify the code to calculate the same probability for two security workers of the same gender and the same military experience.
+
+8. The above model, of course, is equivalent to a logistic regression, as it does not model any network dependencies.  In the chunk below, specify a model that would account for all the same effects AND `reciprocity`.
+
+9. Look at the traceplot for your model. Does it look good? 
+
+10. What is the effect of reciprocity? Do not simply tell the direction of the effect, calculate its effect on a probability of a tie.
+
+11. Simulate 5 networks using the estimated parameters from the model in Q8. Plot these five networks next to the observed network. Does the model have a good fit to the data?
+
+12. Think of an improvement you can make to the model specification, that is, an additional variable to include. Estimate your "improved" model. Interpret the results. Is there an improvement? Prepare to present your improved model in class.
+
+
+13. Knit the RMarkdown file (press the "Knit" button above) and read through the corresponding html file.  
+
+Note: 
+
+This homework is supposed to be mainly a code reading exercise. You should not have to program extensively. Instead, you have to figure out which pieces you need to copy and adjust. 
+
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html file with it. 
