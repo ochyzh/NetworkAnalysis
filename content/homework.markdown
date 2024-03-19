@@ -32,6 +32,15 @@ Homework assignments and data are posted here.
         </td>
        </tr>
        <tr>
+        <td>ND</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/homeworks/homework02.Rmd" target=_blank> Practice Homework </a>
+          </dd>
+          </dl>
+        </td>
+       </tr>
+       <tr>
         <td>Mar 22</td>
         <td>
           <dl>
