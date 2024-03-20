@@ -91,7 +91,7 @@ All the class materials will be posted/updated here.
         <td>ERGMs </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/06_intro_ergms.html" target=_blank> intro to ergms </a> | <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> | <a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>
+          <dd><a href="../materials/Slides/06_intro_ergms.html" target=_blank> intro to ergms </a> | <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> | <a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>|<a href="../materials/Scripts/day10_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>

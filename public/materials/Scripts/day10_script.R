@@ -1,47 +1,31 @@
+library(ggplot2)
+library(tidyverse)
+
+ggplot()+geom_line(aes(x=seq(1:10), y=seq(1:10)))+
+  geom_line(aes(x=seq(1:10), y=seq(1:10)*sqrt(1:10)))
+
+
 library(statnet)
-data(faux.mesa.high)
-mesa
-plot(mesa, vertex.col="Grade")
-
-table(mesa %v% 'Race')
-table(mesa %v% 'Sex')
-table(mesa %v% 'Grade')
-
-mesa %v% "Grade"<-as.character(mesa %v% "Grade")
-
-m1<-ergm(mesa~ edges+nodefactor("Race",
-                      levels=c("Black","Hisp","Other","NatAm"))+
-           nodefactor("Sex", levels="F")+
-         nodefactor("Grade",levels=c("8","9","10","11","12"))+
-           nodematch("Sex")+nodematch("Race",levels=c("White","Hisp",
-                                                      "NatAm"), diff=TRUE)+
-         nodematch("Grade", diff=TRUE)+gwesp(decay=.25,fixed=TRUE))
-mcmc.diagnostics(m1)
-
-summary(m1)
-
-summary(mesa~ edges+nodefactor("Race",
-                                levels=c("Black","Hisp","Other","NatAm"))+
-           nodefactor("Sex", levels="F")+
-           nodefactor("Grade",levels=c("8","9","10","11","12"))+
-           nodematch("Sex")+nodematch("Race", diff=TRUE)+
-           nodematch("Grade", diff=TRUE)+gwesp(decay=.25,fixed=TRUE))
-
-mixingmatrix(mesa, "Race")
-
+library(devtools)
 #install_github("ochyzh/networkdata")
 library(networkdata)
 
-data("allyData")
-class(war)
-length(war)
-class(war[[1]])
-dim(war[[1]])
-war[[1]][1:3,1:3]
+data(legnet)
+el<- el |> arrange(V1, V2)
+mynet<-network(el, matrix.type="edgelist",
+               directed=TRUE, loops=FALSE)
+# Convert the object "edist" which contains euclidean distance (units in lat/long), to a matrix:
+edist<- as.data.frame(edist) |> dplyr::select(-"BarkleyDeanM") |> dplyr::filter(row.names(edist)!="BarkleyDeanM")
+edist <- as.matrix(edist)
+# Define network attribute
+set.network.attribute(mynet,"dist",edist)
+get.network.attribute(mynet,"dist")
+get.network.attribute(mynet,"vertex.names")
 
-class(contiguity)
-dim(contiguity)
-contiguity[1:3,1:3]
+dwnom<- dwnom |> arrange(labs) |> dplyr::filter(labs!="BarkleyDeanM")
+set.vertex.attribute(mynet,"ideol",dwnom$dwnom)
 
-
-
+set.vertex.attribute(mynet,"ideol",dwnom$dwnom,
+      v=match(mynet %v% "vertex.names",dwnom$labs))
+get.vertex.attribute(mynet,"ideol")
+get.vertex.attribute(mynet,"vertex.names")

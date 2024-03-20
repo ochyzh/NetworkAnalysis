@@ -45,6 +45,7 @@ b. Have similar ideology.
 [1] Your dependent variable must be a network object with binary edges. The `network` command creates network objects from edgelists or adjacency matrices. Pay attention to whether you are working with a directed or an undirected network.
 
 ```{r rule1, echo=TRUE, eval=FALSE, message=FALSE}
+library(tidyverse)
 library(statnet)
 library(devtools)
 #install_github("ochyzh/networkdata")
@@ -53,6 +54,7 @@ library(networkdata)
 
 ```{r}
 data(legnet)
+el<- el |> arrange(V1, V2) #order in alphabetical order
 mynet<-network(el, matrix.type="edgelist", 
                 directed=TRUE, loops=FALSE)
 ```
@@ -64,6 +66,7 @@ mynet<-network(el, matrix.type="edgelist",
 
 ```{r rule2, eval=TRUE, echo=TRUE, message=FALSE}
 # Convert the object "edist" which contains euclidean distance (units in lat/long), to a matrix:
+edist<- as.data.frame(edist) |> dplyr::select(-"BarkleyDeanM") |> dplyr::filter(row.names(edist)!="BarkleyDeanM")
 edist <- as.matrix(edist)
 # Define network attribute
 set.network.attribute(mynet,"dist",edist)
@@ -76,7 +79,12 @@ set.network.attribute(mynet,"dist",edist)
 ```{r rule3, echo=TRUE, eval=TRUE, message=FALSE}
 # Define object "dwnom" (ideology) as a vertex attribute
 #detach("package:igraph", unload=TRUE) the below command seems to clash with igraph
+dwnom<- dwnom |> arrange(labs) |> dplyr::filter(labs!="BarkleyDeanM")
 set.vertex.attribute(mynet,"ideol",dwnom$dwnom)
+
+#or
+set.vertex.attribute(mynet,"ideol",dwnom$dwnom, 
+      v=match(mynet %v% "vertex.names",dwnom$labs))
 ```
 ---
 ## Your Turn
