@@ -4,7 +4,7 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.23/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -127,11 +127,30 @@ grade to have different mean sociality."
 Can also use the search function to find the relevant terms.
 
 ```r
-search.ergmTerms(keyword='sociality')
+search.ergmTerms('sociality')
 ```
 
 ```
-## Found  0  matching ergm terms:
+## Found  5  matching ergm terms:
+## b1sociality(nodes=-1) (binary)
+## b1sociality(nodes=-1, form="sum") (valued)
+##     Degree
+## 
+## b2sociality(nodes=-1) (binary)
+## b2sociality(nodes=-1, form="sum") (valued)
+##     Degree
+## 
+## receiver(base=1, nodes=-1) (binary)
+## receiver(base=1, nodes=-1, form="sum") (valued)
+##     Receiver effect
+## 
+## sender(base=1, nodes=-1) (binary)
+## sender(base=1, nodes=-1, form="sum") (valued)
+##     Sender effect
+## 
+## sociality(attr=NULL, base=1, levels=NULL, nodes=-1) (binary)
+## sociality(attr=NULL, base=1, levels=NULL, nodes=-1, form="sum") (valued)
+##     Undirected degree
 ```
 ---
 ## Sociality
@@ -180,11 +199,60 @@ homophily is used for race and grade."
 Can also use the search function to find the relevant terms.
 
 ```r
-search.ergmTerms(keyword='homophily')
+search.ergmTerms('homophily')
 ```
 
 ```
-## Found  0  matching ergm terms:
+## Found  16  matching ergm terms:
+## b1degrange(from, to=`+Inf`, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     Degree range for the first mode in a bipartite network
+## 
+## b1degree(d, by=NULL, levels=NULL) (binary)
+##     Degree for the first mode in a bipartite network
+## 
+## b1nodematch(attr, diff=FALSE, keep=NULL, alpha=1, beta=1, byb2attr=NULL, levels=NULL) (binary)
+##     Nodal attribute-based homophily effect for the first mode in a bipartite network
+## 
+## b2degrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     Degree range for the second mode in a bipartite network
+## 
+## b2nodematch(attr, diff=FALSE, keep=NULL, alpha=1, beta=1, byb1attr=NULL, levels=NULL) (binary)
+##     Nodal attribute-based homophily effect for the second mode in a bipartite network
+## 
+## degrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     Degree range
+## 
+## degree(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     Degree
+## 
+## degreeL(d, by=NULL, homophily=FALSE, levels=NULL, Ls=NULL) (binary)
+##     Degree
+## 
+## For(...) (binary)
+##     A for operator for terms
+## 
+## idegrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     In-degree range
+## 
+## idegree(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     In-degree
+## 
+## idegreeL(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     In-degree
+## 
+## nodematch(attr, diff=FALSE, keep=NULL, levels=NULL) (binary)
+## nodematch(attr, diff=FALSE, keep=NULL, levels=NULL, form="sum") (valued)
+## match(attr, diff=FALSE, keep=NULL, levels=NULL, form="sum") (valued)
+##     Uniform homophily and differential homophily
+## 
+## odegrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     Out-degree range
+## 
+## odegree(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     Out-degree
+## 
+## odegreeL(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
+##     Out-degree
 ```
 
 - Term `nodematch` sounds like a good candidate.
@@ -477,7 +545,7 @@ have no shared partners, the log-odds of the tie are increased by `\(5.4\)` (1.8
 ---
 ## Your Turn 2
 
-- Remember this model we estimated on the Sampson monastery data. Calculate the probability of a non-reciprocated tie that closes one triangle among nodes with no *esp*s.
+- Remember this model we estimated on the Sampson monastery data. Calculate the probability of a non-reciprocated tie that closes one triangle among nodes with no *esp*s and from different groups.
 
 
 

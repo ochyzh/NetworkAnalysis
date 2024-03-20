@@ -105,7 +105,7 @@ grade to have different mean sociality."
 ## Sociality
 Can also use the search function to find the relevant terms.
 ```{r, echo=TRUE, eval=TRUE}
-search.ergmTerms(keyword='sociality')
+search.ergmTerms('sociality')
 ```
 ---
 ## Sociality
@@ -152,7 +152,7 @@ homophily is used for race and grade."
 ## Selective Mixing
 Can also use the search function to find the relevant terms.
 ```{r, echo=TRUE, eval=TRUE}
-search.ergmTerms(keyword='homophily')
+search.ergmTerms('homophily')
 ```
 
 - Term `nodematch` sounds like a good candidate.
