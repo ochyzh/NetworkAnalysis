@@ -374,7 +374,7 @@ head(states)
 
 ```{r}
 library(ggplot2)
-ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=region),color="black", size=.5)
+ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)
 
 ```
 
@@ -392,14 +392,14 @@ theme_set(theme_grey() + theme(axis.text=element_blank(),
                                panel.border = element_blank(),
                                panel.background = element_blank(),
                                legend.position="none"))
-ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=region),color="black", size=.5)+ coord_map()
+ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)+ coord_map()
 ```
 
 ---
 ## Polygon instead of Path
 
 ```{r}
-ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=region),color="black", size=.5)+ coord_map()
+ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)+ coord_map()
 ```
 
 
@@ -442,7 +442,7 @@ head(states.class.map)
 ## Plot the Regions
 
 ```{r}
-ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=region, fill = StateGroups), colour = I("black"))+ coord_map()+theme(legend.position="bottom")
+ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=group, fill = StateGroups), colour = I("black"))+ coord_map()+theme(legend.position="bottom")
 ```
 
 ---

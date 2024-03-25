@@ -262,7 +262,7 @@ allyDyn = networkDynamic(network.list=ally)
 
 ## Quick snapshots
 
-`networkDynamic` makes it easy to generate some snapshots of a longitudinal network:
+*networkDynamic* makes it easy to generate some snapshots of a longitudinal network:
 
 
 ```r
@@ -285,7 +285,7 @@ plot(
 
 ## Quick movie
 
-`ndtv` makes it pretty easy to render a simple D3 movie for a longitudinal network:
+*ndtv* makes it pretty easy to render a simple D3 movie for a longitudinal network:
 
 
 ```r
@@ -297,7 +297,7 @@ render.d3movie(allyDyn,
 ---
 ## Descriptive analyses
 
-`tsna` enables us to quickly calculate some basic descriptive statistics such as the density of a graph:
+*tsna* enables us to quickly calculate some basic descriptive statistics such as the density of a graph:
 
 
 ```r
@@ -358,7 +358,7 @@ tSnaStats(allyDyn, "gtrans") # Changes in graph transitivity
 
 ## Descriptive analyses
 
-The `tErgmStats` enables us to calculate changes in `ergm` terms over time:
+The *tErgmStats* enables us to calculate changes in `ergm` terms over time:
 
 
 ```r
@@ -546,21 +546,69 @@ summary(tergmFit)
 
 ```
 ##                            Estimate   Boot mean    2.5%   97.5%
-## edges                   -5.69586158 -5.70156280 -5.8488 -5.5122
-## edgecov.war[[i]]        -0.07515258 -0.07233760 -0.2957  0.1660
-## edgecov.contiguity[[i]]  2.54540447  2.54670541  2.4915  2.6124
-## nodecov.polity          -0.00027339 -0.00019893 -0.0063  0.0052
-## absdiff.polity           0.01865488  0.01884686  0.0144  0.0237
-## nodecov.cinc            -1.42023487 -1.42787112 -2.0266 -0.8774
-## absdiff.cinc            26.96999913 27.00732657 26.2651 27.7552
-## gwesp.fixed.0.5          2.24553096  2.24766529  2.1350  2.3466
+## edges                   -5.69586158 -5.70542436 -5.8520 -5.5075
+## edgecov.war[[i]]        -0.07515258 -0.07139892 -0.3043  0.1563
+## edgecov.contiguity[[i]]  2.54540447  2.54807193  2.5000  2.6097
+## nodecov.polity          -0.00027339 -0.00016538 -0.0062  0.0057
+## absdiff.polity           0.01865488  0.01872857  0.0136  0.0236
+## nodecov.cinc            -1.42023487 -1.44110434 -2.0599 -0.8726
+## absdiff.cinc            26.96999913 27.04509688 26.2276 27.8386
+## gwesp.fixed.0.5          2.24553096  2.25010329  2.1311  2.3457
 ```
+---
+## Temporal Terms
+
+- `delrecip(mutuality = FALSE, lag = 1)`:  checks for delayed reciprocity. For
+example, if node `\(j\)` is tied to node `\(i\)` at `\(t = 1\)`, does this lead to a reciprocation of that tie back
+from `\(i\)` to `\(j\)` at `\(t = 2\)`? If mutuality = TRUE is set, this extends not only to ties, but also non-ties. The lag argument controls the size of the temporal lag: with `\(lag = 1\)`, reciprocity over one consecutive time period is checked. Note that as lag increases, the number of time steps on the dependent variable decreases.
+
+- `memory(type = "stability", lag = 1)`: controls for the impact of a previous network on the current network. Four different types of memory terms are available: positive autoregression (type = "autoregression") checks whether previous ties are carried over to the current network; dyadic stability (type = "stability") checks whether both edges and
+non-edges are stable between the previous and the current network; edge loss (type = "loss")
+checks whether ties in the previous network have been dissolved and no longer exist in the
+current network; and edge innovation (type = "innovation") checks whether previously unconnected nodes have the tendency to become tied in the current network. 
+
+---
+## Temporal Terms Cont'd
+
+- `timecov(x = NULL, minimum = 1, maximum = NULL, transform = function(t) t)`: checks for linear or non-linear time trends with regard to edge formation. Optionally, this can be combined with a covariate to create an interaction effect between a dyadic covariate and time in order to test whether the importance of a covariate increases or decreases over time. In the default case, edges modeled as being linearly increasingly important over time. By tweaking the transform function, arbitrary functional forms of time can be tested. For example, transform = sqrt (for a geometrically decreasing time effect), transform = function(x) x^2 (for a geometrically increasing time effect), transform = function(t) t (for a linear
+time trend) or polynomial functional forms (e.g., 0 + (1 * t) + (1 * t^2)) can be used.
+
+---
+
+
+
+```r
+tergmFit1 &lt;- btergm(ally ~ edges + 
+	edgecov(war) + edgecov(contiguity) + 
+	nodecov('polity') + absdiff("polity") + 
+	nodecov('cinc') + absdiff("cinc") +
+	gwesp(.5, fixed = TRUE)+ timecov())
+summary(tergmFit1)
+```
+
+
+---
+
+## Your Turn 1
+
+1. Set up `smoke` and `drink` as vertex attributes to the friendship network.
+
+2. Estimate a temporal `ergm` that models friendships as a function of 
+    - drinking and smoking behaviors, 
+    - homophily (people make friends with those with similar drinking and smoking habits), 
+    - reciprocity (why?)
+    - triad closure (why?)
+    - popularity
+
+3. Add temporal terms to model stability and delayed reciprocity.
+
 
 ---
 
 ## Duque (2018)
 
 The DV is diplomatic ties, `dipl_ties`:
+
 
 ```r
 #Clear your memory and unload `btergm` as it clashes with `network`:
@@ -686,7 +734,7 @@ Note: cannot use coordinates, because networks are not of equal size, include di
 
 ## Quick snapshots
 
-&lt;img src="10_tergm_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_tergm_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -987,24 +1035,6 @@ summary(tergm_Duque)
 
 &lt;img src="images/Duque_res.png" width="400px" style="display: block; margin: auto;" /&gt;
 
----
-## Temporal Terms
-
-- `delrecip(mutuality = FALSE, lag = 1)`:  checks for delayed reciprocity. For
-example, if node `\(j\)` is tied to node `\(i\)` at `\(t = 1\)`, does this lead to a reciprocation of that tie back
-from `\(i\)` to `\(j\)` at `\(t = 2\)`? If mutuality = TRUE is set, this extends not only to ties, but also non-ties. The lag argument controls the size of the temporal lag: with `\(lag = 1\)`, reciprocity over one consecutive time period is checked. Note that as lag increases, the number of time steps on the dependent variable decreases.
-
-- `memory(type = "stability", lag = 1)`: controls for the impact of a previous network on the current network. Four different types of memory terms are available: positive autoregression (type = "autoregression") checks whether previous ties are carried over to the current network; dyadic stability (type = "stability") checks whether both edges and
-non-edges are stable between the previous and the current network; edge loss (type = "loss")
-checks whether ties in the previous network have been dissolved and no longer exist in the
-current network; and edge innovation (type = "innovation") checks whether previously unconnected nodes have the tendency to become tied in the current network. 
-
----
-## Temporal Terms Cont'd
-
-- `timecov(x = NULL, minimum = 1, maximum = NULL, transform = function(t) t)`: checks for linear or non-linear time trends with regard to edge formation. Optionally, this can be combined with a covariate to create an interaction effect between a dyadic covariate and time in order to test whether the importance of a covariate increases or decreases over time. In
-the default case, edges modeled as being linearly increasingly important over time. By tweaking the transform function, arbitrary functional forms of time can be tested. For example, transform = sqrt (for a geometrically decreasing time effect), transform = function(x) x^2 (for a geometrically increasing time effect), transform = function(t) t (for a linear
-time trend) or polynomial functional forms (e.g., 0 + (1 * t) + (1 * t^2)) can be used.
 
 ---
 #Example with Time Vars
@@ -1042,20 +1072,6 @@ summary(tergm_Duque1)
 ## Your Turn
 
 Re-specify the model to account for delayed reciprocity and stability. Estimate your new model.
-
----
-## Your Turn 1
-
-1. Set up `smoke` and `drink` as vertex attributes to the friendship network.
-
-2. Estimate a temporal `ergm` that models friendships as a function of 
-    - drinking and smoking behaviors, 
-    - homophily (people make friends with those with similar drinking and smoking habits), 
-    - reciprocity (why?)
-    - triad closure (why?)
-    - popularity
-
-3. Add temporal terms to model stability and delayed reciprocity.
 
 
 ---
