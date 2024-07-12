@@ -232,7 +232,7 @@ tErgmStats(allyDyn, "~ edges+triangle")
 ---
 ## Your Turn
 
-1. For this exercise, you will work with the friendship data from `library(RSiena)`. Run the following code to load the data.
+For this exercise, you will work with the friendship data from `library(RSiena)`. Run the following code to load the data.
 
 ```{r}
 library(RSiena)

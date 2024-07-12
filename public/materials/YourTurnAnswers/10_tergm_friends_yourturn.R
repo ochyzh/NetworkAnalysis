@@ -22,7 +22,9 @@ isSymmetric(friend.data.w1)
 
 #need to combine `friend.data.w1`, `friend.data.w2`, and `friend.data.w3` into a list of network objects
 library(statnet)
-friends<-list(as.network(friend.data.w1),as.network(friend.data.w2),as.network(friend.data.w3))
+friends<-list(as.network(friend.data.w1, directed=TRUE),
+              as.network(friend.data.w2, directed=TRUE),
+              as.network(friend.data.w3, directed=TRUE))
 
 length(friends)
 class(friends[[1]])
@@ -70,7 +72,8 @@ Tergm_friends<-btergm(friends ~ edges +
                        absdiff("smoke")+
                        mutual + #- reciprocity (why?)
                        triangles+ #- triad closure (why?)
-                       istar(2) + ostar(2), #- popularity
+                       istar(2) + ostar(2)+ #- popularity
+                      delrecip()+ memory(type = "stability"),
                       R=1000)
 
 summary(Tergm_friends)
