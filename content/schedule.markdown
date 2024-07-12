@@ -21,7 +21,7 @@ All the class materials will be posted/updated here.
          Introduction to Network Analysis</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/Welcome.pptx" target=_blank>course intro & syllabus</a> | <a href="../materials/Slides/02_getting_started.html" target=_blank>intro to networks</a> |<a href="../materials/Scripts/day1_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/Welcome.pptx" target=_blank>course intro & syllabus</a> | <a href="../materials/Slides/02_getting_started.html" target=_blank>intro to networks</a> |<a href="../materials/Scripts/.day1_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
@@ -31,7 +31,7 @@ All the class materials will be posted/updated here.
         <td>Network Centrality</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/03_centrality.html" target=_blank>network centrality </a>  |<a href="../materials/Scripts/day2_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/03_centrality.html" target=_blank>network centrality </a>  |<a href="../materials/Scripts/.day2_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
@@ -61,7 +61,7 @@ All the class materials will be posted/updated here.
         <td>Spatial Models</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/05_spatial.html" target=_blank>spatial models </a>  | <a href="../materials/Slides/data/covid_data.csv" target=_blank> covid data </a> |<a href="../materials/Slides/data/contigmat.txt"target=_blank> contiguity matrix </a>|<a href="../materials/Slides/data/statereg.csv"target=_blank> state region data </a> |<a href="../materials/Slides/data/animal.csv"target=_blank> animal data </a>|<a href="../materials/Scripts/day5_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/05_spatial.html" target=_blank>spatial models </a>  | <a href="../materials/Slides/data/covid_data.csv" target=_blank> covid data </a> |<a href="../materials/Slides/data/contigmat.txt"target=_blank> contiguity matrix </a>|<a href="../materials/Slides/data/statereg.csv"target=_blank> state region data </a> |<a href="../materials/Slides/data/animal.csv"target=_blank> animal data </a>|<a href="../materials/Scripts/.day5_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
@@ -91,7 +91,7 @@ All the class materials will be posted/updated here.
         <td>ERGMs </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/06_intro_ergms.html" target=_blank> intro to ergms </a> | <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> | <a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>|<a href="../materials/Scripts/day10_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/06_intro_ergms.html" target=_blank> intro to ergms </a> | <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> | <a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>|<a href="../materials/Scripts/.day10_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
