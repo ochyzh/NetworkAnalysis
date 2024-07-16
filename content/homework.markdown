@@ -17,7 +17,7 @@ Homework assignments and data are posted here.
         <td>Jan 26</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/.POL2578_homework01.html" target=_blank>Homework 1 </a>|<a href="../materials/homeworks/.POL2578_homework01.Rmd" target=_blank>Homework 1 rmd </a>| <a href="../materials/homeworks/emailnet.csv" target=_blank> email data </a>|<a href="../materials/homeworks/EmployeeRecords.csv" target=_blank> employee data</a>
+          <dd><a href="../materials/homeworks/ICPSR2024_homework01.html" target=_blank>Homework 1 </a>|<a href="../materials/homeworks/ICPSR2024_homework01.Rmd" target=_blank>Homework 1 rmd </a>| <a href="../materials/homeworks/emailnet.csv" target=_blank> email data </a>|<a href="../materials/homeworks/EmployeeRecords.csv" target=_blank> employee data</a>
           </dd>
           </dl>
         </td>

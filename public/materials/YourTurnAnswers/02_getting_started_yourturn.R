@@ -23,3 +23,17 @@ defMat[is.na(defMat)] = 0
 diag(defMat) = NA
 
 defMat[1:20,1:20]
+
+
+#with a loop:
+defMat1<- as.data.frame(matrix(0, length(cntries),length(cntries)))
+names(defMat1)<- row.names(defMat1) <- cntries
+
+for (i in 1:nrow(defAlly)){
+  ccode1<- as.character(defAlly$ccode1[i])
+  ccode2<- as.character(defAlly$ccode2[i])
+  val<- defAlly$defAlly[i]
+  defMat1[ccode1,ccode2]<-val
+}
+diag(defMat1) = NA
+defMat1[1:20,1:20]

@@ -1,0 +1,142 @@
+---
+title: 'Network Analysis - Homework #1'
+author: "Your Name"
+date: ""
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(igraph)
+library(tidyverse)
+library(stringr)
+library(RColorBrewer)
+
+```
+
+
+
+This assignment is based on the [2014 VAST Challenge](https://chat.openai.com/c/70a9ac53-4372-4c4d-a390-ee636c766bc3). 
+
+## Background: The Kronos Incident
+
+NOTE: This scenario and all the people, places, groups, and technologies contained therein are fictitious. Any resemblance to real people, places, groups, or technologies is purely coincidental.
+
+In the roughly twenty years that Tethys-based GAStech has been operating a natural gas production site in the island country of Kronos, it has produced remarkable profits and developed strong relationships with the government of Kronos. However, GAStech has not been as successful in demonstrating environmental stewardship. 
+
+In January, 2014, the leaders of GAStech are celebrating their new-found fortune as a result of the initial public offering of their very successful company. In the midst of this celebration, several employees of GAStech go missing.  An organization known as the Protectors of Kronos (POK) is suspected in the disappearance, but things may not be what they seem. 
+
+As an expert in visual analytics, you are called in to help law enforcement from Kronos and Tethys assess the situation and figure out where the missing employees are and how to get them home again.  Time is of the essence.
+
+At your disposal, your have a spreadsheet of GAStech employee records `EmployeeRecords.csv` as well as email headers from two weeks of internal GAStech company email, `email headers.csv`. You are being counted on to bring law enforcement up to date on the current organization of the POK and how that organization has changed over time, as well as to characterize the events surrounding the disappearance.
+
+The variables in the `EmployeeRecords.csv` file are:
+
+--------------------------------------------------------------------------------------------
+ Name                             Description
+ -------------------------------- ----------------------------------------------------------
+  `LastName`                      the last name of the employee
+  
+  `FirstName`                      the first name of the employee
+  
+  `BirthDate`                       	the birth date of the employee
+  
+  `BirthCountry`                    	the birth country of the employee
+  
+  `Gender`                            the gender of the employee
+  
+  `CitizenshipCountry`              	the country that the employee has citizenship
+  
+  `CitizenshipBasis`                	what the employee's citizenship is based on
+  
+  `CitizenshipStartDate`            	when the employee's citizenship began
+  
+  `PassportCountry`                   the country that issued the employees passport
+  
+  `PassportIssueDate`               	the most recent date the employee's passport was issued
+  
+  `PassportExpirationDate`            the date the employee's passport expires
+  
+  `CurrentEmploymentType`           	the group employee is currently employed within
+  
+  `CurrentEmploymentTitle`            the employee's current job title
+  
+  `CurrentEmploymentStartDate`        the employee's current job start date
+  
+  `EmailAddress`                    	the employee's email address
+  
+  `MilitaryServiceBranch`           	the military service branch the employee served in
+  
+  `MilitaryDischargeType`           	the type of discharge the employee received
+  
+  `MilitaryDischargeDate`           	when the employee was discharged
+--------------------------------------------------------------------------------------------
+
+
+The variables in the `email.csv` file are:
+
+--------------------------------------------------------------------------------------------
+ Name                             Description
+ -------------------------------- ----------------------------------------------------------
+  `From`                              sender email address
+  
+  `to`                                receive email address
+  
+  `Subject`                           email subject
+  
+  `eID`                               unique email ID to identify emails sent to multiple recipients
+  
+  `Date`                              date and time of email
+  
+  `month`                             month of email
+  
+  `day`                               day of email
+  
+  `year`                              year of email
+  
+  `nrecipients`                       number of recipients
+  
+--------------------------------------------------------------------------------------------
+1. You can complete this assignment individually or as a group of up to three members. Please replace "Your Name" in the YAML (top of this script) with the names of all students in your group.
+
+
+2. In a new code chunk (use (`Ctrl+Alt+I`) to start a new code chunk), load both datasets. 
+
+
+3. As noted, the email data span a period of two weeks. To get a sense of the data, first subset the data to the first day of observation (Jan. 6). 
+
+
+4. Before you can use the `igraph` package to visualize the email network, you of course have to transform the data into an `igraph` object. To transform a `data.frame` object into an igraph object, use syntax of the type `g = graph_from_data_frame(email, directed=TRUE )`. The resulting object will contain the network itself as well as the rest of the data in the form of edge.attributes accessable using the syntax of the type `E(g)$attr_name`. For example, to access the subject of the email, you would use `E(g)$Subject`.
+
+
+
+
+5. Plot the email network using the `igraph` package. Make your graph aesthetically pleasing and informative, something you would see in a network journal.
+
+
+
+6. The graph, even if you cleaned it up quite a bit, is not very informative. Let's use our research skills to enhance the analytical use of our visualization by:
+- excluding mass emails that are sent to everyone in the organization. 
+- excluding emails sent to oneself
+- Remove `RE:` from `Subject`, so you can group emails by subject using edge color
+
+Now plot this network again using the newly cleaned data.Scale vertex size by in-degree, out-degree, and the absolute difference of the two. Which one is the most informative?
+
+
+
+7. Now use your own creativity and research skills to enhance the analytical value of this visualization in at least two ways. Describe what you did and why. 
+
+## Optional Questions---why stop when having so much fun?
+
+8. Now make the same plot for subsequent days using the same layout. Make the same plot as in 7 for every day in the data. What do you notice about the email network over these two weeks?
+
+
+
+9. Now use your own sleuthing skills to further explore these data using igraph. Can you find any interesting/puzzling patterns? Make your best visualization that shows evidence of any such patterns. Prepare to discuss this in class with your visualization on the projector.
+
+10. Knit the RMarkdown file (press the "Knit" button above) and read through the corresponding html file.  
+
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html file with it. 
