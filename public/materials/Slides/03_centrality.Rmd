@@ -9,9 +9,9 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-
 exclude: true
-
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r  setup, message=FALSE, warning=FALSE, include=FALSE}
@@ -270,12 +270,13 @@ flo[1:5,1:5]
 # convert to igraph object
 library(igraph)
 g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
+g<-  delete_vertices(g, V(g)[degree(g) == 0])
 plot(g)
 ```
 
 
 ---
-## Degree centrality
+## Centrality
 
 Lets calculate each centrality measure in R (using the `igraph` package)
 
@@ -297,7 +298,9 @@ sort(igraph::eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
 ```{r, echo=FALSE, eval=FALSE,message=FALSE, warning=FALSE, fig.show = 'hide'}
 LO = layout_with_fr(g) #Layout
 EigenCent<-eigen_centrality(g)
-
+BetwCent<-igraph::betweenness(g)
+CloseCent<- igraph::closeness(g) #Don't forget to delete isolates.
+cDegree<-igraph::degree(g)
 par(mfrow=c(2,2)) # plot four figures - 2 row, 2 columns
 plot(g, vertex.size=30*EigenCent$vector, layout=LO, main="Eigenvalue")
 plot(g, vertex.size=BetwCent, layout=LO, main="Betweenness")

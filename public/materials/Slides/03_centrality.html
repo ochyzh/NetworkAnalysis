@@ -249,12 +249,13 @@ flo[1:5,1:5]
 # convert to igraph object
 library(igraph)
 g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
+g&lt;-  delete_vertices(g, V(g)[degree(g) == 0])
 plot(g)
 ```
 
 
 ---
-## Degree centrality
+## Centrality
 
 Lets calculate each centrality measure in R (using the `igraph` package)
 
