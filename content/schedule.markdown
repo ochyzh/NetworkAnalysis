@@ -21,7 +21,7 @@ All the class materials will be posted/updated here.
          Introduction to Network Analysis</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/Welcome.pptx" target=_blank>course intro & syllabus</a> | <a href="../materials/Slides/02_getting_started.html" target=_blank>intro to networks</a> |<a href="../materials/Scripts/.day1_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/Welcome.pptx" target=_blank>course intro & syllabus</a> | <a href="../materials/Slides/02_getting_started.html" target=_blank>intro to networks</a>| <a href="../materials/Slides/02_getting_started.pdf" target=_blank>intro to networks pdf</a> |<a href="../materials/Scripts/day1_script.Rmd"target=_blank> code from class </a> |<a href="../materials/YourTurnAnswers/02_getting_started_yourturn.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>

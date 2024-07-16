@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-07-16"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r }
+library(devtools)
+#install_github("ochyzh/networkdata")
+library(networkdata)
+
+data(highlandPonies)
+ponies<-as.matrix(highlandPonies[1:17, 2:18])
+
+library(igraph)
+pGraph <- graph_from_adjacency_matrix(ponies, weighted=TRUE, mode="undirected", diag=FALSE)
+
+
+V(pGraph)$color <- ifelse(V(pGraph)$name %in% c("WT", "WH", "WS"), "azure1", "turquoise")
+ponyPlot<- plot(pGraph,
+     edge.arrow.size=.2,
+     edge.color="black",
+     vertex.frame.color="black",
+     vertex.label=V(pGraph)$names,
+     vertex.label.color="black", layout=layout_with_fr,
+     edge.width=E(pGraph)$weight/5, edge.curved=.08)
+
+
+
+```
+
+
+
+
+
