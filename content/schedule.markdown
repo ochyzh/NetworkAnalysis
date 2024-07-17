@@ -31,7 +31,7 @@ All the class materials will be posted/updated here.
         <td>Network Centrality</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/03_centrality.html" target=_blank>network centrality </a>  |<a href="../materials/Scripts/.day2_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/03_centrality.html" target=_blank>network centrality </a>| <a href="../materials/Slides/03_centrality.pdf" target=_blank> network centrality pdf </a>  |<a href="../materials/Scripts/day2_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
@@ -41,7 +41,7 @@ All the class materials will be posted/updated here.
         <td>Community Detection</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a>  |<a href="../materials/Scripts/.day3_script.R"target=_blank> code from class </a> | <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
+          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a> |<a href="../materials/Slides/04_communities.pdf" target=_blank>community detection pdf </a>  |<a href="../materials/Scripts/.day3_script.R"target=_blank> code from class </a> | <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
           </dd>
           </dl>
         </td>
