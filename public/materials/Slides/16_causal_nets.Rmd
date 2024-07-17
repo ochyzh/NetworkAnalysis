@@ -17,6 +17,19 @@ exclude: true
 knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', message = FALSE, warning = FALSE)
 ```
 
+## Reading
+
+-  Olga V. Chyzh. 2024. How to stop contagion: Applying network science to evaluate the effectiveness of covid-19 vaccine distribution plans. *Journal of Politics* 86 (1): 18-35. 
+
+- Karthik Rajkumar, Guillaume Saint-Jacques, Iavor Bojinov, Erik Brynjolfsson, and Sinan Aral. A causal test of the strength of weak ties. Science, 377(6612):1304--1310, 202
+
+
+ 
+ 
+
+
+---
+
 ## Very Healthy Cereal
 
 .pull-left[
