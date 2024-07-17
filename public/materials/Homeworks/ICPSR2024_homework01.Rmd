@@ -102,18 +102,23 @@ The variables in the `email.csv` file are:
 1. You can complete this assignment individually or as a group of up to three members. Please replace "Your Name" in the YAML (top of this script) with the names of all students in your group.
 
 
+
+
 2. In a new code chunk (use (`Ctrl+Alt+I`) to start a new code chunk), load both datasets. 
 
 
-3. As noted, the email data span a period of two weeks. To get a sense of the data, first subset the data to the first day of observation (Jan. 6). 
+
+3. As noted, the email data span a period of two weeks. To get a sense of the data, first subset the data to the first day of observation (Jan. 6).
 
 
-4. Before you can use the `igraph` package to visualize the email network, you of course have to transform the data into an `igraph` object. To transform a `data.frame` object into an igraph object, use syntax of the type `g = graph_from_data_frame(email, directed=TRUE )`. The resulting object will contain the network itself as well as the rest of the data in the form of edge.attributes accessable using the syntax of the type `E(g)$attr_name`. For example, to access the subject of the email, you would use `E(g)$Subject`.
+4. Before you can use the `igraph` package to visualize the email network, you of course have to transform the data into an `igraph` object. To transform a `data.frame` object into an igraph object, use syntax of the type `g = graph_from_data_frame(email, directed=TRUE )`. The resulting object will contain the network itself as well as the rest of the data in the form of edge.attributes accessible using the syntax of the type `E(g)$attr_name`. For example, to access the subject of the email, you would use `E(g)$Subject`.
+
 
 
 
 
 5. Plot the email network using the `igraph` package. Make your graph aesthetically pleasing and informative, something you would see in a network journal.
+
 
 
 
