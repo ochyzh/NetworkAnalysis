@@ -1,36 +1,49 @@
-library(igraph) #Zachary's karate club dataset is built into the igraph package.
-karate <- make_graph("Zachary") 
-mf<-max_flow(karate, source=V(karate)[1], target=V(karate)[34])
-V(karate)$color<- ifelse(V(karate) %in%  mf$partition1, 
-                         "red","pink")
-plot(karate, edge.color="black", vertex.frame.color="black")
-mf$partition1
-mf$partition2
+library(tidyverse)
 
-library(sna)
-data(coleman)
-#make into an igraph object
-friends<-graph_from_adjacency_matrix(coleman[2,,], mode="undirected", diag=FALSE)
-friends <- igraph::delete.vertices(friends , which(igraph::degree(friends)==0))
-LO = layout_with_fr(friends) #Layout
-cfg<-cluster_fast_greedy(friends)
-modularity(cfg)
+mydata<-read.csv("./data/covid_data.csv", header=TRUE) 
+mydata$trumpmarg[is.na(mydata$trumpmarg)]<-0
+contigmat<-read.table("data/contigmat.txt") |> as.matrix()
 
 
-wc <- cluster_walktrap(friends) #community structure via short random walks
-modularity(wc)
+apply(contigmat,1,sum) 
 
-emailnet<-read.csv("emailnet.csv")
-employees<-read.csv("EmployeeRecords.csv")
+contigmat1<-contigmat/apply(contigmat,1,sum) #row-standardize
+mydata$W_trumpmarg<-contigmat1%*%mydata$trumpmarg
 
-email1 <-emailnet |> dplyr::filter(day==6)
-
-g<-graph_from_data_frame(email1, directed="TRUE")
-plot(g, vertex.label=NA)
-
-E(g)$Subject
+summary(m1<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317)) #common exposure
+summary(m2<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg)) #homophily
 
 
+library(spdep)
+library(spatialreg)
+W1<-mat2listw(contigmat, row.names = NULL, style="W", zero.policy = TRUE)
+summary(W1$neighbours)
+W2<-nb2listw(W1$neighbours, glist=NULL, style="W", zero.policy=TRUE)
+m3 <- lagsarlm(data=mydata, cases_pc~log(totpop1317)+urb2010+trumpmarg+
+                 medinc1317, W2, zero.policy=TRUE)
+summary(m3)
 
 
+names<-c("benton","linn","jones","iowa","johnson","cedar")
+mymat<-matrix(c(0,1,0,1,0,0,
+                1,0,1,0,1,1,
+                0,1,0,0,0,1,
+                1,0,0,0,1,0,
+                0,1,0,1,0,1,
+                0,1,1,0,1,0),nrow=6,ncol=6)
+dimnames(mymat)<-list(names,names)
+mymat<-round(mymat/apply(mymat,1,sum),2)
+d<-dplyr::filter(mydata, state=="IA" & county %in% names)
+
+
+I<- diag(6)
+X0<-cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317)
+urb<-d$urb2010
+urb[4]<-1
+X1<-cbind(1,log(d$totpop1317), urb, d$trumpmarg, d$medinc1317)
+A<-solve(I-coef(m3)[1]*mymat)
+Yhat0<- A%*%(X0%*%coef(m3)[-1])
+Yhat1<- A%*%(X1%*%coef(m3)[-1])
+Y_ch<-Yhat1-Yhat0
+Y_ch
 
