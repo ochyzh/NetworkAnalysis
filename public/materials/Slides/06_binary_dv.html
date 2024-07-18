@@ -73,36 +73,12 @@ $$
 
 ## Calculating Odds
 
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Heart Attk &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; No Heart Attk &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Total &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Aspirin &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 104 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10933 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11037 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Placebo &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 189 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10845 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11034 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 293 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 21778 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 22071 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+|        | Heart Attk| No Heart Attk| Total|
+|:-------|----------:|-------------:|-----:|
+|Aspirin |        104|         10933| 11037|
+|Placebo |        189|         10845| 11034|
+|Total   |        293|         21778| 22071|
 
 
 
@@ -351,6 +327,32 @@ Suppose we want to estimate the following model:
 - The data are available at "https://stats.idre.ucla.edu/stat/data/binary.csv"
 
 ---
+## Maximum Likelihood Estimation (by hand)
+
+
+```r
+mydata &lt;- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+all&lt;- NULL
+
+y&lt;- mydata$admit
+x&lt;-mydata$gre
+alpha&lt;- 0 #we don't know so we'll try different guesses
+beta&lt;- 0
+
+log_odds&lt;- alpha +beta*x
+odds&lt;- exp(log_odds)
+prob&lt;-odds/(1+odds)
+
+log_like&lt;- y*log(prob)+(1-y)*log(1-prob)
+
+sum_ll&lt;- sum(log_like)
+
+results&lt;- cbind.data.frame("alpha"=alpha, "beta"=beta, "sum_ll"=sum_ll)
+
+all&lt;- rbind(all, results)
+```
+
+---
 ## Maximum Likelihood Estimation 
 
 
@@ -517,7 +519,7 @@ ggplot() + geom_line(aes(x=gpa, y=p1), ) + geom_line(aes(x=gpa,y=p2)) +geom_line
 ---
 
 ## Effect of GPA on Admissions by Rank
-&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -607,7 +609,7 @@ of o-ring failures.
 - Calculate and plot predicted probabilities of admission (first example), varying GPA and school rank. Hold GRE at its mean of 500. Do this "by hand", do not use the -predict- function.
 
 
-&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-19-1.png" width="300px" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-20-1.png" width="300px" style="display: block; margin: auto;" /&gt;
 ---
 ## Your Turn 2: Michelin Star Restaurants
 
@@ -624,7 +626,7 @@ of o-ring failures.
 
 ---
 
-&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-20-1.png" width="600px" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-21-1.png" width="600px" style="display: block; margin: auto;" /&gt;
 ---
 ## Your Turn 3
 

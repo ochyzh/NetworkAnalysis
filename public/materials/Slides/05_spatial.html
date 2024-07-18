@@ -249,8 +249,8 @@ contigmat1&lt;-contigmat/apply(contigmat,1,sum) #row-standardize
 
 mydata$W_trumpmarg&lt;-contigmat1%*%mydata$trumpmarg
 
-summary(m1&lt;-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317))
-summary(m2&lt;-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg))
+m1&lt;-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317)
+m2&lt;-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg)
 ```
 
 
@@ -274,6 +274,8 @@ W2&lt;-nb2listw(W1$neighbours, glist=NULL, style="W", zero.policy=TRUE)
 
 m3 &lt;- lagsarlm(data=mydata, cases_pc~log(totpop1317)+urb2010+trumpmarg+medinc1317, W2, zero.policy=TRUE)
 summary(m3)
+
+saveRDS(m3,"m3.RDS")
 ```
 
 ---
@@ -285,16 +287,16 @@ Set up a hypothetical scenario:
 
 
 ```r
-names&lt;-c("benton","linn","jones","iowa","johnson","cedar")
-mymat&lt;-matrix(c(0,1,0,1,0,0,
-                1,0,1,0,1,1,
+names&lt;-c("benton","cedar","iowa","johnson","jones","linn")
+mymat&lt;-matrix(c(0,0,1,0,0,1,
+                0,0,0,1,1,1,
+                1,0,0,1,0,0,
+                0,1,1,0,0,1,
                 0,1,0,0,0,1,
-                1,0,0,0,1,0,
-                0,1,0,1,0,1,
-                0,1,1,0,1,0),nrow=6,ncol=6)
+                1,1,0,1,1,0),nrow=6,ncol=6)
 dimnames(mymat)&lt;-list(names,names)
 mymat&lt;-round(mymat/apply(mymat,1,sum),2)
-d&lt;-dplyr::filter(mydata, state=="IA" &amp; county %in% names)
+d&lt;-dplyr::filter(mydata, state=="IA" &amp; county %in% names) 
 ```
 
 ---
@@ -302,20 +304,28 @@ d&lt;-dplyr::filter(mydata, state=="IA" &amp; county %in% names)
 
 
 ```r
+m3&lt;- readRDS("m3.RDS")
+
 I&lt;- diag(6)
-X0&lt;-cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317)
+X0&lt;-as.matrix(cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317))
 
 urb&lt;-d$urb2010
 urb[4]&lt;-1
-X1&lt;-cbind(1,log(d$totpop1317), urb, d$trumpmarg, d$medinc1317)
+X1&lt;-as.matrix(cbind(1,log(d$totpop1317), urb, d$trumpmarg, d$medinc1317))
 A&lt;-solve(I-coef(m3)[1]*mymat)
-Yhat0&lt;- A%*%(X0%*%coef(m3)[-1])
-Yhat1&lt;- A%*%(X1%*%coef(m3)[-1])
+
+mycoef&lt;-as.matrix(coef(m3))
+
+Yhat0&lt;- A%*%(X0%*%mycoef)
+Yhat1&lt;- A%*%(X1%*%mycoef)
 
 Y_ch&lt;-Yhat1-Yhat0
-Y_ch
+sim&lt;- cbind.data.frame(names,Y_ch)
 ```
+---
+## Visualize the Effect
 
+&lt;img src="05_spatial_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Your Turn 1
@@ -380,10 +390,10 @@ head(states)
 
 ```r
 library(ggplot2)
-ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=region),color="black", size=.5)
+ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)
 ```
 
-&lt;img src="05_spatial_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="05_spatial_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 ## A Bit Nicer of a Map
@@ -400,7 +410,7 @@ theme_set(theme_grey() + theme(axis.text=element_blank(),
                                panel.border = element_blank(),
                                panel.background = element_blank(),
                                legend.position="none"))
-ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=region),color="black", size=.5)+ coord_map()
+ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)+ coord_map()
 ```
 
 ---
@@ -408,10 +418,10 @@ ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=region),color="black
 
 
 ```r
-ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=region),color="black", size=.5)+ coord_map()
+ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)+ coord_map()
 ```
 
-&lt;img src="05_spatial_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="05_spatial_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -475,10 +485,10 @@ head(states.class.map)
 
 
 ```r
-ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=region, fill = StateGroups), colour = I("black"))+ coord_map()+theme(legend.position="bottom")
+ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=group, fill = StateGroups), colour = I("black"))+ coord_map()+theme(legend.position="bottom")
 ```
 
-&lt;img src="05_spatial_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="05_spatial_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Your Turn

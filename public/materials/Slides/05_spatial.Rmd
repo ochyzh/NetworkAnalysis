@@ -244,7 +244,7 @@ class: inverse, middle, center
 ---
 ## Example: Spatial X
 
-```{r, eval=F}
+```{r, eval=T, }
 
 mydata<-read.csv("./data/covid_data.csv", header=TRUE) 
 mydata$trumpmarg[is.na(mydata$trumpmarg)]<-0
@@ -253,8 +253,8 @@ contigmat1<-contigmat/apply(contigmat,1,sum) #row-standardize
 
 mydata$W_trumpmarg<-contigmat1%*%mydata$trumpmarg
 
-summary(m1<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317))
-summary(m2<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg))
+m1<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317)
+m2<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg)
 ```
 
 
@@ -278,7 +278,7 @@ W2<-nb2listw(W1$neighbours, glist=NULL, style="W", zero.policy=TRUE)
 m3 <- lagsarlm(data=mydata, cases_pc~log(totpop1317)+urb2010+trumpmarg+medinc1317, W2, zero.policy=TRUE)
 summary(m3)
 
-
+saveRDS(m3,"m3.RDS")
 ```
 
 ---
@@ -288,56 +288,73 @@ Set up a hypothetical scenario:
 
 - Expected change in Covid-19 cases that would result from increasing urbanization in Johnson county, IA
 
-```{r, eval=F}
-names<-c("benton","linn","jones","iowa","johnson","cedar")
-mymat<-matrix(c(0,1,0,1,0,0,
-                1,0,1,0,1,1,
+```{r, eval=T}
+names<-c("benton","cedar","iowa","johnson","jones","linn")
+mymat<-matrix(c(0,0,1,0,0,1,
+                0,0,0,1,1,1,
+                1,0,0,1,0,0,
+                0,1,1,0,0,1,
                 0,1,0,0,0,1,
-                1,0,0,0,1,0,
-                0,1,0,1,0,1,
-                0,1,1,0,1,0),nrow=6,ncol=6)
+                1,1,0,1,1,0),nrow=6,ncol=6)
 dimnames(mymat)<-list(names,names)
 mymat<-round(mymat/apply(mymat,1,sum),2)
-d<-dplyr::filter(mydata, state=="IA" & county %in% names)
+d<-dplyr::filter(mydata, state=="IA" & county %in% names) 
 
 ```
 
 ---
 ## Set up A Comparison by Shocking One of the Units on X 
 
-```{r, eval=F}
-
+```{r, eval=T, echo=T}
+m3<- readRDS("m3.RDS")
 
 I<- diag(6)
-X0<-cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317)
+X0<-as.matrix(cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317))
 
 urb<-d$urb2010
 urb[4]<-1
-X1<-cbind(1,log(d$totpop1317), urb, d$trumpmarg, d$medinc1317)
+X1<-as.matrix(cbind(1,log(d$totpop1317), urb, d$trumpmarg, d$medinc1317))
 A<-solve(I-coef(m3)[1]*mymat)
-Yhat0<- A%*%(X0%*%coef(m3)[-1])
-Yhat1<- A%*%(X1%*%coef(m3)[-1])
+
+mycoef<-as.matrix(coef(m3))
+
+Yhat0<- A%*%(X0%*%mycoef)
+Yhat1<- A%*%(X1%*%mycoef)
 
 Y_ch<-Yhat1-Yhat0
-Y_ch
+sim<- cbind.data.frame(names,Y_ch)
+
+```
+---
+## Visualize the Effect
+
+```{r, eval=TRUE, echo=FALSE}
+library(tidyverse)
+library(mapdata)
+library(maps)
+#Set theme options:
+theme_set(theme_grey() + theme(axis.text=element_blank(),
+                               axis.ticks=element_blank(),
+                               axis.title.x=element_blank(),
+                               axis.title.y=element_blank(),
+                               panel.grid.major = element_blank(),
+                               panel.grid.minor = element_blank(),
+                               panel.border = element_blank(),
+                               panel.background = element_blank(),
+                               legend.position="none"))
+
+
+states <- map_data("county") |> dplyr::filter(region=="iowa") |>
+  left_join(sim, by=c("subregion"="names"))
+
+ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=group, fill=Y_ch),color="black", size=.5)+ coord_map()
+
 ```
 
 
----
-## Your Turn 1
-
-Suppose you want to test whether variable *urb2010* is spatially clustered.
-
-1. Calculate a measure of the average urbanization in neighboring states.
-
-2. Estimate a model that accounts for clustering in urbanization.
-
-3. Is the effect of neighbor's urbanization positive or negative?
-
-4. Is this effect statistically significant?
 
 ---
-## Your Turn 2
+## Your Turn 
 
 Suppose you want to test whether variable *votech* (the change in Republican vote share between the 2016 and 2018 Congressional election) is spatially clustered.
 

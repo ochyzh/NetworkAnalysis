@@ -368,6 +368,33 @@ $$\begin{equation}
 - The data are available at "https://stats.idre.ucla.edu/stat/data/binary.csv"
 
 ---
+## Maximum Likelihood Estimation (by hand)
+
+```{r}
+mydata <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+all<- NULL
+
+y<- mydata$admit
+x<-mydata$gre
+alpha<- 0 #we don't know so we'll try different guesses
+beta<- 0
+
+log_odds<- alpha +beta*x
+odds<- exp(log_odds)
+prob<-odds/(1+odds)
+
+log_like<- y*log(prob)+(1-y)*log(1-prob)
+
+sum_ll<- sum(log_like)
+
+results<- cbind.data.frame("alpha"=alpha, "beta"=beta, "sum_ll"=sum_ll)
+
+all<- rbind(all, results)
+
+
+```
+
+---
 ## Maximum Likelihood Estimation 
 
 ```{r, eval=F}
