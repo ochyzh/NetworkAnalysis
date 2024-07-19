@@ -51,7 +51,7 @@ All the class materials will be posted/updated here.
         <td>Causal Inference with Networks</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/16_causal_nets.html" target=_blank> causal inference with networks </a> |<a href="../materials/Slides/16_causal_nets.pdf" target=_blank> causal inference with networks pdf </a>  |<a href="../materials/Scripts/.day4_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/16_causal_nets.html" target=_blank> causal inference with networks </a> |<a href="../materials/Slides/16_causal_nets.pdf" target=_blank> causal inference with networks pdf </a>  |<a href="../materials/Scripts/day3_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
@@ -61,7 +61,7 @@ All the class materials will be posted/updated here.
         <td>Spatial Models</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/05_spatial.html" target=_blank>spatial models </a> |<a href="../materials/Slides/05_spatial.pdf" target=_blank>spatial models pdf</a>  | <a href="../materials/Slides/data/covid_data.csv" target=_blank> covid data </a> |<a href="../materials/Slides/data/contigmat.txt"target=_blank> contiguity matrix </a>|<a href="../materials/Slides/data/statereg.csv"target=_blank> state region data </a> |<a href="../materials/Slides/data/animal.csv"target=_blank> animal data </a>|<a href="../materials/Scripts/day3_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/05_spatial.html" target=_blank>spatial models </a> |<a href="../materials/Slides/05_spatial.pdf" target=_blank>spatial models pdf</a>  | <a href="../materials/Slides/data/covid_data.csv" target=_blank> covid data </a> |<a href="../materials/Slides/data/contigmat.txt"target=_blank> contiguity matrix </a>|<a href="../materials/Slides/data/statereg.csv"target=_blank> state region data </a> |<a href="../materials/Slides/data/animal.csv"target=_blank> animal data </a>|<a href="../materials/Scripts/day4_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
@@ -71,7 +71,7 @@ All the class materials will be posted/updated here.
         <td>Models for Binary DVs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank> binary dvs </a>  |<a href="../materials/Slides/data/space_shuttles.txt "target=_blank> space shuttle data </a>|<a href="../materials/Slides/data/MichelinNY.csv "target=_blank> Michelin data </a>
+          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank> binary dvs </a> |<a href="../materials/Slides/06_binary_dv.pdf" target=_blank> binary dvs pdf </a>  |<a href="../materials/Slides/data/space_shuttles.txt "target=_blank> space shuttle data </a>|<a href="../materials/Slides/data/MichelinNY.csv "target=_blank> Michelin data </a>
           </dd>
           </dl>
         </td>

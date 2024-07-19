@@ -318,8 +318,8 @@ A<-solve(I-coef(m3)[1]*mymat)
 
 mycoef<-as.matrix(coef(m3))
 
-Yhat0<- A%*%(X0%*%mycoef)
-Yhat1<- A%*%(X1%*%mycoef)
+Yhat0<- A%*%(X0%*%mycoef) #may need to remove first element of mycoeff[-1]; keep this for knitting (RDS works different)
+Yhat1<- A%*%(X1%*%mycoef) #may need to remove first element of mycoeff[-1]
 
 Y_ch<-Yhat1-Yhat0
 sim<- cbind.data.frame(names,Y_ch)
@@ -347,7 +347,7 @@ theme_set(theme_grey() + theme(axis.text=element_blank(),
 states <- map_data("county") |> dplyr::filter(region=="iowa") |>
   left_join(sim, by=c("subregion"="names"))
 
-ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=group, fill=Y_ch),color="black", size=.5)+ coord_map()
+ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=group, fill=Y_ch^(1/50)),color="black", size=.5)+ coord_map()
 
 ```
 
