@@ -71,7 +71,7 @@ All the class materials will be posted/updated here.
         <td>Models for Binary DVs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank> binary dvs </a> |<a href="../materials/Slides/06_binary_dv.pdf" target=_blank> binary dvs pdf </a>  |<a href="../materials/Slides/data/space_shuttles.txt "target=_blank> space shuttle data </a>|<a href="../materials/Slides/data/MichelinNY.csv "target=_blank> Michelin data </a>
+          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank> binary dvs </a> |<a href="../materials/Slides/06_binary_dv.pdf" target=_blank> binary dvs pdf </a>  |<a href="../materials/Slides/data/space_shuttles.txt "target=_blank> space shuttle data </a>|<a href="../materials/Slides/data/MichelinNY.csv "target=_blank> Michelin data </a>|<a href="../materials/YourTurnAnswers/06_yourturn_logit.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>
@@ -81,7 +81,7 @@ All the class materials will be posted/updated here.
         <td>LSGM</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/13_lsgm.html" target=_blank>lsgm </a>  | <a href="../materials/Slides/13_lsgm.Rmd" target=_blank>slides in Rmd </a>| <a href="../materials/Slides/Niemanetal_PS2017.pdf" target=_blank> troop placement example </a> | <a href="../materials/Slides/data/chechen_attacks.csv" target=_blank> chechen attacks </a> | <a href="../materials/Slides/data/vilMat.csv" target=_blank> village distance matrix </a>
+          <dd><a href="../materials/Slides/13_lsgm.html" target=_blank>lsgm </a>  | <a href="../materials/Slides/13_lsgm.Rmd" target=_blank>slides in Rmd </a>| <a href="../materials/Slides/13_lsgm.pdf" target=_blank>slides in pdf </a>| <a href="../materials/Slides/Niemanetal_PS2017.pdf" target=_blank> troop placement example </a> | <a href="../materials/Slides/data/chechen_attacks.csv" target=_blank> chechen attacks </a> | <a href="../materials/Slides/data/vilMat.csv" target=_blank> village distance matrix </a>|<a href="../materials/Scripts/day5_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
