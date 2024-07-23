@@ -8035,7 +8035,7 @@ W2007[1:5,1:5]
 ```r
 #W2007[,1]&lt;-NULL  #remove first column from similarity matrix
 W2007[is.na(W2007)]&lt;-0
-W2007&lt;-W2007/(1000*(ncol(W2007)-1))
+W2007&lt;-W2007/10
 W2007&lt;-as.matrix(W2007)
 ```
 
@@ -8068,20 +8068,20 @@ return(ell)
 ```r
 X=ally_data$tot_trade
 Y=ally_data$defense
-m1&lt;-optim(par=c(0,0,0),loglik,X=X,W=W,Y=Y)
+m1&lt;-optim(par=c(0,0,0),loglik,X=X,W=W2007,Y=Y)
 m1
 ```
 
 ```
 ## $par
-## [1] -1.686244323 -0.007318607  0.936193299
+## [1] -1.685218961 -0.007736929  0.937752856
 ## 
 ## $value
-## [1] 470.8606
+## [1] 470.8573
 ## 
 ## $counts
 ## function gradient 
-##       88       NA 
+##       90       NA 
 ## 
 ## $convergence
 ## [1] 0
@@ -8158,10 +8158,10 @@ return(res)
 ```r
 n&lt;-length(Y)
 y0s=rbinom(n=n, size=1, prob=.5)
-sims&lt;-spatbin.genfield(coeffs=m1$par,X=X,w=W,y0s=y0s,M=1000)
+sims&lt;-spatbin.genfield(coeffs=m1$par,X=X,w=W2007,y0s=y0s,M=1000)
 #Take every 10th simulated network, i.e. burnin=10, thinning=10
 sims&lt;-sims[,seq(from=10, to=ncol(sims),by=10)]
-saveRDS(sims, "sims.rds")
+#saveRDS(sims, "sims.rds")
 ```
 
 ---
@@ -8171,7 +8171,7 @@ saveRDS(sims, "sims.rds")
 ```r
 sims&lt;-readRDS("data/sims.rds")
 sim_est&lt;-function(Y){
- res&lt;-optim(par=m1$par,loglik,X=X,W=W,Y=as.matrix(Y)) 
+ res&lt;-optim(par=m1$par,loglik,X=X,W=W2007,Y=as.matrix(Y)) 
  return(c(res$par,res$convergence))
 }
 
@@ -8179,7 +8179,7 @@ library(parallel)
 sim_est&lt;-do.call("rbind",mclapply(sims, sim_est))
 #Drop results if didn't converge (models that converged have convergence=0)
 sim_est&lt;-sim_est[sim_est[,4]==0,]
-saveRDS(sim_est,"sim_est.rds")
+saveRDS(sim_est,"./data/sim_est.rds")
 ```
 
 ---
@@ -8195,10 +8195,10 @@ mytable
 ```
 
 ```
-##             coeff           se       z-value
-## [1,] -1.686244323 2.318147e-01 -7.2741041749
-## [2,] -0.007318607 3.253597e-02 -0.2249389529
-## [3,]  0.936193299 2.832822e+03  0.0003304808
+##             coeff        se     z-value
+## [1,] -1.685218961 0.3132937 -5.37903845
+## [2,] -0.007736929 0.1534057 -0.05043444
+## [3,]  0.937752856 0.7400730  1.26710857
 ```
 
 
