@@ -62,6 +62,8 @@ The fundamental problem of modeling networks:
 
 
 ```r
+setwd('~/Teaching/NetworkAnalysis/public/materials/Slides')
+
 library(igraph)
 library(sna)
 data(coleman) #Use friendship data
@@ -667,19 +669,22 @@ summary(m3)
 ```
 
 ```
-##  Results:
+## Call:
+## ergm(formula = samplike ~ edges + nodematch("group") + mutual)
+## 
+## Monte Carlo Maximum Likelihood Results:
 ## 
 ##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges            -2.2611     0.2319      0  -9.750  &lt; 1e-04 ***
-## nodematch.group   2.0289     0.3216      0   6.310  &lt; 1e-04 ***
-## mutual            1.4391     0.4931      0   2.918  0.00352 ** 
+## edges            -2.2733     0.2332      0  -9.749  &lt; 1e-04 ***
+## nodematch.group   2.0100     0.3168      0   6.345  &lt; 1e-04 ***
+## mutual            1.4404     0.4635      0   3.107  0.00189 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##      Null Deviance: 424.2  on 306  degrees of freedom
-##  Residual Deviance: 268.4  on 303  degrees of freedom
+##  Residual Deviance: 268.0  on 303  degrees of freedom
 ##  
-## AIC: 274.4  BIC: 285.5  (Smaller is better. MC Std. Err. = NA)
+## AIC: 274  BIC: 285.1  (Smaller is better. MC Std. Err. = 0.2697)
 ```
 
 ---
@@ -694,7 +699,7 @@ plogis(coef(m3)[['edges']]) #plogis is equivalent to exp(xb)/(1+exp(xb))
 ```
 
 ```
-## [1] 0.09439894
+## [1] 0.09335707
 ```
 
 
@@ -706,7 +711,7 @@ plogis(coef(m3)[['edges']] + coef(m3)[['mutual']])
 ```
 
 ```
-## [1] 0.3053459
+## [1] 0.3030263
 ```
 
 ---
@@ -737,42 +742,48 @@ mcmc.diagnostics(m3)
 ```
 ## Sample statistics summary:
 ## 
-## Iterations = 16384:4209664
+## Iterations = 27648:524288
 ## Thinning interval = 1024 
 ## Number of chains = 1 
-## Sample size per chain = 4096 
+## Sample size per chain = 486 
 ## 
 ## 1. Empirical mean and standard deviation for each variable,
 ##    plus standard error of the mean:
 ## 
-##                    Mean    SD Naive SE Time-series SE
-## edges           -0.6470 7.315  0.11430        0.12252
-## nodematch.group -0.3933 5.319  0.08311        0.09818
-## mutual          -0.3467 3.870  0.06047        0.06819
+##                   Mean    SD Naive SE Time-series SE
+## edges           1.0700 7.786   0.3532         0.3532
+## nodematch.group 0.8436 5.681   0.2577         0.3093
+## mutual          0.5165 4.223   0.1916         0.2209
 ## 
 ## 2. Quantiles for each variable:
 ## 
-##                 2.5% 25%  50% 75% 97.5%
-## edges            -15  -6 -0.5   4    13
-## nodematch.group  -11  -4  0.0   3     9
-## mutual            -8  -3  0.0   2     7
+##                   2.5% 25% 50% 75% 97.5%
+## edges           -14.88  -4   1   6    15
+## nodematch.group -11.88  -3   1   5    11
+## mutual           -8.00  -2   1   3     9
 ## 
+## 
+## Are sample statistics significantly different from observed?
+##                  edges nodematch.group     mutual     (Omni)
+## diff.      1.069958848     0.843621399 0.51646091         NA
+## test stat. 3.029599423     2.727347698 2.33784717 8.71151514
+## P-val.     0.002448783     0.006384572 0.01939518 0.03510993
 ## 
 ## Sample statistics cross-correlations:
 ##                     edges nodematch.group    mutual
-## edges           1.0000000       0.7294397 0.7900362
-## nodematch.group 0.7294397       1.0000000 0.7938724
-## mutual          0.7900362       0.7938724 1.0000000
+## edges           1.0000000       0.7702152 0.8101474
+## nodematch.group 0.7702152       1.0000000 0.8063000
+## mutual          0.8101474       0.8063000 1.0000000
 ## 
 ## Sample statistics auto-correlation:
 ## Chain 1 
-##                 edges nodematch.group        mutual
-## Lag 0     1.000000000     1.000000000  1.0000000000
-## Lag 1024  0.069233727     0.165005477  0.1194233017
-## Lag 2048  0.016019089     0.025062375  0.0143461264
-## Lag 3072  0.013810980     0.017228820 -0.0009505219
-## Lag 4096 -0.008990324     0.001594867 -0.0230021277
-## Lag 5120  0.001331743     0.007325598 -0.0054187634
+##                edges nodematch.group      mutual
+## Lag 0     1.00000000     1.000000000  1.00000000
+## Lag 1024  0.06237179     0.179553374  0.14048882
+## Lag 2048  0.03148925     0.015529414  0.02822141
+## Lag 3072  0.01801547     0.002787674  0.07261729
+## Lag 4096 -0.03426429    -0.001553850 -0.01596206
+## Lag 5120 -0.03052053     0.004223843 -0.02939737
 ## 
 ## Sample statistics burn-in diagnostic (Geweke):
 ## Chain 1 
@@ -781,12 +792,12 @@ mcmc.diagnostics(m3)
 ## Fraction in 2nd window = 0.5 
 ## 
 ##           edges nodematch.group          mutual 
-##       1.2041197       0.6331286       1.1083079 
+##     -0.09682719     -0.44903546     -0.05960026 
 ## 
 ## Individual P-values (lower = worse):
 ##           edges nodematch.group          mutual 
-##       0.2285433       0.5266497       0.2677289 
-## Joint P-value (lower = worse):  0.6572889 
+##       0.9228636       0.6534061       0.9524740 
+## Joint P-value (lower = worse):  0.8973421 
 ## 
 ## Note: MCMC diagnostics shown here are from the last round of
 ##   simulation, prior to computation of final parameter estimates.
@@ -945,20 +956,24 @@ summary(m4)
 ```
 
 ```
-##  Results:
+## Call:
+## ergm(formula = samplike ~ edges + nodematch("group") + mutual + 
+##     idegree1.5)
+## 
+## Monte Carlo Maximum Likelihood Results:
 ## 
 ##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges            -4.4771     0.6316      0  -7.089  &lt; 1e-04 ***
-## nodematch.group   2.1798     0.3186      0   6.842  &lt; 1e-04 ***
-## mutual            1.4057     0.4656      0   3.019  0.00253 ** 
-## idegree1.5        0.6477     0.1634      0   3.964  &lt; 1e-04 ***
+## edges            -4.4593     0.6904      0  -6.459  &lt; 1e-04 ***
+## nodematch.group   2.1822     0.3547      0   6.152  &lt; 1e-04 ***
+## mutual            1.4129     0.4814      0   2.935 0.003338 ** 
+## idegree1.5        0.6406     0.1824      0   3.512 0.000445 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##      Null Deviance: 424.2  on 306  degrees of freedom
-##  Residual Deviance: 259.9  on 302  degrees of freedom
+##  Residual Deviance: 259.3  on 302  degrees of freedom
 ##  
-## AIC: 267.9  BIC: 282.8  (Smaller is better. MC Std. Err. = NA)
+## AIC: 267.3  BIC: 282.2  (Smaller is better. MC Std. Err. = 0.1951)
 ```
 
 ---
@@ -1051,7 +1066,7 @@ round(sapply(list(m1, m2, m3, m4), AIC), 0)
 ```
 
 ```
-## [1] 369 281 274 268
+## [1] 369 281 274 267
 ```
 
 ```r
@@ -1059,7 +1074,7 @@ round(sapply(list(m1, m2, m3, m4), BIC), 0)
 ```
 
 ```
-## [1] 373 288 286 283
+## [1] 373 288 285 282
 ```
 
 ---
@@ -1133,23 +1148,26 @@ summary(m6)
 ```
 
 ```
-##  Results:
+## Call:
+## ergm(formula = samplike ~ edges + nodematch("group") + mutual + 
+##     idegree1.5 + gwesp(decay = 0.5, fixed = TRUE))
 ## 
-##                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges            -5.3063     0.7500      0  -7.075  &lt; 1e-04 ***
-## nodematch.group   3.0481     0.4741      0   6.430  &lt; 1e-04 ***
-## mutual            1.5520     0.5255      0   2.954  0.00314 ** 
-## idegree1.5        1.1408     0.2196      0   5.196  &lt; 1e-04 ***
-## gwesp.fixed.0.5  -0.6335     0.1187      0  -5.336  &lt; 1e-04 ***
+## Monte Carlo Maximum Likelihood Results:
+## 
+##                     Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
+## edges                -5.0430     0.7584      0  -6.650  &lt; 1e-04 ***
+## nodematch.group       2.9391     0.5204      0   5.648  &lt; 1e-04 ***
+## mutual                1.4130     0.5084      0   2.779  0.00545 ** 
+## idegree1.5            1.0307     0.2302      0   4.477  &lt; 1e-04 ***
+## gwesp.OTP.fixed.0.5  -0.5490     0.1869      0  -2.938  0.00330 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##      Null Deviance: 424.2  on 306  degrees of freedom
-##  Residual Deviance: 254.4  on 301  degrees of freedom
+##  Residual Deviance: 253.1  on 301  degrees of freedom
 ##  
-## AIC: 264.4  BIC: 283  (Smaller is better. MC Std. Err. = NA)
+## AIC: 263.1  BIC: 281.7  (Smaller is better. MC Std. Err. = 0.307)
 ```
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

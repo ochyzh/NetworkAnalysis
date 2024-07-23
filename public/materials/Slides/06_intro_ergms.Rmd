@@ -1,7 +1,7 @@
 ---
 title: Advanced Network Analysis
 subtitle: Introduction to Exponential Random Graph Models
-author: "Shahryar Minhas [https://s7minhas.com/]"
+author: "Shahryar Minhas [s7minhas.com/]"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -55,6 +55,8 @@ The fundamental problem of modeling networks:
 ## Example: Friendship Netwok
 
 ```{r, echo=TRUE, message=FALSE}
+setwd('~/Teaching/NetworkAnalysis/public/materials/Slides')
+
 library(igraph)
 library(sna)
 data(coleman) #Use friendship data
@@ -965,4 +967,3 @@ m6 = ergm(samplike ~
 ```{r}
 summary(m6)
 ```
-
