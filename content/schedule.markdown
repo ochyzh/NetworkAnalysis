@@ -128,10 +128,10 @@ All the class materials will be posted/updated here.
       </tr>
         <tr>
         <td>Day 14</td>
-        <td>SOAMs</td>
+        <td>SAOMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/12_soam.html" target=_blank>soams </a>  | <a href="../materials/Slides/12_soam.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/12_soam.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn.R"target=_blank> your turn answers (1st exercise) </a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn_knecht.R"target=_blank> your turn answers (Knecht exercise) </a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>|<a href="../materials/YourTurnAnswers/.12_soam_yourturn2.R"target=_blank> your turn answers (3rd exercise) </a>
+          <dd><a href="../materials/Slides/12_saom.html" target=_blank>SAOMs </a>  | <a href="../materials/Slides/12_saom.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/12_saom.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn.R"target=_blank> your turn answers (1st exercise) </a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn_knecht.R"target=_blank> your turn answers (Knecht exercise) </a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn2.R"target=_blank> your turn answers (3rd exercise) </a>
           </dd>
           </dl>
         </td>
