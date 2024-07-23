@@ -6,7 +6,7 @@ title: Home
 
 <h2> Network Analysis: Advanced Topics</h2>
 
-### _Instructors: Olga Chyzh, olga dot chyzh at utoronto dot ca_
+### _Instructors: Olga Chyzh, olga dot chyzh at utoronto dot ca_, Shahryar Minhas, minhassh at msu dot edu
 
 Social science data are inherently network data.  Individuals are embedded within networks of friendships and professional relations; administrative units influence and are influenced by the nearby units; countries are nested within complex alliance and trade networks.
 

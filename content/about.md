@@ -1,5 +1,5 @@
 ---
-author: Olga Chyzh
+author: Olga Chyzh & Shahryar Minhas
 title: Network Analysis
 ---
 
