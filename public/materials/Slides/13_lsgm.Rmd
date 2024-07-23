@@ -534,7 +534,7 @@ y0s=rbinom(n=n, size=1, prob=.5)
 sims<-spatbin.genfield(coeffs=m1$par,X=X,w=W2007,y0s=y0s,M=1000)
 #Take every 10th simulated network, i.e. burnin=10, thinning=10
 sims<-sims[,seq(from=10, to=ncol(sims),by=10)]
-#saveRDS(sims, "sims.rds")
+saveRDS(sims, "sims.rds")
 ```
 
 ---
