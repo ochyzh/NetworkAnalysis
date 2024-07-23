@@ -9,6 +9,8 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 exclude: true
@@ -426,7 +428,7 @@ W2007 <- W
 W2007[1:5,1:5]
 #W2007[,1]<-NULL  #remove first column from similarity matrix
 W2007[is.na(W2007)]<-0
-W2007<-W2007/(1000*(ncol(W2007)-1))
+W2007<-W2007/10
 W2007<-as.matrix(W2007)
 
 ```
@@ -458,7 +460,7 @@ return(ell)
 ```{r}
 X=ally_data$tot_trade
 Y=ally_data$defense
-m1<-optim(par=c(0,0,0),loglik,X=X,W=W,Y=Y)
+m1<-optim(par=c(0,0,0),loglik,X=X,W=W2007,Y=Y)
 m1
 
 ```
@@ -529,10 +531,10 @@ return(res)
 ```{r, eval=F}
 n<-length(Y)
 y0s=rbinom(n=n, size=1, prob=.5)
-sims<-spatbin.genfield(coeffs=m1$par,X=X,w=W,y0s=y0s,M=1000)
+sims<-spatbin.genfield(coeffs=m1$par,X=X,w=W2007,y0s=y0s,M=1000)
 #Take every 10th simulated network, i.e. burnin=10, thinning=10
 sims<-sims[,seq(from=10, to=ncol(sims),by=10)]
-saveRDS(sims, "sims.rds")
+#saveRDS(sims, "sims.rds")
 ```
 
 ---
@@ -541,7 +543,7 @@ saveRDS(sims, "sims.rds")
 ```{r, eval=F}
 sims<-readRDS("data/sims.rds")
 sim_est<-function(Y){
- res<-optim(par=m1$par,loglik,X=X,W=W,Y=as.matrix(Y)) 
+ res<-optim(par=m1$par,loglik,X=X,W=W2007,Y=as.matrix(Y)) 
  return(c(res$par,res$convergence))
 }
 
@@ -549,7 +551,7 @@ library(parallel)
 sim_est<-do.call("rbind",mclapply(sims, sim_est))
 #Drop results if didn't converge (models that converged have convergence=0)
 sim_est<-sim_est[sim_est[,4]==0,]
-saveRDS(sim_est,"sim_est.rds")
+saveRDS(sim_est,"./data/sim_est.rds")
 
 ```
 
@@ -599,7 +601,7 @@ lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
 
 ---
 
-```{r, eval=F}
+```{r, eval=F, echo=T}
 library(leaflet)
 library(lubridate)
 library(tidyverse)
