@@ -55,8 +55,6 @@ The fundamental problem of modeling networks:
 ## Example: Friendship Netwok
 
 ```{r, echo=TRUE, message=FALSE}
-setwd('~/Teaching/NetworkAnalysis/public/materials/Slides')
-
 library(igraph)
 library(sna)
 data(coleman) #Use friendship data
