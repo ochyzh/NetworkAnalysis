@@ -4,7 +4,7 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -12,69 +12,32 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Advanced Network Analysis
-## Transitivity, Reciprocity, and Random Graphs
+]
+.subtitle[
+## Random Graphs
+]
+.author[
 ### Olga Chyzh [www.olgachyzh.com]
+]
 
 ---
 
 
 
 
-class: inverse, middle, center
-# Why Do We Care About Transitivity?
+## Why ERGMs?
 
+The fundamental problem of network analysis:
+
+- Is the network we observe an Erdos-Renyi network?
+
+    - In an Erdos-Renyi network, the probability of each edge is independent of that of other edges.
+    
+- If not, what are the endogeneous network features that define our network?
 ---
-## Granovetter (1973) Theory.
-- Ties are not binary, but vary in strength (i.e. abscent, weak, strong).
-- The stronger the tie between A and B, the larger the overlap of individuals in A's and B's networks.
-   + As individuals have limited time to spend with their contacts, some contacts are bound to be brought into interaction;
-   + Homophily, i.e. the friends of A are more likely to know one another as they may have common interests.
-- The forbidden triad: A and B are strongly linked, and A and C are strongly linked, yet C and B do not share a tie.
-- No strong tie is a bridge (the only path between two points), i.e. all the bridges are weak ties.
-- &lt;span style="color: blue;"&gt; **Removal of a weak tie does more "damage" to transmission of information within the network than removal of a strong tie.**&lt;/span&gt;
----
-
-## Implications for Diffusion Studies.
--  Information (e.g. rumors) traverses greater social distance when passed through weak ties. Long information paths, though, are less useful (information is distorted as it passes through additional links).
-- Diffusion studies should focus on weak ties, i.e. when asking respondents for their contacts, not limit the number of choices allowed.
-   + *What does this imply for tracing of disease spread?* (Is contagion likely to originate with strong or weak ties?)
-- Many studies of diffusion of innovation tend attribute  adoption to *central* contacts, i.e. correlate the time of diffusion with network centrality. In actuality, what matters may be not the number of ties (centrality), but the number of *weak ties.*
----
-
-## Empirical Evidence
-- The "six degrees of separation" Milgram experiment (actually 2 to 10 links out of 12--33% of completed chains)
-
-- Survey respondents who recently found a new job (through contacts) tended to do so through contacts who were only marginally included in their current network. In most cases through, the initial source (employer) was only one or two links removed (relatively short paths).
-- It is more difficult to organize a cliquish community than one with multiple layers of cross-personal ties (Boston West End).
-
----
-class: inverse, middle, center  
-# Modeling Approaches
-
----
-## Transitivity
-
-A relation "$o$" is known as *transitive* if `\(a\ o\ b\)` and `\(b\ o\ c\)` together imply that `\(a\ o\ c\)`. 
-
-Nodes `\(a\)`, `\(b\)`, and `\(c\)` form a *transitive triad* or a *closed triangle* if all pairwise combinations of these nodes share an edge. 
-
-An *intransitive triad* is a triple of nodes among which a two-path can be constructed and there is no edge from node 1 to node 3.
-
-A *vacuously transitive* triad is a triple of nodes, such that one cannot construct a two-path among them.
-
-
-&lt;img src="images/allTriads.png" width="500px" style="display: block; margin: auto;" /&gt;
----
-class: inverse, middle, center
-# Measuring Transitivity
-
----
-## Clustering Coefficient
-
-A *clustering coefficient, C,* is the fraction of closed paths of length two out of total (realized) paths of length two.
-
-`\(C=\frac{\text{number of closed paths of length two}}{\text{number of paths of length two}}=\frac{\text{(number of triangles)}\times6}{\text{number of paths of length two}}\)`
+## Example: Friendship Netwok
 
 
 ```r
@@ -84,90 +47,36 @@ data(coleman) #Use friendship data
 coleman&lt;-coleman[1,,]
 #convert to an -igraph- object, we'll treat it as a directed graph for now:
 coleman&lt;-graph_from_adjacency_matrix(coleman, mode="directed", diag=FALSE) 
-transitivity(coleman) #Note that -igraph- default is an undirected graph
+edge_density(coleman)
 ```
 
 ```
-## [1] 0.4400826
-```
-
-```r
-sna::gtrans(as.matrix(get.adjacency(coleman))) #The directed equivalent
-```
-
-```
-## [1] 0.4626866
-```
----
-## Clustering Coefficient: Interpretation
-
-Clustering coefficient, `\(C\)` is `\(0\)` if none of the neighbors of node `\(i\)` link to each other. 
-  
-- That's what Granovetter (1979) refers to as the "forbidden triad".
-
-`\(C=1\)` if the neighbors of node `\(i\)` form a complete graph, i.e. they all link to each other.
-
-`\(C_i\)` is the probability that two neighbors of node `\(i\)` link to each other. Consequently, a `\(C=.5\)` means that there is a `\(50\%\)` chance that two neighbors of a node are linked.
-
-Is the clustering coefficient of `\(0.46\)` large or small?
----
-## Break-Out Groups
-
-Given the number of nodes and edges within the friendship network, is the value of 0.46 greater or smaller than you would expect at random? What does your intuition tell you? Why?
-
-- Use `summary()`, `vcount()`, and `gsize()` to find the number of nodes and edges in the friendship network.
-
-
-```r
-summary(coleman)
-```
-
-```
-## IGRAPH dde4a1f DN-- 73 243 -- 
-## + attr: name (v/c)
+## [1] 0.04623288
 ```
 
 ```r
-vcount(coleman)
+reciprocity(coleman) #Note that -igraph- default is an undirected graph
 ```
 
 ```
-## [1] 73
+## [1] 0.5102881
 ```
-
-```r
-gsize(coleman)
-```
-
-```
-## [1] 243
-```
-
 
 ---
-## A Simulation to Test Your Intuition.
-Steps:
+## Friendship Data
+&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
-1. Simulate 1000 random graphs with the same number of nodes and edges as the friendship network.
-2. Calculate the clustering coefficient for each of the 1000 graphs.
-3. Plot the distribution of clustering coefficients in these simulated networks to see what proportion is as large/small as 0.46.
-  + Question: How many of the simulated networks would have to have a clustering coefficient of 0.46 or greater in order for us to reject the null that the friendship network we observe has no greater clustering than we would expect at random? What does this remind you of?
+- What are some endogenous network features of this network?
+---
+## Erdos-Renyi Networks
+
+- In order to answer whether an observed network is different from a random network, it would help to know what a random network would look like.
+
+- In a random network, all edges have the same probability of realization, `\(p\)`. Moreover, the probability of realization of edge `\(i\)`, `\(p_i\)`,  does not depend on `\(p_j\)`.
 
 ---
-## Simulate 1000 random graphs 
-Steps:
 
-1. Simulate 1 random graph:
-&lt;ol type="i"&gt;
-    &lt;li&gt;Start with N isolated nodes&lt;/li&gt;
-    &lt;li&gt;Select a node pair and generate a random number between 0 and 1. If the random number is less than `\(p\)`, connect the selected node pair with a link, otherwise leave them disconnected.&lt;/li&gt;
-    &lt;li&gt;Repeat step ii for each unique node pair.&lt;/li&gt;
-    &lt;/ol&gt;
-    - Note: Network generated this way are called *random graphs* or an *Erdos-Renyi* networks (after two mathematicians that studied their properties).
-2. Repeat step 1 1000 times to obtain 1000 networks.
----
-
-## Simulate One Random Graph:
+## Simulate A Random Graph to Compare to the Coleman Data
 
 Need: 
 
@@ -197,18 +106,24 @@ summary(coleman)
 ```
 
 ```
-## IGRAPH dde4a1f DN-- 73 243 -- 
+## IGRAPH c71875b DN-- 73 243 -- 
 ## + attr: name (v/c)
 ```
+
+
+
 ---
-## Simulate One Random Graph (Continued)
+## Simulate A Random Graph to Compare to the Coleman Data
 
 - Let `\(p\)` denote the probability that any two vertices are connected by an edge.  Then, we can calculate the value of `\(p\)` in the friendship network as the number of observated edges over the number of all possible edges.
+
   + With 73 vertices, we have `\(73*72/2=2628\)` possible undirected edges or `\(73*72=5256\)` directed edges, as each vertex can connect to each other vertex, but there are no self-loops. (Since the friendship network is directed, let's focus on simulating a directed network.)
+
   + Then `\(p=243/5256=0.046\)`. Does this value seem high or low? Note that `\(p\)` is the clustering coefficient of a random network with a given number of nodes and edges.
+
 ---
-## Simulate One Random Graph (Continued)
-Now can implement Steps i-iii:
+
+## Simulate A Random Graph (Continued)
 
 
 ```r
@@ -227,129 +142,31 @@ for (i in 1:N) {
     }}}
 ```
 ---
+
+
+
+
+
 ## Check Our Work
 
 
 ```r
-summary(g&lt;-graph.adjacency(rnet, mode="directed", weighted=NULL))
+summary(g&lt;-graph_from_adjacency_matrix(rnet, mode="directed", weighted=NULL))
 ```
 
 ```
-## IGRAPH ddf2543 D--- 73 232 --
+## IGRAPH c72bc3e D--- 73 232 --
 ```
 
 ```r
-sna::gtrans(as.matrix(get.adjacency(g))) #The directed clustering coefficient
+edge_density(coleman)
 ```
 
 ```
-## [1] 0.04160888
+## [1] 0.04623288
 ```
----
-## Your Turn
-
-Plot the original and the random networks side by side:
-&lt;img src="images/yourturn01.png" width="500px" style="display: block; margin: auto;" /&gt;
----
-
-## Simulate 1000 random graphs
-
-Repeat Step ii 1000 times. Rather than saving all 1000 of the simulated networks, let's calculate and save the clustering coefficient from each.
-
 
 ```r
-cc&lt;-rep(NA,1000)
-
-for (k in 1:1000){
-rnet&lt;-matrix(0, nrow=N,ncol=N) 
-for (i in 1:N) {
-  for (j in 1:N){
-    if (i!=j) {
-    rnet[i,j]=as.numeric(runif(1)&lt;p)
-    }}}
-cc[k]&lt;-sna::gtrans(as.matrix(get.adjacency(graph.adjacency(rnet, mode="directed", weighted=NULL)))) #The directed clustering coefficient
-}
-```
----
-## Plot the Distribution of the Clustering Coefficients
-
-
-```r
-library(ggplot2)
-#Set theme options:
-theme_set(theme_grey() + theme(panel.background = element_rect(fill = NA, 
-        color = 'black'))+ theme(axis.text=element_text(size=10),
-					axis.title=element_text(size=12,face="bold")))
-
-qplot(x=cc, geom="density")+geom_vline(aes(xintercept=.46),
-    linetype=2)+scale_x_continuous("Transitivity", limits=c(0,.5))
-```
-
-&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-9-1.png" width="200px" style="display: block; margin: auto;" /&gt;
----
-## Make Inferences:
-
-What proportion of the 1000 networks simulated under the null have the clustering coefficient as extreme as the one in the friendship network?
-
-Can we reject the null that any clustering in the friendship network is random?
-
-Congratulations! You just ran your first ERGM!
-
----
-class: inverse, middle, center
-# Reciprocity
----
-## Reciprocity
-
-In a *directed* network, we may observe loops of length two --- a pair of vertices between which there are directed edges running in both directions.
-
-&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-10-1.png" width="500px" style="display: block; margin: auto;" /&gt;
----
-## Reciprocity
-
-The frequency of loops of length two is measured by the *reciprocity,* and tells you how likely it is that a vertex that you point to also points back to you.
-
-If there is a directed edge from vertex `\(i\)` to vertex `\(j\)` in a directed network, and there is also an edge from `\(j\)` to `\(i\)`, then we say that the edge from `\(i\)` to `\(j\)` is *reciprocated*.
-
-*Reciprocity*, `\(r\)`, is defined as the fraction of edges that are reciprocated.
----
-## Reciprocity
-
-
-$$
-`\begin{equation}
-\text{Reciprocated Ties}  = \sum_{i=1}^n \sum_{j=1}^n g_{ij}g_{ji}
-\end{equation}`
-$$
-$$
-`\begin{equation}
-\text{Total Ties} = \sum_{i=1}^n \sum_{j=1}^n g_{ij}
-\end{equation}`
-$$ 
-$$
-`\begin{equation}
-r = \frac{\text{Reciprocated Ties}}{\text{Total Ties}}
-\end{equation}`
-$$
-Where `\(n\)` is the number of nodes, and `\(g_{ij}\)` is a tie indicator.
----
-## Example
-
-There are seven directed edges in this network, and four of them are reciprocated, so the reciprocity is `\(r=\frac{4}{7}=0.57\)`.
-
-&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-11-1.png" width="500px" style="display: block; margin: auto;" /&gt;
-
----
-## Calculating Reciprocity
-
-
-```r
-library(igraph)
-library(sna)
-data(coleman) #Use friendship data
-coleman&lt;-coleman[1,,]
-#convert to an -igraph- object, we'll treat it as a directed graph for now:
-coleman&lt;-graph_from_adjacency_matrix(coleman, mode="directed", diag=FALSE) 
 reciprocity(coleman) #Note that -igraph- default is an undirected graph
 ```
 
@@ -357,26 +174,50 @@ reciprocity(coleman) #Note that -igraph- default is an undirected graph
 ## [1] 0.5102881
 ```
 
+```r
+edge_density(g)
+```
+
+```
+## [1] 0.04414003
+```
+
+```r
+reciprocity(g) #Note that -igraph- default is an undirected graph
+```
+
+```
+## [1] 0.03448276
+```
+
 ---
-## Reciprocity in Random Networks
-Just like transitivity (remember our simulation above), reciprocity in a network depends, in part, on the network's density.  As the network grows denser (each pair of nodes has a greater probability of being connected), the probability that any two nodes will share a reciprocated tie also increases.
+## Visualize
+
+&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+---
+## Summarize the Observed and Simulated Networks
 
 
-&lt;img src="images/r_box.png" width="600px" style="display: block; margin: auto;" /&gt;
+```
+##    edges idegree6 triangle   mutual   ostar2   istar2 
+##      243        5      460       62      383      542
+```
+
+```
+##    edges idegree6 triangle   mutual   ostar2   istar2 
+##      232        5       37        4      343      345
+```
 
 ---
 ## Your Turn
-Follow the steps from the transitivity example to test whether the level of reciprocity in the friendship network ($r=0.51$) is greater than what you would expect it to be if the network was random. Generate 1000 random networks with the same number of nodes, `\(N\)`, and the same probability of any two nodes forming a link, `\(p\)`, as those in the observed friendship network. Plot the distribution of the values of reciprocity for these 1000 networks and compare it with the value of `\(r=0.51\)`.
 
----
-## Distribution of Reciprocity in Random Networks
-&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-14-1.png" width="500px" style="display: block; margin: auto;" /&gt;
----
-## Are Real Social Network Random?
+1. Simulate a random network that we could compare to the Sampson data.
 
-No! We have shown that the friendship network differs from a random network both in terms of transitivity and reciprocity (and likely in many other ways).
+2. Plot the two side-by-side
 
-Inferential network analysis---covered in the remainder of this class---consists of identifying important features of real networks by comparing observed real networks to random networks.
+3. Use summary to further explore the differences between the two.
+
+4. Based on this analysis, what model specification would you propose?
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
@@ -425,6 +266,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
