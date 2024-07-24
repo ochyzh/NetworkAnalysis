@@ -138,12 +138,12 @@ title("Random")
 ---
 ## Summarize the Observed and Simulated Networks
 
-```{r, eval=TRUE, echo=FALSE}
+```{r, eval=TRUE, echo=TRUE}
 library(statnet)
 data(coleman)
 coleman<- as.network.matrix(coleman[1,,],	matrix.type='adjacency', directed=TRUE)
 rnet<- as.network.matrix(rnet, matrix.type='adjacency',	directed=TRUE)
-summary(coleman~ edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
+summary(coleman ~ edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
 summary(rnet~edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
 
 ```

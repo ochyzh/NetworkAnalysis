@@ -106,7 +106,7 @@ summary(coleman)
 ```
 
 ```
-## IGRAPH c71875b DN-- 73 243 -- 
+## IGRAPH fe3973e DN-- 73 243 -- 
 ## + attr: name (v/c)
 ```
 
@@ -155,7 +155,7 @@ summary(g&lt;-graph_from_adjacency_matrix(rnet, mode="directed", weighted=NULL))
 ```
 
 ```
-## IGRAPH c72bc3e D--- 73 232 --
+## IGRAPH fe59946 D--- 73 232 --
 ```
 
 ```r
@@ -198,9 +198,21 @@ reciprocity(g) #Note that -igraph- default is an undirected graph
 ## Summarize the Observed and Simulated Networks
 
 
+```r
+library(statnet)
+data(coleman)
+coleman&lt;- as.network.matrix(coleman[1,,],	matrix.type='adjacency', directed=TRUE)
+rnet&lt;- as.network.matrix(rnet, matrix.type='adjacency',	directed=TRUE)
+summary(coleman~ edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
+```
+
 ```
 ##    edges idegree6 triangle   mutual   ostar2   istar2 
 ##      243        5      460       62      383      542
+```
+
+```r
+summary(rnet~edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
 ```
 
 ```
