@@ -23,10 +23,10 @@ Homework assignments and data are posted here.
         </td>
       </tr>
       <tr>
-        <td>July 26</td>
+        <td>July 29</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/.POL2578_homework02.html" target=_blank>Homework 2</a>| <a href="../materials/homeworks/.POL2578_homework02.rmd" target=_blank>Homework 2 rmd </a>| <a href="../materials/homeworks/hw2_data.zip" target=_blank> data (zipped) </a>
+          <dd><a href="../materials/homeworks/ICPSR2024_homework02.html" target=_blank>Homework 2</a>| <a href="../materials/homeworks/ICPSR2024_homework02.rmd" target=_blank> Homework 2 rmd </a>
           </dd>
           </dl>
         </td>

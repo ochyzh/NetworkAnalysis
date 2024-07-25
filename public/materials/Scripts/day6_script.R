@@ -166,7 +166,15 @@ summary(m4)
 
 
 set.seed(6886)
-simNets = simulate(m3, nsim = 5)
+
+vertexSize = degree(samplike, cmode = 'indegree')/2
+p<-plot(samplike,
+        displaylabels = TRUE,
+        # size of nodes based on vector vertexSize
+        vertex.cex = vertexSize,
+        # color of nodes based on vertex attribute: group
+        vertex.col = 'group'
+)
 # Define a plotting function:
 plotSimNet = function(net, label){
   set.seed(6886)
