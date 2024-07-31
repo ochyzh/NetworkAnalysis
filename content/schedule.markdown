@@ -121,7 +121,7 @@ All the class materials will be posted/updated here.
         <td>Latent Variable Modeling: Distance Model </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/11_latent_distance.pdf" target=_blank> Distance Model PDF </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_latent_distance_readings.zip" target=_blank> Distance Model Readings </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_distance_code.R" target=_blank> Day 10 Code </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_distance.rda" target=_blank> Day 10 Data </a> |
+          <dd><a href="../materials/Slides/11_latent_distance.pdf" target=_blank> Distance Model PDF </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_latent_distance_readings.zip" target=_blank> Distance Model Readings </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_distance_code.R" target=_blank> Day 10 Code </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_distance.rda" target=_blank> Day 10 Data </a> | <a href="../materials/Slides/11_latent_distance_supp/matrix_decomp_aside.zip" target=_blank> Matrix Decomposition Aside </a> |
           </dd>
           </dl>
         </td>
@@ -131,7 +131,7 @@ All the class materials will be posted/updated here.
         <td>Latent Variable Modeling: Factor Model </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/12_latent_factor.pdf" target=_blank> Factor Model PDF </a> | <a href="../materials/Slides/12_latent_factor_supp/day12_latent_factor_readings.zip" target=_blank> Factor Model Readings </a> | <a href="../materials/Slides/12_latent_factor_supp/ameApp.zip" target=_blank> Day 12 Code & Data </a> |
+          <dd><a href="../materials/Slides/12_latent_factor.pdf" target=_blank> Factor Model PDF </a> | <a href="../materials/Slides/12_latent_factor_supp/day12_latent_factor_readings.zip" target=_blank> Factor Model Readings </a> | <a href="../materials/Slides/12_latent_factor_supp/ameApp.zip" target=_blank> Day 12 Code & Data </a> | <a href="../materials/Slides/12_latent_factor_supp/gadeData.rda" target=_blank> Gade Data for Latent Variable Application Code </a> |
           </dd>
           </dl>
         </td>
