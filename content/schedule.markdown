@@ -41,7 +41,7 @@ All the class materials will be posted/updated here.
         <td>Community Detection</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a> |<a href="../materials/Slides/04_communities.pdf" target=_blank>community detection pdf </a>  |<a href="../materials/Scripts/.day3_script.R"target=_blank> code from class </a> | <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
+          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a> |<a href="../materials/Slides/04_communities.pdf" target=_blank>community detection pdf </a>  |<a href="../materials/Scripts/day3_script.R"target=_blank> code from class </a> | <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
           </dd>
           </dl>
         </td>
@@ -151,7 +151,7 @@ All the class materials will be posted/updated here.
         <td>Weighted ERGMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day9_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.08_valued_ergms_yourturn.R"target=_blank> your turn answers </a>
+          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day9_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/08_valued_ergms_yourturn.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>
@@ -161,7 +161,7 @@ All the class materials will be posted/updated here.
         <td>Temporal ERGMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/10_tergm.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/Scripts/.day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.10_tergm_friends_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/.10_tergms_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>
+          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/10_tergm.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/Scripts/day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/10_tergm_friends_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/10_tergms_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>
           </dd>
           </dl>
         </td>
@@ -171,7 +171,7 @@ All the class materials will be posted/updated here.
         <td>SAOMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/12_saom.html" target=_blank>SAOMs </a>  | <a href="../materials/Slides/12_saom.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/12_saom.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn.R"target=_blank> your turn answers (1st exercise) </a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn_knecht.R"target=_blank> your turn answers (Knecht exercise) </a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn2.R"target=_blank> your turn answers (3rd exercise) </a>
+          <dd><a href="../materials/Slides/12_saom.html" target=_blank>SAOMs </a>  | <a href="../materials/Slides/12_saom.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/12_saom.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/YourTurnAnswers/12_saom_yourturn.R"target=_blank> your turn answers (1st exercise) </a>|<a href="../materials/YourTurnAnswers/12_saom_yourturn_knecht.R"target=_blank> your turn answers (Knecht exercise) </a>|<a href="../materials/YourTurnAnswers/12_saom_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>|<a href="../materials/YourTurnAnswers/12_saom_yourturn2.R"target=_blank> your turn answers (3rd exercise) </a>
           </dd>
           </dl>
         </td>
