@@ -131,7 +131,7 @@ All the class materials will be posted/updated here.
         <td>Latent Variable Modeling: Factor Model </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/12_latent_factor.pdf" target=_blank> Factor Model PDF </a> | <a href="../materials/Slides/12_latent_factor_supp/day12_latent_factor_readings.zip" target=_blank> Factor Model Readings </a> | <a href="../materials/Slides/12_latent_factor_supp/ameApp.zip" target=_blank> Day 12 Code & Data </a> | <a href="../materials/Slides/latent_models_summary.pdf" target=_blank> Summary of Latent Variable Models </a> | <a href="../materials/Slides/12_latent_factor_supp/gadeData.rda" target=_blank> Gade Data for Latent Variable Application Code </a> |
+          <dd><a href="../materials/Slides/12_latent_factor.pdf" target=_blank> Factor Model PDF </a> | <a href="../materials/Slides/12_latent_factor_supp/day12_latent_factor_readings.zip" target=_blank> Factor Model Readings </a> | <a href="../materials/Slides/12_latent_factor_supp/ameApp.zip" target=_blank> Day 12 Code & Data </a> | <a href="../materials/Slides/latent_models_summary.pdf" target=_blank> Summary of Latent Variable Models </a> | <a href="../materials/Slides/12_latent_factor_supp/latent_var_application.zip" target=_blank> Gade Latent Variable Application Code </a> |
           </dd>
           </dl>
         </td>
