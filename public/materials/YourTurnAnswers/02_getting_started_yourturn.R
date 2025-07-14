@@ -1,5 +1,4 @@
 library(tidyverse)
-library(magrittr)
 library(devtools)
 install_github("ochyzh/networkdata")
 library(networkdata)
@@ -12,9 +11,10 @@ head(defAlly)
 cntries = unique(defAlly$ccode1[defAlly$year==2012])
 
 defMat = defAlly |>
-  dplyr::filter(year==2012) |>
-  dplyr::select(ccode1, ccode2, defAlly) |>
+  arrange(ccode2) |>
+    dplyr::select(ccode1, ccode2, defAlly) |>
   pivot_wider(names_from=ccode2, values_from=defAlly) |>
+  arrange(ccode1)|>
   data.matrix()
 
 rownames(defMat) = cntries
