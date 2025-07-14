@@ -1,7 +1,7 @@
 ---
 title: Advanced Network Analysis
 subtitle: Stochastic Actor-Oriented Models
-author: "Shahryar Minhas [s7minhas.com/]"
+author: "Shahryar Minhas [s7minhas.com]"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -376,26 +376,6 @@ The primes indicate the elements in the formulae that are under control of actor
 - The average similarity will decrease from 1/5 to 4/5 for a change of -0.6. Then, accounting for the similarity effect, the probability of moving from 3 to 2 for this actor is $$\begin{align}&\exp(-1(2-3)-0.5(2-3)^2\\&+2.5(-0.6))/(1+\exp(-1(2-3)-0.5(2-3)^2\\&+2.5(-0.6))=0.26\end{align}$$ 
 
 ---
-## Your Turn
-
-Use the example above to answer the following questions.
-
-- What is the probability of reciprocating an incoming tie to a similar actor? 
-
-- What is the probability of moving from 3 to 4, ignoring the similarity to friends?
-
-- Suppose an actor has 5 friends, 3 of whom score 4 and 2 of whom score 3. What is the probability of moving from 3 to 4, if we account for homophily?
-
-
----
-
-## Back to Our Estimated Model
-
-```{r}
-NBans
-```
-
----
 
 ## Let's Specify a Model That...
 
@@ -425,22 +405,7 @@ NBeff <- includeEffects(NBeff, name = "drinkingbeh",
 ```
 
 ---
-## Your Turn
 
-1. Run the new model
-
-2. What is the probability of a reciprocated tie?
-
-3. What is the probability of a reciprocated tie for two actors with the same drinking habits?
-
-4. What is the range of the drinking variable? What is it's mean?  What is the inflection point in the parabola that is fitted to the trend in drinking behavior? 
-
-5. What is the probability of someone moving from drinking=3 to drinking=2, without accounting for homophily?
-
-6. Suppose an individual has 2 friends, one with a drink score of 5 and another with a drink score of 2. What is the probability that this individual will move from drinking=3 to drinking=2, accounting for homophily?
-
-
----
 ## Results
 ```{r, echo=FALSE}
 m2<-readRDS("data/m2.rds")
@@ -536,17 +501,6 @@ data(knecht)
 - `demographics`--node-level covariates: sex, age, ethnicity, religion
 
 - `delinquency`--number of delinquencies
-
----
-## Your Turn
-
-- Use the tools we learned during the last class to visualize the friendship network over time.
-
-- Set up the data. Treats friendships and delinquencies as two mutually-constitutive outcome variables. Recode religion as 1 if an individual is religious and 0 otherwise.
-
-Estimate a RSiena model. In addition to the default specification, specify the friendship equation as a function of religious similarity and each individual's delinqeencies. In addition to the default specification, specify the delinquency equation as a function of indegree, outdegree, and average drinking of one's friends.
-
-
 
 ---
 
@@ -660,18 +614,6 @@ dipl <- sienaDependent(dipl)
 
 ---
 
-## Your Turn
-
-1. Set up `allies` and `contig` as edge-level covariates (use the first two time periods).
-
-2. Set up `polity` as a time-varying node-level covariate (use the first two time periods).
-
-3. Estimate a model that includes the following covariates: degree, transTies, polity similarity, contiguity, and allies.
-
-
-
-
----
 ## Results
 ```{r, echo=FALSE}
 ans<- readRDS("data/ans.rds")

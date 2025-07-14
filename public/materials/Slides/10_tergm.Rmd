@@ -1,7 +1,7 @@
 ---
 title: Advanced Network Analysis
 subtitle: Temporal ERGMs
-author: "Shahryar Minhas [s7minhas.com/]"
+author: "Shahryar Minhas [s7minhas.com]"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -79,6 +79,7 @@ library(networkdata)
 data(allyData)
 head(dyadData)[,1:8]
 ```
+
 ---
 
 
@@ -136,123 +137,6 @@ length(ally)
 class(ally[[1]])
 list.vertex.attributes(ally[[1]])
 ```
-
----
-
-## Exploring temporal network data
-
-The `statnet` package includes a range of "sub-packages" that enable you to understand the characteristics of dynamic networks:
-
-- `networkDynamic`: storage and management of temporal network data
-- `tsna`: descriptive statistics and graphics for exploratory network analysis
-- `ndtv`: utilities for plotting temporal networks (including network movies)
-
----
-
-## Prepping data
-
-First step is going to be formatting our list of `network` objects into a format that these packages can recognize:
-
-```{r} 
-allyDyn = networkDynamic(network.list=ally)
-```
-
----
-
-## Quick snapshots
-
-*networkDynamic* makes it easy to generate some snapshots of a longitudinal network:
-
-```{r, echo=TRUE, eval=FALSE}
-par(mfrow = c(1,2))
-p<-plot(
-	network.extract(allyDyn, at = 0), 
-	main = "1991", displaylabels = T)
-plot(
-	network.extract(allyDyn, at = 9), 
-	main = "2000", displaylabels = T,coord=p)
-```
----
-
-## Quick snapshots
-
-```{r, echo=FALSE, eval=TRUE, fig.width=12, fig.height=6}
-par(mfrow = c(1,2))
-p<-plot(
-	network.extract(allyDyn, at = 0), 
-	main = "1991", displaylabels = T)
-plot(
-	network.extract(allyDyn, at = 9), 
-	main = "2000", displaylabels = T,coord=p)
-```
-
-
----
-
-## Quick movie
-
-*ndtv* makes it pretty easy to render a simple D3 movie for a longitudinal network:
-
-```{r, echo=TRUE, eval=FALSE}
-library(ndtv)
-render.d3movie(allyDyn, 
-	plot.par=list(displaylabels=T),filename="AlliesNetwork.html", launchBrowser=FALSE )
-```
-
----
-## Descriptive analyses
-
-*tsna* enables us to quickly calculate some basic descriptive statistics such as the density of a graph:
-
-```{r, echo=TRUE, eval=TRUE, message=FALSE}
-library(tsna)
-tSnaStats(allyDyn, "gden") # Changes in graph density
-```
-
----
-
-## Descriptive analyses
-
-Can also examine changes in transitivity over time:
-
-```{r, echo=TRUE, eval=TRUE, message=FALSE}
-tSnaStats(allyDyn, "gtrans") # Changes in graph transitivity
-```
-
----
-
-## Descriptive analyses
-
-The *tErgmStats* enables us to calculate changes in `ergm` terms over time:
-
-```{r}
-tErgmStats(allyDyn, "~ edges+triangle")
-```
-
----
-## Your Turn
-
-For this exercise, you will work with the friendship data from `library(RSiena)`. Run the following code to load the data.
-
-```{r}
-library(RSiena)
-friend.data.w1 <- s501
-friend.data.w2 <- s502
-friend.data.w3 <- s503
-drink <- s50a
-smoke <- s50s
-```
-
-2. Format the friendship data from as a `networkDynamic` object. 
-
-3. Summarize changes in friendships (edges), triangles, and number of nodes with indegrees 1 nd 2, over time.
-
-4. Plot the first and the third waves of the friends network side-by-side using the `network.extract` function.
-
-5. Make a quick movie of the friends network over time using the `render.d3movie` function.
-
-
-
 
 ---
 
@@ -368,7 +252,9 @@ tergmFit <- btergm(
 ```{r tergmfit1, echo=TRUE, eval=TRUE}
 summary(tergmFit)
 ```
+
 ---
+
 ## Temporal Terms
 
 - `delrecip(mutuality = FALSE, lag = 1)`:  checks for delayed reciprocity. For
@@ -401,22 +287,6 @@ summary(tergmFit1)
 
 ---
 
-## Your Turn 1
-
-1. Set up `smoke` and `drink` as vertex attributes to the friendship network.
-
-2. Estimate a temporal `ergm` that models friendships as a function of 
-    - drinking and smoking behaviors, 
-    - homophily (people make friends with those with similar drinking and smoking habits), 
-    - reciprocity (why?)
-    - triad closure (why?)
-    - popularity
-
-3. Add temporal terms to model stability and delayed reciprocity.
-
-
----
-
 ## Duque (2018)
 
 The DV is diplomatic ties, `dipl_ties`:
@@ -436,6 +306,7 @@ class(dipl_ties[[1]])
 
 
 ---
+
 ## The Dependent Variable
 
 we can see that `dipl_ties` is currently a list of `data.frames`. Let's convert it into a list of networks.
@@ -450,102 +321,7 @@ class(dipl_ties[[1]])
 ```
 
 ---
-## Use `networkDynamic` for Visualizing the Netwokrk
-```{r dipldyn, eval=F}
-diplDyn = networkDynamic(network.list=dipl_ties, vertex.pid='vertex.names')
-```
 
-Get an error that need vertex.pid (persistent identifiers), as our networks are not of equal size.
-
----
-
-## Try Again
-```{r tryagain, echo=TRUE, eval=FALSE}
-#Define network pids:
-for (i in 1:8) {
-set.network.attribute(dipl_ties[[i]], 'vertex.pid','vertex.names')
-}
-#Takes 5 min to run:
-diplDyn = networkDynamic(network.list=dipl_ties, vertex.pid='vertex.names')
-diplDyn
-```
-
-```{r tryagain1, echo=FALSE, eval=TRUE}
-diplDyn<-readRDS("data/diplDyn.Rds")
-diplDyn
-```
-
----
-## Quick snapshots
-
-```{r, echo=TRUE, eval=FALSE}
-par(mfrow = c(1,2))
-plot(
-	network.extract(diplDyn, at = 1), 
-	main = "1970", displaylabels = T)
-plot(
-	network.extract(diplDyn, at = 6), 
-	main = "2005", displaylabels = T)
-```
-
-Note: cannot use coordinates, because networks are not of equal size, include different actors.
-
----
-
-## Quick snapshots
-
-```{r, echo=FALSE, eval=TRUE, fig.width=12, fig.height=6}
-par(mfrow = c(1,2))
-plot(
-	network.extract(diplDyn, at = 0), 
-	main = "1970", displaylabels = T)
-plot(
-	network.extract(diplDyn, at = 7), 
-	main = "2005", displaylabels = T)
-```
-
-
----
-
-## What Have We Learned?
-
-- Networks of embassies are dense.
-
-- Some states host very few embassies.
-
-- Note: network graphs of dense networks are not very esthetically pleasing or informative.
-
----
-## Descriptive analyses
-
-`tsna` enables us to quickly calculate some basic descriptive statistics such as the density of a graph:
-
-```{r, echo=TRUE, eval=TRUE, message=FALSE}
-library(tsna)
-tSnaStats(diplDyn, "gden") # Changes in graph density
-```
-
----
-
-## Descriptive analyses
-
-Can also examine transitivity over time:
-
-```{r, echo=TRUE, eval=TRUE, message=FALSE}
-tSnaStats(diplDyn, "gtrans") # Changes in graph transitivity
-```
-
----
-
-## Descriptive analyses
-
-The `tErgmStats` enables us to calculate changes in `ergm` terms over time:
-
-```{r}
-tErgmStats(diplDyn, "~ edges+triangle")
-```
-
----
 ## Duque (2018)
 
 Popularity hypothesis: High-status states should receive more recognition simply because of their position in the
@@ -677,16 +453,12 @@ summary(tergm_Duque1)
 ```
 
 ---
+
 ## Example with Time Vars
 ```{r, echo=F}
 tergm_Duque1<-readRDS("data/tergm_Duque1.rds")
 summary(tergm_Duque1)
 ```
----
-## Your Turn
-
-Re-specify the model to account for delayed reciprocity and stability. Estimate your new model.
-
 
 ---
 

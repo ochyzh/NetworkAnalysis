@@ -41,7 +41,7 @@ All the class materials will be posted/updated here.
         <td>Community Detection</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a> |<a href="../materials/Slides/04_communities.pdf" target=_blank>community detection pdf </a>  |<a href="../materials/Scripts/.day3_script.R"target=_blank> code from class </a> | <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
+          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a> |<a href="../materials/Slides/04_communities.pdf" target=_blank>community detection pdf </a>  |<a href="../materials/Scripts/day3_script.R"target=_blank> code from class </a> | <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
           </dd>
           </dl>
         </td>
@@ -101,7 +101,7 @@ All the class materials will be posted/updated here.
         <td>Latent Variable Modeling: Social Relations Model (SRM) </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/public/materials/Slides/09_latent_srm.pdf" target=_blank> SRM PDF </a> | <a href="../materials/Slides/09_latent_srm_supp/back_kenny_2010.pdf" target=_blank> SRM Reading I: Back & Kenny 2010 </a> | <a href="../materials/Slides/09_latent_srm_supp/minhas_etal_2022.pdf" target=_blank> SRM Reading II: Minhas et al 2022 </a> |<a href="../materials/Slides/09_latent_srm_supp/day9_srm_code_part1.R" target=_blank> Day 9 Code Part 1 </a> | <a href="../materials/Slides/09_latent_srm_supp/day9_srm_code_part2.R" target=_blank> Day 9 Code Part 2 </a> | <a href="../materials/Slides/09_latent_srm_supp/day9_srm.rda" target=_blank> Day 9 Data </a> |  <a href="../materials/Slides/09_latent_srm_supp/bayes_aside.zip" target=_blank> Aside on Bayesian Modeling </a> |
+          <dd><a href="../materials/Slides/09_latent_srm.pdf" target=_blank> SRM PDF </a> | <a href="../materials/Slides/09_latent_srm_supp/back_kenny_2010.pdf" target=_blank> SRM Reading I: Back & Kenny 2010 </a> | <a href="../materials/Slides/09_latent_srm_supp/minhas_etal_2022.pdf" target=_blank> SRM Reading II: Minhas et al 2022 </a> |<a href="../materials/Slides/09_latent_srm_supp/day9_srm_code_part1.R" target=_blank> Day 9 Code Part 1 </a> | <a href="../materials/Slides/09_latent_srm_supp/day9_srm_code_part2.R" target=_blank> Day 9 Code Part 2 </a> | <a href="../materials/Slides/09_latent_srm_supp/day9_srm.rda" target=_blank> Day 9 Data </a> | <a href="../materials/Slides/day9_srm_summary.pdf" target=_blank> Day 9 Summary </a> | <a href="../materials/Slides/09_latent_srm_supp/bayes_aside.zip" target=_blank> Aside on Bayesian Modeling </a> |
           </dd>
           </dl>
         </td>
@@ -111,7 +111,7 @@ All the class materials will be posted/updated here.
         <td>Latent Variable Modeling: Blockmodels </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/public/materials/Slides/10_latent_blocks.pdf" target=_blank> Blockmodels PDF </a> | <a href="../materials/Slides/10_latent_blocks_supp/day10_latent_block_readings.zip" target=_blank> Blockmodel Readings </a> | <a href="../materials/Slides/10_latent_blocks_supp/day10_blocks_code.R" target=_blank> Day 10 Code </a> | <a href="../materials/Slides/10_latent_blocks_supp/day10_blocks.rda" target=_blank> Day 10 Data </a> |
+          <dd><a href="../materials/Slides/10_latent_blocks.pdf" target=_blank> Blockmodels PDF </a> | <a href="../materials/Slides/10_latent_blocks_supp/day10_latent_block_readings.zip" target=_blank> Blockmodel Readings </a> | <a href="../materials/Slides/10_latent_blocks_supp/day10_blocks_code.R" target=_blank> Day 10 Code </a> | <a href="../materials/Slides/10_latent_blocks_supp/day10_blocks.rda" target=_blank> Day 10 Data </a> |
           </dd>
           </dl>
         </td>
@@ -121,7 +121,7 @@ All the class materials will be posted/updated here.
         <td>Latent Variable Modeling: Distance Model </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/public/materials/Slides/11_latent_distance.pdf" target=_blank> Distance Model PDF </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_latent_distance_readings.zip" target=_blank> Distance Model Readings </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_distance_code.R" target=_blank> Day 10 Code </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_distance.rda" target=_blank> Day 10 Data </a> |
+          <dd><a href="../materials/Slides/11_latent_distance.pdf" target=_blank> Distance Model PDF </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_latent_distance_readings.zip" target=_blank> Distance Model Readings </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_distance_code.R" target=_blank> Day 10 Code </a> | <a href="../materials/Slides/11_latent_distance_supp/day11_distance.rda" target=_blank> Day 10 Data </a> | <a href="../materials/Slides/11_latent_distance_supp/matrix_decomp_aside.zip" target=_blank> Matrix Decomposition Aside </a> |
           </dd>
           </dl>
         </td>
@@ -131,7 +131,7 @@ All the class materials will be posted/updated here.
         <td>Latent Variable Modeling: Factor Model </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/public/materials/Slides/12_latent_factor.pdf" target=_blank> Factor Model PDF </a> | <a href="../materials/Slides/12_latent_factor_supp/day12_latent_factor_readings.zip" target=_blank> Factor Model Readings </a> | <a href="../materials/Slides/12_latent_factor_supp/ameApp.zip" target=_blank> Day 12 Code & Data </a> |
+          <dd><a href="../materials/Slides/12_latent_factor.pdf" target=_blank> Factor Model PDF </a> | <a href="../materials/Slides/12_latent_factor_supp/day12_latent_factor_readings.zip" target=_blank> Factor Model Readings </a> | <a href="../materials/Slides/12_latent_factor_supp/ameApp.zip" target=_blank> Day 12 Code & Data </a> | <a href="../materials/Slides/latent_models_summary.pdf" target=_blank> Summary of Latent Variable Models </a> | <a href="../materials/Slides/12_latent_factor_supp/latent_var_application.zip" target=_blank> Gade Latent Variable Application Code </a> |
           </dd>
           </dl>
         </td>
@@ -151,7 +151,7 @@ All the class materials will be posted/updated here.
         <td>Weighted ERGMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/.day9_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.08_valued_ergms_yourturn.R"target=_blank> your turn answers </a>
+          <dd><a href="../materials/Slides/08_weighted_nets.html" target=_blank>weighted nets </a>  | <a href="../materials/Slides/08_weighted_nets.pdf" target=_blank>slides in pdf</a>|<a href="../materials/Scripts/day9_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/08_valued_ergms_yourturn.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>
@@ -161,7 +161,7 @@ All the class materials will be posted/updated here.
         <td>Temporal ERGMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/10_tergm.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/Scripts/.day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/.10_tergm_friends_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/.10_tergms_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>
+          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/10_tergm.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/Scripts/day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/10_tergm_friends_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/10_tergms_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>
           </dd>
           </dl>
         </td>
@@ -171,7 +171,7 @@ All the class materials will be posted/updated here.
         <td>SAOMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/12_saom.html" target=_blank>SAOMs </a>  | <a href="../materials/Slides/12_saom.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/12_saom.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn.R"target=_blank> your turn answers (1st exercise) </a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn_knecht.R"target=_blank> your turn answers (Knecht exercise) </a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>|<a href="../materials/YourTurnAnswers/.12_saom_yourturn2.R"target=_blank> your turn answers (3rd exercise) </a>
+          <dd><a href="../materials/Slides/12_saom.html" target=_blank>SAOMs </a>  | <a href="../materials/Slides/12_saom.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/12_saom.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/YourTurnAnswers/12_saom_yourturn.R"target=_blank> your turn answers (1st exercise) </a>|<a href="../materials/YourTurnAnswers/12_saom_yourturn_knecht.R"target=_blank> your turn answers (Knecht exercise) </a>|<a href="../materials/YourTurnAnswers/12_saom_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>|<a href="../materials/YourTurnAnswers/12_saom_yourturn2.R"target=_blank> your turn answers (3rd exercise) </a>
           </dd>
           </dl>
         </td>

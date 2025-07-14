@@ -115,6 +115,44 @@ save(
 ####
 
 ####
+# lets prep our data for analysis
+# using netify
+library(netify)
+
+net = netify(
+  dyad_data = trade, 
+  actor1 = 'Var1',
+  actor2 = 'Var2',
+  symmetric = FALSE, 
+  weight = 'trade',
+  nodal_vars = c('pop1', 'gdp1', 'polity1'),
+  dyad_vars = c('conflicts', 'distance', 'shared_igos'),
+  dyad_vars_symmetric = c(TRUE, TRUE, TRUE)
+)
+
+# now we have created a netify object
+# yay us
+
+# lets prepare this for or first 
+# network model using the amen 
+# package
+# to do this we will use the 
+# prep_for_amen fn from the
+# netify package
+amen_data = prep_for_amen(net)
+
+# lets extract every element from
+# amen_data into its own object
+# for easier passing to the amen fnction
+# so that we can run our first social
+# relations model
+yMat = amen_data$Y
+dyadArr = amen_data$Xdyad
+sMat = amen_data$Xrow
+rMat = amen_data$Xcol
+####
+
+####
 # great we're all set with the data
 
 # now lets start simple and get a feel for ame

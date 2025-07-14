@@ -3,7 +3,7 @@
   <head>
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
+    <meta name="author" content="Shahryar Minhas [s7minhas.com]" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
@@ -19,7 +19,7 @@ class: center, middle, inverse, title-slide
 ## Temporal ERGMs
 ]
 .author[
-### Olga Chyzh [www.olgachyzh.com]
+### Shahryar Minhas [s7minhas.com]
 ]
 
 ---
@@ -68,7 +68,7 @@ Estimation and uncertainty. *Physica A: Statistical Mechanics and its Applicatio
 We are used to data in this format: 
 
 
-```r
+``` r
 #install_github("ochyzh/networkdata")
 library(networkdata)
 data(allyData)
@@ -84,6 +84,7 @@ head(dyadData)[,1:8]
 ## 6    PER    USA 1991    1   0          0 0.0033841 0.1364806
 ## 7    BRA    USA 1991    1   0          0 0.0240151 0.1364806
 ```
+
 ---
 
 
@@ -105,7 +106,7 @@ Output should look like this:
 
 .pull-left[
 
-```r
+``` r
 class(war)
 ```
 
@@ -113,7 +114,7 @@ class(war)
 ## [1] "list"
 ```
 
-```r
+``` r
 length(war)
 ```
 
@@ -121,7 +122,7 @@ length(war)
 ## [1] 10
 ```
 
-```r
+``` r
 class(war[[1]])
 ```
 
@@ -129,7 +130,7 @@ class(war[[1]])
 ## [1] "matrix" "array"
 ```
 
-```r
+``` r
 dim(war[[1]])
 ```
 
@@ -140,7 +141,7 @@ dim(war[[1]])
 
 .pull-right[
 
-```r
+``` r
 war[[1]][1:3,1:3]
 ```
 
@@ -159,7 +160,7 @@ war[[1]][1:3,1:3]
 Output should look like this: 
 
 
-```r
+``` r
 class(contiguity)
 ```
 
@@ -167,7 +168,7 @@ class(contiguity)
 ## [1] "matrix" "array"
 ```
 
-```r
+``` r
 dim(contiguity)
 ```
 
@@ -175,7 +176,7 @@ dim(contiguity)
 ## [1] 50 50
 ```
 
-```r
+``` r
 contiguity[1:3,1:3]
 ```
 
@@ -192,7 +193,7 @@ contiguity[1:3,1:3]
 Output should look like this: 
 
 
-```r
+``` r
 class(ally)
 ```
 
@@ -200,7 +201,7 @@ class(ally)
 ## [1] "list"
 ```
 
-```r
+``` r
 length(ally)
 ```
 
@@ -208,7 +209,7 @@ length(ally)
 ## [1] 10
 ```
 
-```r
+``` r
 class(ally[[1]])
 ```
 
@@ -216,199 +217,13 @@ class(ally[[1]])
 ## [1] "network"
 ```
 
-```r
+``` r
 list.vertex.attributes(ally[[1]])
 ```
 
 ```
 ## [1] "cinc"         "cname"        "polity"       "vertex.names" "year"
 ```
-
----
-
-## Exploring temporal network data
-
-The `statnet` package includes a range of "sub-packages" that enable you to understand the characteristics of dynamic networks:
-
-- `networkDynamic`: storage and management of temporal network data
-- `tsna`: descriptive statistics and graphics for exploratory network analysis
-- `ndtv`: utilities for plotting temporal networks (including network movies)
-
----
-
-## Prepping data
-
-First step is going to be formatting our list of `network` objects into a format that these packages can recognize:
-
-
-```r
-allyDyn = networkDynamic(network.list=ally)
-```
-
-```
-## Neither start or onsets specified, assuming start=0
-## Onsets and termini not specified, assuming each network in network.list should have a discrete spell of length 1
-## Argument base.net not specified, using first element of network.list instead
-## Created net.obs.period to describe network
-##  Network observation period info:
-##   Number of observation spells: 1 
-##   Maximal time range observed: 0 until 10 
-##   Temporal mode: discrete 
-##   Time unit: step 
-##   Suggested time increment: 1
-```
-
----
-
-## Quick snapshots
-
-*networkDynamic* makes it easy to generate some snapshots of a longitudinal network:
-
-
-```r
-par(mfrow = c(1,2))
-p&lt;-plot(
-	network.extract(allyDyn, at = 0), 
-	main = "1991", displaylabels = T)
-plot(
-	network.extract(allyDyn, at = 9), 
-	main = "2000", displaylabels = T,coord=p)
-```
----
-
-## Quick snapshots
-
-&lt;img src="10_tergm_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
-
-
----
-
-## Quick movie
-
-*ndtv* makes it pretty easy to render a simple D3 movie for a longitudinal network:
-
-
-```r
-library(ndtv)
-render.d3movie(allyDyn, 
-	plot.par=list(displaylabels=T),filename="AlliesNetwork.html", launchBrowser=FALSE )
-```
-
----
-## Descriptive analyses
-
-*tsna* enables us to quickly calculate some basic descriptive statistics such as the density of a graph:
-
-
-```r
-library(tsna)
-tSnaStats(allyDyn, "gden") # Changes in graph density
-```
-
-```
-## Time Series:
-## Start = 0 
-## End = 10 
-## Frequency = 1 
-##         Series 1
-##  [1,] 0.08816327
-##  [2,] 0.09061224
-##  [3,] 0.09061224
-##  [4,] 0.08979592
-##  [5,] 0.08979592
-##  [6,] 0.08979592
-##  [7,] 0.09795918
-##  [8,] 0.09795918
-##  [9,] 0.09795918
-## [10,] 0.09795918
-## [11,]         NA
-```
-
----
-
-## Descriptive analyses
-
-Can also examine changes in transitivity over time:
-
-
-```r
-tSnaStats(allyDyn, "gtrans") # Changes in graph transitivity
-```
-
-```
-## Time Series:
-## Start = 0 
-## End = 10 
-## Frequency = 1 
-##        Series 1
-##  [1,] 0.7617647
-##  [2,] 0.7768924
-##  [3,] 0.7768924
-##  [4,] 0.7768924
-##  [5,] 0.7768924
-##  [6,] 0.7768924
-##  [7,] 0.7974684
-##  [8,] 0.7974684
-##  [9,] 0.7974684
-## [10,] 0.7974684
-## [11,]        NA
-```
-
----
-
-## Descriptive analyses
-
-The *tErgmStats* enables us to calculate changes in `ergm` terms over time:
-
-
-```r
-tErgmStats(allyDyn, "~ edges+triangle")
-```
-
-```
-## Time Series:
-## Start = 0 
-## End = 10 
-## Frequency = 1 
-##    edges triangle
-##  0   108      259
-##  1   111      260
-##  2   111      260
-##  3   110      260
-##  4   110      260
-##  5   110      260
-##  6   120      315
-##  7   120      315
-##  8   120      315
-##  9   120      315
-## 10     0        0
-```
-
----
-## Your Turn
-
-1. For this exercise, you will work with the friendship data from `library(RSiena)`. Run the following code to load the data.
-
-
-```r
-library(RSiena)
-friend.data.w1 &lt;- s501
-friend.data.w2 &lt;- s502
-friend.data.w3 &lt;- s503
-drink &lt;- s50a
-smoke &lt;- s50s
-```
-
-2. Format the friendship data from as a `networkDynamic` object. 
-
-3. Summarize changes in friendships (edges), triangles, and number of nodes with indegrees 1 nd 2, over time.
-
-4. Plot the first and the third waves of the friends network side-by-side using the `network.extract` function.
-
-5. Make a quick movie of the friends network over time using the `render.d3movie` function.
-
-
-
 
 ---
 
@@ -497,7 +312,7 @@ smoke &lt;- s50s
 
 
 
-```r
+``` r
 library(btergm)
 
 tergmFit &lt;- btergm(
@@ -531,7 +346,7 @@ tergmFit &lt;- btergm(
 ## contiguity (col)  50  50  50  50  50  50  50  50  50   50
 ```
 
-```r
+``` r
 #check model fit:
 #GOF1&lt;-gof(tergmFit)
 ```
@@ -540,22 +355,24 @@ tergmFit &lt;- btergm(
 ## Results
 
 
-```r
+``` r
 summary(tergmFit)
 ```
 
 ```
 ##                            Estimate   Boot mean    2.5%   97.5%
-## edges                   -5.69586158 -5.70542436 -5.8520 -5.5075
-## edgecov.war[[i]]        -0.07515258 -0.07139892 -0.3043  0.1563
-## edgecov.contiguity[[i]]  2.54540447  2.54807193  2.5000  2.6097
-## nodecov.polity          -0.00027339 -0.00016538 -0.0062  0.0057
-## absdiff.polity           0.01865488  0.01872857  0.0136  0.0236
-## nodecov.cinc            -1.42023487 -1.44110434 -2.0599 -0.8726
-## absdiff.cinc            26.96999913 27.04509688 26.2276 27.8386
-## gwesp.fixed.0.5          2.24553096  2.25010329  2.1311  2.3457
+## edges                   -5.69586158 -5.70326749 -5.8470 -5.4967
+## edgecov.war[[i]]        -0.07515258 -0.06963466 -0.3202  0.1405
+## edgecov.contiguity[[i]]  2.54540447  2.54655506  2.4927  2.6226
+## nodecov.polity          -0.00027339 -0.00011494 -0.0062  0.0056
+## absdiff.polity           0.01865488  0.01880566  0.0142  0.0232
+## nodecov.cinc            -1.42023487 -1.44550741 -2.0620 -0.8232
+## absdiff.cinc            26.96999913 27.03209595 26.2319 27.8021
+## gwesp.fixed.0.5          2.24553096  2.24844146  2.1292  2.3447
 ```
+
 ---
+
 ## Temporal Terms
 
 - `delrecip(mutuality = FALSE, lag = 1)`:  checks for delayed reciprocity. For
@@ -577,7 +394,7 @@ time trend) or polynomial functional forms (e.g., 0 + (1 * t) + (1 * t^2)) can b
 
 
 
-```r
+``` r
 tergmFit1 &lt;- btergm(ally ~ edges + 
 	edgecov(war) + edgecov(contiguity) + 
 	nodecov('polity') + absdiff("polity") + 
@@ -589,28 +406,12 @@ summary(tergmFit1)
 
 ---
 
-## Your Turn 1
-
-1. Set up `smoke` and `drink` as vertex attributes to the friendship network.
-
-2. Estimate a temporal `ergm` that models friendships as a function of 
-    - drinking and smoking behaviors, 
-    - homophily (people make friends with those with similar drinking and smoking habits), 
-    - reciprocity (why?)
-    - triad closure (why?)
-    - popularity
-
-3. Add temporal terms to model stability and delayed reciprocity.
-
-
----
-
 ## Duque (2018)
 
 The DV is diplomatic ties, `dipl_ties`:
 
 
-```r
+``` r
 #Clear your memory and unload `btergm` as it clashes with `network`:
 
 detach("package:btergm", unload=TRUE)
@@ -623,7 +424,7 @@ class(dipl_ties)
 ## [1] "list"
 ```
 
-```r
+``` r
 length(dipl_ties)
 ```
 
@@ -631,7 +432,7 @@ length(dipl_ties)
 ## [1] 8
 ```
 
-```r
+``` r
 class(dipl_ties[[1]])
 ```
 
@@ -641,12 +442,13 @@ class(dipl_ties[[1]])
 
 
 ---
+
 ## The Dependent Variable
 
 we can see that `dipl_ties` is currently a list of `data.frames`. Let's convert it into a list of networks.
 
 
-```r
+``` r
 library(statnet)
 for (i in 1:8) {
 dipl_ties[[i]]&lt;-as.network(as.matrix(dipl_ties[[i]]))
@@ -659,179 +461,7 @@ class(dipl_ties[[1]])
 ```
 
 ---
-## Use `networkDynamic` for Visualizing the Netwokrk
 
-```r
-diplDyn = networkDynamic(network.list=dipl_ties, vertex.pid='vertex.names')
-```
-
-Get an error that need vertex.pid (persistent identifiers), as our networks are not of equal size.
-
----
-
-## Try Again
-
-```r
-#Define network pids:
-for (i in 1:8) {
-set.network.attribute(dipl_ties[[i]], 'vertex.pid','vertex.names')
-}
-#Takes 5 min to run:
-diplDyn = networkDynamic(network.list=dipl_ties, vertex.pid='vertex.names')
-diplDyn
-```
-
-
-```
-## NetworkDynamic properties:
-##   distinct change times: 9 
-##   maximal time range: 0 until  8 
-## 
-## Includes optional net.obs.period attribute:
-##  Network observation period info:
-##   Number of observation spells: 1 
-##   Maximal time range observed: 0 until 8 
-##   Temporal mode: discrete 
-##   Time unit: step 
-##   Suggested time increment: 1 
-## 
-##  Network attributes:
-##   vertices = 194 
-##   directed = TRUE 
-##   hyper = FALSE 
-##   loops = FALSE 
-##   multiple = FALSE 
-##   bipartite = FALSE 
-##   vertex.pid = vertex.names 
-##   net.obs.period: (not shown)
-##   total edges= 10293 
-##     missing edges= 0 
-##     non-missing edges= 10293 
-## 
-##  Vertex attribute names: 
-##     active vertex.names 
-## 
-##  Edge attribute names not shown
-```
-
----
-## Quick snapshots
-
-
-```r
-par(mfrow = c(1,2))
-plot(
-	network.extract(diplDyn, at = 1), 
-	main = "1970", displaylabels = T)
-plot(
-	network.extract(diplDyn, at = 6), 
-	main = "2005", displaylabels = T)
-```
-
-Note: cannot use coordinates, because networks are not of equal size, include different actors.
-
----
-
-## Quick snapshots
-
-&lt;img src="10_tergm_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
-
-
----
-
-## What Have We Learned?
-
-- Networks of embassies are dense.
-
-- Some states host very few embassies.
-
-- Note: network graphs of dense networks are not very esthetically pleasing or informative.
-
----
-## Descriptive analyses
-
-`tsna` enables us to quickly calculate some basic descriptive statistics such as the density of a graph:
-
-
-```r
-library(tsna)
-tSnaStats(diplDyn, "gden") # Changes in graph density
-```
-
-```
-## Time Series:
-## Start = 0 
-## End = 8 
-## Frequency = 1 
-##        Series 1
-##  [1,] 0.2050836
-##  [2,] 0.2368542
-##  [3,] 0.2169688
-##  [4,] 0.2145924
-##  [5,] 0.2195870
-##  [6,] 0.1851018
-##  [7,] 0.1902708
-##  [8,] 0.2099215
-##  [9,]        NA
-```
-
----
-
-## Descriptive analyses
-
-Can also examine transitivity over time:
-
-
-```r
-tSnaStats(diplDyn, "gtrans") # Changes in graph transitivity
-```
-
-```
-## Time Series:
-## Start = 0 
-## End = 8 
-## Frequency = 1 
-##        Series 1
-##  [1,] 0.4830388
-##  [2,] 0.4953440
-##  [3,] 0.5264074
-##  [4,] 0.5159558
-##  [5,] 0.5269708
-##  [6,] 0.4841114
-##  [7,] 0.4875437
-##  [8,] 0.5132955
-##  [9,]        NA
-```
-
----
-
-## Descriptive analyses
-
-The `tErgmStats` enables us to calculate changes in `ergm` terms over time:
-
-
-```r
-tErgmStats(diplDyn, "~ edges+triangle")
-```
-
-```
-## Time Series:
-## Start = 0 
-## End = 8 
-## Frequency = 1 
-##   edges triangle
-## 0  3655   100235
-## 1  5153   190717
-## 2  5314   203523
-## 3  5597   215072
-## 4  5870   238736
-## 5  6165   236593
-## 6  6618   270378
-## 7  7380   336926
-## 8     0        0
-```
-
----
 ## Duque (2018)
 
 Popularity hypothesis: High-status states should receive more recognition simply because of their position in the
@@ -848,7 +478,7 @@ Contiguity (`contig`) and alliances (`allies`) are time-varying edge-level covar
 
 .pull-left[
 
-```r
+``` r
 #Contiguity:
 class(contig)
 ```
@@ -857,7 +487,7 @@ class(contig)
 ## [1] "list"
 ```
 
-```r
+``` r
 length(contig)
 ```
 
@@ -865,7 +495,7 @@ length(contig)
 ## [1] 8
 ```
 
-```r
+``` r
 class(contig[[1]])
 ```
 
@@ -873,7 +503,7 @@ class(contig[[1]])
 ## [1] "data.frame"
 ```
 
-```r
+``` r
 dim(contig[[1]])
 ```
 
@@ -884,7 +514,7 @@ dim(contig[[1]])
 
 .pull-right[
 
-```r
+``` r
 contig[[1]][1:3,1:3]
 ```
 
@@ -900,7 +530,7 @@ contig[[1]][1:3,1:3]
 ## Allies
 .pull-left[
 
-```r
+``` r
 #Allies:
 class(allies)
 ```
@@ -909,7 +539,7 @@ class(allies)
 ## [1] "list"
 ```
 
-```r
+``` r
 length(allies)
 ```
 
@@ -917,7 +547,7 @@ length(allies)
 ## [1] 8
 ```
 
-```r
+``` r
 class(allies[[1]])
 ```
 
@@ -925,7 +555,7 @@ class(allies[[1]])
 ## [1] "data.frame"
 ```
 
-```r
+``` r
 dim(allies[[1]])
 ```
 
@@ -936,7 +566,7 @@ dim(allies[[1]])
 
 .pull-right[
 
-```r
+``` r
 allies[[1]][1:3,1:3]
 ```
 
@@ -953,7 +583,7 @@ allies[[1]][1:3,1:3]
 It looks like `allies` and `contig` are currently stored as lists of `data.frames`. We must convert them to lists of matrices.  
 
 
-```r
+``` r
 for (i in 1:8) {
 contig[[i]]&lt;-as.matrix(contig[[i]])
 allies[[i]]&lt;-as.matrix(allies[[i]])
@@ -966,7 +596,7 @@ allies[[i]]&lt;-as.matrix(allies[[i]])
 Our node-level covariate, `polity$dem_dum` must be defined as a vertex attribute in each of the `dipl_ties` networks.
 
 
-```r
+``` r
 #Define Dem as a vertex attribute for each year of dipl_ties (didn't work as a loop):
   set.vertex.attribute(dipl_ties[[1]],"dem",polity$dem_dum[polity$year==1970])
   set.vertex.attribute(dipl_ties[[2]],"dem",polity$dem_dum[polity$year==1975])
@@ -987,7 +617,7 @@ dipl_ties[[1]] %v% "dem"
 ## [112] 0 0 0 1 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 1 0
 ```
 
-```r
+``` r
 dipl_ties[[2]] %v% "dem"
 ```
 
@@ -1001,7 +631,7 @@ dipl_ties[[2]] %v% "dem"
 ---
 ## Specify the Model:
 
-```r
+``` r
 library(btergm)
 #This runs for 5 min:
 tergm_Duque&lt;-btergm(dipl_ties ~ edges + istar(2) + ostar(2) + mutual + triangles+
@@ -1039,7 +669,7 @@ summary(tergm_Duque)
 ---
 #Example with Time Vars
 
-```r
+``` r
 #This runs for 5 min:
 tergm_Duque1&lt;-btergm(dipl_ties ~ edges + istar(2) + ostar(2) + mutual + triangles+
                   absdiff("dem")+
@@ -1053,6 +683,7 @@ summary(tergm_Duque1)
 ```
 
 ---
+
 ## Example with Time Vars
 
 ```
@@ -1068,11 +699,6 @@ summary(tergm_Duque1)
 ## edgecov.contig[[i]]    1.837357  1.828172  1.6100  2.1092
 ## edgecov.timecov1[[i]] -0.126189 -0.127274 -0.2050 -0.0802
 ```
----
-## Your Turn
-
-Re-specify the model to account for delayed reciprocity and stability. Estimate your new model.
-
 
 ---
 

@@ -1,0 +1,312 @@
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 01/08/2024 09:51:35
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 Feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 713360.
+Effects object used: NBeff 
+Model Type:
+ Standard actor-oriented model 
+Behavioral Model Type:
+ Standard behavior actor-oriented model ('restrict')
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations in each period is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  constant friendship rate (period 1)             4.6960
+  2. rate:  constant friendship rate (period 2)             4.3288
+  3. eval:  outdegree (density)                            -1.4677
+  4. eval:  reciprocity                                     0.0000
+  5. eval:  transitive triplets                             0.0000
+  6. eval:  transitive recipr. triplets                     0.0000
+  7. eval:  smoke1 alter                                    0.0000
+  8. eval:  smoke1 squared alter                            0.0000
+  9. eval:  smoke1 ego                                      0.0000
+ 10. eval:  smoke1 diff. squared                            0.0000
+ 11. rate:  rate drinkingbeh (period 1)                     0.7057
+ 12. rate:  rate drinkingbeh (period 2)                     0.8494
+ 13. eval:  drinkingbeh linear shape                        0.3224
+ 14. eval:  drinkingbeh quadratic shape                     0.0000
+
+
+Values of target statistics are
+  1. Amount of network change in period 1                               115.0000
+  2. Amount of network change in period 2                               106.0000
+  3. Number of ties                                                     238.0000
+  4. Number of reciprocated ties                                        160.0000
+  5. Number of transitive triplets                                      225.0000
+  6. Number of transitive recipr. triplets                              175.0000
+  7. Sum indegrees x smoke1                                              -1.4400
+  8. Sum indegrees x sq. smoke1                                         113.7272
+  9. Sum outdegrees x smoke1                                              3.5600
+ 10. Sum_ties diff.sq smoke1                                            153.0000
+ 11. Amount of behavioral change in period 1 on drinkingbeh              27.0000
+ 12. Amount of behavioral change in period 2 on drinkingbeh              33.0000
+ 13. drinkingbeh centered sum                                            11.6667
+ 14. drinkingbeh sum of cent. squares                                   121.0711
+These were calculated from the data.
+
+ 14 parameters, 14 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 2986 iterations.
+Parameter estimates based on 1986 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  -0.5370  10.7699  -0.0499 
+  2.  -0.1040   9.5193  -0.0109 
+  3.   1.1190  24.5520   0.0456 
+  4.   1.3100  21.2370   0.0617 
+  5.   8.3860  87.3435   0.0960 
+  6.   8.4940  71.7795   0.1183 
+  7.   0.1218  13.8566   0.0088 
+  8.   0.5669  19.8056   0.0286 
+  9.   0.5838  13.9048   0.0420 
+ 10.   1.3580  29.6777   0.0458 
+ 11.  -0.1430   4.5875  -0.0312 
+ 12.   0.2440   4.8894   0.0499 
+ 13.  -0.7210   7.6497  -0.0943 
+ 14.  -0.9576  12.4680  -0.0768 
+
+Good convergence is indicated by the t-ratios being close to zero.
+
+Overall maximum convergence ratio =  0.2603 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 2986 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+Network Dynamics
+ 1. rate:  constant friendship rate (period 1)                     6.2181  (   1.0023)
+ 2. rate:  constant friendship rate (period 2)                     5.1381  (   0.8251)
+ 3. eval:  outdegree (density)                                    -2.6120  (   0.1983)
+ 4. eval:  reciprocity                                             2.7585  (   0.2389)
+ 5. eval:  transitive triplets                                     0.8881  (   0.1386)
+ 6. eval:  transitive recipr. triplets                            -0.5036  (   0.2080)
+ 7. eval:  smoke1 alter                                            0.2481  (   0.3115)
+ 8. eval:  smoke1 squared alter                                   -0.2169  (   0.2638)
+ 9. eval:  smoke1 ego                                              0.1043  (   0.1291)
+10. eval:  smoke1 diff. squared                                   -0.0988  (   0.0624)
+Behavior Dynamics
+
+11. rate:  rate drinkingbeh (period 1)                             1.1914  (   0.2793)
+12. rate:  rate drinkingbeh (period 2)                             1.6621  (   0.3920)
+13. eval:  drinkingbeh linear shape                                0.3609  (   0.1396)
+14. eval:  drinkingbeh quadratic shape                            -0.2030  (   0.0928)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+     1.005     -0.104      0.029     -0.001     -0.032      0.028      0.008     -0.015      0.009      0.001     -0.035     -0.038      0.004      0.000
+    -0.125      0.681      0.014     -0.012     -0.018      0.017      0.009      0.003      0.004     -0.003     -0.006     -0.004     -0.012      0.004
+     0.147      0.084      0.039     -0.021     -0.015      0.014      0.039     -0.032      0.001     -0.003     -0.002      0.005     -0.002      0.000
+    -0.003     -0.059     -0.445      0.057      0.016     -0.030      0.005     -0.008      0.001      0.000      0.003     -0.007      0.000     -0.001
+    -0.230     -0.154     -0.537      0.478      0.019     -0.023     -0.002      0.000     -0.003      0.001      0.001     -0.003      0.000     -0.001
+     0.133      0.099      0.340     -0.607     -0.814      0.043     -0.002      0.004      0.003      0.000     -0.001      0.006      0.001      0.001
+     0.026      0.036      0.634      0.073     -0.045     -0.034      0.097     -0.075     -0.009      0.000      0.000     -0.002      0.000     -0.002
+    -0.059      0.012     -0.602     -0.128     -0.012      0.070     -0.911      0.070      0.005     -0.002      0.001      0.005      0.000      0.001
+     0.066      0.038      0.022      0.036     -0.156      0.114     -0.212      0.142      0.017     -0.003     -0.001      0.003     -0.002      0.001
+     0.022     -0.066     -0.221      0.009      0.103     -0.034     -0.015     -0.131     -0.329      0.004      0.000      0.000      0.001      0.000
+    -0.126     -0.026     -0.036      0.050      0.017     -0.024      0.005      0.014     -0.035      0.026      0.078      0.007     -0.007      0.004
+    -0.096     -0.013      0.068     -0.078     -0.062      0.076     -0.018      0.046      0.057      0.002      0.064      0.154     -0.012      0.007
+     0.027     -0.103     -0.064      0.002      0.020      0.032     -0.010     -0.011     -0.086      0.101     -0.184     -0.218      0.020     -0.003
+    -0.002      0.055     -0.008     -0.024     -0.056      0.037     -0.063      0.053      0.053      0.022      0.159      0.182     -0.207      0.009
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 20.19 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 01/08/2024 09:51:49
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 Feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 960511.
+Effects object used: NBeff 
+Model Type:
+ Standard actor-oriented model 
+Behavioral Model Type:
+ Standard behavior actor-oriented model ('restrict')
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations in each period is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  constant friendship rate (period 1)             4.6960
+  2. rate:  constant friendship rate (period 2)             4.3288
+  3. eval:  outdegree (density)                            -1.4677
+  4. eval:  reciprocity                                     0.0000
+  5. eval:  transitive triplets                             0.0000
+  6. eval:  transitive recipr. triplets                     0.0000
+  7. eval:  smoke1 alter                                    0.0000
+  8. eval:  smoke1 squared alter                            0.0000
+  9. eval:  smoke1 ego                                      0.0000
+ 10. eval:  smoke1 diff. squared                            0.0000
+ 11. rate:  rate drinkingbeh (period 1)                     0.7057
+ 12. rate:  rate drinkingbeh (period 2)                     0.8494
+ 13. eval:  drinkingbeh linear shape                        0.3224
+ 14. eval:  drinkingbeh quadratic shape                     0.0000
+
+
+Values of target statistics are
+  1. Amount of network change in period 1                               115.0000
+  2. Amount of network change in period 2                               106.0000
+  3. Number of ties                                                     238.0000
+  4. Number of reciprocated ties                                        160.0000
+  5. Number of transitive triplets                                      225.0000
+  6. Number of transitive recipr. triplets                              175.0000
+  7. Sum indegrees x smoke1                                              -1.4400
+  8. Sum indegrees x sq. smoke1                                         113.7272
+  9. Sum outdegrees x smoke1                                              3.5600
+ 10. Sum_ties diff.sq smoke1                                            153.0000
+ 11. Amount of behavioral change in period 1 on drinkingbeh              27.0000
+ 12. Amount of behavioral change in period 2 on drinkingbeh              33.0000
+ 13. drinkingbeh centered sum                                            11.6667
+ 14. drinkingbeh sum of cent. squares                                   121.0711
+These were calculated from the data.
+
+ 14 parameters, 14 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 3248 iterations.
+Parameter estimates based on 2248 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.   0.3440  11.5426   0.0298 
+  2.   0.1430   9.5312   0.0150 
+  3.   3.7310  24.0490   0.1551 
+  4.   2.8980  20.3726   0.1422 
+  5.  14.9030  85.6896   0.1739 
+  6.  12.5160  70.5079   0.1775 
+  7.  -0.3238  13.7526  -0.0235 
+  8.   1.6173  19.2856   0.0839 
+  9.   0.0382  13.7135   0.0028 
+ 10.   1.9380  28.6827   0.0676 
+ 11.   0.0190   4.6006   0.0041 
+ 12.  -0.1870   4.7607  -0.0393 
+ 13.   0.1760   7.8717   0.0224 
+ 14.  -0.2119  12.2811  -0.0173 
+
+Good convergence is indicated by the t-ratios being close to zero.
+
+Overall maximum convergence ratio =  0.2135 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 3248 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+Network Dynamics
+ 1. rate:  constant friendship rate (period 1)                     6.2574  (   0.8930)
+ 2. rate:  constant friendship rate (period 2)                     5.1339  (   0.8959)
+ 3. eval:  outdegree (density)                                    -2.6166  (   0.1869)
+ 4. eval:  reciprocity                                             2.7567  (   0.2601)
+ 5. eval:  transitive triplets                                     0.8898  (   0.1344)
+ 6. eval:  transitive recipr. triplets                            -0.5116  (   0.2188)
+ 7. eval:  smoke1 alter                                            0.2355  (   0.3075)
+ 8. eval:  smoke1 squared alter                                   -0.2053  (   0.2753)
+ 9. eval:  smoke1 ego                                              0.1026  (   0.1232)
+10. eval:  smoke1 diff. squared                                   -0.0982  (   0.0632)
+Behavior Dynamics
+
+11. rate:  rate drinkingbeh (period 1)                             1.1890  (   0.2914)
+12. rate:  rate drinkingbeh (period 2)                             1.6456  (   0.4297)
+13. eval:  drinkingbeh linear shape                                0.3632  (   0.1548)
+14. eval:  drinkingbeh quadratic shape                            -0.2033  (   0.0952)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+     0.797     -0.121     -0.006     -0.010     -0.011      0.006     -0.035      0.040     -0.004     -0.001      0.011      0.006      0.004     -0.009
+    -0.151      0.803      0.007      0.000     -0.009      0.004     -0.011      0.001      0.011      0.005      0.005     -0.024     -0.011     -0.003
+    -0.036      0.041      0.035     -0.022     -0.012      0.016      0.036     -0.031      0.002     -0.001      0.000     -0.002      0.000      0.001
+    -0.042      0.001     -0.450      0.068      0.018     -0.039      0.009     -0.009     -0.002      0.000      0.004      0.000      0.002     -0.001
+    -0.089     -0.078     -0.495      0.526      0.018     -0.025      0.002     -0.002     -0.003      0.000     -0.003     -0.001      0.001      0.000
+     0.031      0.023      0.381     -0.689     -0.836      0.048     -0.003      0.002      0.005      0.000      0.004      0.000     -0.003      0.000
+    -0.127     -0.040      0.619      0.108      0.040     -0.050      0.095     -0.079     -0.005      0.002      0.000     -0.002      0.002      0.000
+     0.162      0.005     -0.610     -0.127     -0.047      0.031     -0.928      0.076      0.001     -0.003     -0.001      0.011     -0.002      0.000
+    -0.032      0.099      0.104     -0.063     -0.164      0.171     -0.145      0.031      0.015     -0.003      0.001     -0.005     -0.001      0.000
+    -0.021      0.097     -0.121      0.011      0.048     -0.030      0.078     -0.190     -0.348      0.004      0.000     -0.004      0.001     -0.001
+     0.044      0.018      0.000      0.049     -0.075      0.061     -0.002     -0.017      0.023     -0.011      0.085      0.017     -0.014      0.003
+     0.016     -0.061     -0.027      0.004     -0.017     -0.003     -0.016      0.092     -0.099     -0.136      0.132      0.185     -0.022      0.010
+     0.030     -0.082     -0.003      0.056      0.058     -0.077      0.039     -0.050     -0.033      0.073     -0.301     -0.332      0.024     -0.004
+    -0.107     -0.032      0.044     -0.050      0.012      0.023     -0.002      0.012      0.033     -0.130      0.093      0.248     -0.240      0.009
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 12.03 seconds.
