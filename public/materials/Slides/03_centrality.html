@@ -248,7 +248,7 @@ class: inverse, middle, center
 [Florentine marriages (Padgett &amp; Ansell 1993)](http://home.uchicago.edu/~jpadgett/papers/published/robust.pdf)
 
 
-```r
+``` r
 # load datasets
 data(flo) #this dataset is available from the -network- package
 flo[1:5,1:5]
@@ -268,11 +268,13 @@ flo[1:5,1:5]
 ## Florentine families
 
 
-```r
+``` r
 # convert to igraph object
 library(igraph)
 g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
-g&lt;-  delete_vertices(g, V(g)[degree(g) == 0])
+# Remove isolated vertices
+g &lt;- igraph::delete_vertices(g, V(g)[igraph::degree(g) == 0])
+
 plot(g)
 ```
 
@@ -283,7 +285,7 @@ plot(g)
 Lets calculate each centrality measure in R (using the `igraph` package)
 
 
-```r
+``` r
 sort(igraph::degree(g), decreasing=TRUE)[1:6]
 ```
 
@@ -292,7 +294,7 @@ sort(igraph::degree(g), decreasing=TRUE)[1:6]
 ##          6          4          4          3          3          3
 ```
 
-```r
+``` r
 sort(igraph::closeness(g), decreasing=TRUE)[1:6]
 ```
 
@@ -301,7 +303,7 @@ sort(igraph::closeness(g), decreasing=TRUE)[1:6]
 ## 0.04000000 0.03571429 0.03448276 0.03448276 0.03333333 0.03125000
 ```
 
-```r
+``` r
 sort(igraph::betweenness(g), decreasing=TRUE)[1:6]
 ```
 
@@ -310,7 +312,7 @@ sort(igraph::betweenness(g), decreasing=TRUE)[1:6]
 ## 47.50000 23.16667 19.33333 13.00000 10.33333  9.50000
 ```
 
-```r
+``` r
 sort(igraph::eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
 ```
 
@@ -335,9 +337,9 @@ sort(igraph::eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

@@ -293,7 +293,9 @@ flo[1:5,1:5]
 # convert to igraph object
 library(igraph)
 g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
-g<-  delete_vertices(g, V(g)[degree(g) == 0])
+# Remove isolated vertices
+g <- igraph::delete_vertices(g, V(g)[igraph::degree(g) == 0])
+
 plot(g)
 ```
 
