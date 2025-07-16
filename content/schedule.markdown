@@ -41,7 +41,7 @@ All the class materials will be posted/updated here.
         <td>Community Detection</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a> |<a href="../materials/Slides/04_communities.pdf" target=_blank>community detection pdf </a>  |<a href="../materials/Scripts/day3_script.R"target=_blank> code from class </a> | <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
+          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a> |<a href="../materials/Slides/04_communities.pdf" target=_blank>community detection pdf </a> |<a href="../materials/YourTurnAnswers/04_communities_yourturn.R" target=_blank>your turn answers</a>  |<a href="../materials/Scripts/day3_script.R"target=_blank> code from class </a> | <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
           </dd>
           </dl>
         </td>

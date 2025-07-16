@@ -221,7 +221,7 @@ By re-arranging, can isolate **y** on the left-hand side:
 ---
 ## Likelihood
 
-&lt;img src="./images/SAR_likelihood.png" width="1536" style="display: block; margin: auto;" /&gt;
+&lt;img src="./images/SAR_likelihood.png" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Other Types of Space
@@ -241,7 +241,7 @@ class: inverse, middle, center
 ## Example: Spatial X
 
 
-```r
+``` r
 mydata&lt;-read.csv("./data/covid_data.csv", header=TRUE) 
 mydata$trumpmarg[is.na(mydata$trumpmarg)]&lt;-0
 contigmat&lt;-read.table("data/contigmat.txt") |&gt; as.matrix()
@@ -261,7 +261,7 @@ m2&lt;-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg)
 ## Spatial Regression
 
 
-```r
+``` r
 library(spdep)
 library(spatialreg)
 
@@ -286,7 +286,7 @@ Set up a hypothetical scenario:
 - Expected change in Covid-19 cases that would result from increasing urbanization in Johnson county, IA
 
 
-```r
+``` r
 names&lt;-c("benton","cedar","iowa","johnson","jones","linn")
 mymat&lt;-matrix(c(0,0,1,0,0,1,
                 0,0,0,1,1,1,
@@ -303,7 +303,7 @@ d&lt;-dplyr::filter(mydata, state=="IA" &amp; county %in% names)
 ## Set up A Comparison by Shocking One of the Units on X 
 
 
-```r
+``` r
 m3&lt;- readRDS("m3.RDS")
 
 I&lt;- diag(6)
@@ -316,8 +316,8 @@ A&lt;-solve(I-coef(m3)[1]*mymat)
 
 mycoef&lt;-as.matrix(coef(m3))
 
-Yhat0&lt;- A%*%(X0%*%mycoef)
-Yhat1&lt;- A%*%(X1%*%mycoef)
+Yhat0&lt;- A%*%(X0%*%mycoef) #may need to remove first element of mycoeff[-1]; keep this for knitting (RDS works different)
+Yhat1&lt;- A%*%(X1%*%mycoef) #may need to remove first element of mycoeff[-1]
 
 Y_ch&lt;-Yhat1-Yhat0
 sim&lt;- cbind.data.frame(names,Y_ch)
@@ -327,21 +327,10 @@ sim&lt;- cbind.data.frame(names,Y_ch)
 
 &lt;img src="05_spatial_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
 
----
-## Your Turn 1
 
-Suppose you want to test whether variable *urb2010* is spatially clustered.
-
-1. Calculate a measure of the average urbanization in neighboring states.
-
-2. Estimate a model that accounts for clustering in urbanization.
-
-3. Is the effect of neighbor's urbanization positive or negative?
-
-4. Is this effect statistically significant?
 
 ---
-## Your Turn 2
+## Your Turn 
 
 Suppose you want to test whether variable *votech* (the change in Republican vote share between the 2016 and 2018 Congressional election) is spatially clustered.
 
@@ -355,7 +344,7 @@ Suppose you want to test whether variable *votech* (the change in Republican vot
 ## Making Maps
 
 
-```r
+``` r
 library(tidyverse)
 library(mapproj)
 library(maps)
@@ -385,10 +374,10 @@ head(states)
 - Need to know the order to connect points within each group
 
 ---
-## A Basin (Rather Hideous) Map
+## A Basic (Rather Hideous) Map
 
 
-```r
+``` r
 library(ggplot2)
 ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)
 ```
@@ -399,7 +388,7 @@ ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=group),color="black"
 ## A Bit Nicer of a Map
 
 
-```r
+``` r
 #Set theme options:
 theme_set(theme_grey() + theme(axis.text=element_blank(),
                                axis.ticks=element_blank(),
@@ -417,7 +406,7 @@ ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=group),color="black"
 ## Polygon instead of Path
 
 
-```r
+``` r
 ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)+ coord_map()
 ```
 
@@ -445,7 +434,7 @@ If a categorical variable is assigned as the fill color then ggplot will assign 
 Let’s load in a state regions dataset:
 
 
-```r
+``` r
 statereg&lt;- read.csv("./data/statereg.csv")
 
 head(statereg)
@@ -465,7 +454,7 @@ head(statereg)
 ## Join the Data
 
 
-```r
+``` r
 states.class.map &lt;- left_join(states, statereg, by = c("region" = "State"))
 head(states.class.map)
 ```
@@ -484,7 +473,7 @@ head(states.class.map)
 ## Plot the Regions
 
 
-```r
+``` r
 ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=group, fill = StateGroups), colour = I("black"))+ coord_map()+theme(legend.position="bottom")
 ```
 
@@ -501,7 +490,7 @@ Use color to show the expected change in Covid-19 cases that result from increas
 1. Read in the animal.csv data:
 
 
-```r
+``` r
 animal &lt;- read.csv("./data/animal.csv")
 ```
 
@@ -523,9 +512,9 @@ animal &lt;- read.csv("./data/animal.csv")
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

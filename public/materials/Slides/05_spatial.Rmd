@@ -387,7 +387,7 @@ head(states)
 - Need to know the order to connect points within each group
 
 ---
-## A Basin (Rather Hideous) Map
+## A Basic (Rather Hideous) Map
 
 ```{r}
 library(ggplot2)
