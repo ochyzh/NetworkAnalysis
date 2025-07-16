@@ -297,6 +297,25 @@ plot(ceb, friends, layout=LO, main="Betweenness")
 - Apply these algorithms to find communities in the email data 
 (Assignment 1)
 
+- To get started:
+
+```{r, eval=FALSE}
+library(tidyverse)
+email<-read.csv("emailnet.csv")
+email_Jan6<- email |> dplyr::filter(day==6 & to!=From) 
+
+#This is a directed network, but make undirected to detect communities:
+g = igraph::graph_from_data_frame(email_Jan6, directed=FALSE)
+
+#Make edges unweighted
+g_simple <- igraph::simplify(g, remove.multiple = TRUE, remove.loops = TRUE)
+plot(g_simple, vertex.label=NA, vertex.size=5,edge.arrow.size=.3)
+
+cfg<-cluster_fast_greedy(g_simple)
+plot(cfg, g_simple, main="Greedy", vertex.label=NA)
+```
+
+
 ```{r, eval=FALSE, echo=FALSE}
 library(tidyverse)
 email<-read.csv("../Homeworks/emailnet.csv")

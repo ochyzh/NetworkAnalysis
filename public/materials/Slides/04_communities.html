@@ -169,7 +169,7 @@ mf$partition1
 ```
 
 ```
-## + 17/34 vertices, from d04b851:
+## + 17/34 vertices, from e7e173c:
 ##  [1]  1  2  3  4  5  6  7  8 10 11 12 13 14 17 18 20 22
 ```
 
@@ -178,7 +178,7 @@ mf$partition2
 ```
 
 ```
-## + 17/34 vertices, from d04b851:
+## + 17/34 vertices, from e7e173c:
 ##  [1]  9 15 16 19 21 23 24 25 26 27 28 29 30 31 32 33 34
 ```
 ---
@@ -356,6 +356,26 @@ plot(ceb, friends, layout=LO, main="Betweenness")
 
 - Apply these algorithms to find communities in the email data 
 (Assignment 1)
+
+- To get started:
+
+
+``` r
+library(tidyverse)
+email&lt;-read.csv("emailnet.csv")
+email_Jan6&lt;- email |&gt; dplyr::filter(day==6 &amp; to!=From) 
+
+#This is a directed network, but make undirected to detect communities:
+g = igraph::graph_from_data_frame(email_Jan6, directed=FALSE)
+
+#Make edges unweighted
+g_simple &lt;- igraph::simplify(g, remove.multiple = TRUE, remove.loops = TRUE)
+plot(g_simple, vertex.label=NA, vertex.size=5,edge.arrow.size=.3)
+
+cfg&lt;-cluster_fast_greedy(g_simple)
+plot(cfg, g_simple, main="Greedy", vertex.label=NA)
+```
+
 
 
 

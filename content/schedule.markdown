@@ -37,7 +37,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Day 3</td>
+        <td> </td>
         <td>Community Detection</td>
         <td>
           <dl>
@@ -47,7 +47,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Day 4</td>
+        <td>Day 3</td>
         <td>Causal Inference with Networks</td>
         <td>
           <dl>
@@ -57,7 +57,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Day 5</td>
+        <td> </td>
         <td>Spatial Models</td>
         <td>
           <dl>
@@ -67,7 +67,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Days 6</td>
+        <td>Days 4</td>
         <td>Models for Binary DVs</td>
         <td>
           <dl>
@@ -77,11 +77,22 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Day 7</td>
+        <td>
+        </td>
         <td>LSGM</td>
         <td>
           <dl>
           <dd><a href="../materials/Slides/13_lsgm.html" target=_blank>lsgm </a>  | <a href="../materials/Slides/13_lsgm.Rmd" target=_blank>slides in Rmd </a>| <a href="../materials/Slides/13_lsgm.pdf" target=_blank>slides in pdf </a>| <a href="../materials/Slides/Niemanetal_PS2017.pdf" target=_blank> troop placement example </a> | <a href="../materials/Slides/data/chechen_attacks.csv" target=_blank> chechen attacks </a> | <a href="../materials/Slides/data/vilMat.csv" target=_blank> village distance matrix </a>|<a href="../materials/Scripts/.day5_script.R"target=_blank> code from class </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Day 5</td>
+        <td>ERGMs </td>
+        <td>
+          <dl>
+          <dd><a href="../materials/Slides/05_random_graphs.html" target=_blank> random networks </a> |<a href="../materials/Slides/06_intro_ergms.html" target=_blank> intro to ergms </a> |<a href="../materials/Slides/06_intro_ergms.pdf" target=_blank> intro to ergms pdf </a> | <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> | <a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>|<a href="../materials/Scripts/day6_script.R"target=_blank> code from class </a>|<a href="../materials/Scripts/day7_script.R"target=_blank> code from class 7/24 </a>
           </dd>
           </dl>
         </td>
@@ -132,16 +143,6 @@ All the class materials will be posted/updated here.
         <td>
           <dl>
           <dd><a href="../materials/Slides/12_latent_factor.pdf" target=_blank> Factor Model PDF </a> | <a href="../materials/Slides/12_latent_factor_supp/day12_latent_factor_readings.zip" target=_blank> Factor Model Readings </a> | <a href="../materials/Slides/12_latent_factor_supp/ameApp.zip" target=_blank> Day 12 Code & Data </a> | <a href="../materials/Slides/latent_models_summary.pdf" target=_blank> Summary of Latent Variable Models </a> | <a href="../materials/Slides/12_latent_factor_supp/latent_var_application.zip" target=_blank> Gade Latent Variable Application Code </a> |
-          </dd>
-          </dl>
-        </td>
-      </tr>
-      <tr>
-        <td>Day 13</td>
-        <td>ERGMs </td>
-        <td>
-          <dl>
-          <dd><a href="../materials/Slides/05_random_graphs.html" target=_blank> random networks </a> |<a href="../materials/Slides/06_intro_ergms.html" target=_blank> intro to ergms </a> |<a href="../materials/Slides/06_intro_ergms.pdf" target=_blank> intro to ergms pdf </a> | <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> | <a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>|<a href="../materials/Scripts/day6_script.R"target=_blank> code from class </a>|<a href="../materials/Scripts/day7_script.R"target=_blank> code from class 7/24 </a>
           </dd>
           </dl>
         </td>
