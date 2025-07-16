@@ -241,8 +241,8 @@ mf$partition2
 library(sna)
 data(coleman)
 #make into an igraph object
-friends<-graph_from_adjacency_matrix(coleman[2,,], mode="undirected", diag=FALSE)
-friends <- igraph::delete.vertices(friends , which(igraph::degree(friends)==0))
+friends<-graph_from_adjacency_matrix(coleman[2,,], mode="max", diag=FALSE)
+friends <- igraph::delete_vertices(friends , which(igraph::degree(friends)==0))
 LO = layout_with_fr(friends) #Layout
 cfg<-cluster_fast_greedy(friends)
 modularity(cfg)
@@ -304,7 +304,7 @@ employees<-read.csv("../Homeworks/EmployeeRecords.csv")
 email_Jan6 <- email |> 
   filter(nrecipients < 54 & day == 6 & From != to) |> 
   mutate(reply=ifelse(str_detect(Subject, "RE:")==1,1,0),
-         Subject = gsub("RE:", " ", Subject, ignore.case = TRUE)) %>%
+         Subject = gsub("RE:", " ", Subject, ignore.case = TRUE))|>
   mutate(Subject = trimws(Subject),
          From=ifelse(From=="Sten.Sanjorge Jr.@gastech.com.tethys","Sten.Sanjorge Jr.@gastech.com.kronos",From), #CEOs email did not match
          to=ifelse(to=="Sten.Sanjorge Jr.@gastech.com.tethys","Sten.Sanjorge Jr.@gastech.com.kronos",to))

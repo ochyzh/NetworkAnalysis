@@ -4,7 +4,7 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -164,21 +164,21 @@ Brute force approach is unfeasible, need an algorithm.
 ## Zachary (1977)
 
 
-```r
+``` r
 mf$partition1
 ```
 
 ```
-## + 17/34 vertices, from 63d649f:
+## + 17/34 vertices, from d04b851:
 ##  [1]  1  2  3  4  5  6  7  8 10 11 12 13 14 17 18 20 22
 ```
 
-```r
+``` r
 mf$partition2
 ```
 
 ```
-## + 17/34 vertices, from 63d649f:
+## + 17/34 vertices, from d04b851:
 ##  [1]  9 15 16 19 21 23 24 25 26 27 28 29 30 31 32 33 34
 ```
 ---
@@ -224,7 +224,7 @@ class: inverse, middle, center
 ## Zachary (1977)
 
 
-```r
+``` r
 library(igraph) #Zachary's karate club dataset is built into the igraph package.
 karate &lt;- make_graph("Zachary") #loads the data from the igraph package
 mf&lt;-max_flow(karate, source=V(karate)[1], target=V(karate)[34])
@@ -237,12 +237,12 @@ mf$partition2
 ---
 
 
-```r
+``` r
 library(sna)
 data(coleman)
 #make into an igraph object
-friends&lt;-graph_from_adjacency_matrix(coleman[2,,], mode="undirected", diag=FALSE)
-friends &lt;- igraph::delete.vertices(friends , which(igraph::degree(friends)==0))
+friends&lt;-graph_from_adjacency_matrix(coleman[2,,], mode="max", diag=FALSE)
+friends &lt;- igraph::delete_vertices(friends , which(igraph::degree(friends)==0))
 LO = layout_with_fr(friends) #Layout
 cfg&lt;-cluster_fast_greedy(friends)
 modularity(cfg)
@@ -252,7 +252,7 @@ modularity(cfg)
 ## [1] 0.5904201
 ```
 
-```r
+``` r
 cfg$membership
 ```
 
@@ -263,7 +263,7 @@ cfg$membership
 ---
 ## Communities in the Friendship Network
 
-```r
+``` r
 plot(cfg, friends, layout=LO, main="Greedy")
 ```
 
@@ -272,7 +272,7 @@ plot(cfg, friends, layout=LO, main="Greedy")
 ## Other Examples:
 
 
-```r
+``` r
 wc &lt;- cluster_walktrap(friends) #community structure via short random walks
 modularity(wc)
 ```
@@ -281,7 +281,7 @@ modularity(wc)
 ## [1] 0.5935815
 ```
 
-```r
+``` r
 membership(wc)
 ```
 
@@ -297,7 +297,7 @@ membership(wc)
 ## Fast Greedy Algorithm
 
 
-```r
+``` r
 fg &lt;- cluster_fast_greedy(friends) #Used in Renshon (2016)
 modularity(fg)
 ```
@@ -306,7 +306,7 @@ modularity(fg)
 ## [1] 0.5904201
 ```
 
-```r
+``` r
 fg$membership
 ```
 
@@ -319,7 +319,7 @@ fg$membership
 ## Egde Betweenness
 
 
-```r
+``` r
 ceb&lt;-cluster_edge_betweenness(friends)
 modularity(ceb)
 ```
@@ -328,7 +328,7 @@ modularity(ceb)
 ## [1] 0.5993285
 ```
 
-```r
+``` r
 ceb$membership
 ```
 
@@ -341,7 +341,7 @@ ceb$membership
 ## Comparing Clustering Algorithms
 
 
-```r
+``` r
 par(mfrow=c(2, 2), mar=c(0,0,1,0))
 plot(cfg, friends, layout=LO, main="Greedy")
 plot(wc, friends, layout=LO, main="Short Random Walks")
@@ -365,7 +365,7 @@ plot(ceb, friends, layout=LO, main="Betweenness")
 As you were analyzing the email data, Tethys PD sent you the resume data that they were able to retrieve from GAStech servers. Scrape these resumes to identify each employee's education and previous employment. Use the `officer` packages to read each file and various `stringr` functions to extract the data you need. Then you can add the retrieved information to help identify additional connections among GAStech employees.
 
 
-```r
+``` r
 library(officer)
 
 
@@ -379,7 +379,7 @@ doc_text &lt;- paste(doc_text, collapse = " ")
 ## Helpful Functions from stringr
 
 
-```r
+``` r
 library(stringr)
 
 # Pattern to match everything after a specific word to a period.
@@ -397,7 +397,7 @@ extracted_text &lt;- str_extract(doc_text1, pattern)
 
 
 
-```r
+``` r
 Name&lt;-NULL
 Educ&lt;-NULL
 for (i in 1:length(myfiles)){
@@ -421,9 +421,9 @@ mydata&lt;-cbind.data.frame("Name"=Name, "Educ"=Educ)
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
