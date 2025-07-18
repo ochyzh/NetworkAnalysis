@@ -26,8 +26,6 @@ knitr::opts_chunk$set(
   fig.align = "center",  warning=FALSE, message=FALSE
 )
 
-
-
 ```
 
 ---
@@ -38,7 +36,9 @@ knitr::opts_chunk$set(
 for network analysis. *Statistics and Its Interface*, 2(10), 2017.
 
 - Olga V. Chyzh and Mark S. Kaiser. Network analysis using a local structure
-graph model. *Political Analysis*, 27(4):397{414, 2019.
+graph model. *Political Analysis*, 27(4):397--414, 2019.
+
+- Nieman, Mark David, Carla Martinez Machain, Olga V. Chyzh, and Sam Bell. 2021. “An International Game of Risk: Troop Placement and Major Power Competition.” *The Journal of Politics*, 83 (4): 1307–1321.
 
 ---
 
@@ -284,6 +284,10 @@ return(ell)
 
 ## Estimate
 ```{r}
+#library(devtools)
+#install_github("ochyzh/networkdata")
+library(networkdata)
+data(lsgm_data)
 m1<-optim(par=c(0,0),loglik_lsgm,W=Wmat,Y=Y)
 m1
 
@@ -377,7 +381,7 @@ return(res)
 ```{r}
 n<-length(Y)
 y0s=rbinom(n=n, size=1, prob=.5)
-sims<-spatbin.genfield(coeffs=m1$par,w=W,y0s=y0s,M=1000)
+sims<-spatbin.genfield(coeffs=m1$par,w=Wmat,y0s=y0s,M=1000)
 #Take every 10th simulated network, i.e. burnin=10, thinning=10
 sims<-sims[,seq(from=10, to=ncol(sims),by=10)]
 ```
@@ -396,7 +400,7 @@ sims<-sims[,seq(from=10, to=ncol(sims),by=10)]
 
 ```{r}
 sim_est<-function(Y){
- res<-optim(par=m1$par,loglik_lsgm,W=W,Y=as.matrix(Y)) 
+ res<-optim(par=m1$par,loglik_lsgm,W=Wmat,Y=as.matrix(Y)) 
  return(c(res$par,res$convergence))
 }
 

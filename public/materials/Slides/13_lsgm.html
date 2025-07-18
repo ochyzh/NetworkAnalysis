@@ -7,6 +7,7 @@
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link href="libs/htmltools-fill/fill.css" rel="stylesheet" />
     <script src="libs/htmlwidgets/htmlwidgets.js"></script>
     <script src="libs/jquery/jquery-3.6.0.min.js"></script>
     <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
@@ -46,7 +47,9 @@ exclude: true
 for network analysis. *Statistics and Its Interface*, 2(10), 2017.
 
 - Olga V. Chyzh and Mark S. Kaiser. Network analysis using a local structure
-graph model. *Political Analysis*, 27(4):397{414, 2019.
+graph model. *Political Analysis*, 27(4):397--414, 2019.
+
+- Nieman, Mark David, Carla Martinez Machain, Olga V. Chyzh, and Sam Bell. 2021. “An International Game of Risk: Troop Placement and Major Power Competition.” *The Journal of Politics*, 83 (4): 1307–1321.
 
 ---
 
@@ -139,7 +142,7 @@ f(y(s_i)|{\textbf{y}(s_j):s_j \neq s_i})=f(y(s_i)|\textbf{y}(N_i))
 ## Set Up the Connectivity Matrix, W
 
 
-```r
+``` r
 W[1:10, 25:35]
 ```
 
@@ -227,7 +230,7 @@ p_i=\frac{\exp[A_i(y(N_i))]}{1+\exp[A_i(y(N_i))]}
 
 ### Logit:
 
-```r
+``` r
 loglik_logit&lt;-function(par,Y){
   b0&lt;-par[1] #starting value for constant
   X&lt;-rep(1,length(Y)) #constant
@@ -244,7 +247,7 @@ loglik_logit&lt;-function(par,Y){
 .pull-right[
 ### LSGM:
 
-```r
+``` r
 loglik_lsgm&lt;-function(par,Y,W){
 b0&lt;-par[1] #starting value for constant
 eta&lt;-par[2] #starting value for spatial paramenter
@@ -264,7 +267,11 @@ return(ell)
 
 ## Estimate
 
-```r
+``` r
+#library(devtools)
+#install_github("ochyzh/networkdata")
+library(networkdata)
+data(lsgm_data)
 m1&lt;-optim(par=c(0,0),loglik_lsgm,W=Wmat,Y=Y)
 ```
 
@@ -366,7 +373,7 @@ m1&lt;-optim(par=c(0,0),loglik_lsgm,W=Wmat,Y=Y)
 ## ell 13.72339
 ```
 
-```r
+``` r
 m1
 ```
 
@@ -416,7 +423,7 @@ obtain M Gibbs networks `\(y\)` (can burn-in, thin, etc.).
 
 
 
-```r
+``` r
 spatbin.genone&lt;-function(coeffs,w,curys){
 b0&lt;-coeffs[1]
 eta&lt;-coeffs[2]
@@ -433,7 +440,7 @@ return(y)
 ---
 
 
-```r
+``` r
 spatbin.onegibbs&lt;-function(coeffs,w,curys){
 cnt&lt;-0
 n&lt;-length(curys)
@@ -452,7 +459,7 @@ return(newys)
 ---
 
 
-```r
+``` r
 spatbin.genfield&lt;-function(coeffs,w,y0s,M){
 curys&lt;-y0s
 cnt&lt;-0
@@ -473,10 +480,10 @@ return(res)
 ---
 
 
-```r
+``` r
 n&lt;-length(Y)
 y0s=rbinom(n=n, size=1, prob=.5)
-sims&lt;-spatbin.genfield(coeffs=m1$par,w=W,y0s=y0s,M=1000)
+sims&lt;-spatbin.genfield(coeffs=m1$par,w=Wmat,y0s=y0s,M=1000)
 #Take every 10th simulated network, i.e. burnin=10, thinning=10
 sims&lt;-sims[,seq(from=10, to=ncol(sims),by=10)]
 ```
@@ -494,9 +501,9 @@ sims&lt;-sims[,seq(from=10, to=ncol(sims),by=10)]
 ## Obtaining Standard Errors
 
 
-```r
+``` r
 sim_est&lt;-function(Y){
- res&lt;-optim(par=m1$par,loglik_lsgm,W=W,Y=as.matrix(Y)) 
+ res&lt;-optim(par=m1$par,loglik_lsgm,W=Wmat,Y=as.matrix(Y)) 
  return(c(res$par,res$convergence))
 }
 
@@ -7979,7 +7986,7 @@ sim_est&lt;-do.call("rbind",mclapply(sims, sim_est))
 ## ell NaN
 ```
 
-```r
+``` r
 #Drop results if didn't converge (models that converged have convergence=0)
 sim_est&lt;-sim_est[sim_est[,3]==0,]
 
@@ -8000,7 +8007,7 @@ mytable
 ## Application: International Alliances
 
 
-```r
+``` r
 #Open the data:
 data("ally_data")
 ally_data$tot_trade&lt;-log(ally_data$tot_trade+1)
@@ -8017,7 +8024,7 @@ ally_data[1:5,]
 ## 305      2     52    7       1 0.9901861  2.335300         1 2007
 ```
 
-```r
+``` r
 #Prepare W:
 W2007 &lt;- W
 W2007[1:5,1:5]
@@ -8032,7 +8039,7 @@ W2007[1:5,1:5]
 ## [5,] 2.086917e-06 3.092406e-07 2.287283e-07 5.489462e-09 0.000000e+00
 ```
 
-```r
+``` r
 #W2007[,1]&lt;-NULL  #remove first column from similarity matrix
 W2007[is.na(W2007)]&lt;-0
 W2007&lt;-W2007/10
@@ -8044,7 +8051,7 @@ W2007&lt;-as.matrix(W2007)
 ## Likelihood (1 X)
 
 
-```r
+``` r
 #Likelihood
 loglik&lt;-function(par,X,W,Y){
 b0&lt;-par[1]
@@ -8065,7 +8072,7 @@ return(ell)
 
 ## Let's Estimate
 
-```r
+``` r
 X=ally_data$tot_trade
 Y=ally_data$defense
 m1&lt;-optim(par=c(0,0,0),loglik,X=X,W=W2007,Y=Y)
@@ -8097,7 +8104,7 @@ m1
 ## Standard Errors
 
 
-```r
+``` r
 spatbin.genone&lt;-function(coeffs,X,w,curys){
 b0&lt;-coeffs[1]
 b1&lt;-coeffs[2]
@@ -8114,7 +8121,7 @@ return(y)
 ---
 
 
-```r
+``` r
 spatbin.onegibbs&lt;-function(coeffs,X,w,curys){
 cnt&lt;-0
 n&lt;-length(curys)
@@ -8133,7 +8140,7 @@ return(newys)
 ---
 
 
-```r
+``` r
 spatbin.genfield&lt;-function(coeffs,X,w,y0s,M){
 curys&lt;-y0s
 cnt&lt;-0
@@ -8155,20 +8162,20 @@ return(res)
 #Simulate 1000 Random Networks
 
 
-```r
+``` r
 n&lt;-length(Y)
 y0s=rbinom(n=n, size=1, prob=.5)
 sims&lt;-spatbin.genfield(coeffs=m1$par,X=X,w=W2007,y0s=y0s,M=1000)
 #Take every 10th simulated network, i.e. burnin=10, thinning=10
 sims&lt;-sims[,seq(from=10, to=ncol(sims),by=10)]
-#saveRDS(sims, "sims.rds")
+saveRDS(sims, "sims.rds")
 ```
 
 ---
 
 #Estimate an LSGM on Each of the Simulated Networks
 
-```r
+``` r
 sims&lt;-readRDS("data/sims.rds")
 sim_est&lt;-function(Y){
  res&lt;-optim(par=m1$par,loglik,X=X,W=W2007,Y=as.matrix(Y)) 
@@ -8186,7 +8193,7 @@ saveRDS(sim_est,"./data/sim_est.rds")
 
 ## Calculate SEs and Make a Table
 
-```r
+``` r
 #Get sds of the estimates:
 sim_est&lt;-readRDS("data/sim_est.rds")
 boot_se&lt;-apply(sim_est,2,sd)
@@ -8208,7 +8215,7 @@ mytable
 Note: the package is in beta testing
 
 
-```r
+``` r
 library(devtools)
 install_github("ochyzh/lsgm")
 library(lsgm)
@@ -8237,7 +8244,7 @@ lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
 ---
 
 
-```r
+``` r
 library(leaflet)
 library(lubridate)
 library(tidyverse)
@@ -8261,9 +8268,9 @@ chechen_attacks |&gt;
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

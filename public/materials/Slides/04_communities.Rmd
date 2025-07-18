@@ -266,9 +266,9 @@ membership(wc)
 ## Fast Greedy Algorithm
 
 ```{r, echo=TRUE, eval=TRUE, fig.align='center', message=FALSE}
-fg <- cluster_fast_greedy(friends) #Used in Renshon (2016)
-modularity(fg)
-fg$membership
+ceigen <- cluster_leading_eigen(friends) #Used in Renshon (2016)
+modularity(ceigen)
+ceigen$membership
 ```
 
 ---
@@ -287,7 +287,7 @@ ceb$membership
 par(mfrow=c(2, 2), mar=c(0,0,1,0))
 plot(cfg, friends, layout=LO, main="Greedy")
 plot(wc, friends, layout=LO, main="Short Random Walks")
-plot(fg, friends, layout=LO,main= "Fast Greedy")
+plot(ceigen, friends, layout=LO,main= "Leading Eigenvalue")
 plot(ceb, friends, layout=LO, main="Betweenness")
 ```
 
