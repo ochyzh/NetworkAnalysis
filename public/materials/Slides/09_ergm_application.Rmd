@@ -397,6 +397,11 @@ knitr::include_graphics("images/gwesp2.png")
 
 - How many ties with one *esp*s does this tie add? How many ties with two *esp*s does this tie add?
 
+```{r, echo=FALSE, eval=FALSE}
+#Adds 2 ties with 1 esp, 1 tie with 2 esp, and removes 1 tie with 1 esp and 1 tie with 0 esp:
+exp(.25)*(1-(1-exp(-.25))^1)*1+exp(.25)*(1-(1-exp(-.25))^2)*1-exp(.25)*(1-(1-exp(-.25))^0)*2
+```
+
 ---
 ## Your Turn 2
 
