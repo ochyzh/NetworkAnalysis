@@ -67,7 +67,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Days 4</td>
+        <td>Days 4--5</td>
         <td>Models for Binary DVs</td>
         <td>
           <dl>
@@ -88,7 +88,7 @@ All the class materials will be posted/updated here.
         </td>
       </tr>
       <tr>
-        <td>Day 5</td>
+        <td>Days 6--7</td>
         <td>ERGMs </td>
         <td>
           <dl>

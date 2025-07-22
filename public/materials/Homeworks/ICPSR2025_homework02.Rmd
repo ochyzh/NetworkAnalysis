@@ -1,0 +1,58 @@
+---
+title: 'Network Analysis - Homework #2'
+author: "Your Name"
+date: ""
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+```
+
+
+
+This assignment is based on the [2014 VAST Challenge](https://chat.openai.com/c/70a9ac53-4372-4c4d-a390-ee636c766bc3). 
+
+
+1. You can complete this assignment individually or as a group of up to three members. Please replace "Your Name" in the YAML (top of this script) with the names of all students in your group.
+
+
+
+
+2. Run the following code chunk to load the packages required for this assignment and load the email data from the `networkdata` package. Check the class of the `emailnet` object. Check how many nodes and edges are in this network. Check what vertex attributes are available for this network.
+
+```{r, echo=TRUE, message=FALSE}
+library(statnet)
+library(devtools)
+install_github("ochyzh/networkdata")
+library(networkdata)
+data(emailnet)
+
+```
+
+3. Make a visualization of the email network. 
+
+
+
+4. In order to help you decide what network processes may have led to this network's formation, simulate a random network for comparison. Use the same number of nodes and edges in your random network. Visualize the two networks side-by-side. Summarize several network statistics so as to compare the email network to this random network.
+
+
+
+5. Estimate an ergm that is specified based on the above analysis. Simulate 5 networks from your model estimates and compare them to the observed network. How if your model fit?
+
+
+
+6. Use the `gof` function to check the fit. How does it look?
+
+
+
+7. Play with your model specification until you achieve a reasonable fit. One the fit is good, interpret the results.
+
+8. Knit the RMarkdown file (press the "Knit" button above) and read through the corresponding html file.  
+
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html file with it. 

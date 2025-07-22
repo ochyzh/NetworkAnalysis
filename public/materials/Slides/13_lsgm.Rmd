@@ -71,9 +71,13 @@ el <- matrix( c("1", "2",
                 "4","3",
                 "5","6",
                 "5","7",
-                "7","6"), nc = 2, byrow = TRUE)
+                "7","6",
+                "5","8",
+                "5","9",
+                "5","10",
+                "8","9"), nc = 2, byrow = TRUE)
 g<-graph_from_edgelist(el, directed=F)
-E(g)$lty<-c(1,1,1,1,2,1,1,2)
+E(g)$lty<-c(1,1,1,1,2,1,1,2,1,1,1,1)
 V(g)$color<-ifelse(V(g)$name %in% c("1","2","3","4"), "turquoise", "red")
 plot(g, edge.curved=0, edge.arrow.size=1, edge.color="black")
 
@@ -115,14 +119,14 @@ f(y(s_i)|{\textbf{y}(s_j):s_j \neq s_i})=f(y(s_i)|\textbf{y}(N_i))
 
 
 ```{r, eval=T, echo=F}
-# library(devtools)
-# install_github("ochyzh/networkdata")
+#library(devtools)
+#install_github("ochyzh/networkdata", force=TRUE)
 library(networkdata)
 data(lsgm_data)
 
 nodes<-as.numeric(as.character(V(g)$name))
 node_net<-expand.grid(node1=nodes,node2=nodes)
-node_net<-subset(node_net, subset=node1!=node2)
+#node_net<-subset(node_net, subset=node1!=node2)
 node_net$edge<-paste(node_net$node1,node_net$node2, sep="")
 node_net$color1<-ifelse(node_net$node1 %in% c("1","2","3","4"), "turquoise", "red")
 node_net$color2<-ifelse(node_net$node2 %in% c("1","2","3","4"), "turquoise", "red")
@@ -136,21 +140,20 @@ colnames(W)<-sort(node_net$edge)
 
 for (i in rownames(W)){
   for (j in rownames(W)){
-   val1<-node_net$ecolor[node_net$edge==i] 
-   val2<-node_net$ecolor[node_net$edge==j]
-     if (i!=j & val1=="red" & val2=="turquoise") {
-    W[i,j]=1
-   } else if (i!=j & val1=="turquoise" & val2=="red") {
-     W[i,j]=1
-   }
-   }
+    val1<-node_net$ecolor[node_net$edge==i] 
+    val2<-node_net$ecolor[node_net$edge==j]
+    if (i!=j & val1=="red" & val2=="turquoise") {
+      W[i,j]=1
+    } else if (i!=j & val1=="turquoise" & val2=="red") {
+      W[i,j]=1
+    }
+  }
 }
 
 edge_id<-sort(node_net$edge)
 Y<-rep(0, length(edge_id))
-Y<-as.numeric(edge_id %in% c("12", "13", "14","23", "56","57"))
+Y<-as.numeric(edge_id %in% c("12", "13", "14","23", "56","57","58","59","510","89"))
 cbind(edge_id,Y)[1:10,]
-
 ```
 
 
@@ -288,7 +291,7 @@ return(ell)
 #install_github("ochyzh/networkdata")
 library(networkdata)
 data(lsgm_data)
-m1<-optim(par=c(0,0),loglik_lsgm,W=Wmat,Y=Y)
+m1<-optim(par=c(0,0),loglik_lsgm,W=W,Y=Y)
 m1
 
 ```
@@ -381,7 +384,7 @@ return(res)
 ```{r}
 n<-length(Y)
 y0s=rbinom(n=n, size=1, prob=.5)
-sims<-spatbin.genfield(coeffs=m1$par,w=Wmat,y0s=y0s,M=1000)
+sims<-spatbin.genfield(coeffs=m1$par,w=W,y0s=y0s,M=1000)
 #Take every 10th simulated network, i.e. burnin=10, thinning=10
 sims<-sims[,seq(from=10, to=ncol(sims),by=10)]
 ```
@@ -400,7 +403,7 @@ sims<-sims[,seq(from=10, to=ncol(sims),by=10)]
 
 ```{r}
 sim_est<-function(Y){
- res<-optim(par=m1$par,loglik_lsgm,W=Wmat,Y=as.matrix(Y)) 
+ res<-optim(par=m1$par,loglik_lsgm,W=W,Y=as.matrix(Y)) 
  return(c(res$par,res$convergence))
 }
 
@@ -423,8 +426,6 @@ mytable
 ```{r}
 #Open the data:
 data("ally_data")
-ally_data$tot_trade<-log(ally_data$tot_trade+1)
-ally_data<-ally_data[ally_data$year==2007,]
 ally_data[1:5,]
 
 #Prepare W:
@@ -577,8 +578,9 @@ mytable
 Note: the package is in beta testing
 
 ```{r, eval=F}
+#Note: please install/update the required Rtools version for the package to run:
 library(devtools)
-install_github("ochyzh/lsgm")
+install_github("ochyzh/lsgm", force=TRUE)
 library(lsgm)
 data(W)
 data(toy_data)
