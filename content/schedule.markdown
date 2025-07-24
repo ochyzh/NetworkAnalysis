@@ -102,7 +102,7 @@ All the class materials will be posted/updated here.
         <td>Netify</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/08_netify.html" target=_blank> intro to netify </a> |<a href="../materials/Slides/08_netify.pdf" target=_blank> intro to netify pdf </a> |<a href="../materials/Slides/08_netify.Rmd" target=_blank> intro to netify code </a> | <a href="../materials/Slides/ucdp_ged_mexico.rda>" target=_blank> UCDP GED Mexico Data (necesssary to run code) </a> | <a href="https://netify-dev.github.io/netify/" target=_blank> netify website </a>
+          <dd><a href="../materials/Slides/08_netify.html" target=_blank> intro to netify </a> |<a href="../materials/Slides/08_netify.pdf" target=_blank> intro to netify pdf </a> |<a href="../materials/Slides/08_netify.Rmd" target=_blank> intro to netify code </a> | <a href="../materials/Slides/08_netify_vignettes.zip>" target=_blank> Other Netify Vignettes </a> | <a href="https://netify-dev.github.io/netify/" target=_blank> netify website </a>
           </dd>
           </dl>
         </td>

@@ -6,7 +6,9 @@
 
 ####
 # path setup
-pth = '~/Teaching/icpsr/nets/datasets/'
+# set your own path
+# pth = '~/Teaching/icpsr/nets/datasets/'
+pth = '~/Teaching/icpsr/nets/2025/09_srm/day9_srm/'
 ####
 
 ####
@@ -120,7 +122,7 @@ save(
 library(netify)
 
 net = netify(
-  dyad_data = trade, 
+  input = trade, 
   actor1 = 'Var1',
   actor2 = 'Var2',
   symmetric = FALSE, 
@@ -139,7 +141,7 @@ net = netify(
 # to do this we will use the 
 # prep_for_amen fn from the
 # netify package
-amen_data = prep_for_amen(net)
+amen_data = to_amen(net)
 
 # lets extract every element from
 # amen_data into its own object
