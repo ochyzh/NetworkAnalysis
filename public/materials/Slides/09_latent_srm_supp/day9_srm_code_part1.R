@@ -7,7 +7,9 @@
 
 ####
 # path setup
-pth = '~/Teaching/icpsr/nets/datasets/'
+# set your own path
+# pth = '~/Teaching/icpsr/nets/datasets/'
+pth = '~/Teaching/icpsr/nets/2025/09_srm/day9_srm/'
 ####
 
 ####
