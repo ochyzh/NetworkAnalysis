@@ -3,8 +3,8 @@
   <head>
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <meta name="author" content="Shahryar Minhas [s7minhas.com/]" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Advanced Network Analysis
+]
+.subtitle[
 ## ERGM Specification and Implementation
-### Olga Chyzh [www.olgachyzh.com]
+]
+.author[
+### Shahryar Minhas [s7minhas.com/]
+]
 
 ---
 
@@ -29,7 +35,7 @@ Emily Kalah Gade, Michael Gabbay, Mohammed M. Hafez, and Zane Kelly. Networks of
 ---
 ## ERGM Specification: Ground Rules
 
-We will be working with a network that consists of the ten 10 most ideological senators from the 109th Congress. An edge `\(ij\)` in this network is defined as equal to 1 if i cosponsored j at least two times. Suppose you think that senators are more likely to co-sponsor legisation if they:
+We will be working with a network that consists of the 9 most ideological senators from the 109th Congress. An edge `\(ij\)` in this network is defined as equal to 1 if i cosponsored j at least two times. Suppose you think that senators are more likely to co-sponsor legislation if they:
 a. Come from nearby states,
 b. Have similar ideology.
 
@@ -40,17 +46,18 @@ b. Have similar ideology.
 [1] Your dependent variable must be a network object with binary edges. The `network` command creates network objects from edgelists or adjacency matrices. Pay attention to whether you are working with a directed or an undirected network.
 
 
-```r
+``` r
+library(tidyverse)
 library(statnet)
 library(devtools)
-#install_github("ochyzh/networkdata")
+#install_github("ochyzh/networkdata", force=TRUE)
 library(networkdata)
 ```
 
 
-```r
+``` r
 data(legnet)
-mynet&lt;-network(el, matrix.type="edgelist", 
+mynet&lt;-network(net, matrix.type="adjacency", 
                 directed=TRUE, loops=FALSE)
 ```
 
@@ -60,8 +67,9 @@ mynet&lt;-network(el, matrix.type="edgelist",
 [2] All edge-level/dyadic covariates must be stored as matrix objects and defined as *network attributes* using `set.network.attribute` command. Make sure your vertices are named/sorted the same way in all datasets.
 
 
-```r
+``` r
 # Convert the object "edist" which contains euclidean distance (units in lat/long), to a matrix:
+edist&lt;- as.data.frame(edist)
 edist &lt;- as.matrix(edist)
 # Define network attribute
 set.network.attribute(mynet,"dist",edist)
@@ -72,10 +80,15 @@ set.network.attribute(mynet,"dist",edist)
 [3] All node-level covariates must be defined as *vertex attributes* using `set.vertex.attribute` command. Again, pay attention to names/order in which your nodes are sorted in the data.
 
 
-```r
+``` r
 # Define object "dwnom" (ideology) as a vertex attribute
 #detach("package:igraph", unload=TRUE) the below command seems to clash with igraph
+dwnom&lt;- dwnom |&gt; arrange(labs) 
 set.vertex.attribute(mynet,"ideol",dwnom$dwnom)
+
+#or
+set.vertex.attribute(mynet,"ideol",dwnom$dwnom, 
+      v=match(mynet %v% "vertex.names",dwnom$labs))
 ```
 ---
 ## Your Turn
@@ -117,7 +130,7 @@ State sponsorship:
 ---
 ## Data
 
-```r
+``` r
 # load data
 data(gadeData)
 
@@ -2001,7 +2014,7 @@ gadeData #to look at the data
 - A `network` object may be constructed from a matrix or edgelist.
 - Gade et al's dependent variable is `coopActions`.
 
-```r
+``` r
 table(gadeData$coopActions) #the dv takes the following values.
 hist(gadeData$coopActions)
 ```
@@ -2013,7 +2026,7 @@ hist(gadeData$coopActions)
 - For our purposes, we will recode this variable as binary, so that it equals to 1 if two groups cooperated at least once and 0 otherwise.
 
 
-```r
+``` r
 gadeData$coopBin&lt;-as.numeric(gadeData$coopActions&gt;0)
 table(gadeData$coopBin)
 ```
@@ -2034,7 +2047,7 @@ table(gadeData$coopBin)
 ## Prepare the Data
 
 
-```r
+``` r
 # data characs
 actors = sort(unique(c(gadeData$Var1, gadeData$Var2)))
 gadeData&lt;-sort(gadeData)
@@ -2052,7 +2065,7 @@ dyadArray = array(0,
 ---
 
 
-```r
+``` r
 # loop through and fill in
 for(param in dyadVars){
 	for(i in 1:nrow(gadeData)){
@@ -2065,7 +2078,7 @@ for(param in dyadVars){
 ```
 ---
 
-```r
+``` r
 # These are node-level variables.
 nodeVars = names(gadeData)[9:11]
 nodeData = unique(gadeData[,c('Var1',nodeVars)])
@@ -2074,7 +2087,7 @@ nodeData = nodeData[actors,c(-1)]
 ```
 ---
 
-```r
+``` r
 # The DV must be a network object
 net = as.network(
 	dyadArray[,,'coopBin'], 
@@ -2085,7 +2098,7 @@ net = as.network(
 
 
 
-```r
+``` r
 # Set node attributes
 for(param in nodeVars){
 	network::set.vertex.attribute(net, param, nodeData[,param])
@@ -2099,7 +2112,7 @@ set.network.attribute(net,'spons.dyad',dyadArray[,,'spons.dyad'])
 ---
 ## Make a Network Graph:
 
-```r
+``` r
 plot(net, label = network.vertex.names(net))
 ```
 
@@ -2108,7 +2121,7 @@ plot(net, label = network.vertex.names(net))
 
 ## Estimate a Logit
 
-```r
+``` r
 m0 = ergm(
 	net ~ 
     edges + 
@@ -2124,7 +2137,7 @@ m0 = ergm(
 ---
 ## Estimate a Logit
 
-```r
+``` r
 summary(m0)
 ```
 
@@ -2157,7 +2170,7 @@ summary(m0)
 ---
 ## Add Triangles
 
-```r
+``` r
 m1 = ergm(
 	net ~ 
     edges + 
@@ -2175,7 +2188,7 @@ m1 = ergm(
 ## Add Triangles
 
 
-```r
+``` r
 summary(m1)
 ```
 
@@ -2189,48 +2202,48 @@ summary(m1)
 ## Monte Carlo Maximum Likelihood Results:
 ## 
 ##                          Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges                    -7.56491    1.13843      0  -6.645  &lt; 1e-04 ***
-## nodecov.averageId.node    0.24836    0.08972      0   2.768 0.005635 ** 
-## nodecov.size.node         0.06895    0.02021      0   3.411 0.000647 ***
-## nodecov.spons_actor.node  0.18888    0.23144      0   0.816 0.414454    
-## absdiff.averageId.node   -0.21502    0.11557      0  -1.861 0.062810 .  
-## absdiff.size.node        -0.07657    0.02726      0  -2.809 0.004976 ** 
-## edgecov.loc.dyad          2.65557    0.99504      0   2.669 0.007612 ** 
-## edgecov.spons.dyad        0.05063    0.36935      0   0.137 0.890974    
-## gwesp.fixed.0.5           1.26216    0.28873      0   4.371  &lt; 1e-04 ***
+## edges                    -7.61685    1.18771      0  -6.413  &lt; 1e-04 ***
+## nodecov.averageId.node    0.25016    0.09185      0   2.724  0.00646 ** 
+## nodecov.size.node         0.06408    0.02254      0   2.843  0.00448 ** 
+## nodecov.spons_actor.node  0.19876    0.23006      0   0.864  0.38762    
+## absdiff.averageId.node   -0.20662    0.11573      0  -1.785  0.07420 .  
+## absdiff.size.node        -0.07240    0.02928      0  -2.472  0.01342 *  
+## edgecov.loc.dyad          2.65095    1.03297      0   2.566  0.01028 *  
+## edgecov.spons.dyad        0.13158    0.42209      0   0.312  0.75524    
+## gwesp.fixed.0.5           1.28389    0.28950      0   4.435  &lt; 1e-04 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##      Null Deviance: 644.6  on 465  degrees of freedom
-##  Residual Deviance: 325.5  on 456  degrees of freedom
+##  Residual Deviance: 325.6  on 456  degrees of freedom
 ##  
-## AIC: 343.5  BIC: 380.8  (Smaller is better. MC Std. Err. = 0.3156)
+## AIC: 343.6  BIC: 380.9  (Smaller is better. MC Std. Err. = 0.2578)
 ```
 
 ---
 ## Assess Model Fit
 
-```r
+``` r
 AIC(m1)
 ```
 
 ```
-## [1] 343.5435
+## [1] 343.6484
 ## attr(,"vcov")
-## [1] 0.0995988
+## [1] 0.06647084
 ```
 
-```r
+``` r
 BIC(m1)
 ```
 
 ```
-## [1] 380.8219
+## [1] 380.9268
 ## attr(,"vcov")
-## [1] 0.0995988
+## [1] 0.06647084
 ```
 
-```r
+``` r
 set.seed(6886)
 gofM1 = gof( m1, 
     GOF=~degree+espartners+distance-model )
@@ -2238,7 +2251,7 @@ gofM1 = gof( m1,
 ---
 ## Assess Model Fit
 
-```r
+``` r
 # we'll compare against four plots, so set up plotting window
 par(mfrow = c(2, 2))
 plot(gofM1)
@@ -2250,9 +2263,9 @@ plot(gofM1)
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
@@ -2293,6 +2306,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

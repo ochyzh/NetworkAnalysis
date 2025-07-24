@@ -12,9 +12,9 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-
-
 exclude: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -34,7 +34,7 @@ Emily Kalah Gade, Michael Gabbay, Mohammed M. Hafez, and Zane Kelly. Networks of
 ---
 ## ERGM Specification: Ground Rules
 
-We will be working with a network that consists of the ten 10 most ideological senators from the 109th Congress. An edge $ij$ in this network is defined as equal to 1 if i cosponsored j at least two times. Suppose you think that senators are more likely to co-sponsor legisation if they:
+We will be working with a network that consists of the 9 most ideological senators from the 109th Congress. An edge $ij$ in this network is defined as equal to 1 if i cosponsored j at least two times. Suppose you think that senators are more likely to co-sponsor legislation if they:
 a. Come from nearby states,
 b. Have similar ideology.
 
@@ -44,18 +44,17 @@ b. Have similar ideology.
 ## ERGM Specification: Ground Rules
 [1] Your dependent variable must be a network object with binary edges. The `network` command creates network objects from edgelists or adjacency matrices. Pay attention to whether you are working with a directed or an undirected network.
 
-```{r rule1, echo=TRUE, eval=FALSE, message=FALSE}
+```{r rule1, echo=TRUE, eval=TRUE, message=FALSE}
 library(tidyverse)
 library(statnet)
 library(devtools)
-#install_github("ochyzh/networkdata")
+#install_github("ochyzh/networkdata", force=TRUE)
 library(networkdata)
 ```
 
 ```{r}
 data(legnet)
-el<- el |> arrange(V1, V2) #order in alphabetical order
-mynet<-network(el, matrix.type="edgelist", 
+mynet<-network(net, matrix.type="adjacency", 
                 directed=TRUE, loops=FALSE)
 ```
 
@@ -66,7 +65,7 @@ mynet<-network(el, matrix.type="edgelist",
 
 ```{r rule2, eval=TRUE, echo=TRUE, message=FALSE}
 # Convert the object "edist" which contains euclidean distance (units in lat/long), to a matrix:
-edist<- as.data.frame(edist) |> dplyr::select(-"BarkleyDeanM") |> dplyr::filter(row.names(edist)!="BarkleyDeanM")
+edist<- as.data.frame(edist)
 edist <- as.matrix(edist)
 # Define network attribute
 set.network.attribute(mynet,"dist",edist)
@@ -79,7 +78,7 @@ set.network.attribute(mynet,"dist",edist)
 ```{r rule3, echo=TRUE, eval=TRUE, message=FALSE}
 # Define object "dwnom" (ideology) as a vertex attribute
 #detach("package:igraph", unload=TRUE) the below command seems to clash with igraph
-dwnom<- dwnom |> arrange(labs) |> dplyr::filter(labs!="BarkleyDeanM")
+dwnom<- dwnom |> arrange(labs) 
 set.vertex.attribute(mynet,"ideol",dwnom$dwnom)
 
 #or

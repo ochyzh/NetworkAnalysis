@@ -29,7 +29,7 @@ Goal: to identify the determinants of friendship formation that lead to pervasiv
 
 Three mechanisms:
 
-- *Sociality*---heterogeneity among individuals in their propensity to establish friendship ties. Individuals with greater sociality have higher degree, although degree may be also influenced by other factors.
+- *Sociality*---heterogeneity among individuals in their propensity to establish friendship ties, e.g. 7th-graders are more social than 8th-graders. 
 
 - *Selective mixing* is a dyad-level process by which pairs form (or break) relationships based on their combination of individual attributes. *Assortative
 mixing* is the greater propensity to partner with others having attributes similar to one's own. The resulting pattern---homophily--- is the predominance of within-group ties.
@@ -110,7 +110,7 @@ search.ergmTerms('sociality')
 ---
 ## Sociality
 
-- None of these match the authors' description, which sounds like they are using the term `nodefactor`. 
+- Authors' use the term `nodefactor`. 
 - Term `nodefactor` adds multiple network statistics to the model, one for each of the unique values of the attribute. Each of these statistics gives the number of times a node with that attribute or those attributes appears in an edge in the network.
 - Note: `nodefactor` assumes non-numeric (e.g., character, factor) class, so recode "Grade" as a character.
 
@@ -156,98 +156,13 @@ search.ergmTerms('homophily')
 ```
 
 - Term `nodematch` sounds like a good candidate.
----
-## Selective Mixing
-
-Based on this description, we can further specify the model  as:
-
-```{r, echo=TRUE, eval=FALSE, message=FALSE}
-
-m1<- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm"))+
-            nodefactor("Sex", levels="F")+
-            nodefactor("Grade",  levels=c("8","9","10","11","12"))+
-            nodematch("Sex")+nodematch("Race",diff=TRUE)+nodematch("Grade",diff=TRUE)
-            )
-```
-
-Note: option `diff` specifies whether there can be differences in probability of friendships between groups.
-
-- Use `absdiff` instead of `nodematch` for continuous variables (e.g. wealth).
----
-## Selective Mixing: Interpretation
-
-- To calculate the probability of a tie between two women, set `nodefactor("Sex", levels="F")=1` and `nodematch("Sex")=1`, and all other variables to the values of interest. 
-
-- To calculate the probability of a tie between two men, set `nodefactor("Sex", levels="F")=0` and `nodematch("Sex")=1`, and all other variables to the values of interest. 
-
-- To calculate the probability of a tie between a woman and a man, set `nodefactor("Sex", levels="F")=1` and `nodematch("Sex")=0`, and all other variables to the values of interest.  
 
 ---
-## Triad Closure
+## Mixing Matrix
 
-"For the reasons described above, we investigate triad closure using the
-GWESP statistic. We adopt a value of $0.25$ for decay, although results are robust to this choice."
+- We want to only include groups with non-empty cells. For example, if no Black students named each other as friends, we would have no mixing (perfect separation) for the `nodematch.Black` category. 
 
-Based on this description, we can further specify the model  as:
-
-```{r, echo=TRUE, eval=FALSE, message=FALSE}
-mesa %v% "Grade" <-as.character(mesa %v% "Grade")
-m1<- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
-            nodefactor("Sex", levels="F")+
-            nodefactor("Grade", levels=c("8","9","10","11","12"))+
-            nodematch("Sex")+nodematch("Race",diff=TRUE)+nodematch("Grade",diff=TRUE)+
-            gwesp(decay=0.25)
-            )
-par(mfrow = c(3, 2))
-mcmc.diagnostics(m1)
-```
----
-## Results
-```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "600px",fig.align="center"}
-knitr::include_graphics("images/Goodreau_Fig3.png")
-```
----
-## Our Replication: M1 Diagnostics
-
-```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "750px",fig.align="center"}
-load("data/Day8.RData")
-knitr::include_graphics("images/M1_diagnostics.png")
-```
-
----
-## Increase the Number of Simulations.
-
-```{r, echo=TRUE, eval=FALSE, message=FALSE}
-m2<- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
-            nodefactor("Sex", levels="F")+
-            nodefactor("Grade", levels=c("8","9","10","11","12"))+
-            nodematch("Sex")+nodematch("Race",diff=TRUE)+
-            nodematch("Grade",diff=TRUE)+gwesp(decay=0.25),
-            control=control.ergm(seed=6886,		MCMC.samplesize=10000, MCMLE.maxit=50)
-            )
-par(mfrow = c(3, 2))
-mcmc.diagnostics(m2)
-
-```
----
-## Results
-
-```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "350px",fig.align="center"}
-knitr::include_graphics("images/M3_diagnostics.png")
-```
-
----
-## Results
-```{r, echo=FALSE, eval=TRUE, message=FALSE}
-summary(m2)
-```
-
----
-## Results
-
-- Another problem is that several of our parameters are estimated as $-Inf$.
-
-- Check Our Summary Statistics
+- Check our summary statistics
 
 ```{r, echo=TRUE, eval=FALSE, message=FALSE}
 summary(mesa~edges+nodefactor("Race")+
@@ -277,7 +192,7 @@ summary(mesa~edges+nodefactor("Race")+
 
 ```
 ---
-## Remove the Categories with Empty Cells:
+## Include Categories with Non-Empty Cells:
 ```{r, echo=TRUE, eval=FALSE, message=FALSE}
 m3<- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
             nodefactor("Sex", levels="F")+
@@ -290,7 +205,80 @@ m3<- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))
             )
 summary(m3)
 ```
+
+
+Note: option `diff` specifies whether there can be differences in probability of friendships between groups.
+
+- Use `absdiff` instead of `nodematch` for continuous variables (e.g. wealth).
 ---
+## Selective Mixing: Interpretation
+
+- To calculate the probability of a tie between two women, set `nodefactor("Sex", levels="F")=1` and `nodematch("Sex")=1`, and all other variables to the values of interest. 
+
+- To calculate the probability of a tie between two men, set `nodefactor("Sex", levels="F")=0` and `nodematch("Sex")=1`, and all other variables to the values of interest. 
+
+- To calculate the probability of a tie between a woman and a man, set `nodefactor("Sex", levels="F")=1` and `nodematch("Sex")=0`, and all other variables to the values of interest.  
+
+---
+## Triad Closure
+
+"For the reasons described above, we investigate triad closure using the
+GWESP statistic. We adopt a value of $0.25$ for decay, although results are robust to this choice."
+
+Based on this description, we can further specify the model  as:
+
+```{r, echo=TRUE, eval=FALSE, message=FALSE}
+mesa %v% "Grade" <-as.character(mesa %v% "Grade")
+m1<- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
+            nodefactor("Sex", levels="F")+
+            nodefactor("Grade", levels=c("8","9","10","11","12"))+
+            nodematch("Sex")+nodematch("Race",levels=c("White","Hisp","NatAm"),diff=TRUE)+nodematch("Grade",diff=TRUE)+
+            gwesp(decay=0.25)
+            )
+par(mfrow = c(3, 2))
+mcmc.diagnostics(m1)
+```
+---
+## Results
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "600px",fig.align="center"}
+knitr::include_graphics("images/Goodreau_Fig3.png")
+```
+---
+## Our Replication: M1 Diagnostics
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "750px",fig.align="center"}
+load("data/Day8.RData")
+knitr::include_graphics("images/M1_diagnostics.png")
+```
+
+---
+## Increase the Number of Simulations.
+
+```{r, echo=TRUE, eval=FALSE, message=FALSE}
+m2<- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
+            nodefactor("Sex", levels="F")+
+            nodefactor("Grade", levels=c("8","9","10","11","12"))+
+            nodematch("Sex")+nodematch("Race",levels=c("White","Hisp","NatAm"),diff=TRUE)+
+            nodematch("Grade",diff=TRUE)+gwesp(decay=0.25),
+            control=control.ergm(seed=6886,		MCMC.samplesize=10000, MCMLE.maxit=50)
+            )
+par(mfrow = c(3, 2))
+mcmc.diagnostics(m2)
+
+```
+---
+## Results
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "350px",fig.align="center"}
+knitr::include_graphics("images/M3_diagnostics.png")
+```
+
+---
+## Results
+```{r, echo=FALSE, eval=TRUE, message=FALSE}
+summary(m2)
+```
+
 
 ## Results
 
