@@ -3,8 +3,8 @@
   <head>
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
+    <meta name="author" content="Shahryar Minhas [s7minhas.com/]" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -19,7 +19,7 @@ class: center, middle, inverse, title-slide
 ## ERGM Application
 ]
 .author[
-### Olga Chyzh [www.olgachyzh.com]
+### Shahryar Minhas [s7minhas.com/]
 ]
 
 ---
@@ -39,7 +39,7 @@ Goal: to identify the determinants of friendship formation that lead to pervasiv
 
 Three mechanisms:
 
-- *Sociality*---heterogeneity among individuals in their propensity to establish friendship ties. Individuals with greater sociality have higher degree, although degree may be also influenced by other factors.
+- *Sociality*---heterogeneity among individuals in their propensity to establish friendship ties, e.g. 7th-graders are more social than 8th-graders. 
 
 - *Selective mixing* is a dyad-level process by which pairs form (or break) relationships based on their combination of individual attributes. *Assortative
 mixing* is the greater propensity to partner with others having attributes similar to one's own. The resulting pattern---homophily--- is the predominance of within-group ties.
@@ -72,7 +72,7 @@ in order of closeness.
 ## Open Data
 
 
-```r
+``` r
 rm(list=ls())
 library(statnet)
 data(faux.mesa.high) 
@@ -101,7 +101,7 @@ mesa
 ## Plot Data
 
 
-```r
+``` r
 par(mfrow=c(1,1)) # Back to 1-panel plots
 plot(mesa, vertex.col='Grade')
 legend('bottomleft',fill=7:12,
@@ -126,7 +126,7 @@ grade to have different mean sociality."
 ## Sociality
 Can also use the search function to find the relevant terms.
 
-```r
+``` r
 search.ergmTerms('sociality')
 ```
 
@@ -155,7 +155,7 @@ search.ergmTerms('sociality')
 ---
 ## Sociality
 
-- None of these match the authors' description, which sounds like they are using the term `nodefactor`. 
+- Authors' use the term `nodefactor`. 
 - Term `nodefactor` adds multiple network statistics to the model, one for each of the unique values of the attribute. Each of these statistics gives the number of times a node with that attribute or those attributes appears in an edge in the network.
 - Note: `nodefactor` assumes non-numeric (e.g., character, factor) class, so recode "Grade" as a character.
 
@@ -165,7 +165,7 @@ search.ergmTerms('sociality')
 Based on this description, the model so far is specified as:
 
 
-```r
+``` r
 table(mesa %v% 'Race') # Frequencies of race
 table(mesa %v% 'Sex') # Frequencies of sex
 table(mesa %v% 'Grade') # Frequencies of Grade
@@ -198,12 +198,12 @@ homophily is used for race and grade."
 ## Selective Mixing
 Can also use the search function to find the relevant terms.
 
-```r
+``` r
 search.ergmTerms('homophily')
 ```
 
 ```
-## Found  16  matching ergm terms:
+## Found  13  matching ergm terms:
 ## b1degrange(from, to=`+Inf`, by=NULL, homophily=FALSE, levels=NULL) (binary)
 ##     Degree range for the first mode in a bipartite network
 ## 
@@ -225,19 +225,13 @@ search.ergmTerms('homophily')
 ## degree(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
 ##     Degree
 ## 
-## degreeL(d, by=NULL, homophily=FALSE, levels=NULL, Ls=NULL) (binary)
-##     Degree
-## 
-## For(...) (binary)
+## For(...) (binary, valued)
 ##     A for operator for terms
 ## 
 ## idegrange(from, to=+Inf, by=NULL, homophily=FALSE, levels=NULL) (binary)
 ##     In-degree range
 ## 
 ## idegree(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
-##     In-degree
-## 
-## idegreeL(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
 ##     In-degree
 ## 
 ## nodematch(attr, diff=FALSE, keep=NULL, levels=NULL) (binary)
@@ -250,25 +244,88 @@ search.ergmTerms('homophily')
 ## 
 ## odegree(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
 ##     Out-degree
-## 
-## odegreeL(d, by=NULL, homophily=FALSE, levels=NULL) (binary)
-##     Out-degree
 ```
 
 - Term `nodematch` sounds like a good candidate.
+
 ---
-## Selective Mixing
+## Mixing Matrix
 
-Based on this description, we can further specify the model  as:
+- We want to only include groups with non-empty cells. For example, if no Black students named each other as friends, we would have no mixing (perfect separation) for the `nodematch.Black` category. 
+
+- Check our summary statistics
 
 
-```r
-m1&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm"))+
+``` r
+summary(mesa~edges+nodefactor("Race")+
             nodefactor("Sex", levels="F")+
-            nodefactor("Grade",  levels=c("8","9","10","11","12"))+
-            nodematch("Sex")+nodematch("Race",diff=TRUE)+nodematch("Grade",diff=TRUE)
-            )
+            nodefactor("Grade", levels=c("8","9","10","11","12"))+
+            nodematch("Sex")+
+            nodematch("Race",diff=TRUE)+
+            nodematch("Grade",diff=TRUE)+
+            gwesp(decay=0.25)
+        )
+#Also can:
+mixingmatrix(mesa, "Race")
 ```
+---
+## Check Our Summary Statistics
+
+
+```
+##                 edges  nodefactor.Race.Hisp nodefactor.Race.NatAm 
+##                   203                   178                   156 
+## nodefactor.Race.Other nodefactor.Race.White      nodefactor.Sex.F 
+##                     1                    45                   235 
+##    nodefactor.Grade.8    nodefactor.Grade.9   nodefactor.Grade.10 
+##                    75                    65                    36 
+##   nodefactor.Grade.11   nodefactor.Grade.12         nodematch.Sex 
+##                    49                    28                   132 
+##  nodematch.Race.Black   nodematch.Race.Hisp  nodematch.Race.NatAm 
+##                     0                    53                    46 
+##  nodematch.Race.Other  nodematch.Race.White     nodematch.Grade.7 
+##                     0                     4                    75 
+##     nodematch.Grade.8     nodematch.Grade.9    nodematch.Grade.10 
+##                    33                    23                     9 
+##    nodematch.Grade.11    nodematch.Grade.12                 esp#1 
+##                    17                     6                    70 
+##                 esp#2                 esp#3                 esp#4 
+##                    36                    13                     0 
+##                 esp#5                 esp#6                 esp#7 
+##                     1                     0                     0 
+##                 esp#8                 esp#9                esp#10 
+##                     0                     0                     0 
+##                esp#11                esp#12                esp#13 
+##                     0                     0                     0 
+##                esp#14                esp#15                esp#16 
+##                     0                     0                     0 
+##                esp#17                esp#18                esp#19 
+##                     0                     0                     0 
+##                esp#20                esp#21                esp#22 
+##                     0                     0                     0 
+##                esp#23                esp#24                esp#25 
+##                     0                     0                     0 
+##                esp#26                esp#27                esp#28 
+##                     0                     0                     0 
+##                esp#29                esp#30 
+##                     0                     0
+```
+---
+## Include Categories with Non-Empty Cells:
+
+``` r
+m3&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
+            nodefactor("Sex", levels="F")+
+            nodefactor("Grade", levels=c("8","9","10","11","12"))+
+            nodematch("Sex")+
+            nodematch("Race",levels=c("White","Hisp","NatAm"),diff=TRUE)+
+            nodematch("Grade",diff=TRUE)+
+            gwesp(decay=0.25),
+            control=control.ergm(seed=6886,		MCMC.samplesize=10000, MCMLE.maxit=50	)
+            )
+summary(m3)
+```
+
 
 Note: option `diff` specifies whether there can be differences in probability of friendships between groups.
 
@@ -291,12 +348,12 @@ GWESP statistic. We adopt a value of `\(0.25\)` for decay, although results are 
 Based on this description, we can further specify the model  as:
 
 
-```r
+``` r
 mesa %v% "Grade" &lt;-as.character(mesa %v% "Grade")
 m1&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
             nodefactor("Sex", levels="F")+
             nodefactor("Grade", levels=c("8","9","10","11","12"))+
-            nodematch("Sex")+nodematch("Race",diff=TRUE)+nodematch("Grade",diff=TRUE)+
+            nodematch("Sex")+nodematch("Race",levels=c("White","Hisp","NatAm"),diff=TRUE)+nodematch("Grade",diff=TRUE)+
             gwesp(decay=0.25)
             )
 par(mfrow = c(3, 2))
@@ -314,11 +371,11 @@ mcmc.diagnostics(m1)
 ## Increase the Number of Simulations.
 
 
-```r
+``` r
 m2&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
             nodefactor("Sex", levels="F")+
             nodefactor("Grade", levels=c("8","9","10","11","12"))+
-            nodematch("Sex")+nodematch("Race",diff=TRUE)+
+            nodematch("Sex")+nodematch("Race",levels=c("White","Hisp","NatAm"),diff=TRUE)+
             nodematch("Grade",diff=TRUE)+gwesp(decay=0.25),
             control=control.ergm(seed=6886,		MCMC.samplesize=10000, MCMLE.maxit=50)
             )
@@ -370,84 +427,6 @@ mcmc.diagnostics(m2)
 ##   nodematch.Race.Black nodematch.Race.Other
 ```
 
----
-## Results
-
-- Another problem is that several of our parameters are estimated as `\(-Inf\)`.
-
-- Check Our Summary Statistics
-
-
-```r
-summary(mesa~edges+nodefactor("Race")+
-            nodefactor("Sex", levels="F")+
-            nodefactor("Grade", levels=c("8","9","10","11","12"))+
-            nodematch("Sex")+
-            nodematch("Race",diff=TRUE)+
-            nodematch("Grade",diff=TRUE)+
-            gwesp(decay=0.25)
-        )
-#Also can:
-mixingmatrix(mesa, "Race")
-```
----
-## Check Our Summary Statistics
-
-
-```
-##                 edges  nodefactor.Race.Hisp nodefactor.Race.NatAm 
-##                   203                   178                   156 
-## nodefactor.Race.Other nodefactor.Race.White      nodefactor.Sex.F 
-##                     1                    45                   235 
-##    nodefactor.Grade.8    nodefactor.Grade.9   nodefactor.Grade.10 
-##                    75                    65                    36 
-##   nodefactor.Grade.11   nodefactor.Grade.12         nodematch.Sex 
-##                    49                    28                   132 
-##  nodematch.Race.Black   nodematch.Race.Hisp  nodematch.Race.NatAm 
-##                     0                    53                    46 
-##  nodematch.Race.Other  nodematch.Race.White    nodematch.Grade.10 
-##                     0                     4                     9 
-##    nodematch.Grade.11    nodematch.Grade.12     nodematch.Grade.7 
-##                    17                     6                    75 
-##     nodematch.Grade.8     nodematch.Grade.9                 esp#1 
-##                    33                    23                    70 
-##                 esp#2                 esp#3                 esp#4 
-##                    36                    13                     0 
-##                 esp#5                 esp#6                 esp#7 
-##                     1                     0                     0 
-##                 esp#8                 esp#9                esp#10 
-##                     0                     0                     0 
-##                esp#11                esp#12                esp#13 
-##                     0                     0                     0 
-##                esp#14                esp#15                esp#16 
-##                     0                     0                     0 
-##                esp#17                esp#18                esp#19 
-##                     0                     0                     0 
-##                esp#20                esp#21                esp#22 
-##                     0                     0                     0 
-##                esp#23                esp#24                esp#25 
-##                     0                     0                     0 
-##                esp#26                esp#27                esp#28 
-##                     0                     0                     0 
-##                esp#29                esp#30 
-##                     0                     0
-```
----
-## Remove the Categories with Empty Cells:
-
-```r
-m3&lt;- ergm(mesa~edges+nodefactor("Race",levels=c("Black","Hisp","NatAm","Other"))+
-            nodefactor("Sex", levels="F")+
-            nodefactor("Grade", levels=c("8","9","10","11","12"))+
-            nodematch("Sex")+
-            nodematch("Race",levels=c("White","Hisp","NatAm"),diff=TRUE)+
-            nodematch("Grade",diff=TRUE)+
-            gwesp(decay=0.25),
-            control=control.ergm(seed=6886,		MCMC.samplesize=10000, MCMLE.maxit=50	)
-            )
-summary(m3)
-```
----
 
 ## Results
 
@@ -501,7 +480,7 @@ Adding a tie that closes one triangle and no nodes in the group have any existin
 
 
 
-&lt;img src="09_ergm_application_files/figure-html/unnamed-chunk-19-1.png" width="300px" style="display: block; margin: auto;" /&gt;
+&lt;img src="09_ergm_application_files/figure-html/unnamed-chunk-18-1.png" width="300px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Adding a Tie That Closes One Triangle
@@ -514,7 +493,7 @@ Adding a tie that closes one triangle and no nodes in the group have any existin
 - Assume the decay parameter, `\(\alpha=.25\)`, then
 
 
-```r
+``` r
 exp(.25)*(1-(1-exp(-.25))^1)*3-exp(.25)*(1-(1-exp(-.25))^0)*2
 ```
 
@@ -542,6 +521,8 @@ have no shared partners, the log-odds of the tie are increased by `\(5.4\)` (1.8
 
 - How many ties with one *esp*s does this tie add? How many ties with two *esp*s does this tie add?
 
+
+
 ---
 ## Your Turn 2
 
@@ -550,7 +531,7 @@ have no shared partners, the log-odds of the tie are increased by `\(5.4\)` (1.8
 
 
 
-```r
+``` r
 m2&lt;-ergm(samplike~edges+mutual+nodematch('group')+gwesp(.25,fixed=TRUE))
 summary(m2)
 ```
@@ -563,17 +544,17 @@ summary(m2)
 ## Monte Carlo Maximum Likelihood Results:
 ## 
 ##                      Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges                 -1.8962     0.4092      0  -4.634  &lt; 1e-04 ***
-## mutual                 1.3910     0.4863      0   2.860  0.00423 ** 
-## nodematch.group        2.2846     0.3863      0   5.914  &lt; 1e-04 ***
-## gwesp.OTP.fixed.0.25  -0.2808     0.2359      0  -1.191  0.23382    
+## edges                 -1.9339     0.3789      0  -5.104  &lt; 1e-04 ***
+## mutual                 1.3879     0.4798      0   2.892  0.00382 ** 
+## nodematch.group        2.2659     0.3900      0   5.810  &lt; 1e-04 ***
+## gwesp.OTP.fixed.0.25  -0.2581     0.2164      0  -1.193  0.23298    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##      Null Deviance: 424.2  on 306  degrees of freedom
-##  Residual Deviance: 267.4  on 302  degrees of freedom
+##  Residual Deviance: 266.5  on 302  degrees of freedom
 ##  
-## AIC: 275.4  BIC: 290.3  (Smaller is better. MC Std. Err. = 0.2978)
+## AIC: 274.5  BIC: 289.4  (Smaller is better. MC Std. Err. = 0.352)
 ```
 
 
@@ -581,9 +562,9 @@ summary(m2)
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
