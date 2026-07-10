@@ -1,6 +1,6 @@
 install.packages("devtools")
 library(devtools)
-install_github("ochyzh/networkdata")
+pak::pak("ochyzh/networkdata")
 library(networkdata)
 library(igraph)
 data(highlandPonies)
@@ -8,9 +8,10 @@ data(highlandPonies)
 
 
 ponies<-as.matrix(highlandPonies[1:17, 2:18])
+ponies[is.na(ponies)] <- 0 # Replace NAs with 0
 
 pGraph <- graph_from_adjacency_matrix(ponies, weighted=TRUE,
-                                      mode="undirected",
+                                      mode="directed",
                                       diag=FALSE)
 
 V(pGraph)$color <- ifelse(V(pGraph)$name %in% c("WT", "WH", "WS"), "azure1", "turquoise")
