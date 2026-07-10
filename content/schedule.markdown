@@ -71,7 +71,7 @@ All the class materials will be posted/updated here.
         <td>Models for Binary DVs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank> binary dvs </a> |<a href="../materials/Slides/06_binary_dv.pdf" target=_blank> binary dvs pdf </a>  |<a href="../materials/Slides/data/space_shuttles.txt "target=_blank> space shuttle data </a>|<a href="../materials/Slides/data/MichelinNY.csv "target=_blank> Michelin data </a>|<a href="../materials/YourTurnAnswers/.06_yourturn_logit.R"target=_blank> your turn answers </a>
+          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank> binary dvs </a> |<a href="../materials/Slides/06_binary_dv.pdf" target=_blank> binary dvs pdf </a>  |<a href="../materials/Slides/data/space_shuttles.txt "target=_blank> space shuttle data </a>|<a href="../materials/Slides/data/MichelinNY.csv "target=_blank> Michelin data </a>|<a href="../materials/YourTurnAnswers/06_logit_yourturn.R"target=_blank> your turn answers </a>
           </dd>
           </dl>
         </td>
@@ -162,7 +162,7 @@ All the class materials will be posted/updated here.
         <td>Temporal ERGMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/10_tergm.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/Scripts/day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/10_tergm_friends_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/10_tergms_yourturn1.R"target=_blank> your turn answers (2nd exercise) </a>
+          <dd><a href="../materials/Slides/10_tergm.html" target=_blank>tergm </a>  | <a href="../materials/Slides/10_tergm.pdf" target=_blank>slides in pdf</a>| <a href="../materials/Slides/10_tergm.Rmd" target=_blank>slides in Rmd</a>|<a href="../materials/Scripts/day11_script.R"target=_blank> code from class </a>|<a href="../materials/YourTurnAnswers/10_tergm_friends_yourturn.R"target=_blank> your turn answers </a>|<a href="../materials/YourTurnAnswers/10_tergm_yourturn.R"target=_blank> your turn answers (2nd exercise) </a>
           </dd>
           </dl>
         </td>
