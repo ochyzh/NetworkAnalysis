@@ -17,7 +17,7 @@ Homework assignments and data are posted here.
         <td>July 19</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/ICPSR2024_homework01.html" target=_blank>Homework 1 </a>|<a href="../materials/homeworks/ICPSR2024_homework01.Rmd" target=_blank>Homework 1 rmd </a>| <a href="../materials/homeworks/emailnet.csv" target=_blank> email data </a>|<a href="../materials/homeworks/EmployeeRecords.csv" target=_blank> employee data</a>
+          <dd><a href="../materials/homeworks/.ICPSR2024_homework01.html" target=_blank>Homework 1 </a>|<a href="../materials/homeworks/ICPSR2024_homework01.Rmd" target=_blank>Homework 1 rmd </a>| <a href="../materials/homeworks/emailnet.csv" target=_blank> email data </a>|<a href="../materials/homeworks/EmployeeRecords.csv" target=_blank> employee data</a>
           </dd>
           </dl>
         </td>
@@ -26,7 +26,7 @@ Homework assignments and data are posted here.
         <td>July 29</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/ICPSR2024_homework02.html" target=_blank>Homework 2</a>| <a href="../materials/homeworks/ICPSR2024_homework02.rmd" target=_blank> Homework 2 rmd </a>
+          <dd><a href="../materials/homeworks/.ICPSR2024_homework02.html" target=_blank>Homework 2</a>| <a href="../materials/homeworks/ICPSR2024_homework02.rmd" target=_blank> Homework 2 rmd </a>
           </dd>
           </dl>
         </td>
@@ -35,7 +35,7 @@ Homework assignments and data are posted here.
         <td>ND</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/homework02.Rmd" target=_blank> Practice Homework </a>
+          <dd><a href="../materials/homeworks/.homework02.Rmd" target=_blank> Practice Homework </a>
           </dd>
           </dl>
         </td>
