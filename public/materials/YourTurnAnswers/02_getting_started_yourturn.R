@@ -1,6 +1,7 @@
 library(tidyverse)
+install.packages("devtools")
 library(devtools)
-install_github("ochyzh/networkdata")
+pak::pak("ochyzh/networkdata")
 library(networkdata)
 
 #Can you transform `defAlly` into a matrix?

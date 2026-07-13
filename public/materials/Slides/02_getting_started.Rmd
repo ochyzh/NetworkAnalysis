@@ -201,7 +201,7 @@ knitr::include_graphics("images/ponies2.png")
 - To load our class package (you have to do this each time you need to access the data):
 ```{r, echo=TRUE, eval=FALSE, warning=FALSE,message=FALSE}
 library(devtools)
-install_github("ochyzh/networkdata")
+pak::pak("ochyzh/networkdata")
 library(networkdata)
 ```
 
@@ -209,6 +209,7 @@ library(networkdata)
 ```{r,  message=F, echo=TRUE}
 data(highlandPonies)
 ponies<-as.matrix(highlandPonies[1:17, 2:18])
+ponies[is.na(ponies)] <- 0 # Replace NAs with 0
 ```
 
 Create a graph object:

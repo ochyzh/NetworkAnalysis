@@ -29,6 +29,7 @@ All the class materials will be posted/updated here.
           <a href="../materials/Slides/data/highlandPonies.csv"target=_blank> highlandPonies.csv </a> |
           <a href="https://colab.research.google.com/drive/14Q8viSFd0XR7pH8Ozt_sHI-hxuyveV2x?usp=drive_link"target=_blank> script1 on Colab </a> |
           <a href="../materials/YourTurnAnswers/.02_getting_started_yourturn.R"target=_blank> your turn answers </a>
+           <a href="../materials/Slides/data/defAlly.rda"target=_blank> defAlly.rda </a> |
           </dd>
           </dl>
         </td>
