@@ -26,7 +26,7 @@ All the class materials will be posted/updated here.
           <a href="../materials/Slides/02_getting_started.pdf" target=_blank>intro to networks pdf</a> |
           <a href="../materials/Scripts/day1_script.Rmd"target=_blank> code from class </a> |
           <a href="https://colab.research.google.com/drive/1fm-pgzmo2XE6yNFirYB-42rHnN71iEhW?usp=sharing"target=_blank> Intro to Colab </a> |
-          <a href="../materials/materials/Slides/data/highlandPonies.csv"target=_blank> highlandPonies.csv </a> |
+          <a href="../materials/Slides/data/highlandPonies.csv"target=_blank> highlandPonies.csv </a> |
           <a href="https://colab.research.google.com/drive/14Q8viSFd0XR7pH8Ozt_sHI-hxuyveV2x?usp=drive_link"target=_blank> script1 on Colab </a> |
           <a href="../materials/YourTurnAnswers/.02_getting_started_yourturn.R"target=_blank> your turn answers </a>
           </dd>
