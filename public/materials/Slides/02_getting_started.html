@@ -30,7 +30,7 @@ class: center, middle, inverse, title-slide
 ## Why Do We Need Network Analysis?
 Suppose you walked into a dining room that hosts a luncheon at a conference you are currently attending. What table would you sit at?
 
-&lt;img src="images/seating_chart.jpg" width="400px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/seating_chart.jpg" alt="" width="400px" style="display: block; margin: auto;" /&gt;
 ---
 
 ## Today's Class
@@ -53,7 +53,7 @@ class: inverse, middle, center
 
 A set of **nodes** and **relation(s)** defined on them
 
-&lt;img src="images/madmen.png" width="400px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/madmen.png" alt="" width="400px" style="display: block; margin: auto;" /&gt;
 ---
 
 ## Defining Network Features &amp; Measurements: What's a node?
@@ -119,7 +119,7 @@ Early Puzzles: Individuals inside social groups
 - Example: In 1932 there was a pandemic of runaways at Brooklyn public and private schools: within two weeks 14 girls ran away, which was 30 times more than the average number
  - Moreno's finding: position in network predicted whether the girl would run away
 
-&lt;img src="images/moreno.png" width="400px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/moreno.png" alt="" width="400px" style="display: block; margin: auto;" /&gt;
 ---
 
 ## Early study of network analysis
@@ -154,7 +154,7 @@ Kathleen Carley, Another Early Puzzle (1980-90s): Group Stability and Organizati
 How can we capture these relationships? &lt;span style="color:MediumAquamarine"&gt; *The Sociomatrix*. &lt;/span&gt;
 example: &lt;span style="color:Purple"&gt; *PONIES* &lt;/span&gt;
 
-&lt;img src="images/horserank1.jpg" width="600px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/horserank1.jpg" alt="" width="600px" style="display: block; margin: auto;" /&gt;
 
 *Ranks and Relationships in Highland Ponies and Highland Cows* by **Brock et. al 1976**
 
@@ -163,13 +163,13 @@ example: &lt;span style="color:Purple"&gt; *PONIES* &lt;/span&gt;
 ## Sociomatrix: Pony threats
 &lt;span style="color:DarkCyan"&gt; Directed, targeted behavior &lt;/span&gt;
 
-&lt;img src="images/ponies1.png" width="600px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/ponies1.png" alt="" width="600px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Sociomatrix: Pony grooming
 &lt;span style="color:DarkCyan"&gt; Undirected, mutual behavior &lt;/span&gt;
 
-&lt;img src="images/ponies2.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/ponies2.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;
 ---
 ## How might we look at this in R?
 
@@ -177,23 +177,24 @@ example: &lt;span style="color:Purple"&gt; *PONIES* &lt;/span&gt;
 
 - To load our class package (you have to do this each time you need to access the data):
 
-```r
+``` r
 library(devtools)
-install_github("ochyzh/networkdata")
+pak::pak("ochyzh/networkdata")
 library(networkdata)
 ```
 
 - Now, load the specific dataset:
 
-```r
+``` r
 data(highlandPonies)
 ponies&lt;-as.matrix(highlandPonies[1:17, 2:18])
+ponies[is.na(ponies)] &lt;- 0 # Replace NAs with 0
 ```
 
 Create a graph object:
 
 
-```r
+``` r
 library(igraph)
 pGraph &lt;- graph_from_adjacency_matrix(ponies, weighted=TRUE, mode="undirected",
                                       diag=FALSE)
@@ -203,7 +204,7 @@ pGraph &lt;- graph_from_adjacency_matrix(ponies, weighted=TRUE, mode="undirected
 ## Plot using the *igraph* package:
 
 
-```r
+``` r
 V(pGraph)$color &lt;- ifelse(V(pGraph)$name %in% c("WT", "WH", "WS"), "azure1", "turquoise")
 ponyPlot&lt;- plot(pGraph,
      edge.arrow.size=.2,
@@ -218,7 +219,7 @@ ponyPlot&lt;- plot(pGraph,
 
 ## Mutually supportive behavior between ponies
 
-&lt;img src="images/ponies.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/ponies.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Other Examples of Neworks
@@ -246,12 +247,12 @@ Step 1: A simple Data set
 
 Step 2: A simple, undirected, sociomatrix
 
-&lt;img src="images/sociomatrix0.jpeg" width="800px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/sociomatrix0.jpeg" alt="" width="800px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Summary: data processing
 
-&lt;img src="images/df_adj_net3.png" width="800px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/df_adj_net3.png" alt="" width="800px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Networks in Political Science
@@ -301,7 +302,7 @@ Step 2: A simple, undirected, sociomatrix
 
 ---
 ## This image again (or why logits are not who you think they are)
-&lt;img src="images/df_adj_net3.png" width="800px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/df_adj_net3.png" alt="" width="800px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Networks in Political Science
@@ -326,27 +327,27 @@ Today: Systems (Dyads --&gt; Networks)
 ---
 ## Adolescent romantic and sexual networks
 
-&lt;img src="images/jefferson.jpg" width="600px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/jefferson.jpg" alt="" width="600px" style="display: block; margin: auto;" /&gt;
 **Bearman, Moody and Stovel**
 ---
 ## Adolescent Social Structure by **Jim Moody**
-&lt;img src="images/schoolGrade.png" width="600px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/schoolGrade.png" alt="" width="600px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Adolescent Social Structure by **Jim Moody**
-&lt;img src="images/schoolRace.png" width="600px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/schoolRace.png" alt="" width="600px" style="display: block; margin: auto;" /&gt;
 ---
 
 ## Networks of Violence in Nigeria
 
-&lt;img src="images/nigeria_postBK.png" width="700px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/nigeria_postBK.png" alt="" width="700px" style="display: block; margin: auto;" /&gt;
 
 *Networks of Violence: Predicting Conflict in Nigeria* by **Dorff, Gallop, &amp; Minhas**
 ---
 
 ## Structures do hide in hairballs ...
 
-&lt;img src="images/icews_matlconf.png" width="700px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/icews_matlconf.png" alt="" width="700px" style="display: block; margin: auto;" /&gt;
 
 *International Conflict Event Warning System (ICEWS): Material Conflict* by **Minhas, Hoff, &amp; Ward**
 ---
@@ -369,7 +370,7 @@ Useful terminology for working in *R*:
 How do we restructure a dyadic data frame such as alliances from COW into a matrix format?
 
 
-```r
+``` r
 data(defAlly)
 head(defAlly)
 ```
@@ -416,8 +417,6 @@ Can you transform `defAlly` into a matrix form as shown below?
 ```
 
 
-(Hint the `spread` function from the `tidyr` package might be useful ... also easy to do with a for loop)
-
 
 ---
 ## What We've Learned So Far
@@ -431,9 +430,9 @@ Can you transform `defAlly` into a matrix form as shown below?
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
