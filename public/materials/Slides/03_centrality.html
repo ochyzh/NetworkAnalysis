@@ -36,7 +36,9 @@ class: center, middle, inverse, title-slide
 
 Suppose you are playing the following game:
 
-If you can get all your friends to meet you at the entrance to the ROM in exactly 1 hour, you will win $1,000,000. The catch is that you can only contact one friend, and not all your friends know each other. The picture below is a visualization of your friendship network. Which friend would you call and why?
+If you can get all your friends to meet you at the entrance to the IRS building in exactly 1 hour, you will win $1,000,000. The catch is that you can only contact one friend, and not all your friends know each other. The picture below is a visualization of your friendship network. Which friend would you call and why?
+
+
 
 ---
 
@@ -61,13 +63,17 @@ If you can get all your friends to meet you at the entrance to the ROM in exactl
 ---
 ## Visualization of the Friends Network
 
-&lt;img src="03_centrality_files/figure-html/unnamed-chunk-2-1.png" width="400px" style="display: block; margin: auto;" /&gt;
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-2-1.png" alt="" width="400px" style="display: block; margin: auto;" /&gt;
  
 
 ---
 ## Discussion
 
-- What criterion helps spread the message in the fewest possible steps?
+- Who should you call if you want the message to spread fastest?
+
+- Who should you call if you want as many people as possible to hear it directly?
+
+- Who should you remove to stop the message from spreading?
 
 - What are social science applications of this game?
 
@@ -87,29 +93,28 @@ If you can get all your friends to meet you at the entrance to the ROM in exactl
       + The CEO does not need a key: people always open the door for her
       
   + No unanimity on exactly what centrality is or how to measure it. 
+
 ---
+## Centrality depends on what you mean by important
 
-## Florentine Families
+| If I care about           | Use         |
+| ------------------------- | ----------- |
+| popularity                | Degree      |
+| reaching everyone quickly | Closeness   |
+| controlling communication | Betweenness |
+| prestige                  | Eigenvector |
 
-Who looks central? 
 
-&lt;img src="03_centrality_files/figure-html/unnamed-chunk-3-1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
 ---
+## Degree centrality
 
-## Popular Measures of Centrality
-
-Well ... let's define centrality:
-
-- Degree
-- Closeness 
-- Betweenness
-- Eigenvector
+- **Idea**: The nodes with more connections to others are more central
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-3-1.png" alt="" width="400px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Degree centrality
-
-- **Idea**: The nodes with more connections to others are more central
 
 - How to  measure: 
   + Undirected degree centrality: `\(\sum_{j:j \neq i} y_{i,j}\)`
@@ -150,7 +155,13 @@ How would you calculate Albizzi's degree centrality?
 ---
 ## Closeness centrality
 
-- **Idea**: If a node is far away from all other nodes, then it should be less central ... or to put it another way, the more central a node, the lower its total distance to all other nodes
+- **Idea**: If a node is far away from all other nodes, then it should be less central ... or to put it another way, the more central a node, the lower its total distance to all other nodes.
+
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-5-1.png" alt="" width="400px" style="display: block; margin: auto;" /&gt;
+
+---
+## Closeness centrality
+
 - How to measure: 
   + (geodesic) distance: `\(d_{i,j}\)` is the minimal path length from `\(i\)` to `\(j\)`
   + closeness centrality: `\(\frac{1}{\sum_{j:j \neq i} d_{i,j}}\)`
@@ -163,18 +174,21 @@ How would you calculate Albizzi's degree centrality?
 
 - **Idea**: A node is central if it acts as a bridge to other nodes
 
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-6-1.png" alt="" width="400px" style="display: block; margin: auto;" /&gt;
+---
+
+## Betweenness
+
 - How to measure in words: 
   + For each pair of nodes, compute the geodesic distance (shortest path between them)
   + Then for each node, determine the fraction of shortest paths that go through the actor in question
   + End by summing this fraction over all pairs of nodes
----
-
-## Betweenness
 
 - How to measure a bit more formally:
   + Say `\(g_{j,k}\)` equals the number of geodesics between nodes `\(j\)` and `\(k\)`
   + Say `\(g_{j,k}(i)\)` equals the number of geodesics between nodes `\(j\)` and `\(k\)` going through `\(i\)`
   + Then betweenness centrality for actor `\(i\)`: `\(\sum_{j&lt;k} \frac{g_{j,k}(i)}{g_{j,k}}\)`
+  
 
 ---
 
@@ -189,21 +203,33 @@ How would you calculate Albizzi's degree centrality?
 
 ---
 
-## Comparison of these measures (Thanks to Arifuzzaman &amp; Bhuiyan)
+## Comparison of these measures (Arifuzzaman &amp; Bhuiyan)
 
-&lt;img src="images/comparisonCentrality.png" width="1000px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/comparisonCentrality.png" alt="" width="1000px" style="display: block; margin: auto;" /&gt;
 
 ---
 
-## Comparison of these measures (Thanks to Arifuzzaman &amp; Bhuiyan)
+## Comparison of these measures (Arifuzzaman &amp; Bhuiyan)
 
-&lt;img src="images/comparisonCentralityTable.png" width="1000px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/comparisonCentralityTable.png" alt="" width="1000px" style="display: block; margin: auto;" /&gt;
+---
+## One more
+
+Which Google page is more important?
+
+- 100 random pages → A
+
+- President's White House page → B
 ---
 
 ## One more ... Eigenvector
 
 - **Idea**: An actor is more central if it is connected to other more central actors
 
+&lt;img src="03_centrality_files/figure-html/unnamed-chunk-9-1.png" alt="" width="400px" style="display: block; margin: auto;" /&gt;
+---
+
+## Eigenvector
 
 - Eigenvector centrality: centrality of each node is proportional to the sum of the centralities of its neighbors (let `\(c_{i}^{e}\)` denote the eigenvector centrality of actor `\(i\)`):
   + `\(c_{i}^{e} = \frac{1}{\lambda} \sum_{j:j\neq i} y_{ij} c_{j}^{e}\)`
@@ -236,6 +262,22 @@ For each of the following networks, think of the best measure of centrality to m
 - a network of student friendships on a university campus
 - a network of legislators connected by co-sponsorships of bills
 - a network of CEOs connected based on their undergraduate institutions
+
+---
+## Things to remember
+
+- Degree is purely local.
+
+    - It ignores everything beyond immediate neighbors.
+
+- Closeness and betweenness assume information follows shortest paths.
+
+
+
+
+
+
+
 
 ---
 class: inverse, middle, center
@@ -290,8 +332,8 @@ sort(igraph::degree(g), decreasing=TRUE)[1:6]
 ```
 
 ```
-##     Medici   Guadagni    Strozzi    Albizzi   Bischeri Castellani 
-##          6          4          4          3          3          3
+## 12  5  2  3  4  7 
+##  6  5  4  4  4  3
 ```
 
 ``` r
@@ -299,8 +341,8 @@ sort(igraph::closeness(g), decreasing=TRUE)[1:6]
 ```
 
 ```
-##     Medici    Ridolfi    Albizzi Tornabuoni   Guadagni  Barbadori 
-## 0.04000000 0.03571429 0.03448276 0.03448276 0.03333333 0.03125000
+##          8          6         12          5          7          9 
+## 0.03125000 0.02941176 0.02777778 0.02564103 0.02380952 0.02272727
 ```
 
 ``` r
@@ -308,8 +350,8 @@ sort(igraph::betweenness(g), decreasing=TRUE)[1:6]
 ```
 
 ```
-##   Medici Guadagni  Albizzi Salviati  Ridolfi Bischeri 
-## 47.50000 23.16667 19.33333 13.00000 10.33333  9.50000
+##    8   12    6    5    9    2 
+## 68.0 60.0 54.0 36.5 14.0  6.5
 ```
 
 ``` r
@@ -317,14 +359,17 @@ sort(igraph::eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
 ```
 
 ```
-##     Medici    Strozzi    Ridolfi Tornabuoni   Guadagni   Bischeri 
-##  1.0000000  0.8272688  0.7937398  0.7572302  0.6718805  0.6572037
+##         5         4         2         3         7         6 
+## 1.0000000 0.8986959 0.8617021 0.8617021 0.6362907 0.4800207
 ```
 
 ---
 ## Your Turn
 
-- Plot the Florentine network, such that node size is proportionate to each centrality measure. How do they compare?
+- Calculate the four types of centrality for the fictitious friend network we've worked with. Did they match your expectations?
+
+- Plot the network so that the nodes are proportionate in size to different types of centrality.
+
 
 
 

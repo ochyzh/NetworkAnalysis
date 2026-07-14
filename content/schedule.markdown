@@ -28,7 +28,7 @@ All the class materials will be posted/updated here.
           <a href="https://colab.research.google.com/drive/1fm-pgzmo2XE6yNFirYB-42rHnN71iEhW?usp=sharing"target=_blank> Intro to Colab </a> |
           <a href="../materials/Slides/data/highlandPonies.csv"target=_blank> highlandPonies.csv </a> |
           <a href="https://colab.research.google.com/drive/14Q8viSFd0XR7pH8Ozt_sHI-hxuyveV2x?usp=drive_link"target=_blank> script1 on Colab </a> |
-          <a href="../materials/YourTurnAnswers/.02_getting_started_yourturn.R"target=_blank> your turn answers </a>|
+          <a href="https://colab.research.google.com/drive/1_8XTFDaRJUEea4dCeYb5b5qCoMoShcAd?usp=sharing"target=_blank> your turn answers </a>|
            <a href="../materials/Slides/data/defAlly.rda"target=_blank> defAlly.rda </a>
           </dd>
           </dl>
@@ -39,7 +39,9 @@ All the class materials will be posted/updated here.
         <td>Network Centrality</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/03_centrality.html" target=_blank>network centrality </a>| <a href="../materials/Slides/03_centrality.pdf" target=_blank> network centrality pdf </a>  |<a href="../materials/Scripts/.day2_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/03_centrality.html" target=_blank>network centrality </a>|
+          <a href="https://colab.research.google.com/drive/1l8dxDn4MTxxAY91d_IQkUk3_HkIn74nS?usp=sharing"target=_blank> script2 on Colab </a> |
+          |<a href="../materials/Scripts/.day2_script.R"target=_blank> code from class </a>
           </dd>
           </dl>
         </td>
@@ -49,7 +51,10 @@ All the class materials will be posted/updated here.
         <td>Community Detection</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a> |<a href="../materials/Slides/04_communities.pdf" target=_blank>community detection pdf </a> |<a href="../materials/YourTurnAnswers/04_communities_yourturn.R" target=_blank>your turn answers</a>  |<a href="../materials/Scripts/day3_script.R"target=_blank> code from class </a> | <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
+          <dd><a href="../materials/Slides/04_communities.html" target=_blank>community detection </a> |
+          <a href="https://colab.research.google.com/drive/12CBr31FnYSHEVKgi6QqKcv46jUjQRb01?usp=sharing"target=_blank> script3 on Colab </a> |
+           <a href="../materials/homeworks/emailnet.csv" target=_blank> email data </a>|
+          <a href="../materials/Homeworks/resumes.zip" target=_blank> resume data </a>
           </dd>
           </dl>
         </td>

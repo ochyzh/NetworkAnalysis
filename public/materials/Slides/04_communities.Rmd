@@ -73,7 +73,9 @@ knitr::include_graphics('images/levels_of_analysis.png')
 ---
 ## What Is A Community?
 
-- A community is a locally dense connected subgraph. (Barabasi, 2016, 325)
+- A community is a group whose members interact much more with each other than with outsiders.
+
+- More formally: a community is a locally dense connected subgraph. (Barabasi, 2016, 325)
 
   + All members of a community must be reached through other members of the same community (connectedness).
   
@@ -82,7 +84,183 @@ knitr::include_graphics('images/levels_of_analysis.png')
 
   + Examples: communities among the karate club members, communities of international states, communities of legislators, neighborhood communities.
   
-- Note that these features do not uniquly define a community, just offer some guidelines.
+- Note that these features do not uniquely define a community, just offer some guidelines.
+
+---
+##  
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width='500px', fig.align='center'}
+library(igraph)
+
+# Two groups of six nodes
+group1 <- paste0("A", 1:6)
+group2 <- paste0("B", 1:6)
+
+# Create dense connections within each group
+edges_group1 <- combn(group1, 2)
+edges_group2 <- combn(group2, 2)
+
+# Add one bridge between the groups
+bridge <- matrix(c("A6", "B1"), nrow = 2)
+
+# Combine all edges
+el <- t(cbind(edges_group1, edges_group2, bridge))
+
+# Create undirected graph
+g <- graph_from_edgelist(el, directed = FALSE)
+
+# Assign group membership for plotting
+V(g)$community <- ifelse(grepl("^A", V(g)$name), 1, 2)
+
+# Place the two groups apart from one another
+set.seed(123)
+
+layout_left <- layout_in_circle(induced_subgraph(g, group1))
+layout_right <- layout_in_circle(induced_subgraph(g, group2))
+
+layout_left[, 1] <- layout_left[, 1] - 2
+layout_right[, 1] <- layout_right[, 1] + 2
+
+LO <- rbind(layout_left, layout_right)
+
+V(g)$color <- "lightblue"
+
+plot(
+  g,
+  layout = LO,
+  vertex.label = NA,
+  vertex.size = 22,
+  vertex.color = "lightblue",
+  vertex.frame.color = "black",
+  edge.color = "grey50",
+  main = "How Many Communities?"
+)
+```
+
+
+---
+
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width='500px', fig.align='center'}
+library(igraph)
+
+# Two groups of six nodes
+group1 <- paste0("A", 1:6)
+group2 <- paste0("B", 1:6)
+
+# Complete graph within each group
+edges_group1 <- combn(group1, 2)
+edges_group2 <- combn(group2, 2)
+
+# More cross-community connections
+bridges <- matrix(
+  c(
+    "A2","B4",
+    "A3","B2",
+    "A4","B5",
+    "A5","B3",
+    "A6","B1"
+  ),
+  byrow = TRUE,
+  ncol = 2
+)
+
+el <- t(cbind(edges_group1, edges_group2, t(bridges)))
+
+g <- graph_from_edgelist(el, directed = FALSE)
+
+set.seed(123)
+
+layout_left <- layout_in_circle(induced_subgraph(g, group1))
+layout_right <- layout_in_circle(induced_subgraph(g, group2))
+
+layout_left[,1]  <- layout_left[,1] - 2
+layout_right[,1] <- layout_right[,1] + 2
+
+LO <- rbind(layout_left, layout_right)
+
+plot(
+  g,
+  layout = LO,
+  vertex.color = "lightblue",
+  vertex.frame.color = "black",
+  vertex.size = 22,
+  vertex.label = NA,
+  edge.color = "grey50",
+  main = "One Community or Two?"
+)
+```
+---
+
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width='500px', fig.align='center'}
+library(igraph)
+
+# Two groups of six nodes
+group1 <- paste0("A", 1:6)
+group2 <- paste0("B", 1:6)
+
+# Complete graph within each group
+edges_group1 <- combn(group1, 2)
+edges_group2 <- combn(group2, 2)
+
+# More cross-community connections
+bridges <- matrix(
+  c(
+    "A2","B4",
+    "A3","B2",
+    "A4","B5",
+    "A5","B3",
+    "A6","B1",
+     "A2","B2",
+    "A3","B3",
+    "A4","B4",
+    "A5","B5",
+    "A6","B1"
+  ),
+  byrow = TRUE,
+  ncol = 2
+)
+
+el <- t(cbind(edges_group1, edges_group2, t(bridges)))
+
+g <- graph_from_edgelist(el, directed = FALSE)
+
+set.seed(123)
+
+layout_left <- layout_in_circle(induced_subgraph(g, group1))
+layout_right <- layout_in_circle(induced_subgraph(g, group2))
+
+layout_left[,1]  <- layout_left[,1] - 2
+layout_right[,1] <- layout_right[,1] + 2
+
+LO <- rbind(layout_left, layout_right)
+
+plot(
+  g,
+  layout = LO,
+  vertex.color = "lightblue",
+  vertex.frame.color = "black",
+  vertex.size = 22,
+  vertex.label = NA,
+  edge.color = "grey50",
+  main = "One Community or Two?"
+)
+```
+
+---
+## How should we choose?
+
+Instead of asking *What are the communities?*, ask *Which partition best captures the structure of the network?*
+
+Different algorithms define "best" differently.
+
+- Maximize modularity
+- Remove bridge edges
+- Follow random walks
+- Minimize cuts
+
+Therefore: different algorithms may return different—but equally reasonable—community assignments.
   
 ---
 ## Cliques as Communities

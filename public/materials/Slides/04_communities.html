@@ -4,7 +4,7 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.30/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -45,7 +45,7 @@ class: inverse, middle, center
 
 ---
 ## Introduction: Belgium
-&lt;img src="images/belgium.png" width="700px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/belgium.png" alt="" width="700px" style="display: block; margin: auto;" /&gt;
 ---
 ## Introduction: Belgium
 - Population: 11.5 mil
@@ -63,7 +63,7 @@ class: inverse, middle, center
 - Goal: identify individuals who regularly talk to one another.
 ---
 ## Blondel et al. (2008)
-&lt;img src="images/belgium_communities.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/belgium_communities.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 class: inverse, middle, center
@@ -71,12 +71,14 @@ class: inverse, middle, center
 ---
 ## Network Levels of Analysis
 
-&lt;img src="images/levels_of_analysis.png" width="900px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/levels_of_analysis.png" alt="" width="900px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## What Is A Community?
 
-- A community is a locally dense connected subgraph. (Barabasi, 2016, 325)
+- A community is a group whose members interact much more with each other than with outsiders.
+
+- More formally: a community is a locally dense connected subgraph. (Barabasi, 2016, 325)
 
   + All members of a community must be reached through other members of the same community (connectedness).
   
@@ -85,13 +87,42 @@ class: inverse, middle, center
 
   + Examples: communities among the karate club members, communities of international states, communities of legislators, neighborhood communities.
   
-- Note that these features do not uniquly define a community, just offer some guidelines.
+- Note that these features do not uniquely define a community, just offer some guidelines.
+
+---
+##  
+
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-4-1.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-5-1.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-6-1.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+## How should we choose?
+
+Instead of asking *What are the communities?*, ask *Which partition best captures the structure of the network?*
+
+Different algorithms define "best" differently.
+
+- Maximize modularity
+- Remove bridge edges
+- Follow random walks
+- Minimize cuts
+
+Therefore: different algorithms may return different—but equally reasonable—community assignments.
   
 ---
 ## Cliques as Communities
 
 A clique is a complete subgraph of *k*-nodes.
-&lt;img src="images/cliques.png" width="900px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/cliques.png" alt="" width="900px" style="display: block; margin: auto;" /&gt;
 
 - May be too restrictive.
 ---
@@ -112,13 +143,13 @@ If `\(k_i^{int}=0\)`, all neighbors of `\(i\)` belong to other communities, then
 
 `\(k_i^{ext}=1\)`, `\(k_i^{int}=3\)`
 
-&lt;img src="images/communities.png" width="300px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/communities.png" alt="" width="300px" style="display: block; margin: auto;" /&gt;
 ---
 ## Strong and Weak Communities
 
 In a *strong community* each node of `\(C\)` has more links within the community than with the rest of the graph, `\(k_i^{int}(C)&gt;k_i^{ext}(C)\)`. In a *weak community,* the total internal degree of `\(C\)` exceeds its total external degree, `\(k^{in}(C)&gt;k^{out}(C)\)`.  
 
-&lt;img src="images/communities1.png" width="700px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/communities1.png" alt="" width="700px" style="display: block; margin: auto;" /&gt;
 ---
 ## Number of Partitions
 
@@ -154,12 +185,12 @@ Brute force approach is unfeasible, need an algorithm.
 ---
 ## Zachary (1977)
 
-&lt;img src="images/zachary.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/zachary.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;
  
 ---
 ## Zachary (1977)
 
-&lt;img src="04_communities_files/figure-html/unnamed-chunk-8-1.png" width="350px" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-11-1.png" alt="" width="350px" style="display: block; margin: auto;" /&gt;
 ---
 ## Zachary (1977)
 
@@ -169,7 +200,7 @@ mf$partition1
 ```
 
 ```
-## + 17/34 vertices, from 75a161c:
+## + 17/34 vertices, from e65bb55:
 ##  [1]  1  2  3  4  5  6  7  8 10 11 12 13 14 17 18 20 22
 ```
 
@@ -178,7 +209,7 @@ mf$partition2
 ```
 
 ```
-## + 17/34 vertices, from 75a161c:
+## + 17/34 vertices, from e65bb55:
 ##  [1]  9 15 16 19 21 23 24 25 26 27 28 29 30 31 32 33 34
 ```
 ---
@@ -187,7 +218,7 @@ mf$partition2
 - Modularity: a measure of the extent to which like is connected to like in a network.
   + A *greedy algorithm* iteratively joins nodes if the move increases the new partition's modularity.
 
-&lt;img src="images/modularity.png" width="600px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/modularity.png" alt="" width="600px" style="display: block; margin: auto;" /&gt;
 ---
 ## The Girvan–Newman algorithm
 
@@ -214,7 +245,7 @@ Used in Cruz et al 2020
 ---
 ## Comparing Clustering Algorithms
 
-&lt;img src="images/table91.png" width="900px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/table91.png" alt="" width="900px" style="display: block; margin: auto;" /&gt;
 ---
 class: inverse, middle, center
 # Lab
@@ -267,7 +298,7 @@ cfg$membership
 plot(cfg, friends, layout=LO, main="Greedy")
 ```
 
-&lt;img src="04_communities_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-17-1.png" alt="" style="display: block; margin: auto;" /&gt;
 ---
 ## Other Examples:
 
@@ -349,7 +380,7 @@ plot(ceigen, friends, layout=LO,main= "Leading Eigenvalue")
 plot(ceb, friends, layout=LO, main="Betweenness")
 ```
 
-&lt;img src="04_communities_files/figure-html/unnamed-chunk-18-1.png" width="300px" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_communities_files/figure-html/unnamed-chunk-21-1.png" alt="" width="300px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Your Turn

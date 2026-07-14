@@ -46,7 +46,9 @@ library(ggplot2)
 
 Suppose you are playing the following game:
 
-If you can get all your friends to meet you at the entrance to the ROM in exactly 1 hour, you will win $1,000,000. The catch is that you can only contact one friend, and not all your friends know each other. The picture below is a visualization of your friendship network. Which friend would you call and why?
+If you can get all your friends to meet you at the entrance to the IRS building in exactly 1 hour, you will win $1,000,000. The catch is that you can only contact one friend, and not all your friends know each other. The picture below is a visualization of your friendship network. Which friend would you call and why?
+
+
 
 ---
 
@@ -105,7 +107,11 @@ plot(g,  edge.arrow.size=1, edge.color="black", vertex.color="white")
 ---
 ## Discussion
 
-- What criterion helps spread the message in the fewest possible steps?
+- Who should you call if you want the message to spread fastest?
+
+- Who should you call if you want as many people as possible to hear it directly?
+
+- Who should you remove to stop the message from spreading?
 
 - What are social science applications of this game?
 
@@ -125,36 +131,53 @@ plot(g,  edge.arrow.size=1, edge.color="black", vertex.color="white")
       + The CEO does not need a key: people always open the door for her
       
   + No unanimity on exactly what centrality is or how to measure it. 
+
 ---
+## Centrality depends on what you mean by important
 
-## Florentine Families
+| If I care about           | Use         |
+| ------------------------- | ----------- |
+| popularity                | Degree      |
+| reaching everyone quickly | Closeness   |
+| controlling communication | Betweenness |
+| prestige                  | Eigenvector |
 
-Who looks central? 
 
-```{r, echo=FALSE, eval=TRUE, out.width='500px', fig.align='center'}
-library(igraph)
-library(network)
-data(flo)
-g = graph_from_adjacency_matrix(flo, mode='undirected', diag=FALSE)
-set.seed(6886)
-plot(g, vertex.size=15,vertex.color="turquoise")
+
+---
+## Degree centrality
+
+- **Idea**: The nodes with more connections to others are more central
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width='400px', fig.align='center'}
+el <- matrix( c("1", "2",
+                "1", "3",
+                "2","3",
+                "3","5",
+                "2","4",
+                "2","5",
+                "3","4",
+                "4","5",
+                "4","7",
+                "6","5",
+                "5","7",
+                "6","7",
+                "6","8",
+                "8","9",
+                "9","10",
+                "8","12",
+                "11","12",
+                "12","13",
+                "12","14",
+                "12","15",
+                "12","16"), nc = 2, byrow = TRUE)
+g<-graph_from_edgelist(el, directed=F)
+set.seed(1598)
+plot(g,  edge.arrow.size=1, edge.color="black", vertex.color="white")
 ```
----
-
-## Popular Measures of Centrality
-
-Well ... let's define centrality:
-
-- Degree
-- Closeness 
-- Betweenness
-- Eigenvector
 
 ---
 
 ## Degree centrality
-
-- **Idea**: The nodes with more connections to others are more central
 
 - How to  measure: 
   + Undirected degree centrality: $\sum_{j:j \neq i} y_{i,j}$
@@ -171,6 +194,9 @@ Well ... let's define centrality:
 
 How would you calculate Albizzi's degree centrality?
 ```{r, echo=F}
+library(igraph)
+library(network)
+data(flo)
 as.matrix(flo)[1:16,1:6]
 ```
 
@@ -178,7 +204,38 @@ as.matrix(flo)[1:16,1:6]
 ---
 ## Closeness centrality
 
-- **Idea**: If a node is far away from all other nodes, then it should be less central ... or to put it another way, the more central a node, the lower its total distance to all other nodes
+- **Idea**: If a node is far away from all other nodes, then it should be less central ... or to put it another way, the more central a node, the lower its total distance to all other nodes.
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width='400px', fig.align='center'}
+el <- matrix( c("1", "2",
+                "1", "3",
+                "2","3",
+                "3","5",
+                "2","4",
+                "2","5",
+                "3","4",
+                "4","5",
+                "4","7",
+                "6","5",
+                "5","7",
+                "6","7",
+                "6","8",
+                "8","9",
+                "9","10",
+                "8","12",
+                "11","12",
+                "12","13",
+                "12","14",
+                "12","15",
+                "12","16"), nc = 2, byrow = TRUE)
+g<-graph_from_edgelist(el, directed=F)
+set.seed(1598)
+plot(g,  edge.arrow.size=1, edge.color="black", vertex.color="white")
+```
+
+---
+## Closeness centrality
+
 - How to measure: 
   + (geodesic) distance: $d_{i,j}$ is the minimal path length from $i$ to $j$
   + closeness centrality: $\frac{1}{\sum_{j:j \neq i} d_{i,j}}$
@@ -191,18 +248,46 @@ as.matrix(flo)[1:16,1:6]
 
 - **Idea**: A node is central if it acts as a bridge to other nodes
 
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width='400px', fig.align='center'}
+el <- matrix( c("1", "2",
+                "1", "3",
+                "2","3",
+                "3","5",
+                "2","4",
+                "2","5",
+                "3","4",
+                "4","5",
+                "4","7",
+                "6","5",
+                "5","7",
+                "6","7",
+                "6","8",
+                "8","9",
+                "9","10",
+                "8","12",
+                "11","12",
+                "12","13",
+                "12","14",
+                "12","15",
+                "12","16"), nc = 2, byrow = TRUE)
+g<-graph_from_edgelist(el, directed=F)
+set.seed(1598)
+plot(g,  edge.arrow.size=1, edge.color="black", vertex.color="white")
+```
+---
+
+## Betweenness
+
 - How to measure in words: 
   + For each pair of nodes, compute the geodesic distance (shortest path between them)
   + Then for each node, determine the fraction of shortest paths that go through the actor in question
   + End by summing this fraction over all pairs of nodes
----
-
-## Betweenness
 
 - How to measure a bit more formally:
   + Say $g_{j,k}$ equals the number of geodesics between nodes $j$ and $k$
   + Say $g_{j,k}(i)$ equals the number of geodesics between nodes $j$ and $k$ going through $i$
   + Then betweenness centrality for actor $i$: $\sum_{j<k} \frac{g_{j,k}(i)}{g_{j,k}}$
+  
 
 ---
 
@@ -217,7 +302,7 @@ as.matrix(flo)[1:16,1:6]
 
 ---
 
-## Comparison of these measures (Thanks to Arifuzzaman & Bhuiyan)
+## Comparison of these measures (Arifuzzaman & Bhuiyan)
 
 ```{r, out.width='1000px', fig.align='center',echo=FALSE}
 knitr::include_graphics('images/comparisonCentrality.png')
@@ -225,17 +310,54 @@ knitr::include_graphics('images/comparisonCentrality.png')
 
 ---
 
-## Comparison of these measures (Thanks to Arifuzzaman & Bhuiyan)
+## Comparison of these measures (Arifuzzaman & Bhuiyan)
 
 ```{r, out.width='1000px', fig.align='center',echo=FALSE}
 knitr::include_graphics('images/comparisonCentralityTable.png')
 ```
+---
+## One more
+
+Which Google page is more important?
+
+- 100 random pages → A
+
+- President's White House page → B
 ---
 
 ## One more ... Eigenvector
 
 - **Idea**: An actor is more central if it is connected to other more central actors
 
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width='400px', fig.align='center'}
+el <- matrix( c("1", "2",
+                "1", "3",
+                "2","3",
+                "3","5",
+                "2","4",
+                "2","5",
+                "3","4",
+                "4","5",
+                "4","7",
+                "6","5",
+                "5","7",
+                "6","7",
+                "6","8",
+                "8","9",
+                "9","10",
+                "8","12",
+                "11","12",
+                "12","13",
+                "12","14",
+                "12","15",
+                "12","16"), nc = 2, byrow = TRUE)
+g<-graph_from_edgelist(el, directed=F)
+set.seed(1598)
+plot(g,  edge.arrow.size=1, edge.color="black", vertex.color="white")
+```
+---
+
+## Eigenvector
 
 - Eigenvector centrality: centrality of each node is proportional to the sum of the centralities of its neighbors (let $c_{i}^{e}$ denote the eigenvector centrality of actor $i$):
   + $c_{i}^{e} = \frac{1}{\lambda} \sum_{j:j\neq i} y_{ij} c_{j}^{e}$
@@ -268,6 +390,22 @@ For each of the following networks, think of the best measure of centrality to m
 - a network of student friendships on a university campus
 - a network of legislators connected by co-sponsorships of bills
 - a network of CEOs connected based on their undergraduate institutions
+
+---
+## Things to remember
+
+- Degree is purely local.
+
+    - It ignores everything beyond immediate neighbors.
+
+- Closeness and betweenness assume information follows shortest paths.
+
+
+
+
+
+
+
 
 ---
 class: inverse, middle, center
@@ -316,7 +454,10 @@ sort(igraph::eigen_centrality(g)$vector, decreasing=TRUE)[1:6]
 ---
 ## Your Turn
 
-- Plot the Florentine network, such that node size is proportionate to each centrality measure. How do they compare?
+- Calculate the four types of centrality for the fictitious friend network we've worked with. Did they match your expectations?
+
+- Plot the network so that the nodes are proportionate in size to different types of centrality.
+
 
 
 
