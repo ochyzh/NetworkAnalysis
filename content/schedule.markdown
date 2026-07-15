@@ -64,7 +64,7 @@ All the class materials will be posted/updated here.
         <td>Causal Inference with Networks</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/16_causal_nets.html" target=_blank> causal inference with networks </a> |<a href="../materials/Slides/16_causal_nets.pdf" target=_blank> causal inference with networks pdf </a>  |<a href="../materials/Scripts/.day3_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/16_causal_nets.html" target=_blank> causal inference with networks </a> |
           </dd>
           </dl>
         </td>
@@ -74,7 +74,12 @@ All the class materials will be posted/updated here.
         <td>Spatial Models</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/05_spatial.html" target=_blank>spatial models </a> |<a href="../materials/Slides/05_spatial.pdf" target=_blank>spatial models pdf</a>  | <a href="../materials/Slides/data/covid_data.csv" target=_blank> covid data </a> |<a href="../materials/Slides/data/contigmat.txt"target=_blank> contiguity matrix </a>|<a href="../materials/Slides/data/statereg.csv"target=_blank> state region data </a> |<a href="../materials/Slides/data/animal.csv"target=_blank> animal data </a>|<a href="../materials/Scripts/.day4_script.R"target=_blank> code from class </a>
+          <dd><a href="../materials/Slides/05_spatial.html" target=_blank>spatial models </a> |
+          <a href="https://colab.research.google.com/drive/1ZM41tmZczxGf4yXu2q_bqX8BHMU-4tpz?usp=sharing"target=_blank> script4 on Colab </a> |
+          <a href="../materials/Slides/data/soydata_cr.csv"target=_blank> soydata </a> |
+          <a href="../materials/Slides/data/contigmat.txt"target=_blank> contiguity matrix </a>|
+          <a href="../materials/Slides/data/statereg.csv"target=_blank> state region data </a> |
+          <a href="../materials/Slides/data/animal.csv"target=_blank> animal data </a>
           </dd>
           </dl>
         </td>

@@ -57,45 +57,40 @@ class: center, middle, inverse, title-slide
 
  
 
-&lt;img src="./images/communal_violence.png" width="800px" style="display: block; margin: auto;" /&gt;
+&lt;img src="./images/communal_violence.png" alt="" width="800px" style="display: block; margin: auto;" /&gt;
 
 Source: van Weezel S. "On climate and conflict: Precipitation decline and communal conflict in Ethiopia and Kenya." *Journal of Peace Research*. 2019;56(4):514--528. 
 
 ---
- 
+## What Explains Clustering in Vote Change? 
 
-&lt;img src="./images/elections.png" width="600px" style="display: block; margin: auto;" /&gt;
+&lt;img src="./images/elections.png" alt="" width="600px" style="display: block; margin: auto;" /&gt;
 
 Source: Chyzh, Olga V. and R. Urbatsch. 2021. "Bean Counters: The Effect of Soy Tariffs on Change in Republican Vote Share Between the 2016 and 2018 Elections."*Journal of Politics* 83 (1): 415--419.
   
----
-## What Explains Variation in Covid-19 Cases?
 
-&lt;img src="./images/covid19plot.png" width="800px" style="display: block; margin: auto;" /&gt;
 
 
 
 ---
 ## Common Exposure
 
-Neighboring counties have similar Covid-19 rates because of their underlying similarities, e.g. demographics, political ideology (anti-mask sentiment), etc.
+Neighboring counties have similar vote shifts between elections because of their underlying similarities, e.g. demographics, political ideology,  etc.
 
-`$$Covid19\ cases/cap_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i +u_i,$$`
-
-
+`$$Vote\_change= \beta_0+\beta_1Soy\_prod+\beta_2Urban_i+\beta_2Per16_i+\ldots +u_i,$$`
 
 
 ---
 ## Homophily: Spatial X
 
-Neighboring units tend to converge on outcomes because the causal variables (anti-vaccine sentiments) cluster by neighborhood locations (partisan geo-sorting).
+Neighboring units tend to converge on outcomes because the causal variables (losses from China's soy tariffs) cluster by neighborhood locations (agricultural patterns).
 
-`$$Covid19\ cases/cap_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Trump16_j} +u_i,$$`
+`$$Vote\_change_i= \beta_0+\beta_1Urban_i+\beta_2Soy\_prod_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Soy\_prod_j} +u_i,$$`
 where `\(\rho\)` is the estimation parameter for spatial dependence, and `\(w_{ij}\)` measures whether `\(i\)` and `\(j\)` are neighbors.
 
 - This is a spatial-X regression. 
 
-- `\(\sum\limits_{j\neq i}^{N}{w_{ij}\ Trump16_j}\)` is a spatially lagged independent variable measuring the average Trump support in neighboring counties. 
+- `\(\sum\limits_{j\neq i}^{N}{w_{ij}\ Soy\_prod_j}\)` is a spatially lagged independent variable measuring the average soy production in neighboring counties. 
 
 - The coefficient `\(\rho\)` is a measure of spatial homophily.
 
@@ -103,7 +98,7 @@ where `\(\rho\)` is the estimation parameter for spatial dependence, and `\(w_{i
 
 ## Contiguity Matrix W
 
-&lt;img src="./images/IA_counties.png" width="800px" style="display: block; margin: auto;" /&gt;
+&lt;img src="./images/IA_counties.png" alt="" width="800px" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -143,12 +138,12 @@ Divide by the row sum, so that each neighbor's influence decreases with the tota
 
 ## Diffusion: Spatial Y
 
-`$$Covid19\ cases/cap_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Covid19\ cases/cap_j} +u_i,$$`
+`$$Vote\_change_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Vote\_change_j} +u_i,$$`
 where `\(\rho\)` is the estimation parameter for spatial dependence, and `\(w_{ij}\)` measures whether `\(i\)` and `\(j\)` are neighbors.
 
 - This is a spatial-Y regression. 
 
-- `\(\sum\limits_{j\neq i}^{N}{w_{ij}\ Covid19\ cases/cap_j}\)` is a spatially lagged dependent variable measuring the average number of Covid-19 cases in neighboring counties. 
+- `\(\sum\limits_{j\neq i}^{N}{w_{ij}\ Vote\_change_j}\)` is a spatially lagged dependent variable measuring the average vote change in neighboring counties. 
 
 - The coefficient `\(\rho\)` is a measure of spatial dependence.
 
@@ -221,7 +216,7 @@ By re-arranging, can isolate **y** on the left-hand side:
 ---
 ## Likelihood
 
-&lt;img src="./images/SAR_likelihood.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./images/SAR_likelihood.png" alt="" width="1536" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Other Types of Space
@@ -242,17 +237,130 @@ class: inverse, middle, center
 
 
 ``` r
-mydata&lt;-read.csv("./data/covid_data.csv", header=TRUE) 
-mydata$trumpmarg[is.na(mydata$trumpmarg)]&lt;-0
+mydata&lt;-read.csv("./data/soydata_cr.csv", header=TRUE) 
+
+
+
 contigmat&lt;-read.table("data/contigmat.txt") |&gt; as.matrix()
-contigmat1&lt;-contigmat/apply(contigmat,1,sum) #row-standardize
 
-mydata$W_trumpmarg&lt;-contigmat1%*%mydata$trumpmarg
-
-m1&lt;-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317)
-m2&lt;-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg)
+row_totals &lt;- rowSums(contigmat) 
+# Check for counties with no neighbors
+ which(row_totals == 0) 
 ```
 
+```
+## 12033 15001 15003 15007 15009 25019 51515 51530 51540 51580 51595 51600 51660 
+##   148   199   200   201   202   252   538   540   541   543   545   546   551 
+## 51678 51690 51720 51790 51820 51840 53073  1025 
+##   553   557   559   566   569   571   601   660
+```
+
+``` r
+ contigmat_W &lt;- contigmat 
+ nonzero_rows &lt;- row_totals &gt; 0 
+ contigmat_W[nonzero_rows, ] &lt;- contigmat[nonzero_rows, , drop = FALSE] / row_totals[nonzero_rows] 
+ # Rows should sum to 1, except units with no neighbors 
+ head(rowSums(contigmat_W))
+```
+
+```
+## 4001 4003 4005 4007 4009 4011 
+##    1    1    1    1    1    1
+```
+
+---
+## Naive model
+
+``` r
+#contigmat1&lt;-contigmat/apply(contigmat,1,sum) #row-standardize
+spatX&lt;-t(mydata$ln_prod_bush12_cr%*%as.matrix(contigmat_W))
+mydata$spatX&lt;-spatX[,1]
+
+#Naive model
+summary(m1_naive&lt;-lm( votech ~ ln_prod_bush12_cr + ln_gdpc_cr+ln_gdpc_sq_cr+perc_unemploy1317_cr+perc_HS_GED_cr+perc_BA_cr+urb2010_cr+ln_perc_black1317_cr+ln_perc_other_cr+ln_perc_latino1317_cr+ln_perc_foreign1317_cr+Rep16perc_cr  ,data = mydata, REML = FALSE))
+```
+
+```
+## 
+## Call:
+## lm(formula = votech ~ ln_prod_bush12_cr + ln_gdpc_cr + ln_gdpc_sq_cr + 
+##     perc_unemploy1317_cr + perc_HS_GED_cr + perc_BA_cr + urb2010_cr + 
+##     ln_perc_black1317_cr + ln_perc_other_cr + ln_perc_latino1317_cr + 
+##     ln_perc_foreign1317_cr + Rep16perc_cr, data = mydata, REML = FALSE)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -50.132  -2.452   0.487   3.186  41.572 
+## 
+## Coefficients:
+##                         Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            -3.513245   0.141193 -24.883  &lt; 2e-16 ***
+## ln_prod_bush12_cr      -1.246784   0.233095  -5.349 9.69e-08 ***
+## ln_gdpc_cr             -0.062044   0.310732  -0.200  0.84176    
+## ln_gdpc_sq_cr          -0.054148   0.290967  -0.186  0.85238    
+## perc_unemploy1317_cr   -0.047399   0.023717  -1.999  0.04577 *  
+## perc_HS_GED_cr          0.097971   0.032260   3.037  0.00242 ** 
+## perc_BA_cr             -0.184937   0.044268  -4.178 3.05e-05 ***
+## urb2010_cr             -3.163870   0.495123  -6.390 1.99e-10 ***
+## ln_perc_black1317_cr   -0.385245   0.125032  -3.081  0.00209 ** 
+## ln_perc_other_cr       -0.863007   0.231660  -3.725  0.00020 ***
+## ln_perc_latino1317_cr   0.440376   0.245360   1.795  0.07281 .  
+## ln_perc_foreign1317_cr  0.179099   0.212950   0.841  0.40041    
+## Rep16perc_cr           -0.161325   0.008656 -18.638  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 5.956 on 2401 degrees of freedom
+##   (27 observations deleted due to missingness)
+## Multiple R-squared:  0.1678,	Adjusted R-squared:  0.1636 
+## F-statistic: 40.33 on 12 and 2401 DF,  p-value: &lt; 2.2e-16
+```
+---
+## Example: Spatial X
+
+``` r
+#Spatial X model:
+#M1
+summary(m1_spX&lt;-lm( votech ~ ln_prod_bush12_cr + ln_gdpc_cr+ln_gdpc_sq_cr+perc_unemploy1317_cr+perc_HS_GED_cr+perc_BA_cr+urb2010_cr+ln_perc_black1317_cr+ln_perc_other_cr+ln_perc_latino1317_cr+ln_perc_foreign1317_cr+Rep16perc_cr  +spatX,data = mydata, REML = FALSE))
+```
+
+```
+## 
+## Call:
+## lm(formula = votech ~ ln_prod_bush12_cr + ln_gdpc_cr + ln_gdpc_sq_cr + 
+##     perc_unemploy1317_cr + perc_HS_GED_cr + perc_BA_cr + urb2010_cr + 
+##     ln_perc_black1317_cr + ln_perc_other_cr + ln_perc_latino1317_cr + 
+##     ln_perc_foreign1317_cr + Rep16perc_cr + spatX, data = mydata, 
+##     REML = FALSE)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -50.078  -2.484   0.484   3.183  41.609 
+## 
+## Coefficients:
+##                         Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            -3.514500   0.141243 -24.883  &lt; 2e-16 ***
+## ln_prod_bush12_cr      -1.073998   0.441156  -2.435 0.014984 *  
+## ln_gdpc_cr             -0.060996   0.310792  -0.196 0.844422    
+## ln_gdpc_sq_cr          -0.048503   0.291272  -0.167 0.867760    
+## perc_unemploy1317_cr   -0.047918   0.023747  -2.018 0.043718 *  
+## perc_HS_GED_cr          0.097773   0.032268   3.030 0.002471 ** 
+## perc_BA_cr             -0.185758   0.044311  -4.192 2.86e-05 ***
+## urb2010_cr             -3.153637   0.495701  -6.362 2.38e-10 ***
+## ln_perc_black1317_cr   -0.389333   0.125366  -3.106 0.001921 ** 
+## ln_perc_other_cr       -0.865069   0.231741  -3.733 0.000194 ***
+## ln_perc_latino1317_cr   0.433064   0.245911   1.761 0.078355 .  
+## ln_perc_foreign1317_cr  0.180205   0.212998   0.846 0.397613    
+## Rep16perc_cr           -0.161575   0.008674 -18.627  &lt; 2e-16 ***
+## spatX                  -0.200082   0.433689  -0.461 0.644590    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 5.957 on 2400 degrees of freedom
+##   (27 observations deleted due to missingness)
+## Multiple R-squared:  0.1678,	Adjusted R-squared:  0.1633 
+## F-statistic: 37.24 on 13 and 2400 DF,  p-value: &lt; 2.2e-16
+```
 
 
 ---
@@ -272,10 +380,11 @@ summary(W1$neighbours)
 
 W2&lt;-nb2listw(W1$neighbours, glist=NULL, style="W", zero.policy=TRUE)
 
-m3 &lt;- lagsarlm(data=mydata, cases_pc~log(totpop1317)+urb2010+trumpmarg+medinc1317, W2, zero.policy=TRUE)
-summary(m3)
+#M1:
+spY1&lt;-lagsarlm(votech ~ ln_prod_bush12_cr + ln_gdpc_cr+ln_gdpc_sq_cr+perc_unemploy1317_cr+perc_HS_GED_cr+perc_BA_cr+urb2010_cr+ln_perc_black1317_cr+ln_perc_other_cr+ln_perc_latino1317_cr+ln_perc_foreign1317_cr+Rep16perc_cr  , data=mydata, W2, zero.policy=TRUE)
+summary(spY1)
 
-saveRDS(m3,"m3.RDS")
+saveRDS(spY1,"m3.RDS")
 ```
 
 ---
@@ -283,11 +392,11 @@ saveRDS(m3,"m3.RDS")
 
 Set up a hypothetical scenario:
 
-- Expected change in Covid-19 cases that would result from increasing urbanization in Johnson county, IA
+- Expected change in vote change that would result from increasing urbanization in Johnson county, IA
 
 
 ``` r
-names&lt;-c("benton","cedar","iowa","johnson","jones","linn")
+names&lt;-c("benton county","cedar county","iowa county","johnson county","jones county","linn county")
 mymat&lt;-matrix(c(0,0,1,0,0,1,
                 0,0,0,1,1,1,
                 1,0,0,1,0,0,
@@ -307,11 +416,11 @@ d&lt;-dplyr::filter(mydata, state=="IA" &amp; county %in% names)
 m3&lt;- readRDS("m3.RDS")
 
 I&lt;- diag(6)
-X0&lt;-as.matrix(cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317))
+X0&lt;-as.matrix(cbind(1,d$ln_prod_bush12_cr,d$ln_gdpc_cr, d$ln_gdpc_sq_cr, d$perc_unemploy1317_cr, d$perc_HS_GED_cr, d$perc_BA_cr, d$urb2010_cr, d$ln_perc_black1317_cr, d$ln_perc_other_cr, d$ln_perc_latino1317_cr, d$ln_perc_foreign1317_cr, d$Rep16perc_cr))
 
-urb&lt;-d$urb2010
+urb&lt;-d$urb2010_cr
 urb[4]&lt;-1
-X1&lt;-as.matrix(cbind(1,log(d$totpop1317), urb, d$trumpmarg, d$medinc1317))
+X1&lt;-as.matrix(cbind(1,d$ln_prod_bush12_cr,d$ln_gdpc_cr, d$ln_gdpc_sq_cr, d$perc_unemploy1317_cr, d$perc_HS_GED_cr, d$perc_BA_cr, urb, d$ln_perc_black1317_cr, d$ln_perc_other_cr, d$ln_perc_latino1317_cr, d$ln_perc_foreign1317_cr, d$Rep16perc_cr))
 A&lt;-solve(I-coef(m3)[1]*mymat)
 
 mycoef&lt;-as.matrix(coef(m3))
@@ -325,20 +434,10 @@ sim&lt;- cbind.data.frame(names,Y_ch)
 ---
 ## Visualize the Effect
 
-&lt;img src="05_spatial_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="05_spatial_files/figure-html/unnamed-chunk-13-1.png" alt="" style="display: block; margin: auto;" /&gt;
 
 
 
----
-## Your Turn 
-
-Suppose you want to test whether variable *votech* (the change in Republican vote share between the 2016 and 2018 Congressional election) is spatially clustered.
-
-1. Calculate a measure of the average change in Republican vote share in neighboring states.
-
-2. Estimate a model of *votech* as a function of *urb2010*, *medinc1317*, *perc_HS_GED*, *perclatino1317* and *trumpmarg*.
-
-3. Estimate the same model plus a the average change in Republican vote share in neighboring states.
 
 ---
 ## Making Maps
@@ -382,7 +481,7 @@ library(ggplot2)
 ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)
 ```
 
-&lt;img src="05_spatial_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="05_spatial_files/figure-html/unnamed-chunk-15-1.png" alt="" style="display: block; margin: auto;" /&gt;
 
 ---
 ## A Bit Nicer of a Map
@@ -410,7 +509,7 @@ ggplot() +  geom_path(data=states, aes(x=long, y=lat, group=group),color="black"
 ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=group),color="black", size=.5)+ coord_map()
 ```
 
-&lt;img src="05_spatial_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="05_spatial_files/figure-html/unnamed-chunk-17-1.png" alt="" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -477,12 +576,9 @@ head(states.class.map)
 ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=group, fill = StateGroups), colour = I("black"))+ coord_map()+theme(legend.position="bottom")
 ```
 
-&lt;img src="05_spatial_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="05_spatial_files/figure-html/unnamed-chunk-20-1.png" alt="" style="display: block; margin: auto;" /&gt;
 
----
-## Your Turn
 
-Use color to show the expected change in Covid-19 cases that result from increasing urbanization in Johnson county, IA on a map.
 
 ---
 ## Your Turn (Advanced)

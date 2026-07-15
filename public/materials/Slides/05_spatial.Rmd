@@ -64,7 +64,7 @@ knitr::include_graphics("./images/communal_violence.png")
 Source: van Weezel S. "On climate and conflict: Precipitation decline and communal conflict in Ethiopia and Kenya." *Journal of Peace Research*. 2019;56(4):514--528. 
 
 ---
- 
+## What Explains Clustering in Vote Change? 
 
 ```{r, echo=F, out.width= "600px",fig.align="center"}
 knitr::include_graphics("./images/elections.png")
@@ -72,36 +72,29 @@ knitr::include_graphics("./images/elections.png")
 
 Source: Chyzh, Olga V. and R. Urbatsch. 2021. "Bean Counters: The Effect of Soy Tariffs on Change in Republican Vote Share Between the 2016 and 2018 Elections."*Journal of Politics* 83 (1): 415--419.
   
----
-## What Explains Variation in Covid-19 Cases?
 
-```{r, echo=F, out.width= "800px",fig.align="center"}
-knitr::include_graphics("./images/covid19plot.png")
-```
 
 
 
 ---
 ## Common Exposure
 
-Neighboring counties have similar Covid-19 rates because of their underlying similarities, e.g. demographics, political ideology (anti-mask sentiment), etc.
+Neighboring counties have similar vote shifts between elections because of their underlying similarities, e.g. demographics, political ideology,  etc.
 
-$$Covid19\ cases/cap_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i +u_i,$$
-
-
+$$Vote\_change= \beta_0+\beta_1Soy\_prod+\beta_2Urban_i+\beta_2Per16_i+\ldots +u_i,$$
 
 
 ---
 ## Homophily: Spatial X
 
-Neighboring units tend to converge on outcomes because the causal variables (anti-vaccine sentiments) cluster by neighborhood locations (partisan geo-sorting).
+Neighboring units tend to converge on outcomes because the causal variables (losses from China's soy tariffs) cluster by neighborhood locations (agricultural patterns).
 
-$$Covid19\ cases/cap_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Trump16_j} +u_i,$$
+$$Vote\_change_i= \beta_0+\beta_1Urban_i+\beta_2Soy\_prod_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Soy\_prod_j} +u_i,$$
 where $\rho$ is the estimation parameter for spatial dependence, and $w_{ij}$ measures whether $i$ and $j$ are neighbors.
 
 - This is a spatial-X regression. 
 
-- $\sum\limits_{j\neq i}^{N}{w_{ij}\ Trump16_j}$ is a spatially lagged independent variable measuring the average Trump support in neighboring counties. 
+- $\sum\limits_{j\neq i}^{N}{w_{ij}\ Soy\_prod_j}$ is a spatially lagged independent variable measuring the average soy production in neighboring counties. 
 
 - The coefficient $\rho$ is a measure of spatial homophily.
 
@@ -145,12 +138,12 @@ round(mymat/apply(mymat,1,sum),2)
 
 ## Diffusion: Spatial Y
 
-$$Covid19\ cases/cap_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Covid19\ cases/cap_j} +u_i,$$
+$$Vote\_change_i= \beta_0+\beta_1Urban_i+\beta_2Trump16_i+\\\beta_3medinc_i+\rho\sum\limits_{j\neq i}^{N}{w_{ij}\ Vote\_change_j} +u_i,$$
 where $\rho$ is the estimation parameter for spatial dependence, and $w_{ij}$ measures whether $i$ and $j$ are neighbors.
 
 - This is a spatial-Y regression. 
 
-- $\sum\limits_{j\neq i}^{N}{w_{ij}\ Covid19\ cases/cap_j}$ is a spatially lagged dependent variable measuring the average number of Covid-19 cases in neighboring counties. 
+- $\sum\limits_{j\neq i}^{N}{w_{ij}\ Vote\_change_j}$ is a spatially lagged dependent variable measuring the average vote change in neighboring counties. 
 
 - The coefficient $\rho$ is a measure of spatial dependence.
 
@@ -244,19 +237,48 @@ class: inverse, middle, center
 ---
 ## Example: Spatial X
 
-```{r, eval=T, }
+```{r, eval=T}
 
-mydata<-read.csv("./data/covid_data.csv", header=TRUE) 
-mydata$trumpmarg[is.na(mydata$trumpmarg)]<-0
+mydata<-read.csv("./data/soydata_cr.csv", header=TRUE) 
+
+
+
 contigmat<-read.table("data/contigmat.txt") |> as.matrix()
-contigmat1<-contigmat/apply(contigmat,1,sum) #row-standardize
 
-mydata$W_trumpmarg<-contigmat1%*%mydata$trumpmarg
+row_totals <- rowSums(contigmat) 
+# Check for counties with no neighbors
+ which(row_totals == 0) 
+ contigmat_W <- contigmat 
+ nonzero_rows <- row_totals > 0 
+ contigmat_W[nonzero_rows, ] <- contigmat[nonzero_rows, , drop = FALSE] / row_totals[nonzero_rows] 
+ # Rows should sum to 1, except units with no neighbors 
+ head(rowSums(contigmat_W))
+ 
 
-m1<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317)
-m2<-lm(data=mydata, cases_pc~urb2010+trumpmarg+medinc1317+W_trumpmarg)
+
 ```
 
+---
+## Naive model
+```{r, eval=T}
+ 
+#contigmat1<-contigmat/apply(contigmat,1,sum) #row-standardize
+spatX<-t(mydata$ln_prod_bush12_cr%*%as.matrix(contigmat_W))
+mydata$spatX<-spatX[,1]
+
+#Naive model
+summary(m1_naive<-lm( votech ~ ln_prod_bush12_cr + ln_gdpc_cr+ln_gdpc_sq_cr+perc_unemploy1317_cr+perc_HS_GED_cr+perc_BA_cr+urb2010_cr+ln_perc_black1317_cr+ln_perc_other_cr+ln_perc_latino1317_cr+ln_perc_foreign1317_cr+Rep16perc_cr  ,data = mydata, REML = FALSE))
+
+
+
+```
+---
+## Example: Spatial X
+```{r, eval=T}
+#Spatial X model:
+#M1
+summary(m1_spX<-lm( votech ~ ln_prod_bush12_cr + ln_gdpc_cr+ln_gdpc_sq_cr+perc_unemploy1317_cr+perc_HS_GED_cr+perc_BA_cr+urb2010_cr+ln_perc_black1317_cr+ln_perc_other_cr+ln_perc_latino1317_cr+ln_perc_foreign1317_cr+Rep16perc_cr  +spatX,data = mydata, REML = FALSE))
+```
 
 
 ---
@@ -275,10 +297,11 @@ summary(W1$neighbours)
 
 W2<-nb2listw(W1$neighbours, glist=NULL, style="W", zero.policy=TRUE)
 
-m3 <- lagsarlm(data=mydata, cases_pc~log(totpop1317)+urb2010+trumpmarg+medinc1317, W2, zero.policy=TRUE)
-summary(m3)
+#M1:
+spY1<-lagsarlm(votech ~ ln_prod_bush12_cr + ln_gdpc_cr+ln_gdpc_sq_cr+perc_unemploy1317_cr+perc_HS_GED_cr+perc_BA_cr+urb2010_cr+ln_perc_black1317_cr+ln_perc_other_cr+ln_perc_latino1317_cr+ln_perc_foreign1317_cr+Rep16perc_cr  , data=mydata, W2, zero.policy=TRUE)
+summary(spY1)
 
-saveRDS(m3,"m3.RDS")
+saveRDS(spY1,"m3.RDS")
 ```
 
 ---
@@ -286,10 +309,10 @@ saveRDS(m3,"m3.RDS")
 
 Set up a hypothetical scenario:
 
-- Expected change in Covid-19 cases that would result from increasing urbanization in Johnson county, IA
+- Expected change in vote change that would result from increasing urbanization in Johnson county, IA
 
 ```{r, eval=T}
-names<-c("benton","cedar","iowa","johnson","jones","linn")
+names<-c("benton county","cedar county","iowa county","johnson county","jones county","linn county")
 mymat<-matrix(c(0,0,1,0,0,1,
                 0,0,0,1,1,1,
                 1,0,0,1,0,0,
@@ -309,11 +332,11 @@ d<-dplyr::filter(mydata, state=="IA" & county %in% names)
 m3<- readRDS("m3.RDS")
 
 I<- diag(6)
-X0<-as.matrix(cbind(1,log(d$totpop1317), d$urb2010, d$trumpmarg, d$medinc1317))
+X0<-as.matrix(cbind(1,d$ln_prod_bush12_cr,d$ln_gdpc_cr, d$ln_gdpc_sq_cr, d$perc_unemploy1317_cr, d$perc_HS_GED_cr, d$perc_BA_cr, d$urb2010_cr, d$ln_perc_black1317_cr, d$ln_perc_other_cr, d$ln_perc_latino1317_cr, d$ln_perc_foreign1317_cr, d$Rep16perc_cr))
 
-urb<-d$urb2010
+urb<-d$urb2010_cr
 urb[4]<-1
-X1<-as.matrix(cbind(1,log(d$totpop1317), urb, d$trumpmarg, d$medinc1317))
+X1<-as.matrix(cbind(1,d$ln_prod_bush12_cr,d$ln_gdpc_cr, d$ln_gdpc_sq_cr, d$perc_unemploy1317_cr, d$perc_HS_GED_cr, d$perc_BA_cr, urb, d$ln_perc_black1317_cr, d$ln_perc_other_cr, d$ln_perc_latino1317_cr, d$ln_perc_foreign1317_cr, d$Rep16perc_cr))
 A<-solve(I-coef(m3)[1]*mymat)
 
 mycoef<-as.matrix(coef(m3))
@@ -343,26 +366,32 @@ theme_set(theme_grey() + theme(axis.text=element_blank(),
                                panel.background = element_blank(),
                                legend.position="none"))
 
-
+sim <- sim|> mutate(names=str_remove(names, " county"))
 states <- map_data("county") |> dplyr::filter(region=="iowa") |>
-  left_join(sim, by=c("subregion"="names"))
+  left_join(sim, by=c("subregion"="names")) 
 
-ggplot() +  geom_polygon(data=states, aes(x=long, y=lat, group=group, fill=Y_ch^(1/50)),color="black", size=.5)+ coord_map()
+brks <- quantile(states$Y_ch,
+                 probs = seq(0, 1, 0.2),
+                 na.rm = TRUE)
+
+ggplot() +
+  geom_polygon(
+    data = states,
+    aes(long, lat, group = group, fill = Y_ch),
+    color = "black",
+    linewidth = 0.5
+  ) +
+  coord_map() +
+  scale_fill_stepsn(
+    colors = hcl.colors(5, "Reds"),
+    breaks = brks,
+    na.value = "grey90"
+  )
 
 ```
 
 
 
----
-## Your Turn 
-
-Suppose you want to test whether variable *votech* (the change in Republican vote share between the 2016 and 2018 Congressional election) is spatially clustered.
-
-1. Calculate a measure of the average change in Republican vote share in neighboring states.
-
-2. Estimate a model of *votech* as a function of *urb2010*, *medinc1317*, *perc_HS_GED*, *perclatino1317* and *trumpmarg*.
-
-3. Estimate the same model plus a the average change in Republican vote share in neighboring states.
 
 ---
 ## Making Maps
@@ -462,10 +491,7 @@ head(states.class.map)
 ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=group, fill = StateGroups), colour = I("black"))+ coord_map()+theme(legend.position="bottom")
 ```
 
----
-## Your Turn
 
-Use color to show the expected change in Covid-19 cases that result from increasing urbanization in Johnson county, IA on a map.
 
 ---
 ## Your Turn (Advanced)
