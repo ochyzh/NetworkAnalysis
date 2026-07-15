@@ -79,6 +79,7 @@ All the class materials will be posted/updated here.
           <a href="../materials/Slides/data/soydata_cr.csv"target=_blank> soydata </a> |
           <a href="../materials/Slides/data/contigmat.txt"target=_blank> contiguity matrix </a>|
           <a href="../materials/Slides/data/statereg.csv"target=_blank> state region data </a> |
+          <a href="https://colab.research.google.com/drive/1S34I32aI5Cu9Mh1iBYSSOTEEIV13Bv3i?usp=sharing"target=_blank> Make maps on Colab </a> |
           <a href="../materials/Slides/data/animal.csv"target=_blank> animal data </a>
           </dd>
           </dl>
