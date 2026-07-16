@@ -339,7 +339,7 @@ urb[4]<-1
 X1<-as.matrix(cbind(1,d$ln_prod_bush12_cr,d$ln_gdpc_cr, d$ln_gdpc_sq_cr, d$perc_unemploy1317_cr, d$perc_HS_GED_cr, d$perc_BA_cr, urb, d$ln_perc_black1317_cr, d$ln_perc_other_cr, d$ln_perc_latino1317_cr, d$ln_perc_foreign1317_cr, d$Rep16perc_cr))
 A<-solve(I-coef(m3)[1]*mymat)
 
-mycoef<-as.matrix(coef(m3))
+mycoef<-as.matrix(coef(m3)[-1])
 
 Yhat0<- A%*%(X0%*%mycoef) #may need to remove first element of mycoeff[-1]; keep this for knitting (RDS works different)
 Yhat1<- A%*%(X1%*%mycoef) #may need to remove first element of mycoeff[-1]
@@ -491,6 +491,10 @@ head(states.class.map)
 ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=group, fill = StateGroups), colour = I("black"))+ coord_map()+theme(legend.position="bottom")
 ```
 
+```{r}
+ggplot() +  geom_polygon(data=states.class.map, aes(x=long, y=lat, group=group, fill=StateGroups),color="black", size=.5)+ coord_map()
+
+```
 
 
 ---

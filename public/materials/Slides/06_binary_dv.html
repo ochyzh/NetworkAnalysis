@@ -29,13 +29,22 @@ class: center, middle, inverse, title-slide
 
 ## Agenda
 
-- Logistic Regression
+- Why logit?
 
-- Odds vs. Probabilities
+    - Binary outcomes need probabilities, not fitted lines.
 
-- Maximum Likelihood Estimation
+- How is logit estimated?
 
-- Probit
+    - Likelihood turns guesses in fitted coefficients
+
+- How do we interpret it?
+
+    - Translate log-odds back into probabilities.
+
+---
+class: inverse, middle, center
+
+# Logistic Regression
 
 
 ---
@@ -47,10 +56,13 @@ class: center, middle, inverse, title-slide
 
 - Accounts for error heteroskedasticity in estimating standard errors.
 ---
+## Why not just use OLS?
 
-## Binary Dependent Variable
+- The linear probability model is simple, but it asks a line to do a curve's job.
 
-Consider the following model:
+&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-1-1.png" alt="" height="400px" style="display: block; margin: auto;" /&gt;
+---
+## Example: Aspirin and heart attacks
 
 $$
 Heart Attack = \beta_0+ \beta_1 Aspirin+u
@@ -58,12 +70,11 @@ $$
 
 - Problem: *Heart Attack* takes on binary values of 0 (no heart attack) and 1 (heart attack)
 
-- Goal: rather than fitting a line, fit a curve such that the possible values are contrained between 0 and 1.
+- Goal: rather than fitting a line, model the probability of a heart attacks (contsrained between 0 and 1).
 
----
-## Goal
+    - How often does `\(Y=1\)` occur under different values of `\(X\)`?
 
-&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-1-1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
 ---
 ## Need to Transform Y
 
@@ -91,7 +102,7 @@ $$
 
 - Even better, the *log(odds of heart attack)* are also continuous and take on values between `\(-\infty\)` and `\(+\infty\)`.
 
-- If we transform our DV from *Heart Attack* to *log(Odds of Heart Attack)*, we can use OLS to estimate it, then apply a reverse transformation to interpret the results:
+- If we transform our DV from *Heart Attack* to *log(Odds of Heart Attack)*, we can use a linear model to estimate it, then apply a reverse transformation to interpret the results:
 
 $$
 log(Odds\; of\; HA) = \beta_0+ \beta_1 Aspirin
@@ -106,9 +117,9 @@ Can also calculate odds from probabilities:
 `$$P(HA|\neg Aspirin)=\frac{189}{11034}=0.0171$$`
 
 $$
-\begin{align}
+`\begin{align}
 O(HA|Aspirin)&amp;=\frac{P(HA|Aspirin)}{P(\neg HA| Aspirin)}=\frac{P(HA|Aspirin)}{1-P(HA|Aspirin)}\\&amp;=\frac{0.0094}{1-0.0094}=0.0095
-\end{align}
+\end{align}`
 $$
 
 
@@ -133,16 +144,29 @@ $$
 Or, in general terms:
 
 $$
-\begin{align}
-&amp;P(Y=1|X)=\frac{e^{(\beta_0+ \beta_1 X)}}{1+e^{(\beta_0+ \beta_1 X)}}\\
-&amp;P(Y=0|X)=1-\frac{e^{(\beta_0+ \beta_1 X)}}{1+e^{(\beta_0+ \beta_1 X)}}
-\end{align}
+`\begin{align}
+&amp;\text{logit}(p_i)=\log[p_i/(1-p_i)]=\beta_0+\beta_1X_{1i}+\ldots+\beta_kX_{ki}\\
+&amp;P(Y_i=1|X_i)=p_i=\frac{e^{(\beta_0+\beta_1X_{1i}+\ldots+\beta_kX_{ki})}}{1+e^{(\beta_0+\beta_1X_{1i}+\ldots+\beta_kX_{ki})}}\\
+&amp;P(Y_i=0|X)=1-p_i
+\end{align}`
 $$
+---
+## Probabilities, odds, and log-odds
+
+- Logit works by mapping probabilities onto the whole real line.
+
+
+&lt;img src="./images/probs_to_odds.png" alt="" width="800px" style="display: block; margin: auto;" /&gt;
+
+`$$p=O/(1+O) \text{ and } O=p/(1-p)$$` 
+
+- The coefficient model is linear in log-odds, but we usually interpret it after converting back to probabilities.
+
 ---
 ## Example 2: Effect of GRE Scores on Admission
 
 
-&lt;img src="./images/GRE_data.png" width="300px" style="display: block; margin: auto;" /&gt;
+&lt;img src="./images/GRE_data.png" alt="" width="300px" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Effect of GRE Scores on Admission
@@ -158,7 +182,7 @@ Problem: how can we find `\(\alpha\)` and `\(\beta_1\)`?
 ## Maximum Likelihood Estimation
 
 [1] Write out the probability for each observation (called "likelihood"):
-&lt;img src="./images/GRE_ML.png" width="700px" style="display: block; margin: auto;" /&gt;
+&lt;img src="./images/GRE_ML.png" alt="" width="700px" style="display: block; margin: auto;" /&gt;
 
 
 [2] The joint probability (called "the joint likelihood") of all the probabilities (assuming independent observations) is the product of these probabilities:
@@ -169,7 +193,15 @@ $$
 ---
 ## Likelihood
 
-&lt;img src="./images/likelihood.png" width="500px" style="display: block; margin: auto;" /&gt;&lt;img src="./images/likelihood1.png" width="500px" style="display: block; margin: auto;" /&gt;&lt;img src="./images/likelihood2.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;img src="./images/likelihood.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;&lt;img src="./images/likelihood1.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;&lt;img src="./images/likelihood2.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;
+---
+## Likelihood for a binary observation
+
+- Each observation contributes the probability of its observed outcome.
+
+&lt;img src="./images/logit_like.png" alt="" width="800px" style="display: block; margin: auto;" /&gt;
+
+- One compact expression covers both observed outcomes.
 
 ---
 ## Maximum Likelihood Estimation
@@ -188,125 +220,23 @@ $$
 log(\prod{p_i^{y_i}(1-p_i)^{(1-y_i)}})=\sum{y_ilog(p_i)}+\sum{(1-y_i)log(1-p_i)},
 $$
 ---
-class: inverse, middle, center
-# A Latent Variable Model for Binary Variables
+## Logit likelihood vs OLS
+
+
+
+&lt;img src="./images/ols_to_logit_like.png" alt="" width="800px" style="display: block; margin: auto;" /&gt;
+
+- OLS minimizes residuals. Logit maximizes the probability of the data.
+
+- Maximum likelihood asks: under this parameter guess, how probable is the sample we actually observed?
 ---
-## Your Turn
+## Numerical Optimization
 
-Using R, the z-table, or Google, find the p-values that correspond to the following
-z-scores: -3,-2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3. What do
-these values tell you? Use these values to sketch (yes, on paper with a pencil!) the cumulative density function for the normal distribution.
----
-## Normal CDF
-&lt;img src="./images/normal_cdf.png" width="500px" style="display: block; margin: auto;" /&gt;
-
----
-## Logistic CDF
-&lt;img src="./images/Logistic_cdf.png" width="500px" style="display: block; margin: auto;" /&gt;
----
-## Both
-&lt;img src="./images/Both_cdfs.png" width="500px" style="display: block; margin: auto;" /&gt;
-
-
-
----
-## Another Way to Think of BRMs
-
-- Suppose there is an unobserved or *latent* variable `\(y^*\)` ranging from `\(-\infty\)` to `\(+\infty\)` that generates the observed `\(y\)`. 
-
-- Observations with larger values of `\(y^*\)` are observed as `\(y=1\)`, while those with smaller values of `\(y^*\)` are observed as `\(y=0\)`.
-
-    - E. g., consider college admissions decisions or civil wars
-    
-- Assume that the latent `\(y^*\)` is linearly related to the observed `\(x\)`s through the structural model:
-
-$$
-y^*_i=\pmb{x}_i\pmb{\beta}+\epsilon_i
-$$
----
-## A Latent Variable Model
-
-The latent `\(y^*\)` is linked to the observed binary variable `\(y\)` by the measurement equation:
-
-`$$\begin{equation}
-y_i=\begin{cases}{1 \; \text{  if } y^*_i&gt;\tau\\ 
-0 \; \text{  if } y^*_i\leq \tau}
-\end{cases}
-\end{equation}$$`
-
-where `\(\tau\)` is the threshold or cutpoint. Assume `\(\tau=0\)`.
-
-- Since `\(y^*\)` is unobserved, we use ML estimation.
-
-- Assume `\(E(\epsilon| \textbf{x})=0\)` and that the error is normally distributed with variance `\(Var(\epsilon| \textbf{x})=1\)`. 
-
-    - This assumption is arbitrary, but it is necessary only for estimation. The final results do not depend on it.
-
----
-
-## A Latent Variable Model
-
-&lt;img src="./images/Fig3.4.png" width="800px" style="display: block; margin: auto;" /&gt;
-
----
-## A Latent Variable Model
-
-- On average, we observe `\(y=1\)` when `\(E(y^*| x)&gt; 0\)` and `\(y=0\)` otherwise.
-
-      - Even when `\(E(y^*| x)&gt; 0\)`, it is possible to observe `\(y=0\)`, especially is the error is large and negative. 
-
-- Since `\(y=1\)` when `\(y^*&gt;0\)`:
-
-`$$\begin{align}
-P(y=1| \textbf{x})&amp;= P(y^*&gt;0| \textbf{x})\\&amp;=P(\textbf{x}\pmb{\beta}+\epsilon&gt;0 \;|\;\textbf{x})\\
-&amp;=P(\epsilon&gt;-\textbf{x}\pmb{\beta}\;|\;\textbf{x})\\
-&amp;=P(\epsilon\leq \textbf{x}\pmb{\beta}\;|\;\textbf{x})\\
-&amp;=\Phi(\textbf{x}\pmb{\beta})
-\end{align}$$`
-- Note that we must change the direction of the inequality in step 4, because the normal cdf expresses the probability of a variable being less than some value.
-
-- Note that `\(\Phi(\textbf{x}\pmb{\beta})\)` stands for the normal cdf.
-
-- Congratulations, we just derived a probit regression.
-
----
-
-## Plot of `\(y^*\)` and P(y=1| x) in the BRM
-
-&lt;img src="./images/Fig3.6.png" width="400px" style="display: block; margin: auto;" /&gt;
-    
----
-## Probit Likelihood
-
-Define `\(p_i\)` as the probability of observing whatever value of `\(y\)` was actually observed for a given observation:
-
-`$$\begin{equation}
-p_i=\begin{cases}{P(y=1\;|\;\textbf{x}_i) \; \text{  if } y_i=1 \text{ is observed}\\ 
-1-P(y=1\;|\;\textbf{x}_i) \; \text{  if } y_i=0 \text{ is observed}}
-\end{cases}
-\end{equation}$$`
-
-Then, as before, the likelihood is the product of these probabilities:
-
-`$$\begin{align}
-L(\pmb{\beta}| \pmb{y, X})&amp;=\prod\limits_{i=1}^N{p_i} \\
-&amp;=\prod\limits_{y=1}{P(y=1\;|\;\textbf{x}_i)}\prod\limits_{y=0}{1-P(y=1\;|\;\textbf{x}_i)}\\
-&amp;=\prod\limits_{y=1}\Phi(\pmb{x}_i\pmb{\beta})\prod\limits_{y=0}[1-\Phi(\pmb{x}_i\pmb{\beta})]
-\end{align}$$`
----
-
-## Log-Likelihood
-
-Taking a log of the likelihood gives:
-
-`$$\ln{L}(\pmb{\beta| y, X})=\sum\limits_{y=1}ln\Phi(\pmb{x}_i\pmb{\beta})+\sum\limits_{y=}ln[1-\Phi(\pmb{x}_i\pmb{\beta})]$$`
-- Amemiya (1985, 273-4) proves that under plausible conditions, the likelihood function is globally concave which ensures the uniqueness of ML estimates. 
-
-- These estimates are consistent, asymptotically normal, and asymptotically efficient.
-
-
-
-
+&lt;img src="./images/likelihood_max.png" alt="" width="500px" style="display: block; margin: auto;" /&gt;
+- Start with a guess for the parameters.
+- Compute the negative log-likelihood.
+- Move in a direction that improves fit.
+- Stop when improvement is negligible.
 
 ---
 class: inverse, middle, center
@@ -330,7 +260,7 @@ Suppose we want to estimate the following model:
 ## Maximum Likelihood Estimation (by hand)
 
 
-```r
+``` r
 mydata &lt;- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
 all&lt;- NULL
 
@@ -356,9 +286,9 @@ all&lt;- rbind(all, results)
 ## Maximum Likelihood Estimation 
 
 
-```r
+``` r
 library(tidyverse)
-library(magrittr)
+
 mydata &lt;- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
 
 #Program the likelihood:
@@ -375,7 +305,7 @@ return(sum_ll)
 ## Use -optim- to Find `\(\beta_j\)`
 
 
-```r
+``` r
 X&lt;- mydata %&gt;% mutate(cons=1, rank2=as.numeric(rank==2), 
                       rank3=as.numeric(rank==3), 
                       rank4=as.numeric(rank==4)) %&gt;% 
@@ -397,46 +327,6 @@ summary(m1&lt;-glm(admit~gre+ gpa+ factor(rank), data=mydata,
                 family=binomial))
 ```
 
----
-## OLS Using Numerical Optimization
-
-- Though OLS coefficients can be found using an analytical solution `\(\beta=(X'X)^{-1}X'Y\)`, they may also be found using numerical optimization.
-
-- To demonstrate, consider the following model:
-
-`$$\log{\text{(wage)}}=\alpha+\beta_1\text{jc}+\beta_2\text{univ}+\beta_3\text{exper}+\epsilon$$`
-
-- These data can be accessed from the package "wooldridge" using -data("twoyear")-.
----
-## OLS Using Numerical Optimization
-
-
-```r
-library(wooldridge)
-data("twoyear")
-m2&lt;-lm(lwage~jc+univ+exper, data=twoyear)
-summary(m1)
-
-#Program the likelihood:
-myOLS&lt;-function(pars,X,Y) {
- xbeta&lt;-X%*%pars
- SSE&lt;-sum((Y-xbeta)^2)
- return(SSE)
-}
-
-X&lt;-twoyear  %&gt;% mutate(cons=1) %&gt;% select(cons,jc,univ,exper) %&gt;% 
-  as.matrix()
-Y&lt;-twoyear$lwage
-
-pars=rep(0,4)
-myres &lt;- optim(pars,            # starting value for prob
-              myOLS,      # the function to optimize
-              method="BFGS",               # optimization method
-              Y=Y, X=X)                 # the data
-
-myres$par
-```
-
 
 ---
 ## Interpreting Logit Results
@@ -455,7 +345,7 @@ myres$par
 ## Interpreting Logit Results
 
 
-```r
+``` r
 mydata &lt;- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
 summary(m1&lt;-glm(admit~gre+ gpa+ factor(rank), data=mydata, 
                 family=binomial))
@@ -494,7 +384,7 @@ summary(m1&lt;-glm(admit~gre+ gpa+ factor(rank), data=mydata,
 Calculate and plot predicted probabilities of admission (first example), varying GPA and school rank. Hold GRE at its mean of 500.
 
 
-```r
+``` r
 mycoeff&lt;-m1$coeff
 gpa&lt;-seq(from=min(mydata$gpa),to=max(mydata$gpa),by=.1)
 
@@ -519,7 +409,7 @@ ggplot() + geom_line(aes(x=gpa, y=p1), ) + geom_line(aes(x=gpa,y=p2)) +geom_line
 ---
 
 ## Effect of GPA on Admissions by Rank
-&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-15-1.png" alt="" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -539,7 +429,7 @@ launch live on NASA TV.
 - Source: Wikipedia
 
 ---
-&lt;img src="./images/challenger.png" width="800px" style="display: block; margin: auto;" /&gt;
+&lt;img src="./images/challenger.png" alt="" width="800px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -592,51 +482,7 @@ of o-ring failures.
 
 - What is your conclusion? What would you say if I told you that the Challenger was launched at 31 degrees F?
 
----
-## Your Turn 1
 
-- Open the data from the social pressure experiment.
-
-- Estimate a linear probability model and a logistic regression. Calculate the effect of social pressure on the probability of voting from the logistic regression. How does this quantity compare to the coefficient on the same variable from the libear probability model.
-
-- Which model do you prefer and why?
-
----
-## Your Turn 2
-
-- Write a maximum likelihood function to estimate a probit.
-
-- Calculate and plot predicted probabilities of admission (first example), varying GPA and school rank. Hold GRE at its mean of 500. Do this "by hand", do not use the -predict- function.
-
-
-&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-20-1.png" width="300px" style="display: block; margin: auto;" /&gt;
----
-## Your Turn 2: Michelin Star Restaurants
-
-- The data "MichelinNY.csv" contains information on the price, food, decor, and service ratings on 164 NY restaurants, and whether the restaurant received a Michelin star. Open the data and estimate the following model (can use the -glm- function):
-
-`$$\begin{equation}
-\text{Michelin Star}=\text{Probit}(\alpha+\beta_1\text{Price}+\beta_2\text{Food}+\\
-\beta_3\text{Service}+\beta_4\text{Decor}+\epsilon)
-\end{equation}$$`
-
-- Looking only at the regression table, what factors affect the probability of getting a Michelin star?
-
-- Plot the predicted probabilities of getting a Michelin star by food rating for three price points (Mean, Mean-1sd, Mean+1sd). Hold Service and Decor at their median values.
-
----
-
-&lt;img src="06_binary_dv_files/figure-html/unnamed-chunk-21-1.png" width="600px" style="display: block; margin: auto;" /&gt;
----
-## Your Turn 3
-
-- Open the data on space shuttle launches.
-
-- Estimate the effect of temperature at launch on the probability of at least one o-ring failure using a probit. Estimate the same probability using a logit.
-
-- Plot the predicted probability of a failure by temperature from both models (overlay them on the same graph). How do they compare?
-
-- Use the -predict- function to add confidence bands.
 
 
 
@@ -645,9 +491,9 @@ of o-ring failures.
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

@@ -90,7 +90,9 @@ All the class materials will be posted/updated here.
         <td>Models for Binary DVs</td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank> binary dvs </a> |<a href="../materials/Slides/06_binary_dv.pdf" target=_blank> binary dvs pdf </a>  |<a href="../materials/Slides/data/space_shuttles.txt "target=_blank> space shuttle data </a>|<a href="../materials/Slides/data/MichelinNY.csv "target=_blank> Michelin data </a>|<a href="../materials/YourTurnAnswers/06_logit_yourturn.R"target=_blank> your turn answers </a>
+          <dd><a href="../materials/Slides/06_binary_dv.html" target=_blank> binary dvs </a> |
+          <a href="https://colab.research.google.com/drive/12AYTg5CDWtLqwYQKqVrS1nKmHqt5bUqq?usp=sharing" target=_blank> script 5 on Colab </a> |
+          <a href="../materials/Slides/data/space_shuttles.txt"target=_blank> space shuttle data </a>
           </dd>
           </dl>
         </td>

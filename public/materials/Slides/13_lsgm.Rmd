@@ -41,6 +41,14 @@ graph model. *Political Analysis*, 27(4):397--414, 2019.
 - Nieman, Mark David, Carla Martinez Machain, Olga V. Chyzh, and Sam Bell. 2021. “An International Game of Risk: Troop Placement and Major Power Competition.” *The Journal of Politics*, 83 (4): 1307–1321.
 
 ---
+class: inverse, middle, center
+
+# From binary outcomes to network edges
+
+The dependent variable can be an edge: present or absent.
+
+
+---
 
 ## Motivation
 
@@ -84,6 +92,56 @@ plot(g, edge.curved=0, edge.arrow.size=1, edge.color="black")
 
 
 ```
+
+---
+## Potential edges become observations
+
+- The rows of the data are potential edge-pairs, not actors.
+
+| edge_id | Y | trade | mil_ratio |
+|:--------|--:|------:|----------:|
+| 1–2     | 1 |  0.36 |       1.4 |
+| 1–3     | 0 |  0.12 |       0.8 |
+| 1–4     | 0 |  0.49 |       2.2 |
+| 2–3     | 1 |  0.22 |       0.9 |
+| 2–4     | 0 |  0.08 |       3.1 |
+
+$$\text{logit}(\kappa_i)=X_i^T\beta$$
+$\kappa_i$ is the baseline edge probability implied by exogenous covariates. It is what a standard logit would estimate before local dependence enters.
+
+- The LSGM then asks whether nearby edges push Yᵢ above or below this baseline.
+
+---
+## Define a connectivity matrix W among potential edges
+.pull-left[
+```{r, echo=F, out.width= "500px",fig.align="center"}
+knitr::include_graphics("./images/W.png")
+```
+]
+
+.pull-right[
+- $W_{ij}$ means edge $j$ is a neighbor of edge $i$.
+
+- $W$ can also be continuous, such as geographic distance, shared-node similarity, or theoretical relatedness.
+
+]
+---
+## Local Markov assumption
+
+- The ordinary logit model would treat each potential edge as conditionally independent given covariates.
+- But many network theories say that edges react to other edges.
+
+- Condition on neighbors rather than the entire network
+
+$$\begin{align}
+f(y(s_i)|{\textbf{y}(s_j):s_j \neq s_i})=f(y(s_i)|\textbf{y}(N_i))
+\end{align}$$
+
+- Nᵢ is the set of potential edges connected to edge i by W.
+- The conditional model is local: only neighbors enter directly.
+- If W is continuous, the Markov language is less important; all edges can contribute with different weights.
+
+
 
 
 ---
@@ -193,6 +251,8 @@ $$\begin{align}
 
 where $A_i$ is a natural parameter function and $B_i=\log[1+\exp(A_i(y(N_i)))],$ and $\textbf{y}\left(N_i\right)$ is a vector of values of the binary random variables (edges) of $i$'s neighbors.
 
+
+
 ---
 ## The Binary Conditional Distribution
 
@@ -212,6 +272,7 @@ $$\begin{align}
 =&\frac{\exp[A_i(\pmb{y}(N_i))y_i]}{1+\exp[A_i(\pmb{y}(N_i))y_i]},
 \end{align}$$
 
+- $A_i$ is the log-odds of edge $i$, conditional on its local environment.
 ---
 
 ## The Natural Parameter Function
@@ -226,6 +287,26 @@ where $\log\left(\frac{\kappa_i}{1-\kappa_i}\right)=\pmb{X}_i^{T}\pmb{\beta}$, $
 - When $y_j<\kappa_j$, then the dependence term makes a negative contribution to $A_i(\textbf{y}(N_i))$---substitution-type processes;
 - Key condition: $w_{ij}=w_{ji}$.
 - Model does not require (prohibits) row-standardization of $\textbf{w}$.
+
+---
+## Interpreting $\eta$
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "800px",fig.align="center"}
+knitr::include_graphics("images/eta.png")
+```
+
+- Neighboring edges can be complements or substitutes.
+
+- Centering on κⱼ means the dependence term asks whether neighbors are more or less active than their own baseline probabilities.
+
+---
+## Logit to LSGM
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "800px",fig.align="center"}
+knitr::include_graphics("images/binary_to_lsgm.png")
+```
+
+LSGM is logistic regression for edge indicators when edge probabilities depend on local edge structure.
 
 ---
 
@@ -294,6 +375,23 @@ data(lsgm_data)
 m1<-optim(par=c(0,0),loglik_lsgm,W=W,Y=Y)
 m1
 
+```
+
+---
+## Standard errors by simulation
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "800px",fig.align="center"}
+knitr::include_graphics("images/simulate_se.png")
+```
+
+- Gibbs idea: update one edge at a time conditional on the current values of its neighbors.
+
+---
+## Gibbs update intuition
+
+- At step i: compute pᵢ from current neighbor values, draw Yᵢ ~ Bernoulli(pᵢ), replace the old Yᵢ, then move to i+1.
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, out.width= "800px",fig.align="center"}
+knitr::include_graphics("images/gibbs_intuition.png")
 ```
 
 ---

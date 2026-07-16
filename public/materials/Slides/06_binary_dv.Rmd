@@ -34,13 +34,22 @@ library(conflicted)
 
 ## Agenda
 
-- Logistic Regression
+- Why logit?
 
-- Odds vs. Probabilities
+    - Binary outcomes need probabilities, not fitted lines.
 
-- Maximum Likelihood Estimation
+- How is logit estimated?
 
-- Probit
+    - Likelihood turns guesses in fitted coefficients
+
+- How do we interpret it?
+
+    - Translate log-odds back into probabilities.
+
+---
+class: inverse, middle, center
+
+# Logistic Regression
 
 
 ---
@@ -52,23 +61,11 @@ library(conflicted)
 
 - Accounts for error heteroskedasticity in estimating standard errors.
 ---
+## Why not just use OLS?
 
-## Binary Dependent Variable
+- The linear probability model is simple, but it asks a line to do a curve's job.
 
-Consider the following model:
-
-$$
-Heart Attack = \beta_0+ \beta_1 Aspirin+u
-$$
-
-- Problem: *Heart Attack* takes on binary values of 0 (no heart attack) and 1 (heart attack)
-
-- Goal: rather than fitting a line, fit a curve such that the possible values are contrained between 0 and 1.
-
----
-## Goal
-
-```{r, echo=FALSE, eval=TRUE, out.width= "500px"}
+```{r, echo=FALSE, eval=TRUE, out.height= "400px"}
 set.seed(78856)
 x<-rnorm(50,0,2)
 epsilon<- rnorm(50,0,1)
@@ -82,9 +79,25 @@ binomial_smooth <- function(...) {
 
 ggplot(data=cbind.data.frame(x,y),aes(x=x, y=y))+geom_point(size=2) + scale_y_continuous(breaks=c(0,1))+geom_smooth(method = "lm", se = FALSE, color="gray", linetype=2, alpha=.9)+
   binomial_smooth(se = FALSE, linetype=2)+
-  scale_x_continuous(limits=c(-3,3))+theme_bw()
+  scale_x_continuous(limits=c(-3,3))+
+  labs(y = expression(P(Y == 1 ~ "|" ~ x)))+
+  theme_bw()
 
 ```
+---
+## Example: Aspirin and heart attacks
+
+$$
+Heart Attack = \beta_0+ \beta_1 Aspirin+u
+$$
+
+- Problem: *Heart Attack* takes on binary values of 0 (no heart attack) and 1 (heart attack)
+
+- Goal: rather than fitting a line, model the probability of a heart attacks (contsrained between 0 and 1).
+
+    - How often does $Y=1$ occur under different values of $X$?
+
+
 ---
 ## Need to Transform Y
 
@@ -112,7 +125,7 @@ $$O(HA|\neg Aspirin)=\frac{189}{10845}=0.0174$$
 
 - Even better, the *log(odds of heart attack)* are also continuous and take on values between $-\infty$ and $+\infty$.
 
-- If we transform our DV from *Heart Attack* to *log(Odds of Heart Attack)*, we can use OLS to estimate it, then apply a reverse transformation to interpret the results:
+- If we transform our DV from *Heart Attack* to *log(Odds of Heart Attack)*, we can use a linear model to estimate it, then apply a reverse transformation to interpret the results:
 
 $$
 log(Odds\; of\; HA) = \beta_0+ \beta_1 Aspirin
@@ -155,10 +168,25 @@ Or, in general terms:
 
 $$
 \begin{align}
-&P(Y=1|X)=\frac{e^{(\beta_0+ \beta_1 X)}}{1+e^{(\beta_0+ \beta_1 X)}}\\
-&P(Y=0|X)=1-\frac{e^{(\beta_0+ \beta_1 X)}}{1+e^{(\beta_0+ \beta_1 X)}}
+&\text{logit}(p_i)=\log[p_i/(1-p_i)]=\beta_0+\beta_1X_{1i}+\ldots+\beta_kX_{ki}\\
+&P(Y_i=1|X_i)=p_i=\frac{e^{(\beta_0+\beta_1X_{1i}+\ldots+\beta_kX_{ki})}}{1+e^{(\beta_0+\beta_1X_{1i}+\ldots+\beta_kX_{ki})}}\\
+&P(Y_i=0|X)=1-p_i
 \end{align}
 $$
+---
+## Probabilities, odds, and log-odds
+
+- Logit works by mapping probabilities onto the whole real line.
+
+
+```{r, echo=F, out.width= "800px",fig.align="center"}
+knitr::include_graphics("./images/probs_to_odds.png")
+```
+
+$$p=O/(1+O) \text{ and } O=p/(1-p)$$ 
+
+- The coefficient model is linear in log-odds, but we usually interpret it after converting back to probabilities.
+
 ---
 ## Example 2: Effect of GRE Scores on Admission
 
@@ -201,6 +229,16 @@ knitr::include_graphics("./images/likelihood1.png")
 
 knitr::include_graphics("./images/likelihood2.png")
 ```
+---
+## Likelihood for a binary observation
+
+- Each observation contributes the probability of its observed outcome.
+
+```{r, echo=F, out.width= "800px",fig.align="center"}
+knitr::include_graphics("./images/logit_like.png")
+```
+
+- One compact expression covers both observed outcomes.
 
 ---
 ## Maximum Likelihood Estimation
@@ -219,135 +257,27 @@ $$
 log(\prod{p_i^{y_i}(1-p_i)^{(1-y_i)}})=\sum{y_ilog(p_i)}+\sum{(1-y_i)log(1-p_i)},
 $$
 ---
-class: inverse, middle, center
-# A Latent Variable Model for Binary Variables
----
-## Your Turn
-
-Using R, the z-table, or Google, find the p-values that correspond to the following
-z-scores: -3,-2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3. What do
-these values tell you? Use these values to sketch (yes, on paper with a pencil!) the cumulative density function for the normal distribution.
----
-## Normal CDF
-```{r, echo=F, out.width= "500px",fig.align="center"}
-knitr::include_graphics("./images/normal_cdf.png")
-```
-
----
-## Logistic CDF
-```{r, echo=F, out.width= "500px",fig.align="center"}
-knitr::include_graphics("./images/Logistic_cdf.png")
-```
----
-## Both
-```{r, echo=F, out.width= "500px",fig.align="center"}
-knitr::include_graphics("./images/Both_cdfs.png")
-```
+## Logit likelihood vs OLS
 
 
-
----
-## Another Way to Think of BRMs
-
-- Suppose there is an unobserved or *latent* variable $y^*$ ranging from $-\infty$ to $+\infty$ that generates the observed $y$. 
-
-- Observations with larger values of $y^*$ are observed as $y=1$, while those with smaller values of $y^*$ are observed as $y=0$.
-
-    - E. g., consider college admissions decisions or civil wars
-    
-- Assume that the latent $y^*$ is linearly related to the observed $x$s through the structural model:
-
-$$
-y^*_i=\pmb{x}_i\pmb{\beta}+\epsilon_i
-$$
----
-## A Latent Variable Model
-
-The latent $y^*$ is linked to the observed binary variable $y$ by the measurement equation:
-
-$$\begin{equation}
-y_i=\begin{cases}{1 \; \text{  if } y^*_i>\tau\\ 
-0 \; \text{  if } y^*_i\leq \tau}
-\end{cases}
-\end{equation}$$
-
-where $\tau$ is the threshold or cutpoint. Assume $\tau=0$.
-
-- Since $y^*$ is unobserved, we use ML estimation.
-
-- Assume $E(\epsilon| \textbf{x})=0$ and that the error is normally distributed with variance $Var(\epsilon| \textbf{x})=1$. 
-
-    - This assumption is arbitrary, but it is necessary only for estimation. The final results do not depend on it.
-
----
-
-## A Latent Variable Model
 
 ```{r, echo=F, out.width= "800px",fig.align="center"}
-knitr::include_graphics("./images/Fig3.4.png")
+knitr::include_graphics("./images/ols_to_logit_like.png")
 ```
 
+- OLS minimizes residuals. Logit maximizes the probability of the data.
+
+- Maximum likelihood asks: under this parameter guess, how probable is the sample we actually observed?
 ---
-## A Latent Variable Model
+## Numerical Optimization
 
-- On average, we observe $y=1$ when $E(y^*| x)> 0$ and $y=0$ otherwise.
-
-      - Even when $E(y^*| x)> 0$, it is possible to observe $y=0$, especially is the error is large and negative. 
-
-- Since $y=1$ when $y^*>0$:
-
-$$\begin{align}
-P(y=1| \textbf{x})&= P(y^*>0| \textbf{x})\\&=P(\textbf{x}\pmb{\beta}+\epsilon>0 \;|\;\textbf{x})\\
-&=P(\epsilon>-\textbf{x}\pmb{\beta}\;|\;\textbf{x})\\
-&=P(\epsilon\leq \textbf{x}\pmb{\beta}\;|\;\textbf{x})\\
-&=\Phi(\textbf{x}\pmb{\beta})
-\end{align}$$
-- Note that we must change the direction of the inequality in step 4, because the normal cdf expresses the probability of a variable being less than some value.
-
-- Note that $\Phi(\textbf{x}\pmb{\beta})$ stands for the normal cdf.
-
-- Congratulations, we just derived a probit regression.
-
----
-
-## Plot of $y^*$ and P(y=1| x) in the BRM
-
-```{r, echo=F, out.width= "400px",fig.align="center"}
-knitr::include_graphics("./images/Fig3.6.png")
+```{r, echo=F, out.width= "500px",fig.align="center"}
+knitr::include_graphics("./images/likelihood_max.png")
 ```
-    
----
-## Probit Likelihood
-
-Define $p_i$ as the probability of observing whatever value of $y$ was actually observed for a given observation:
-
-$$\begin{equation}
-p_i=\begin{cases}{P(y=1\;|\;\textbf{x}_i) \; \text{  if } y_i=1 \text{ is observed}\\ 
-1-P(y=1\;|\;\textbf{x}_i) \; \text{  if } y_i=0 \text{ is observed}}
-\end{cases}
-\end{equation}$$
-
-Then, as before, the likelihood is the product of these probabilities:
-
-$$\begin{align}
-L(\pmb{\beta}| \pmb{y, X})&=\prod\limits_{i=1}^N{p_i} \\
-&=\prod\limits_{y=1}{P(y=1\;|\;\textbf{x}_i)}\prod\limits_{y=0}{1-P(y=1\;|\;\textbf{x}_i)}\\
-&=\prod\limits_{y=1}\Phi(\pmb{x}_i\pmb{\beta})\prod\limits_{y=0}[1-\Phi(\pmb{x}_i\pmb{\beta})]
-\end{align}$$
----
-
-## Log-Likelihood
-
-Taking a log of the likelihood gives:
-
-$$\ln{L}(\pmb{\beta| y, X})=\sum\limits_{y=1}ln\Phi(\pmb{x}_i\pmb{\beta})+\sum\limits_{y=}ln[1-\Phi(\pmb{x}_i\pmb{\beta})]$$
-- Amemiya (1985, 273-4) proves that under plausible conditions, the likelihood function is globally concave which ensures the uniqueness of ML estimates. 
-
-- These estimates are consistent, asymptotically normal, and asymptotically efficient.
-
-
-
-
+- Start with a guess for the parameters.
+- Compute the negative log-likelihood.
+- Move in a direction that improves fit.
+- Stop when improvement is negligible.
 
 ---
 class: inverse, middle, center
@@ -399,7 +329,7 @@ all<- rbind(all, results)
 
 ```{r, eval=F}
 library(tidyverse)
-library(magrittr)
+
 mydata <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
 
 #Program the likelihood:
@@ -436,46 +366,6 @@ myres$par
 #Check 
 summary(m1<-glm(admit~gre+ gpa+ factor(rank), data=mydata, 
                 family=binomial))
-```
-
----
-## OLS Using Numerical Optimization
-
-- Though OLS coefficients can be found using an analytical solution $\beta=(X'X)^{-1}X'Y$, they may also be found using numerical optimization.
-
-- To demonstrate, consider the following model:
-
-$$\log{\text{(wage)}}=\alpha+\beta_1\text{jc}+\beta_2\text{univ}+\beta_3\text{exper}+\epsilon$$
-
-- These data can be accessed from the package "wooldridge" using -data("twoyear")-.
----
-## OLS Using Numerical Optimization
-
-```{r, eval=F}
-library(wooldridge)
-data("twoyear")
-m2<-lm(lwage~jc+univ+exper, data=twoyear)
-summary(m1)
-
-#Program the likelihood:
-myOLS<-function(pars,X,Y) {
- xbeta<-X%*%pars
- SSE<-sum((Y-xbeta)^2)
- return(SSE)
-}
-
-X<-twoyear  %>% mutate(cons=1) %>% select(cons,jc,univ,exper) %>% 
-  as.matrix()
-Y<-twoyear$lwage
-
-pars=rep(0,4)
-myres <- optim(pars,            # starting value for prob
-              myOLS,      # the function to optimize
-              method="BFGS",               # optimization method
-              Y=Y, X=X)                 # the data
-
-myres$par
-
 ```
 
 
@@ -615,134 +505,7 @@ d[order(d$flight_date),]
 
 - What is your conclusion? What would you say if I told you that the Challenger was launched at 31 degrees F?
 
----
-## Your Turn 1
 
-- Open the data from the social pressure experiment.
-
-- Estimate a linear probability model and a logistic regression. Calculate the effect of social pressure on the probability of voting from the logistic regression. How does this quantity compare to the coefficient on the same variable from the libear probability model.
-
-- Which model do you prefer and why?
-
----
-## Your Turn 2
-
-- Write a maximum likelihood function to estimate a probit.
-
-- Calculate and plot predicted probabilities of admission (first example), varying GPA and school rank. Hold GRE at its mean of 500. Do this "by hand", do not use the -predict- function.
-
-
-```{r, eval=TRUE, echo=F,  out.width= "300px",fig.align="center"}
-mydata <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
-X<- mydata %>% mutate(cons=1, rank2=as.numeric(rank==2), 
-                      rank3=as.numeric(rank==3), 
-                      rank4=as.numeric(rank==4)) %>% 
-  select(cons, gre, gpa, rank2, rank3, rank4) %>% as.matrix()
-Y<-mydata$admit
-par=rep(0,6)
-
-#Logit likelihood:
-MyLogLike<-function(Y,X,par){
-xbeta<-X%*%par
-p<-exp(xbeta)/(1+exp(xbeta))
-loglike<-Y*log(p)+(1-Y)*(log(1-p))
-sum_ll= -sum(loglike)
-return(sum_ll)
-}
-
-ProbitLike<-function(Y,X,par){
-xbeta<-X%*%par
-p<-pnorm(xbeta)
-loglike<-Y*log(p)+(1-Y)*(log(1-p))
-sum_ll= -sum(loglike)
-return(sum_ll)
-}
-
-
-myres_logit <- optim(par,            # starting value for prob
-   MyLogLike,      # the log-likelihood function
-   method="BFGS",               # optimization method
-   hessian=TRUE,                # return numerical Hessian
-   control=list(reltol=1e-10),    # maximize instead of minimize
-   X=X,Y=Y)                 # the data
-myres_probit <- optim(par,            # starting value for prob
-   ProbitLike,      # the log-likelihood function
-   method="BFGS",               # optimization method
-   hessian=TRUE,                # return numerical Hessian
-   control=list(reltol=1e-10),    # maximize instead of minimize
-   X=X,Y=Y)                 # the data
-
-#myres_logit$par
-#myres_probit$par
-
-#myres_logit$par/myres_probit$par
-
-#Plot prob of admission
-
-mycoeff<-myres_probit$par
-gpa<-seq(from=min(mydata$gpa),to=max(mydata$gpa),by=.1)
-
-#Calculate the probability of an admission for a student with average GRE (500) from a tier 1 school:
-
-xs<-expand.grid(1, gre=500, gpa=gpa, rank=c(1:4))
-xs <- xs |> mutate(rank2=ifelse(rank==2,1,0),rank3=ifelse(rank==3,1,0),rank4=ifelse(rank==4,1,0)) |> select(-rank)
-
-xbeta<-as.matrix(xs)%*%mycoeff
-phat<-pnorm(xbeta)
-
-pred<-cbind.data.frame(xs,phat) |> mutate(rank=ifelse(rank2==1,2,0), rank=ifelse(rank3==1,3,rank), rank=ifelse(rank4==1,4,rank), rank=ifelse(rank2==0 & rank3==0 & rank4==0,1,rank))
-
-#Plot these predicted probabilities:
-ggplot(data=pred) + geom_line(aes(x=gpa, y=phat, group=factor(rank), color=factor(rank))) + 
-				   labs(y = "P(Admissions)") + scale_color_discrete("School Rank:")+
-  theme_bw()+theme(legend.position = "bottom")
-
-```
----
-## Your Turn 2: Michelin Star Restaurants
-
-- The data "MichelinNY.csv" contains information on the price, food, decor, and service ratings on 164 NY restaurants, and whether the restaurant received a Michelin star. Open the data and estimate the following model (can use the -glm- function):
-
-$$\begin{equation}
-\text{Michelin Star}=\text{Probit}(\alpha+\beta_1\text{Price}+\beta_2\text{Food}+\\
-\beta_3\text{Service}+\beta_4\text{Decor}+\epsilon)
-\end{equation}$$
-
-- Looking only at the regression table, what factors affect the probability of getting a Michelin star?
-
-- Plot the predicted probabilities of getting a Michelin star by food rating for three price points (Mean, Mean-1sd, Mean+1sd). Hold Service and Decor at their median values.
-
----
-
-```{r, eval=TRUE, echo=FALSE,  out.width= "600px",fig.align="center"}
-michelin<- read.csv("./data/MichelinNY.csv")
-
-m1<-glm(InMichelin~ Price+Food+Service+Decor, 
-                data=michelin, family = binomial(link="probit"))
-Food<-seq(from=min(michelin$Food),to=max(michelin$Food), by=1)
-Price<-c(mean(michelin$Price),mean(michelin$Price)-sd(michelin$Price),
-         mean(michelin$Price)+sd(michelin$Price))
-
-newdata<-expand.grid(Price=Price, Food=Food, Service=median(michelin$Service), Decor=median(michelin$Decor))
-pred<-predict(m1, newdata=newdata, type="response",se.fit=TRUE)
-pred<-cbind(newdata, "fit"=pred$fit, "se"=pred$se.fit)
-
-ggplot()+geom_line(data=pred,aes(x=Food,y=fit, group=factor(Price), color=factor(Price)))+
-  geom_ribbon(data=pred, aes(x=Food, ymin=fit-se,ymax=fit+se, group=factor(Price), fill=factor(Price)), alpha=.1 )+geom_jitter(data=michelin, aes(x=Food, y=InMichelin), width=.05, height=.01)+
-  theme_bw()+scale_fill_discrete("Price:", labels=c("Mean-1SD","Mean","Mean+1SD"))+
-  scale_color_discrete("Price:", labels=c("Mean-1SD","Mean","Mean+1SD"))+scale_y_continuous("P(Michelin=1)")
-
-```
----
-## Your Turn 3
-
-- Open the data on space shuttle launches.
-
-- Estimate the effect of temperature at launch on the probability of at least one o-ring failure using a probit. Estimate the same probability using a logit.
-
-- Plot the predicted probability of a failure by temperature from both models (overlay them on the same graph). How do they compare?
-
-- Use the -predict- function to add confidence bands.
 
 
 
