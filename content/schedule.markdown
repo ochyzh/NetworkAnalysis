@@ -108,6 +108,7 @@ All the class materials will be posted/updated here.
           <a href="https://colab.research.google.com/drive/1aj6HoagPDp37LrkMuF7OhAB3KWLnlsXB?usp=sharing" target=_blank> script 6 on Colab </a> |
           <a href="../materials/Slides/data/ally_data.rda" target=_blank> ally data </a> |
           <a href="../materials/Slides/Niemanetal_PS2017.pdf" target=_blank> troop placement example </a> |
+          <a href="https://colab.research.google.com/drive/1B999sxhcop8mMdUlc0HvIVeqx9SkJkbK?usp=sharing" target=_blank> script 6 on Colab </a> |
           <a href="../materials/Slides/data/chechen_attacks.csv" target=_blank> chechen attacks </a> |
           <a href="../materials/Slides/data/vilMat.csv" target=_blank> village distance matrix </a>|
           </dd>
