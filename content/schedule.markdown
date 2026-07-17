@@ -119,7 +119,7 @@ All the class materials will be posted/updated here.
         <td>ERGMs </td>
         <td>
           <dl>
-          <dd><a href="../materials/Slides/05_random_graphs_ppt.ppt" target=_blank> random networks </a> |
+          <dd><a href="../materials/Slides/05_random_graphs_ppt.pptx" target=_blank> random networks </a> |
           <a href="../materials/Slides/06_intro_ergms.html" target=_blank> intro to ergms </a> |
           <a href="../materials/Slides/06_intro_ergms.pdf" target=_blank> intro to ergms pdf </a> |
           <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> |
