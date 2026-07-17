@@ -18,6 +18,42 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', message = FALSE, warning = FALSE)
 ```
 
+## Friendship Data
+```{r, eval=TRUE, echo=FALSE,out.width = '60%'}
+library(igraph)
+library(sna)
+data(coleman) #Use friendship data
+coleman<-coleman[1,,]
+#convert to an -igraph- object, we'll treat it as a directed graph for now:
+coleman<-graph_from_adjacency_matrix(coleman, mode="directed", diag=FALSE) 
+plot(coleman, vertex.label=NA, vertex.color="blue",  vertex.size = 5,edge.arrow.size = 0.5)
+```
+
+- Is this network more structured than chance?
+
+    - Do some students receive more nominations?
+    - Are friendships reciprocated?
+    - Do friends of friends tend to be friends?
+---
+## How can we tell if a network formed as a result of social processes?
+
+- We observe one friendship network.
+
+- Some patterns may arise simply because the network has 73 actors and 243 edges.
+
+- We need a baseline model before calling a pattern substantively meaningful.
+
+---
+```{r, eval=TRUE, echo=TRUE}
+
+vcount(coleman)
+ecount(coleman)
+edge_density(coleman)
+reciprocity(coleman)
+```
+
+
+---
 ## Why ERGMs?
 
 The fundamental problem of network analysis:
@@ -27,29 +63,9 @@ The fundamental problem of network analysis:
     - In an Erdos-Renyi network, the probability of each edge is independent of that of other edges.
     
 - If not, what are the endogeneous network features that define our network?
----
-## Example: Friendship Netwok
-
-```{r, echo=TRUE, message=FALSE}
-library(igraph)
-library(sna)
-data(coleman) #Use friendship data
-coleman<-coleman[1,,]
-#convert to an -igraph- object, we'll treat it as a directed graph for now:
-coleman<-graph_from_adjacency_matrix(coleman, mode="directed", diag=FALSE) 
-edge_density(coleman)
-reciprocity(coleman) #Note that -igraph- default is an undirected graph
-
-```
 
 ---
-## Friendship Data
-```{r, eval=TRUE, echo=FALSE,out.width = '60%'}
-plot(coleman, vertex.label=NA, vertex.color="blue",  vertex.size = 5,edge.arrow.size = 0.5)
-```
 
-- What are some endogenous network features of this network?
----
 ## Erdos-Renyi Networks
 
 - In order to answer whether an observed network is different from a random network, it would help to know what a random network would look like.

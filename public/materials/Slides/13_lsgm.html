@@ -7,16 +7,6 @@
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
-    <link href="libs/htmltools-fill/fill.css" rel="stylesheet" />
-    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
-    <script src="libs/jquery/jquery-3.6.0.min.js"></script>
-    <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
-    <script src="libs/leaflet/leaflet.js"></script>
-    <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
-    <script src="libs/proj4/proj4.min.js"></script>
-    <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
-    <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
-    <script src="libs/leaflet-binding/leaflet.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -11514,13 +11504,143 @@ lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
 3. Difficult: Change the code from the above slides to estimate the standard errors for your model.
 
 ---
+## Extending the LSGM Over Time
+
+Previously, we modeled one binary outcome for each potential edge or spatial location.
+We now observe the same set of villages repeatedly over time.
+
+For each date (t), define:
+
+`$$\mathbf{Y}t =[Y_{1t},Y_{2t},\ldots,Y_{nt}]$$`
+
+where (Y_{it}=1) if village (i) experienced an attack on date (t).
+
+Each date can be viewed as a new realization of the spatial process.
+---
+## The Model at Time t
+
+First calculate the baseline attack probability:
+
+`$$\operatorname{logit}^{-1}
+\left(
+\mathbf{x}_{it}^{T}\boldsymbol{\beta}
+\right)$$`
+
+The natural parameter for village (i) on date (t) is:
+
+`$$\log\left(
+\frac{\kappa_{it}}{1-\kappa_{it}}
+\right)
++
+\eta
+\sum_j
+w_{ij}
+\left(
+Y_{jt}-\kappa_{jt}
+\right).$$`
+
+
+Therefore,
+
+`$$P(Y_{it}=1\mid\mathbf{Y}_{-i,t})=\frac{\exp(A_{it})}{1+\exp(A_{it})}.$$`
+
+The dependence term uses outcomes from other villages on the same date.
+
+
+---
+## Spatial and Temporal Dependence
+
+The model includes two different kinds of dependence.
+
+- Spatial dependence
+
+$$
+\eta\mathbf{W}
+(\mathbf{Y}_t-\boldsymbol{\kappa}_t)
+$$
+
+captures whether attacks in connected villages are associated within date (t).
+
+- Temporal dependence
+
+    - *Rollattk7* captures the village's attack history through an observed covariate.
+
+Thus:
+
+- `\(\eta\)` captures contemporaneous spatial dependence.
+- rollattk7 captures temporal persistence.
+- The spatial term does not directly connect outcomes from different dates.
+
+---
+## Pseudolikelihood Over Time
+
+For one date, the log pseudolikelihood is:
+
+`$$\sum_i
+\left[
+Y_{it}\log(p_{it})
++
+(1-Y_{it})\log(1-p_{it})
+\right].$$`
+
+With multiple dates, add the contributions from every village and every date:
+
+`$$\sum_t\sum_i
+\left[
+Y_{it}\log(p_{it})
++
+(1-Y_{it})\log(1-p_{it})
+\right].$$`
+
+The parameter estimates are shared across dates:
+
+`$$\arg\max_{\boldsymbol{\beta},\eta}
+\log PL.$$`
+
+Each date contributes additional information about the same underlying process.
+
+---
+
+``` r
+vilmat &lt;- read.csv("./data/vilMat.csv")
+
+# Binary outcome: attack in village i on date t
+Y &lt;- chechen_attacks$attack
+
+# Explanatory variables
+X &lt;- cbind(
+  constant = 1,
+  population = chechen_attacks$pop_2002 -
+    mean(chechen_attacks$pop_2002, na.rm = TRUE),
+  recent_attacks = chechen_attacks$rollattk7
+)
+
+X &lt;- as.matrix(X)
+```
+---
+
+``` r
+# Date associated with each village-day observation
+dates &lt;- chechen_attacks$date
+# Connectivity matrix among villages
+W &lt;- as.matrix(sqrt(vilmat) / 10000)
+
+#Because the dependence term is calculated as W %*% (Y_t - kappa_t)
+
+#the relevant diagnostic is the sum of each row of W:
+
+summary(rowSums(W))
+
+#Very large row sums may allow the dependence term to overwhelm the baseline logit component.
+```
+---
 ## Challenge Yourself: Insurgent Attacks
 
 1. Download the *chechen_attacks* data that contains daily insurgent attacks in Chechnya and the *vilMat* matrix of distances among Chechen villages.
 
 2. Use the *leaflet* package to visualize attacks by village.
 
-3. Your goal is to estimate *attacks* as a function of other contemporaneous attacks, as well as population and a 7-day rolling sum of previous attacks. Because your data has a temporal component, you need to edit the likelihood to accommodate it.
+3. Your goal is to estimate *attacks* as a function of other contemporaneous attacks, as well as population and a 7-day rolling sum of previous attacks. Notice that you have a temporal component you need to accommodate.
 
 ---
 
@@ -11540,11 +11660,9 @@ chechen_attacks |&gt;
   addCircleMarkers(~lon, ~lat, radius = ~2*sqrt(attacks), popup = ~attacks, color="blue",fillColor="blue" ) 
 ```
 
----
 
 
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-bbf01af77262cff282a6" style="width:504px;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-bbf01af77262cff282a6">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[43.19219,43.25861,43.23179,43.21711,43.7028,43.29289,43.24167,43.16345,43.22417,43.15986,43.69305,42.84147,43.50056,43.03534,42.96435,43.3186,43.67306,43.16354,43.21472,43.1857,43.5002,43.16417,43.53086,43.31195,43.35082,43.57383,43.74381,43.17164,43.30212,43.20487,42.9652,43.06366,43.20348,43.25147,43.62271,43.64999,43.26763,43.09437,43.26402,43.40331,43.28935,43.31277,43.09476,43.14806,42.87153,43.50774,43.12028,43.4444,43.24206,43.13053,43.17972,42.971,43.0571,43.67669],[45.28345,45.53917,45.57228,46.28209,45.24154,45.86691,45.18194,46.00152,46.19423,45.19734,45.05025,45.62746,45.88444,45.73046,46.11578,45.98787,44.95889,45.47238,46.04145,45.921,45.08574,45.62278,46.37174,45.68895,46.10095,45.5209,46.47821,45.36991,45.75564,46.08784,45.9057,45.56217,46.13215,45.90716,45.33969,45.31127,46.27991,46.37582,46.24803,45.52343,45.29786,45.15969,45.35898,45.90194,45.69092,46.33622,45.74056,45.7794,46.00013,45.53791,45.40806,46.09719,46.45566,45.12751],[5.291502622129181,2.82842712474619,3.464101615137754,10,0,10.95445115010332,0,10.77032961426901,5.656854249492381,4,0,8,0,4.898979485566356,15.0996688705415,2,0,5.656854249492381,2.82842712474619,5.656854249492381,2,2,0,30.46309242345563,8.48528137423857,2,6,4.47213595499958,6.928203230275509,4.47213595499958,8,4,6,3.464101615137754,0,0,4,10.95445115010332,2,2.82842712474619,4.47213595499958,4,8,10,7.483314773547883,8.48528137423857,8.944271909999159,2.82842712474619,5.656854249492381,8.717797887081348,4.898979485566356,13.2664991614216,2,2],null,null,{"interactive":true,"className":"","stroke":true,"color":"blue","weight":5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.2},null,null,[7,2,3,25,0,30,0,29,8,4,0,16,0,6,57,1,0,8,2,8,1,1,0,232,18,1,9,5,12,5,16,4,9,3,0,0,4,30,1,2,5,4,16,25,14,18,20,2,8,19,6,44,1,1],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[42.84147,43.74381],"lng":[44.95889,46.47821]}},"evals":[],"jsHooks":[]}</script>
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

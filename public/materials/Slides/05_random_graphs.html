@@ -4,7 +4,7 @@
     <title>Advanced Network Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Olga Chyzh [www.olgachyzh.com]" />
-    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.30/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -27,6 +27,59 @@ class: center, middle, inverse, title-slide
 
 
 
+## Friendship Data
+&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-1-1.png" alt="" width="60%" style="display: block; margin: auto;" /&gt;
+
+- Is this network more structured than chance?
+
+    - Do some students receive more nominations?
+    - Are friendships reciprocated?
+    - Do friends of friends tend to be friends?
+---
+## How can we tell if a network formed as a result of social processes?
+
+- We observe one friendship network.
+
+- Some patterns may arise simply because the network has 73 actors and 243 edges.
+
+- We need a baseline model before calling a pattern substantively meaningful.
+
+---
+
+``` r
+vcount(coleman)
+```
+
+```
+## [1] 73
+```
+
+``` r
+ecount(coleman)
+```
+
+```
+## [1] 243
+```
+
+``` r
+edge_density(coleman)
+```
+
+```
+## [1] 0.04623288
+```
+
+``` r
+reciprocity(coleman)
+```
+
+```
+## [1] 0.5102881
+```
+
+
+---
 ## Why ERGMs?
 
 The fundamental problem of network analysis:
@@ -36,38 +89,9 @@ The fundamental problem of network analysis:
     - In an Erdos-Renyi network, the probability of each edge is independent of that of other edges.
     
 - If not, what are the endogeneous network features that define our network?
----
-## Example: Friendship Netwok
-
-
-```r
-library(igraph)
-library(sna)
-data(coleman) #Use friendship data
-coleman&lt;-coleman[1,,]
-#convert to an -igraph- object, we'll treat it as a directed graph for now:
-coleman&lt;-graph_from_adjacency_matrix(coleman, mode="directed", diag=FALSE) 
-edge_density(coleman)
-```
-
-```
-## [1] 0.04623288
-```
-
-```r
-reciprocity(coleman) #Note that -igraph- default is an undirected graph
-```
-
-```
-## [1] 0.5102881
-```
 
 ---
-## Friendship Data
-&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
-- What are some endogenous network features of this network?
----
 ## Erdos-Renyi Networks
 
 - In order to answer whether an observed network is different from a random network, it would help to know what a random network would look like.
@@ -84,7 +108,7 @@ Need:
 - the probability that each two nodes are connected `\(p\)`
 
 
-```r
+``` r
 vcount(coleman) #returns the number of vertices
 ```
 
@@ -92,7 +116,7 @@ vcount(coleman) #returns the number of vertices
 ## [1] 73
 ```
 
-```r
+``` r
 gsize(coleman) #returns the number of edges
 ```
 
@@ -100,13 +124,13 @@ gsize(coleman) #returns the number of edges
 ## [1] 243
 ```
 
-```r
+``` r
 #or
 summary(coleman)
 ```
 
 ```
-## IGRAPH fe3973e DN-- 73 243 -- 
+## IGRAPH a353958 DN-- 73 243 -- 
 ## + attr: name (v/c)
 ```
 
@@ -126,7 +150,7 @@ summary(coleman)
 ## Simulate A Random Graph (Continued)
 
 
-```r
+``` r
 set.seed(45765) #since a simulation involves randomness, set the seed for 
 #reproducibility.
 #Step i--start with a matrix of 73 unconnected nodes.
@@ -150,15 +174,15 @@ for (i in 1:N) {
 ## Check Our Work
 
 
-```r
+``` r
 summary(g&lt;-graph_from_adjacency_matrix(rnet, mode="directed", weighted=NULL))
 ```
 
 ```
-## IGRAPH fe59946 D--- 73 232 --
+## IGRAPH a3b17ab D--- 73 232 --
 ```
 
-```r
+``` r
 edge_density(coleman)
 ```
 
@@ -166,7 +190,7 @@ edge_density(coleman)
 ## [1] 0.04623288
 ```
 
-```r
+``` r
 reciprocity(coleman) #Note that -igraph- default is an undirected graph
 ```
 
@@ -174,7 +198,7 @@ reciprocity(coleman) #Note that -igraph- default is an undirected graph
 ## [1] 0.5102881
 ```
 
-```r
+``` r
 edge_density(g)
 ```
 
@@ -182,7 +206,7 @@ edge_density(g)
 ## [1] 0.04414003
 ```
 
-```r
+``` r
 reciprocity(g) #Note that -igraph- default is an undirected graph
 ```
 
@@ -193,17 +217,17 @@ reciprocity(g) #Note that -igraph- default is an undirected graph
 ---
 ## Visualize
 
-&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="05_random_graphs_files/figure-html/unnamed-chunk-6-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 ---
 ## Summarize the Observed and Simulated Networks
 
 
-```r
+``` r
 library(statnet)
 data(coleman)
 coleman&lt;- as.network.matrix(coleman[1,,],	matrix.type='adjacency', directed=TRUE)
 rnet&lt;- as.network.matrix(rnet, matrix.type='adjacency',	directed=TRUE)
-summary(coleman~ edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
+summary(coleman ~ edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
 ```
 
 ```
@@ -211,7 +235,7 @@ summary(coleman~ edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
 ##      243        5      460       62      383      542
 ```
 
-```r
+``` r
 summary(rnet~edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
 ```
 
@@ -235,9 +259,9 @@ summary(rnet~edges+idegree(6)+ triangles+ mutual+ostar(2)+istar(2))
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

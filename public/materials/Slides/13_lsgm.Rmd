@@ -695,13 +695,143 @@ lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
 3. Difficult: Change the code from the above slides to estimate the standard errors for your model.
 
 ---
+## Extending the LSGM Over Time
+
+Previously, we modeled one binary outcome for each potential edge or spatial location.
+We now observe the same set of villages repeatedly over time.
+
+For each date (t), define:
+
+$$\mathbf{Y}t =[Y_{1t},Y_{2t},\ldots,Y_{nt}]$$
+
+where (Y_{it}=1) if village (i) experienced an attack on date (t).
+
+Each date can be viewed as a new realization of the spatial process.
+---
+## The Model at Time t
+
+First calculate the baseline attack probability:
+
+$$\operatorname{logit}^{-1}
+\left(
+\mathbf{x}_{it}^{T}\boldsymbol{\beta}
+\right)$$
+
+The natural parameter for village (i) on date (t) is:
+
+$$\log\left(
+\frac{\kappa_{it}}{1-\kappa_{it}}
+\right)
++
+\eta
+\sum_j
+w_{ij}
+\left(
+Y_{jt}-\kappa_{jt}
+\right).$$
+
+
+Therefore,
+
+$$P(Y_{it}=1\mid\mathbf{Y}_{-i,t})=\frac{\exp(A_{it})}{1+\exp(A_{it})}.$$
+
+The dependence term uses outcomes from other villages on the same date.
+
+
+---
+## Spatial and Temporal Dependence
+
+The model includes two different kinds of dependence.
+
+- Spatial dependence
+
+$$
+\eta\mathbf{W}
+(\mathbf{Y}_t-\boldsymbol{\kappa}_t)
+$$
+
+captures whether attacks in connected villages are associated within date (t).
+
+- Temporal dependence
+
+    - *Rollattk7* captures the village's attack history through an observed covariate.
+
+Thus:
+
+- $\eta$ captures contemporaneous spatial dependence.
+- rollattk7 captures temporal persistence.
+- The spatial term does not directly connect outcomes from different dates.
+
+---
+## Pseudolikelihood Over Time
+
+For one date, the log pseudolikelihood is:
+
+$$\sum_i
+\left[
+Y_{it}\log(p_{it})
++
+(1-Y_{it})\log(1-p_{it})
+\right].$$
+
+With multiple dates, add the contributions from every village and every date:
+
+$$\sum_t\sum_i
+\left[
+Y_{it}\log(p_{it})
++
+(1-Y_{it})\log(1-p_{it})
+\right].$$
+
+The parameter estimates are shared across dates:
+
+$$\arg\max_{\boldsymbol{\beta},\eta}
+\log PL.$$
+
+Each date contributes additional information about the same underlying process.
+
+---
+```{r, eval=F, echo=T}
+vilmat <- read.csv("./data/vilMat.csv")
+
+# Binary outcome: attack in village i on date t
+Y <- chechen_attacks$attack
+
+# Explanatory variables
+X <- cbind(
+  constant = 1,
+  population = chechen_attacks$pop_2002 -
+    mean(chechen_attacks$pop_2002, na.rm = TRUE),
+  recent_attacks = chechen_attacks$rollattk7
+)
+
+X <- as.matrix(X)
+
+
+```
+---
+```{r, eval=FALSE, echo=TRUE}
+# Date associated with each village-day observation
+dates <- chechen_attacks$date
+# Connectivity matrix among villages
+W <- as.matrix(sqrt(vilmat) / 10000)
+
+#Because the dependence term is calculated as W %*% (Y_t - kappa_t)
+
+#the relevant diagnostic is the sum of each row of W:
+
+summary(rowSums(W))
+
+#Very large row sums may allow the dependence term to overwhelm the baseline logit component.
+```
+---
 ## Challenge Yourself: Insurgent Attacks
 
 1. Download the *chechen_attacks* data that contains daily insurgent attacks in Chechnya and the *vilMat* matrix of distances among Chechen villages.
 
 2. Use the *leaflet* package to visualize attacks by village.
 
-3. Your goal is to estimate *attacks* as a function of other contemporaneous attacks, as well as population and a 7-day rolling sum of previous attacks. Because your data has a temporal component, you need to edit the likelihood to accommodate it.
+3. Your goal is to estimate *attacks* as a function of other contemporaneous attacks, as well as population and a 7-day rolling sum of previous attacks. Notice that you have a temporal component you need to accommodate.
 
 ---
 
@@ -722,22 +852,44 @@ chechen_attacks |>
 
 ```
 
----
+
+```{r, echo=F, eval=F}
+#Draft code
+
+vilmat<-read.csv("./data/vilMat.csv")
+Y=chechen_attacks$attack
+X<-as.matrix(cbind(1,chechen_attacks$pop_2002-mean(chechen_attacks$pop_2002), chechen_attacks$rollattk7))
+W<-as.matrix(sqrt(vilmat)/10000)
+apply(W,2,sum) #Check if W is overwhelming the likelihood
+
+dates<-chechen_attacks$date
 
 
-```{r, echo=F, eval=T}
-library(leaflet)
-library(lubridate)
-library(tidyverse)
-chechen_attacks<- read.csv("./data/chechen_attacks.csv") |> dplyr::select(village, date, attack, rollattk7, pop_2002, lat, lon) |>
-  dplyr::mutate(date=ymd(date)) |>
-  dplyr::filter(date>="2000-03-08")
+#Likelihood
+loglik<-function(par,X,W,Y,dates){
+betas<-par[1:(length(par)-1)]
+eta<-par[(length(par))]
+A_i<-NULL
+for (i in unique(dates)){
+X_t<-X[dates==i,]
+Y_t<-Y[dates==i]
+xbeta_t = as.numeric(X_t %*% betas)
+kappa_t<-exp(xbeta_t)/(1+exp(xbeta_t)) #logit of Xb
+A_i_t=log(kappa_t/(1-kappa_t))+eta*W%*%(Y_t-kappa_t) #Eqn 2
+}
+A_i<-c(A_i,A_i_t)
+p_i<- exp(A_i)/(1+exp(A_i)) #Eqn 1, also Eqn 4
+PL<-Y*log(p_i)+(1-Y)*log(1-p_i) #Eqn 3
+ell <- -sum(PL)
+#cat("ell",ell, fill=TRUE)
+return(ell)
+}
 
-chechen_attacks |>
-  group_by(village) |>
-  summarise(attacks=sum(attack), lon=first(lon), lat=first(lat)) |>
-  leaflet() |> addTiles() |>
-  addCircleMarkers(~lon, ~lat, radius = ~2*sqrt(attacks), popup = ~attacks, color="blue",fillColor="blue" ) 
+m1<-optim(par=c(0,0,0,0),loglik,X=X,W=W,Y=Y,dates=dates)
+
+m1
+
 
 
 ```
+
