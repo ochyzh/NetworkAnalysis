@@ -108,7 +108,7 @@ All the class materials will be posted/updated here.
           <a href="https://colab.research.google.com/drive/1aj6HoagPDp37LrkMuF7OhAB3KWLnlsXB?usp=sharing" target=_blank> script 6 on Colab </a> |
           <a href="../materials/Slides/data/ally_data.rda" target=_blank> ally data </a> |
           <a href="../materials/Slides/Niemanetal_PS2017.pdf" target=_blank> troop placement example </a> |
-          <a href="https://colab.research.google.com/drive/1B999sxhcop8mMdUlc0HvIVeqx9SkJkbK?usp=sharing" target=_blank> script 6 on Colab </a> |
+          <a href="https://colab.research.google.com/drive/1B999sxhcop8mMdUlc0HvIVeqx9SkJkbK?usp=sharing" target=_blank> script 7 on Colab </a> |
           <a href="../materials/Slides/data/chechen_attacks.csv" target=_blank> chechen attacks </a> |
           <a href="../materials/Slides/data/vilMat.csv" target=_blank> village distance matrix </a>|
           </dd>
@@ -121,6 +121,7 @@ All the class materials will be posted/updated here.
         <td>
           <dl>
           <dd><a href="../materials/Slides/05_random_graphs_ppt.pptx" target=_blank> random networks </a> |
+          <a href="https://colab.research.google.com/drive/1uHfJ-jKHakmWXLOUcRVkl3qSI3MvJ_uV?usp=sharing" target=_blank> script 8 on Colab </a> |
           <a href="../materials/Slides/06_intro_ergms.html" target=_blank> intro to ergms </a> |
           <a href="../materials/Slides/06_intro_ergms.pdf" target=_blank> intro to ergms pdf </a> |
           <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> |
