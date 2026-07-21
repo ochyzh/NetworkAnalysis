@@ -8,12 +8,14 @@
 # path setup
 # set your own path
 # pth = '~/Teaching/icpsr/nets/datasets/'
-pth = '~/Teaching/icpsr/nets/2025/09_srm/day9_srm/'
+# the data ships alongside this script -- set your working directory
+# to the folder you unzipped it into before running
+pth = ''
 ####
 
 ####
 # packages
-library(amen)
+library(lame)
 library(ggplot2)
 library(tidyr)
 library(reshape2)
@@ -30,7 +32,7 @@ load(paste0(pth, 'day9_srm.rda'))
 ####
 
 ####
-# for better or worse, amen is very different in the
+# for better or worse, lame is very different in the
 # input it expects and how it structures output
 
 # we're starting with a typical df object
@@ -39,7 +41,7 @@ head(trade)
 
 ####
 # lets start with the dv
-# for cross-sectional network the amen
+# for cross-sectional network the lame
 # package expects a n x n matrix for the DV
 
 # in the other script I showed
@@ -55,7 +57,7 @@ yMat = acast(
   value.var='trade' )
 
 # now lets construct our dyadic variables
-# for cross-sectional networks the amen
+# for cross-sectional networks the lame
 # package expects a n x n x pd array for
 # the dyadic covariates, where pd
 # refers to the number of dyadic variables
@@ -76,7 +78,7 @@ dyadArr = acast(
   value.var='value' )
 
 # last lets prep our nodal variables
-# for cross-sectional networks the amen
+# for cross-sectional networks the lame
 # package expects a n x pr/c matrix for the
 # the nodal variables
 # ame also allows you to input sender and
@@ -129,29 +131,52 @@ net = netify(
   weight = 'trade',
   nodal_vars = c('pop1', 'gdp1', 'polity1'),
   dyad_vars = c('conflicts', 'distance', 'shared_igos'),
-  dyad_vars_symmetric = c(TRUE, TRUE, TRUE)
+  # conflicts is directed (24 asymmetric dyads); distance and shared_igos
+  # are symmetric. flagging conflicts as symmetric makes netify mirror the
+  # upper triangle and silently discard the lower one
+  dyad_vars_symmetric = c(FALSE, TRUE, TRUE)
+)
+
+# lets size nodes by degree
+sactor = summary_actor(net)
+
+# add into netify object
+net = add_node_vars(
+  net, 
+  sactor, 
+  actor='actor'
+)
+
+# 
+plot(
+  net, 
+  node_size_var='strength_avg_total',
+  node_color_var='polity1',
+  add_label_repel=TRUE
+) + theme(
+  legend.position='right'
 )
 
 # now we have created a netify object
 # yay us
 
 # lets prepare this for or first 
-# network model using the amen 
+# network model using the lame 
 # package
 # to do this we will use the 
 # prep_for_amen fn from the
 # netify package
-amen_data = to_amen(net)
+lame_data = to_lame(net)
 
 # lets extract every element from
-# amen_data into its own object
-# for easier passing to the amen fnction
+# lame_data into its own object
+# for easier passing to the lame fnction
 # so that we can run our first social
 # relations model
-yMat = amen_data$Y
-dyadArr = amen_data$Xdyad
-sMat = amen_data$Xrow
-rMat = amen_data$Xcol
+yMat = lame_data$Y
+dyadArr = lame_data$Xdyad
+sMat = lame_data$Xrow[,1:3]
+rMat = lame_data$Xcol[,1:3]
 ####
 
 ####
@@ -172,7 +197,7 @@ rMat = amen_data$Xcol
   #   Xdyad=dyadArr,
   #   Xrow=sMat,
   #   Xcol=rMat,
-  #   family='nrm',
+  #   family='normal',
   #   rvar=FALSE,
   #   cvar=FALSE,
   #   dcor=FALSE,
@@ -184,7 +209,7 @@ rMat = amen_data$Xcol
   #   burn=5000,
   #   odens=10,
   #   plot=FALSE,
-  #   print=FALSE,
+  #   verbose=FALSE,
   #   gof=TRUE
   # )
 ####
@@ -223,7 +248,7 @@ beta = fitNoNet$BETA
 # reorg data
 beta = data.frame(beta)
 beta$iter = 1:nrow(beta)
-betaLong = melt(beta, id='iter')
+betaLong = reshape2::melt(beta, id='iter')
 
 # viz
 ggplot(betaLong, aes(x=iter, y=value, group=variable)) +
@@ -238,8 +263,8 @@ ggplot(betaLong, aes(x=iter, y=value, group=variable)) +
 # helper function from me in the
 # ameHelpers file that does something similar but
 # with a bit more info
-paramPlot(fitNoNet$BETA[,1:5])
-paramPlot(fitNoNet$BETA[,6:10])
+trace_plot(fitNoNet, include=colnames(fitNoNet$BETA)[1:5])
+trace_plot(fitNoNet, include=colnames(fitNoNet$BETA)[6:10])
 ####
 
 ####
@@ -260,11 +285,11 @@ gof = gof[-1,]
 # reorg for plotting
 gof = data.frame(gof)
 gof$iter = 1:nrow(gof)
-gofLong = melt(gof, id='iter')
+gofLong = reshape2::melt(gof, id='iter')
 
 # add in a column for the actual values
 gofLong$actual = NA
-gStats = unique(char(gofLong$variable))
+gStats = unique(as.character(gofLong$variable))
 for(g in gStats){
   gofLong$actual[gofLong$variable==g] = actualVals[g] }
 
@@ -281,9 +306,7 @@ ggplot(gofLong, aes(x=value)) +
 
 # again a helper function from ameHelpers
 # just need to make sure to remove the cycles calc
-gofPlot(
-  fitNoNet$GOF[,-4],
-  symmetric=FALSE)
+gof_plot(fitNoNet)
 ####
 
 ####
@@ -302,7 +325,7 @@ gofPlot(
 #   Xdyad=dyadArr,
 #   Xrow=sMat,
 #   Xcol=rMat,
-#   family='nrm',
+#   family='normal',
 #   rvar=TRUE,
 #   cvar=TRUE,
 #   dcor=TRUE,
@@ -314,15 +337,15 @@ gofPlot(
 #   burn=5000,
 #   odens=10,
 #   plot=FALSE,
-#   print=FALSE,
+#   verbose=FALSE,
 #   gof=TRUE
 # )
 ####
 
 ####
 # check convergence
-paramPlot(fitSRM$BETA[,1:5])
-paramPlot(fitSRM$BETA[,6:10])
+trace_plot(fitSRM, include=colnames(fitSRM$BETA)[1:5])
+trace_plot(fitSRM, include=colnames(fitSRM$BETA)[6:10])
 ####
 
 ####
@@ -335,7 +358,7 @@ paramPlot(fitSRM$BETA[,6:10])
 #   Xdyad=dyadArr,
 #   Xrow=sMat,
 #   Xcol=rMat,
-#   family='nrm',
+#   family='normal',
 #   rvar=TRUE,
 #   cvar=TRUE,
 #   dcor=TRUE,
@@ -347,7 +370,7 @@ paramPlot(fitSRM$BETA[,6:10])
 #   burn=20000,
 #   odens=10,
 #   plot=FALSE,
-#   print=FALSE,
+#   verbose=FALSE,
 #   gof=TRUE
 # )
 ####
@@ -355,8 +378,8 @@ paramPlot(fitSRM$BETA[,6:10])
 ####
 # repeat checks, first check for
 # convergence
-paramPlot(fitSRM_v2$BETA[,1:5])
-paramPlot(fitSRM_v2$BETA[,6:10])
+trace_plot(fitSRM_v2, include=colnames(fitSRM_v2$BETA)[1:5])
+trace_plot(fitSRM_v2, include=colnames(fitSRM_v2$BETA)[6:10])
 
 # can also use formal tests from 
 # the coda package
@@ -368,7 +391,7 @@ heidel.diag(mcmc(fitSRM$BETA))
 # now lets see how we're doing wrt
 # to the gof stats in the observed
 # network
-gofPlot(fitSRM_v2$GOF[,-4], FALSE)
+gof_plot(fitSRM_v2)
 head(fitSRM_v2$GOF)
 ####
 
@@ -386,9 +409,9 @@ names(fitSRM_v2)
 # the vc params again
 head(fitSRM_v2$VC)
 
-# we can use the paramPlot function to summarize
+# we can use the trace_plot function to summarize
 # these results
-paramPlot(fitSRM_v2$VC)
+trace_plot(fitSRM_v2, params='variance')
 
 # and there's more, we also now have
 # sender and receiver random effects from the model
@@ -414,17 +437,17 @@ ggplot(muDf, aes(x=id, y=mu)) +
 
 # there's a function in ameHelpers that we can
 # use to construct this viz as well called
-# abPlot, it's pretty simple
-abPlot(fitSRM_v2$APM, 'Sender Effects')
+# ab_plot, it's pretty simple
+ab_plot(fitSRM_v2, effect='sender')
 
 # but now lets put all the pieces of
 # that we estimated from the srm
 # together
 grid.arrange(
-  paramPlot(fitSRM_v2$VC),
+  trace_plot(fitSRM_v2, params='variance'),
   arrangeGrob(
-    abPlot(fitSRM_v2$APM, 'Sender Effects'),
-    abPlot(fitSRM_v2$BPM, 'Receiver EFfects')
+    ab_plot(fitSRM_v2, effect='sender'),
+    ab_plot(fitSRM_v2, effect='receiver')
   ), ncol = 2)
 ####
 
@@ -432,7 +455,7 @@ grid.arrange(
 # and of course, the actual regression coef
 # results!
 
-# there's a great function in the amen package
+# there's a great function in the lame package
 # to quickly get a summary of parameter estimates
 summary(fitSRM_v2)
 
@@ -502,7 +525,7 @@ yMat = acast(
 #
 idVars = c('Var1', 'Var2')
 dyadVars = c('x1', 'x2')
-simDataLong = melt(simData[,c(idVars, dyadVars)], id=idVars)
+simDataLong = reshape2::melt(simData[,c(idVars, dyadVars)], id=idVars)
 xDyad = acast(
   simDataLong, 
   formula=Var1 ~ Var2 ~variable,
@@ -513,18 +536,18 @@ xDyad = acast(
 srmMod = ame(
   Y=yMat, 
   Xdyad = xDyad, 
-  family='nrm',
+  family='normal',
   symmetric=FALSE,
   nscan=10000, 
   burn=500,
   odens=25, 
   seed=6886,
   plot=FALSE, 
-  print=FALSE
+  verbose=FALSE
 )
 
 summary(srmMod)
-paramPlot(srmMod$BETA)
+trace_plot(srmMod, params='beta')
 ####
 
 ####
@@ -552,27 +575,27 @@ registerDoParallel(cl)
 # current global environment will be made available
 # to the separate R sessions that are being set up
 # but you will need to explicitly load in any packages
-# in our case here we just need to load the amen
+# in our case here we just need to load the lame
 # package
 
 # you can either comment in the code below and run yourself (it should be quick)
 # or you can just use the included srmChain object from the day3b.rda file
 
 # srmChain = foreach(
-#   seed=1:4, .packages=c('amen')) %dopar% {
+#   seed=1:4, .packages=c('lame')) %dopar% {
       
 #   # run model
 #   fit = ame(
 #     Y=yMat, 
 #     Xdyad = xDyad, 
-#     family='nrm',
+#     family='normal',
 #     symmetric=FALSE,
 #     nscan=1000, 
 #     burn=500,
 #     odens=10, 
 #     seed=seed, # set a different seed each time
 #     plot=FALSE, 
-#     print=FALSE
+#     verbose=FALSE
 #   )
 #   return(fit)
     

@@ -26,6 +26,24 @@ Homework assignments and data are posted here.
         </td>
       </tr>
       <tr>
+        <td>Thu Jul 23</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/2026/hw3_srm.html" target=_blank> Homework 3 &mdash; Social Relations Model </a> | <a href="../materials/2026/hw3_srm.zip" target=_blank> assignment code &amp; data </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>Tue Jul 28</td>
+        <td>
+          <dl>
+          <dd><a href="../materials/2026/hw4_saom.html" target=_blank> Homework 4 &mdash; Stochastic Actor-Oriented Models </a> | <a href="../materials/2026/hw4_saom.zip" target=_blank> assignment code &amp; data </a>
+          </dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
         <td>July 29</td>
         <td>
           <dl>
