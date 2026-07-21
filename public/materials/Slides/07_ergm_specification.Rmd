@@ -53,8 +53,8 @@ library(networkdata)
 ```
 
 ```{r}
-data(legnet)
-mynet<-network(net, matrix.type="adjacency", 
+load("./data/legnet.rda")
+mynet<-network(el, matrix.type="edgelist", 
                 directed=TRUE, loops=FALSE)
 ```
 
@@ -78,7 +78,7 @@ set.network.attribute(mynet,"dist",edist)
 ```{r rule3, echo=TRUE, eval=TRUE, message=FALSE}
 # Define object "dwnom" (ideology) as a vertex attribute
 #detach("package:igraph", unload=TRUE) the below command seems to clash with igraph
-dwnom<- dwnom |> arrange(labs) 
+dwnom<- dwnom |> arrange(labs) |> dplyr::filter(labs!="BarkleyDeanM")
 set.vertex.attribute(mynet,"ideol",dwnom$dwnom)
 
 #or

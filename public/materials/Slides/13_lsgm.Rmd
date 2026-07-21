@@ -693,6 +693,15 @@ lsgm(Y=as.matrix(toy_data$Y),W=W,X=as.data.frame(toy_data$X))
 2. Estimate an lsgm with *defense* as the dependent variable, with *tot_trade* and *mil_ratio* as the exogenous edge-level covariates, and *W* as the matrix that measure connectivities among defense edges. 
 
 3. Difficult: Change the code from the above slides to estimate the standard errors for your model.
+---
+---
+## Extending the LSGM Over Time
+
+Motivating example: Russian artillery attacks on Chechen villages
+
+- Spatial dependence
+
+- Temporal dependence
 
 ---
 ## Extending the LSGM Over Time
@@ -702,7 +711,15 @@ We now observe the same set of villages repeatedly over time.
 
 For each date (t), define:
 
-$$\mathbf{Y}t =[Y_{1t},Y_{2t},\ldots,Y_{nt}]$$
+$$
+\mathbf{Y}_t =
+\begin{bmatrix}
+Y_{1t} \\
+Y_{2t} \\
+\vdots \\
+Y_{nt}
+\end{bmatrix}
+$$
 
 where (Y_{it}=1) if village (i) experienced an attack on date (t).
 
