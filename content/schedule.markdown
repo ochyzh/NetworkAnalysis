@@ -127,7 +127,7 @@ All the class materials will be posted/updated here.
           <a href="../materials/Slides/07_ergm_specification_revisd.html" target=_blank> ergm specification </a> |
           <a href="https://colab.research.google.com/drive/1_6N9A5JIuf0cQz2QzY8oP373ZYkxKyCm?usp=sharing" target=_blank> script 10 on Colab </a> |
           <a href="../materials/Slides/data/legnet.rda"target=_blank> legnet </a> |
-          <a href="../materials/Slides/data/gadeData.rda"target=_blank> legnet </a> |
+          <a href="../materials/Slides/data/gadeData.rda"target=_blank> Gade data </a> |
           <a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>|
           </dd>
           </dl>
