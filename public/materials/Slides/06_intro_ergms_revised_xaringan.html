@@ -824,7 +824,7 @@ This is the easiest way to make ERGM coefficients interpretable to readers.
 3. Estimate an ERGM with `edges` only.
 4. Interpret the `edges` coefficient as a probability.
 5. Estimate an ERGM with `edges + mutual`.
-6. Interpret the `mutual` coefficient as an odds multiplier.
+6. Interpret the `mutual` coefficient in terms of tie probabilities.
 
 
 ``` r
@@ -1083,6 +1083,62 @@ summary(m4)
 ## AIC: 266.9  BIC: 281.8  (Smaller is better. MC Std. Err. = 0.3227)
 ```
 
+---
+## Interpretation
+
+
+``` r
+theta_edges &lt;- coef(m4)["edges"]
+theta_mutual&lt;-coef(m4)["mutual"]
+theta_nodematch&lt;-coef(m4)["nodematch.group"]
+theta_idegree &lt;- coef(m4)["idegree1.5"]
+
+
+tie_probability &lt;- function(d, change_mutual=0,change_nodematch=0) {
+  change_idegree &lt;- (d + 1)^(3/2) - d^(3/2)
+  plogis(
+    theta_edges +
+    theta_mutual*change_mutual+
+    theta_nodematch*change_nodematch+
+    theta_idegree * change_idegree
+  )
+}
+
+#Argument d is the degree of a node for which you are calculating the effect of idegree1.5
+tie_probability(0)
+```
+
+```
+##      edges 
+## 0.02195815
+```
+
+``` r
+tie_probability(1)
+```
+
+```
+##      edges 
+## 0.03650748
+```
+
+``` r
+tie_probability(4)
+```
+
+```
+##      edges 
+## 0.08173795
+```
+
+``` r
+tie_probability(9)
+```
+
+```
+##     edges 
+## 0.1812811
+```
 
 
 ---
@@ -1198,6 +1254,22 @@ Idea:
 
 ---
 
+## GWESP
+
+
+| Shared partners | Raw triangle term | GWESP intuition |
+|---:|---:|---:|
+| 0 | no closure contribution | no closure contribution |
+| 1 | full contribution | large contribution |
+| 2 | twice as much | somewhat more |
+| 5 | five times as much | only modestly more |
+
+.large[
+GWESP discounts the marginal effect of additional shared partners.
+]
+
+---
+
 ## Model 6: GWESP
 
 
@@ -1216,20 +1288,11 @@ Notes:
 - Interpret `gwesp` conditionally on all other included terms.
 
 ---
+## Your Turn
 
-## GWESP
+- Model 6 doesn't converge, likely because of a high correlation between `idegree1.5` and `gwesp`. Remove `idegree1.5` and re-run.
 
-
-| Shared partners | Raw triangle term | GWESP intuition |
-|---:|---:|---:|
-| 0 | no closure contribution | no closure contribution |
-| 1 | full contribution | large contribution |
-| 2 | twice as much | somewhat more |
-| 5 | five times as much | only modestly more |
-
-.large[
-GWESP discounts the marginal effect of additional shared partners.
-]
+- Use `gof` and AIC/BIC to select the best model out m1-m6.
 
 ---
 

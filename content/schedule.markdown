@@ -124,7 +124,9 @@ All the class materials will be posted/updated here.
           <a href="https://colab.research.google.com/drive/1uHfJ-jKHakmWXLOUcRVkl3qSI3MvJ_uV?usp=sharing" target=_blank> script 8 on Colab </a> |
           <a href="../materials/Slides/06_intro_ergms_revised_xaringan.html" target=_blank> intro to ergms </a> |
           <a href="https://colab.research.google.com/drive/1xZW0GMaLrsIGTBseb4CoAxMwuu4vw8JL?usp=sharing" target=_blank> script 9 on Colab </a> |
-          <a href="../materials/Slides/07_ergm_specification.html" target=_blank> ergm specification </a> |
+          <a href="../materials/Slides/07_ergm_specification_revisd.html" target=_blank> ergm specification </a> |
+          <a href="../materials/Slides/data/legnet.rda"target=_blank> legnet </a> |
+          <a href="../materials/Slides/data/gadeData.rda"target=_blank> legnet </a> |
           <a href="../materials/Slides/09_ergm_application.html" target=_blank>ergm application </a>|
           </dd>
           </dl>
