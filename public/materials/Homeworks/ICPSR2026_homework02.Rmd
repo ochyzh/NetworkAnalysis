@@ -24,6 +24,7 @@ This assignment is based on the [2014 VAST Challenge](https://chat.openai.com/c/
 2. You are going to work with the `emailnet` data used in Homework 1. Load the data and check the class of the `emailnet` object. Check how many nodes and edges are in this network. Check what vertex attributes are available for this network.
 
 
+
 3. Make a visualization of the email network. 
 
 

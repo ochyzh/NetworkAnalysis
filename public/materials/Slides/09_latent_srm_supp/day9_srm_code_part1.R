@@ -9,7 +9,9 @@
 # path setup
 # set your own path
 # pth = '~/Teaching/icpsr/nets/datasets/'
-pth = '~/Teaching/icpsr/nets/2025/09_srm/day9_srm/'
+# the data ships alongside this script -- set your working directory
+# to the folder you unzipped it into before running
+pth = ''
 ####
 
 ####
@@ -140,8 +142,11 @@ simData$x1 = rnorm(nrow(simData))
 # add x2
 simData$x2 = rnorm(nrow(simData))
 
+# resid
+e = rnorm(nrow(simData))
+
 # create a y
-simData$y = -2 + 3*simData$x1 + 3.2*simData$x2 + rnorm(nrow(simData))
+simData$y = -2 + 3*simData$x1 + 3.2*simData$x2 + e
 
 # run model
 olsSim = lm(y ~ x1 + x2, data=simData)
