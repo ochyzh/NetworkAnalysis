@@ -126,11 +126,11 @@ State sponsorship:
 ## Data
 ```{r data, echo=TRUE, eval=TRUE}
 # load data
-data(gadeData)
+gadeData<-load("./data/gadeData.rda")
 
 
-gadeData #to look at the data
-
+gadeData<-data #to look at the data
+gadeData
 ```
 ---
 ## Results
@@ -296,6 +296,32 @@ gofM1 = gof( m1,
 
 
 ```
+---
+```{r}
+m1 = ergm(
+	net ~ 
+    edges + 
+    nodecov('averageId.node') +
+    nodecov('size.node') + 
+    nodecov('spons_actor.node') + 
+    absdiff('averageId.node') +
+    absdiff('size.node') +
+    edgecov('loc.dyad') +
+    edgecov('spons.dyad')+
+		gwesp(decay = .5,fixed = TRUE)+
+	  gwdegree(decay=.5, fixed=TRUE)
+		)
+
+mcmc.diagnostics(m1)
+
+set.seed(6886)
+gofM1 = gof( m1, 
+    GOF=~degree+espartners+distance-model )
+plot(gofM1)
+```
+
+
+
 ---
 ## Assess Model Fit
 ```{r fit1, echo=TRUE, eval=TRUE, message=FALSE, fig.width=10, fig.height=4}

@@ -15,24 +15,15 @@ library(tidyverse)
 
 
 
-This assignment is based on the [2014 VAST Challenge](https://ieeevis.org/year/2014/info/call-participation/vast-challenge). 
+This assignment is based on the [2014 VAST Challenge](https://chat.openai.com/c/70a9ac53-4372-4c4d-a390-ee636c766bc3). 
 
 
-1. You can complete this assignment individually or as a group of up to three members. Please replace "Your Name" in the YAML (top of this script) with the names of all students in your group.
+1. Please replace "Your Name" in the YAML (top of this script) your name.
 
 
+2. You are going to work with the `emailnet` data used in Homework 1. Load the data and check the class of the `emailnet` object. Check how many nodes and edges are in this network. Check what vertex attributes are available for this network.
 
 
-2. Run the following code chunk to load the packages required for this assignment and load the email data from the `networkdata` package. Check the class of the `emailnet` object. Check how many nodes and edges are in this network. Check what vertex attributes are available for this network.
-
-```{r, echo=TRUE, message=FALSE}
-library(statnet)
-library(devtools)
-install_github("ochyzh/networkdata")
-library(networkdata)
-data(emailnet)
-
-```
 
 3. Make a visualization of the email network. 
 
