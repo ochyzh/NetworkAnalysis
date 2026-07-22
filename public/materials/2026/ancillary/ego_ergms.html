@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Shahryar Minhas">
-<meta name="dcterms.date" content="2026-07-21">
+<meta name="dcterms.date" content="2026-07-22">
 
 <title>Ego-ERGMs: roles from local structure</title>
 <style>
@@ -2381,7 +2381,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 21, 2026</p>
+      <p class="date">July 22, 2026</p>
     </div>
   </div>
   
@@ -3126,287 +3126,204 @@ window.Quarto = {
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title=&quot;What this extends, and why it is here&quot;}</span>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon), and it connects back to Olga&#39;s week-1 community detection.</span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>**The question it answers.** Community detection asks &quot;which nodes cluster together?&quot; An</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>ego-ERGM asks a different and often more useful question: **&quot;which nodes play the same</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>structural role?&quot;** Here, &quot;role&quot; means &quot;the local network around them has the same generative</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>recipe,&quot; even if they sit in completely different parts of the graph. Two managers in different</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>departments can play the same brokering role; community detection puts them in different</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>communities, an ego-ERGM puts them in the same role.</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>**How it works, in one sentence.** Fit a small ERGM to each node&#39;s *ego-network* (the node plus</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>its neighbours), then cluster nodes by the ERGM coefficients those local fits produce. Nodes</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>whose local structure is generated the same way land in the same role.</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>**Why it is optional in 2026:** it is a specialised technique, it overlaps with material Olga</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>already covered from a different angle, and it depends on a function from a GitHub-only package.</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>Here for the people whose research is about roles rather than communities.</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>**What you need:** <span class="in">`ergm`</span>, <span class="in">`network`</span>, and <span class="in">`ego_ergm()`</span> from <span class="in">`networkdata`</span> (already installed for</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>the course, but see the install note below if you are on your own machine).</span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;Install note: <span class="in">`ego_ergm()`</span> is not on CRAN&quot;}</span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="in">`ego_ergm()`</span> lives in the <span class="in">`networkdata`</span> package by Olga Chyzh, installed from GitHub, not CRAN.</span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>On the course machines it is already there. On your own machine:</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ochyzh/networkdata&quot;</span>)</span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>Everything else in this document is CRAN-standard <span class="in">`ergm`</span>. If the install fails, the *concepts*</span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>in §1 and §5 are still worth reading: the method is simple enough to understand without running</span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>it.</span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. The idea, before the code</span></span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>Here is the recipe the <span class="in">`ego_ergm()`</span> function automates, so that the output makes sense rather</span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>than arriving as a black box:</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>**The question it answers.** Community detection asks &quot;which nodes cluster together?&quot; An ego-ERGM asks a different and often more useful question: **&quot;which nodes play the same structural role?&quot;** Here, &quot;role&quot; means &quot;the local network around them has the same generative recipe,&quot; even if they sit in completely different parts of the graph. Two managers in different departments can play the same brokering role; community detection puts them in different communities, an ego-ERGM puts them in the same role.</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>**How it works, in one sentence.** Fit a small ERGM to each node&#39;s *ego-network* (the node plus its neighbours), then cluster nodes by the ERGM coefficients those local fits produce. Nodes whose local structure is generated the same way land in the same role.</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>**Why it is optional in 2026:** it is a specialised technique, it overlaps with material Olga already covered from a different angle, and it depends on a function from a GitHub-only package. Here for the people whose research is about roles rather than communities.</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>**What you need:** <span class="in">`ergm`</span>, <span class="in">`network`</span>, and <span class="in">`ego_ergm()`</span> from <span class="in">`networkdata`</span> (already installed for the course, but see the install note below if you are on your own machine).</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;Install note: <span class="in">`ego_ergm()`</span> is not on CRAN&quot;}</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="in">`ego_ergm()`</span> lives in the <span class="in">`networkdata`</span> package by Olga Chyzh, installed from GitHub, not CRAN. On the course machines it is already there. On your own machine:</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ochyzh/networkdata&quot;</span>)</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>Everything else in this document is CRAN-standard <span class="in">`ergm`</span>. If the install fails, the *concepts* in §1 and §5 are still worth reading: the method is simple enough to understand without running it.</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. The idea, before the code</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>Here is the recipe the <span class="in">`ego_ergm()`</span> function automates, so that the output makes sense rather than arriving as a black box:</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**For each node**, extract its ego-network: the node, its neighbours, and the ties among them.</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Fit a small ERGM** to each ego-network, using a handful of local terms (edges, mutuality, triangles). This gives every node a short vector of coefficients describing how its local neighbourhood is put together.</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Cluster those coefficient vectors** with a mixture model. Nodes whose ego-networks are generated by similar coefficients get grouped into the same **role**.</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Report** one representative ERGM per role: the generative recipe for that kind of local structure.</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>The output is not &quot;node 12 is in community 3.&quot; It is &quot;node 12 plays role B, and role B is the kind of local neighbourhood where ties are reciprocated but rarely closed into triangles.&quot; That is a statement about *position type*, and it is invariant to where in the graph the node sits.</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: how this differs from community detection, precisely&quot;}</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>Community detection partitions nodes by **connection**: a community is a set of nodes densely tied *to each other*. Two nodes in the same community are, more or less by definition, near each other in the graph.</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>An ego-ERGM partitions nodes by **generative structure**: a role is a set of nodes whose local neighbourhoods follow the same ERGM. Two nodes in the same role may be on opposite sides of the graph with no path between their neighbourhoods: they share a role because the *rules* generating their local ties are the same.</span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>The canonical example is brokerage. A broker sits between two dense clusters; its ego-network has a distinctive low-transitivity, high-degree signature. Every broker in the graph shares that signature and lands in the same ego-ERGM role, while community detection scatters them across whichever communities they happen to bridge. If your theory is about *kinds of position* (brokers, hubs, peripherals), roles are what you want. If it is about *groups*, communities are.</span>
 <span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**For each node**, extract its ego-network: the node, its neighbours, and the ties among</span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>   them.</span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Fit a small ERGM** to each ego-network, using a handful of local terms (edges, mutuality,</span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>   triangles). This gives every node a short vector of coefficients describing how its local</span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>   neighbourhood is put together.</span>
-<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Cluster those coefficient vectors** with a mixture model. Nodes whose ego-networks are</span>
-<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>   generated by similar coefficients get grouped into the same **role**.</span>
-<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Report** one representative ERGM per role: the generative recipe for that kind of local</span>
-<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>   structure.</span>
-<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>The output is not &quot;node 12 is in community 3.&quot; It is &quot;node 12 plays role B, and role B is the</span>
-<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>kind of local neighbourhood where ties are reciprocated but rarely closed into triangles.&quot; That</span>
-<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>is a statement about *position type*, and it is invariant to where in the graph the node sits.</span>
-<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: how this differs from community detection, precisely&quot;}</span>
-<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>Community detection partitions nodes by **connection**: a community is a set of nodes densely</span>
-<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>tied *to each other*. Two nodes in the same community are, more or less by definition, near each</span>
-<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>other in the graph.</span>
-<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>An ego-ERGM partitions nodes by **generative structure**: a role is a set of nodes whose local</span>
-<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>neighbourhoods follow the same ERGM. Two nodes in the same role may be on opposite sides of the</span>
-<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>graph with no path between their neighbourhoods: they share a role because the *rules*</span>
-<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>generating their local ties are the same.</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>This is &quot;structural equivalence&quot; in the classic blockmodeling sense, approached through a generative model rather than through algebraic role-equivalence. It connects directly to the blockmodeling day (day 2, W2 Thu).</span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. The data</span></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>Lazega&#39;s law firm: 71 lawyers, with directed ties recording who works with whom, plus attributes like office, seniority, and practice area. It ships with <span class="in">`networkdata`</span>.</span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data</span></span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm)</span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(network)</span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(networkdata)</span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(lazega)</span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">lawyers   =</span> <span class="fu">network.size</span>(lazega),</span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>  <span class="at">ties      =</span> <span class="fu">network.edgecount</span>(lazega),</span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>  <span class="at">directed  =</span> network<span class="sc">::</span><span class="fu">is.directed</span>(lazega))</span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>network<span class="sc">::</span><span class="fu">list.vertex.attributes</span>(lazega)</span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>The canonical example is brokerage. A broker sits between two dense clusters; its ego-network has</span>
-<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>a distinctive low-transitivity, high-degree signature. Every broker in the graph shares that</span>
-<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>signature and lands in the same ego-ERGM role, while community detection scatters them across</span>
-<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>whichever communities they happen to bridge. If your theory is about *kinds of position*</span>
-<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>(brokers, hubs, peripherals), roles are what you want. If it is about *groups*, communities are.</span>
-<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>This is &quot;structural equivalence&quot; in the classic blockmodeling sense, approached through a</span>
-<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a>generative model rather than through algebraic role-equivalence. It connects directly to the</span>
-<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>blockmodeling day (day 2, W2 Thu).</span>
-<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. The data</span></span>
-<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>Lazega&#39;s law firm: 71 lawyers, with directed ties recording who works with whom, plus attributes</span>
-<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>like office, seniority, and practice area. It ships with <span class="in">`networkdata`</span>.</span>
-<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data</span></span>
-<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
-<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm)</span>
-<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(network)</span>
-<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(networkdata)</span>
-<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(lazega)</span>
-<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">lawyers   =</span> <span class="fu">network.size</span>(lazega),</span>
-<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>  <span class="at">ties      =</span> <span class="fu">network.edgecount</span>(lazega),</span>
-<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>  <span class="at">directed  =</span> network<span class="sc">::</span><span class="fu">is.directed</span>(lazega))</span>
-<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a>network<span class="sc">::</span><span class="fu">list.vertex.attributes</span>(lazega)</span>
-<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. Fitting the ego-ERGM</span></span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. Fitting the ego-ERGM</span></span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>We ask for **three roles** and describe each ego-network with three local terms: <span class="in">`edges`</span> (density), <span class="in">`mutual`</span> (reciprocity), and <span class="in">`triangle`</span> (closure). <span class="in">`core_size = 1`</span> means &quot;ego plus its immediate neighbours&quot;; <span class="in">`min_size = 5`</span> drops any ego-network too small to fit an ERGM to.</span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit</span></span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>role_fit <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;ego_lazega&quot;</span>,</span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ego_ergm</span>(<span class="at">net            =</span> lazega,</span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>           <span class="at">form           =</span> <span class="fu">c</span>(<span class="st">&quot;edges&quot;</span>, <span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>           <span class="at">core_size      =</span> <span class="dv">1</span>,</span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>           <span class="at">min_size       =</span> <span class="dv">5</span>,</span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>           <span class="at">roles          =</span> <span class="dv">3</span>,</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>           <span class="at">directed       =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>           <span class="at">edge_covariates =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>           <span class="at">seed           =</span> <span class="dv">6886</span>,</span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>           <span class="at">steps          =</span> <span class="dv">50</span>,</span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a>           <span class="at">tol            =</span> <span class="fl">1e-6</span>))</span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-names</span></span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(role_fit)</span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? The answer key told me to load <span class="in">`sampson`</span> from <span class="in">`sna`</span> and it failed&quot;}</span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a>The original answer script for this material began by loading a <span class="in">`sampson`</span> dataset from the <span class="in">`sna`</span> package to test the pipeline, and that line errors: <span class="in">`data set &#39;sampson&#39; not found`</span>. The reason is mundane: <span class="in">`sampson`</span> lives in **`ergm`**, not <span class="in">`sna`</span> (<span class="in">`data(sampson, package = &quot;ergm&quot;)`</span>). It is a good illustration of a general habit: when <span class="in">`data(&quot;something&quot;)`</span> fails, the dataset almost always exists, just in a different package. <span class="in">`data(package = .packages(all.available = TRUE))`</span> lists everything available, and searching that list for the name is usually the fastest way to find it.</span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>We do not need <span class="in">`sampson`</span> here: Lazega is the example, so this is only a note for anyone working from the old script.</span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>We ask for **three roles** and describe each ego-network with three local terms: <span class="in">`edges`</span></span>
-<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>(density), <span class="in">`mutual`</span> (reciprocity), and <span class="in">`triangle`</span> (closure). <span class="in">`core_size = 1`</span> means &quot;ego plus its</span>
-<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>immediate neighbours&quot;; <span class="in">`min_size = 5`</span> drops any ego-network too small to fit an ERGM to.</span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Reading the roles</span></span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>The <span class="in">`group.theta`</span> matrix has one row per role and one column per term. It is the generative recipe for each kind of local neighbourhood.</span>
 <span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit</span></span>
-<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>role_fit <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;ego_lazega&quot;</span>,</span>
-<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ego_ergm</span>(<span class="at">net            =</span> lazega,</span>
-<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>           <span class="at">form           =</span> <span class="fu">c</span>(<span class="st">&quot;edges&quot;</span>, <span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
-<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>           <span class="at">core_size      =</span> <span class="dv">1</span>,</span>
-<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>           <span class="at">min_size       =</span> <span class="dv">5</span>,</span>
-<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>           <span class="at">roles          =</span> <span class="dv">3</span>,</span>
-<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a>           <span class="at">directed       =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>           <span class="at">edge_covariates =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>           <span class="at">seed           =</span> <span class="dv">6886</span>,</span>
-<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>           <span class="at">steps          =</span> <span class="dv">50</span>,</span>
-<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>           <span class="at">tol            =</span> <span class="fl">1e-6</span>))</span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: roles</span></span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>role_theta <span class="ot">&lt;-</span> role_fit<span class="sc">$</span>group.theta</span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(role_theta) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">paste</span>(<span class="st">&quot;role&quot;</span>, <span class="fu">seq_len</span>(<span class="fu">nrow</span>(role_theta))),</span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">c</span>(<span class="st">&quot;edges&quot;</span>, <span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>))</span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(role_theta, <span class="dv">3</span>)</span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: role-sizes</span></span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>assignments <span class="ot">&lt;-</span> role_fit<span class="sc">$</span>role_assignments[, <span class="dv">2</span>]</span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">role =</span> assignments)</span>
 <span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-names</span></span>
-<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(role_fit)</span>
-<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a>Read the roles off the coefficients, comparing the two substantive roles (the third is a singleton: see the caveat below). They trade off **reciprocity against closure**, which is exactly the kind of distinction ego-ERGMs are built to surface:</span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **larger role** (41 lawyers) has a clearly higher <span class="in">`mutual`</span> coefficient but a *lower* <span class="in">`triangle`</span> coefficient: local neighbourhoods where working relationships are reciprocated but do not close into tight triads. Think coordinating positions: you work back-and-forth with many people who are not themselves connected.</span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **smaller role** (28 lawyers) has lower reciprocity but relatively higher closure: local neighbourhoods that are more triangulated, more clique-like.</span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>That is a statement about *kind of position*, and: the whole point: two lawyers can share a role while working in different offices on different practice areas. Note this is the opposite of a &quot;some are central, some are peripheral&quot; story: both roles are substantive structural types, not a core-periphery ranking.</span>
 <span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? The answer key told me to load <span class="in">`sampson`</span> from <span class="in">`sna`</span> and it failed&quot;}</span>
-<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>The original answer script for this material began by loading a <span class="in">`sampson`</span> dataset from the <span class="in">`sna`</span></span>
-<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>package to test the pipeline, and that line errors: <span class="in">`data set &#39;sampson&#39; not found`</span>. The reason is</span>
-<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>mundane: <span class="in">`sampson`</span> lives in **`ergm`**, not <span class="in">`sna`</span> (<span class="in">`data(sampson, package = &quot;ergm&quot;)`</span>). It is a</span>
-<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>good illustration of a general habit: when <span class="in">`data(&quot;something&quot;)`</span> fails, the dataset almost always</span>
-<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a>exists, just in a different package. <span class="in">`data(package = .packages(all.available = TRUE))`</span> lists</span>
-<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>everything available, and searching that list for the name is usually the fastest way to find it.</span>
-<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>We do not need <span class="in">`sampson`</span> here: Lazega is the example, so this is only a note for anyone working</span>
-<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>from the old script.</span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;A blunt caveat about this particular fit&quot;}</span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>Look at the role sizes: two substantive roles and a **third role with a single member**. That lone-member role is not a finding: it is the mixture model isolating one lawyer whose ego-network is an outlier and could not be forced into either main group.</span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>This is characteristic of ego-ERGMs on smallish networks, and you should treat it as a warning about the method&#39;s stability rather than as a discovered &quot;role.&quot; Three things follow:</span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Do not over-interpret a singleton or near-singleton role.** It is often an artefact.</span>
+<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The number of roles is a choice you impose**, not something the data hand you. Try <span class="in">`roles = 2`</span> and <span class="in">`roles = 4`</span> and see whether the substantive story is stable. If it is not, the roles are not robust and you should say so.</span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Compare the package&#39;s `EE.BIC` score**, where larger (less negative) is better. The function computes $2\ell - k\log N$, the negative of the conventional BIC orientation. Do not trust the score alone on a network this small. The same asymptotic cautions from the ERGM session apply here.</span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>Honesty about this is more useful than a clean-looking three-role table would have been. On a larger network the roles are far more stable; on 71 nodes they are suggestive, not settled.</span>
 <span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Reading the roles</span></span>
-<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>The <span class="in">`group.theta`</span> matrix has one row per role and one column per term. It is the generative</span>
-<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a>recipe for each kind of local neighbourhood.</span>
-<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: roles</span></span>
-<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a>role_theta <span class="ot">&lt;-</span> role_fit<span class="sc">$</span>group.theta</span>
-<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(role_theta) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">paste</span>(<span class="st">&quot;role&quot;</span>, <span class="fu">seq_len</span>(<span class="fu">nrow</span>(role_theta))),</span>
-<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">c</span>(<span class="st">&quot;edges&quot;</span>, <span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>))</span>
-<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(role_theta, <span class="dv">3</span>)</span>
-<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: role-sizes</span></span>
-<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a>assignments <span class="ot">&lt;-</span> role_fit<span class="sc">$</span>role_assignments[, <span class="dv">2</span>]</span>
-<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">role =</span> assignments)</span>
-<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>Read the roles off the coefficients, comparing the two substantive roles (the third is a</span>
-<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a>singleton: see the caveat below). They trade off **reciprocity against closure**, which is</span>
-<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>exactly the kind of distinction ego-ERGMs are built to surface:</span>
-<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **larger role** (41 lawyers) has a clearly higher <span class="in">`mutual`</span> coefficient but a *lower*</span>
-<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a>  <span class="in">`triangle`</span> coefficient: local neighbourhoods where working relationships are reciprocated but</span>
-<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a>  do not close into tight triads. Think coordinating positions: you work back-and-forth with</span>
-<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a>  many people who are not themselves connected.</span>
-<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **smaller role** (28 lawyers) has lower reciprocity but relatively higher closure: local</span>
-<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a>  neighbourhoods that are more triangulated, more clique-like.</span>
-<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a>That is a statement about *kind of position*, and: the whole point: two lawyers can share a</span>
-<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a>role while working in different offices on different practice areas. Note this is the opposite of</span>
-<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a>a &quot;some are central, some are peripheral&quot; story: both roles are substantive structural types, not</span>
-<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a>a core-periphery ranking.</span>
-<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;A blunt caveat about this particular fit&quot;}</span>
-<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a>Look at the role sizes: two substantive roles and a **third role with a single member**. That</span>
-<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a>lone-member role is not a finding: it is the mixture model isolating one lawyer whose</span>
-<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>ego-network is an outlier and could not be forced into either main group.</span>
-<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a>This is characteristic of ego-ERGMs on smallish networks, and you should treat it as a warning</span>
-<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a>about the method&#39;s stability rather than as a discovered &quot;role.&quot; Three things follow:</span>
-<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Do not over-interpret a singleton or near-singleton role.** It is often an artefact.</span>
-<span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The number of roles is a choice you impose**, not something the data hand you. Try</span>
-<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a>  <span class="in">`roles = 2`</span> and <span class="in">`roles = 4`</span> and see whether the substantive story is stable. If it is not, the</span>
-<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a>  roles are not robust and you should say so.</span>
-<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Compare the package&#39;s `EE.BIC` score**, where larger (less negative) is better. The function</span>
-<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a>  computes $2\ell - k\log N$, the negative of the conventional BIC orientation. Do not trust</span>
-<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a>  the score alone on a network this small. The same asymptotic cautions from the ERGM session</span>
-<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a>  apply here.</span>
+<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: bic</span></span>
+<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(role_fit<span class="sc">$</span>EE.BIC, <span class="dv">1</span>)</span>
+<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">roles =</span> <span class="fu">nrow</span>(role_theta),</span>
+<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a>           <span class="at">largest_role =</span> <span class="fu">max</span>(<span class="fu">table</span>(assignments)),</span>
+<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a>           <span class="at">BIC =</span> <span class="fu">round</span>(role_fit<span class="sc">$</span>EE.BIC, <span class="dv">0</span>))</span>
+<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Exercise</span></span>
+<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
+<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a>Refit with **two** roles instead of three and compare. Does the two-role solution give you two substantively interpretable groups, or does it also isolate an outlier?</span>
+<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>role_fit2 <span class="ot">&lt;-</span> <span class="fu">ego_ergm</span>(<span class="at">net =</span> lazega, <span class="at">form =</span> <span class="fu">c</span>(<span class="st">&quot;edges&quot;</span>, <span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>                      <span class="at">core_size =</span> <span class="dv">1</span>, <span class="at">min_size =</span> <span class="dv">5</span>, <span class="at">roles =</span> ______,</span>
+<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a>                      <span class="at">directed =</span> <span class="cn">TRUE</span>, <span class="at">edge_covariates =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>                      <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">steps =</span> <span class="dv">50</span>, <span class="at">tol =</span> <span class="fl">1e-6</span>)</span>
+<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(role_fit2<span class="sc">$</span>role_assignments[, <span class="dv">2</span>])</span>
+<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a>Then ask which solution has the higher (less negative) <span class="in">`EE.BIC`</span> score and which one you would actually report? Explain whether the numerical and substantive criteria agree.</span>
+<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
+<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-two</span></span>
+<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a>role_fit2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;ego_lazega_2&quot;</span>,</span>
+<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ego_ergm</span>(<span class="at">net =</span> lazega, <span class="at">form =</span> <span class="fu">c</span>(<span class="st">&quot;edges&quot;</span>, <span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
+<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a>           <span class="at">core_size =</span> <span class="dv">1</span>, <span class="at">min_size =</span> <span class="dv">5</span>, <span class="at">roles =</span> <span class="dv">2</span>,</span>
+<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a>           <span class="at">directed =</span> <span class="cn">TRUE</span>, <span class="at">edge_covariates =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>           <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">steps =</span> <span class="dv">50</span>, <span class="at">tol =</span> <span class="fl">1e-6</span>))</span>
+<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-two-show</span></span>
+<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">role =</span> role_fit2<span class="sc">$</span>role_assignments[, <span class="dv">2</span>])</span>
+<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">BIC_2roles =</span> <span class="fu">round</span>(role_fit2<span class="sc">$</span>EE.BIC, <span class="dv">0</span>),</span>
+<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a>  <span class="at">BIC_3roles =</span> <span class="fu">round</span>(role_fit<span class="sc">$</span>EE.BIC, <span class="dv">0</span>))</span>
+<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a>**The result.** The two-role solution is worse than three, not better: it **collapses entirely**, putting all 70 fittable lawyers into a single role and leaving the other role empty. So neither low-dimensional solution here produces the balanced, interpretable partition you would hope for: three roles gave you two groups plus an outlier, two roles gives you no separation at all. That instability is itself the finding: **role structure in this 71-node firm is not cleanly separable, and the method is telling you so if you ask it more than once.**</span>
 <span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a>Honesty about this is more useful than a clean-looking three-role table would have been. On a</span>
-<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a>larger network the roles are far more stable; on 71 nodes they are suggestive, not settled.</span>
-<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: bic</span></span>
-<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(role_fit<span class="sc">$</span>EE.BIC, <span class="dv">1</span>)</span>
-<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">roles =</span> <span class="fu">nrow</span>(role_theta),</span>
-<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a>           <span class="at">largest_role =</span> <span class="fu">max</span>(<span class="fu">table</span>(assignments)),</span>
-<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a>           <span class="at">BIC =</span> <span class="fu">round</span>(role_fit<span class="sc">$</span>EE.BIC, <span class="dv">0</span>))</span>
-<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Exercise</span></span>
-<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
-<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
-<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a>Refit with **two** roles instead of three and compare. Does the two-role solution give you two</span>
-<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a>substantively interpretable groups, or does it also isolate an outlier?</span>
-<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb12-242"><a href="#cb12-242" aria-hidden="true" tabindex="-1"></a>role_fit2 <span class="ot">&lt;-</span> <span class="fu">ego_ergm</span>(<span class="at">net =</span> lazega, <span class="at">form =</span> <span class="fu">c</span>(<span class="st">&quot;edges&quot;</span>, <span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
-<span id="cb12-243"><a href="#cb12-243" aria-hidden="true" tabindex="-1"></a>                      <span class="at">core_size =</span> <span class="dv">1</span>, <span class="at">min_size =</span> <span class="dv">5</span>, <span class="at">roles =</span> ______,</span>
-<span id="cb12-244"><a href="#cb12-244" aria-hidden="true" tabindex="-1"></a>                      <span class="at">directed =</span> <span class="cn">TRUE</span>, <span class="at">edge_covariates =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a>                      <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">steps =</span> <span class="dv">50</span>, <span class="at">tol =</span> <span class="fl">1e-6</span>)</span>
-<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(role_fit2<span class="sc">$</span>role_assignments[, <span class="dv">2</span>])</span>
-<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a>Then ask which solution has the higher (less negative) <span class="in">`EE.BIC`</span> score and which one you would</span>
-<span id="cb12-250"><a href="#cb12-250" aria-hidden="true" tabindex="-1"></a>actually report? Explain whether the numerical and substantive criteria agree.</span>
-<span id="cb12-251"><a href="#cb12-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
-<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-256"><a href="#cb12-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-257"><a href="#cb12-257" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-two</span></span>
-<span id="cb12-258"><a href="#cb12-258" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb12-259"><a href="#cb12-259" aria-hidden="true" tabindex="-1"></a>role_fit2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;ego_lazega_2&quot;</span>,</span>
-<span id="cb12-260"><a href="#cb12-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ego_ergm</span>(<span class="at">net =</span> lazega, <span class="at">form =</span> <span class="fu">c</span>(<span class="st">&quot;edges&quot;</span>, <span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
-<span id="cb12-261"><a href="#cb12-261" aria-hidden="true" tabindex="-1"></a>           <span class="at">core_size =</span> <span class="dv">1</span>, <span class="at">min_size =</span> <span class="dv">5</span>, <span class="at">roles =</span> <span class="dv">2</span>,</span>
-<span id="cb12-262"><a href="#cb12-262" aria-hidden="true" tabindex="-1"></a>           <span class="at">directed =</span> <span class="cn">TRUE</span>, <span class="at">edge_covariates =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb12-263"><a href="#cb12-263" aria-hidden="true" tabindex="-1"></a>           <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">steps =</span> <span class="dv">50</span>, <span class="at">tol =</span> <span class="fl">1e-6</span>))</span>
-<span id="cb12-264"><a href="#cb12-264" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-265"><a href="#cb12-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-268"><a href="#cb12-268" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-269"><a href="#cb12-269" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-two-show</span></span>
-<span id="cb12-270"><a href="#cb12-270" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">role =</span> role_fit2<span class="sc">$</span>role_assignments[, <span class="dv">2</span>])</span>
-<span id="cb12-271"><a href="#cb12-271" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">BIC_2roles =</span> <span class="fu">round</span>(role_fit2<span class="sc">$</span>EE.BIC, <span class="dv">0</span>),</span>
-<span id="cb12-272"><a href="#cb12-272" aria-hidden="true" tabindex="-1"></a>  <span class="at">BIC_3roles =</span> <span class="fu">round</span>(role_fit<span class="sc">$</span>EE.BIC, <span class="dv">0</span>))</span>
-<span id="cb12-273"><a href="#cb12-273" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-274"><a href="#cb12-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-275"><a href="#cb12-275" aria-hidden="true" tabindex="-1"></a>**The result.** The two-role solution is worse than three, not better: it **collapses entirely**,</span>
-<span id="cb12-276"><a href="#cb12-276" aria-hidden="true" tabindex="-1"></a>putting all 70 fittable lawyers into a single role and leaving the other role empty. So neither</span>
-<span id="cb12-277"><a href="#cb12-277" aria-hidden="true" tabindex="-1"></a>low-dimensional solution here produces the balanced, interpretable partition you would hope for: </span>
-<span id="cb12-278"><a href="#cb12-278" aria-hidden="true" tabindex="-1"></a>three roles gave you two groups plus an outlier, two roles gives you no separation at all. That</span>
-<span id="cb12-279"><a href="#cb12-279" aria-hidden="true" tabindex="-1"></a>instability is itself the finding: **role structure in this 71-node firm is not cleanly</span>
-<span id="cb12-280"><a href="#cb12-280" aria-hidden="true" tabindex="-1"></a>separable, and the method is telling you so if you ask it more than once.**</span>
-<span id="cb12-281"><a href="#cb12-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-282"><a href="#cb12-282" aria-hidden="true" tabindex="-1"></a>**The score and what to report.** <span class="in">`EE.BIC`</span> is easy to read backwards because the field name says</span>
-<span id="cb12-283"><a href="#cb12-283" aria-hidden="true" tabindex="-1"></a>&quot;BIC,&quot; but the function computes $2\ell-k\log N$. Larger (less negative) values are preferred.</span>
-<span id="cb12-284"><a href="#cb12-284" aria-hidden="true" tabindex="-1"></a>The three-role score is therefore better than the two-role score, and the two-role solution is</span>
-<span id="cb12-285"><a href="#cb12-285" aria-hidden="true" tabindex="-1"></a>also substantively degenerate. Both criteria favor three roles over two. That still does not</span>
-<span id="cb12-286"><a href="#cb12-286" aria-hidden="true" tabindex="-1"></a>turn the singleton third role into a stable discovery. On a network this small, the score</span>
-<span id="cb12-287"><a href="#cb12-287" aria-hidden="true" tabindex="-1"></a>informs your judgment; it does not replace stability checks across seeds and role counts.</span>
-<span id="cb12-288"><a href="#cb12-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-289"><a href="#cb12-289" aria-hidden="true" tabindex="-1"></a>What you would actually report: that ego-ERGM role structure on this network is **unstable across</span>
-<span id="cb12-290"><a href="#cb12-290" aria-hidden="true" tabindex="-1"></a>the number of roles**, that the recurring feature is one or two outlier egos rather than a robust</span>
-<span id="cb12-291"><a href="#cb12-291" aria-hidden="true" tabindex="-1"></a>partition, and that a firmer conclusion needs either a larger network or a substantive prior on</span>
-<span id="cb12-292"><a href="#cb12-292" aria-hidden="true" tabindex="-1"></a>how many roles to expect. That honest non-result is worth more than a confident three-role table</span>
-<span id="cb12-293"><a href="#cb12-293" aria-hidden="true" tabindex="-1"></a>you cannot reproduce at <span class="in">`roles = 2`</span>.</span>
-<span id="cb12-294"><a href="#cb12-294" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb12-295"><a href="#cb12-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-296"><a href="#cb12-296" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Readings</span></span>
-<span id="cb12-297"><a href="#cb12-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-298"><a href="#cb12-298" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Salter-Townshend &amp; Murphy (2015)**, &quot;Role analysis in networks using mixtures of exponential</span>
-<span id="cb12-299"><a href="#cb12-299" aria-hidden="true" tabindex="-1"></a>  random graph models,&quot; *Journal of Computational and Graphical Statistics* 24(2):520–538. The</span>
-<span id="cb12-300"><a href="#cb12-300" aria-hidden="true" tabindex="-1"></a>  method <span class="in">`ego_ergm()`</span> implements.</span>
-<span id="cb12-301"><a href="#cb12-301" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Lazega (2001)**, *The Collegial Phenomenon: The Social Mechanisms of Cooperation Among Peers</span>
-<span id="cb12-302"><a href="#cb12-302" aria-hidden="true" tabindex="-1"></a>  in a Corporate Law Partnership*. Oxford University Press. The data and their substantive</span>
-<span id="cb12-303"><a href="#cb12-303" aria-hidden="true" tabindex="-1"></a>  context.</span>
-<span id="cb12-304"><a href="#cb12-304" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Connects to the **blockmodeling** session (day 2, W2 Thu): Abbe (2018) on stochastic block models: </span>
-<span id="cb12-305"><a href="#cb12-305" aria-hidden="true" tabindex="-1"></a>  and to Olga&#39;s week-1 community detection. Ego-ERGMs, blockmodels, and community detection are</span>
-<span id="cb12-306"><a href="#cb12-306" aria-hidden="true" tabindex="-1"></a>  three answers to overlapping questions; knowing which one matches your theory is the useful</span>
-<span id="cb12-307"><a href="#cb12-307" aria-hidden="true" tabindex="-1"></a>  skill.</span>
-<span id="cb12-308"><a href="#cb12-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-311"><a href="#cb12-311" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-312"><a href="#cb12-312" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
-<span id="cb12-313"><a href="#cb12-313" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb12-314"><a href="#cb12-314" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb12-315"><a href="#cb12-315" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions: expand if your numbers differ from mine&quot;</span></span>
-<span id="cb12-316"><a href="#cb12-316" aria-hidden="true" tabindex="-1"></a>pk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;network&quot;</span>, <span class="st">&quot;networkdata&quot;</span>)</span>
-<span id="cb12-317"><a href="#cb12-317" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> pk,</span>
-<span id="cb12-318"><a href="#cb12-318" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">sapply</span>(pk, <span class="cf">function</span>(p) <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(p))),</span>
-<span id="cb12-319"><a href="#cb12-319" aria-hidden="true" tabindex="-1"></a>           <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
-<span id="cb12-320"><a href="#cb12-320" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb12-321"><a href="#cb12-321" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a>**The score and what to report.** <span class="in">`EE.BIC`</span> is easy to read backwards because the field name says &quot;BIC,&quot; but the function computes $2\ell-k\log N$. Larger (less negative) values are preferred. The three-role score is therefore better than the two-role score, and the two-role solution is also substantively degenerate. Both criteria favor three roles over two. That still does not turn the singleton third role into a stable discovery. On a network this small, the score informs your judgment; it does not replace stability checks across seeds and role counts.</span>
+<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a>What you would actually report: that ego-ERGM role structure on this network is **unstable across the number of roles**, that the recurring feature is one or two outlier egos rather than a robust partition, and that a firmer conclusion needs either a larger network or a substantive prior on how many roles to expect. That honest non-result is worth more than a confident three-role table you cannot reproduce at <span class="in">`roles = 2`</span>.</span>
+<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Readings</span></span>
+<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Salter-Townshend &amp; Murphy (2015)**, &quot;Role analysis in networks using mixtures of exponential random graph models,&quot; *Journal of Computational and Graphical Statistics* 24(2):520–538. The method <span class="in">`ego_ergm()`</span> implements.</span>
+<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Lazega (2001)**, *The Collegial Phenomenon: The Social Mechanisms of Cooperation Among Peers in a Corporate Law Partnership*. Oxford University Press. The data and their substantive context.</span>
+<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Connects to the **blockmodeling** session (day 2, W2 Thu): Abbe (2018) on stochastic block models: and to Olga&#39;s week-1 community detection. Ego-ERGMs, blockmodels, and community detection are three answers to overlapping questions; knowing which one matches your theory is the useful skill.</span>
+<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
+<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
+<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions: expand if your numbers differ from mine&quot;</span></span>
+<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a>pk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;network&quot;</span>, <span class="st">&quot;networkdata&quot;</span>)</span>
+<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> pk,</span>
+<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">sapply</span>(pk, <span class="cf">function</span>(p) <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(p))),</span>
+<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a>           <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb12-238"><a href="#cb12-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

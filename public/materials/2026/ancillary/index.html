@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Shahryar Minhas">
-<meta name="dcterms.date" content="2026-07-21">
+<meta name="dcterms.date" content="2026-07-22">
 
 <title>Ancillary materials: network models you might need next</title>
 <style>
@@ -2248,7 +2248,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 21, 2026</p>
+      <p class="date">July 22, 2026</p>
     </div>
   </div>
   
@@ -2830,158 +2830,104 @@ vertical-align: -.125em;
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;_helpers.R&quot;</span>)</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>These are seven working documents on topics the 2026 course does not have a full slot for. Each one</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>is complete, each one runs end to end on the machine you used in class, and each one exists</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>because it is the thing you will plausibly need next. They are ordered below by how likely you</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>are to reach for them, not by which lecture they came from.</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>None of this is graded and none of it is assumed by any later session. Think of it as a</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>reference shelf: pull down the one that matches the problem in front of you, ignore the rest, and</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>come back when your data changes shape.</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title=&quot;How these documents work&quot;}</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>Every document is a **walkthrough**, not slides: prose between runnable chunks, meant to be read</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>and re-run on your own. They share a small set of conventions:</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Every number and figure is produced by a chunk.** There are no screenshots of R output</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  anywhere. If you can see it, you can reproduce it.</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Slow fits are shipped precomputed** and reload instantly. To re-run them for real, set</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="in">`options(session.refit = TRUE)`</span> before rendering.</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Folded boxes are optional:** open a **Depth** box for more, a **Stuck?** box for a hint,</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  ignore whichever you do not need.</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercises have a Solution tab.** You are working alone: use it.</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**A seed is set on every fit**, so your numbers should match the ones in the prose. If they do</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  not, the &quot;Versions&quot; block at the foot of each document is the first thing to check.</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>These are seven working documents on topics the 2026 course does not have a full slot for. Each one is complete, each one runs end to end on the machine you used in class, and each one exists because it is the thing you will plausibly need next. They are ordered below by how likely you are to reach for them, not by which lecture they came from.</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>None of this is graded and none of it is assumed by any later session. Think of it as a reference shelf: pull down the one that matches the problem in front of you, ignore the rest, and come back when your data changes shape.</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title=&quot;How these documents work&quot;}</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>Every document is a **walkthrough**, not slides: prose between runnable chunks, meant to be read and re-run on your own. They share a small set of conventions:</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Every number and figure is produced by a chunk.** There are no screenshots of R output anywhere. If you can see it, you can reproduce it.</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Slow fits are shipped precomputed** and reload instantly. To re-run them for real, set <span class="in">`options(session.refit = TRUE)`</span> before rendering.</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Folded boxes are optional:** open a **Depth** box for more, a **Stuck?** box for a hint, ignore whichever you do not need.</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercises have a Solution tab.** You are working alone: use it.</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**A seed is set on every fit**, so your numbers should match the ones in the prose. If they do not, the &quot;Versions&quot; block at the foot of each document is the first thing to check.</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="fu"># The shelf, in order of how likely you are to need it</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>This ordering is by **likelihood of need**, not by difficulty: #1 is the deepest, not the easiest. If you felt shaky in the taught ERGM/SAOM sessions, do not start at the top: begin with **#7 (`random_graphs`)**, which builds the null-model idea from scratch, and work *upward*. If you were comfortable, the top-down order is the right one.</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. [Temporal ERGMs](tergm.html)</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** you have a network measured at several time points and you want to model *change*: reciprocation of last year&#39;s ties, the stickiness of existing relationships, delayed effects. A cross-sectional ERGM on the last wave throws all of that away.</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon), whose final block (C4) taught the TERGM core. This is the **day-4 deep dive**, picking up where the class session stopped. **Prerequisites:** <span class="in">`btergm`</span>, <span class="in">`network`</span>, <span class="in">`networkDynamic`</span>, <span class="in">`tsna`</span>, <span class="in">`RSiena`</span>, <span class="in">`networkdata`</span>. If you fit the TERGM in class and want the rest, read this first. It also fits a TERGM and a SAOM to the *same* classroom data and shows where they agree and where they do not.</span>
 <span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="fu"># The shelf, in order of how likely you are to need it</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. [A hard SAOM: diplomatic recognition (Duque 2018)](saom_duque.html)</span></span>
 <span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>This ordering is by **likelihood of need**, not by difficulty: #1 is the deepest, not the</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>easiest. If you felt shaky in the taught ERGM/SAOM sessions, do not start at the top: begin with</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>**#7 (`random_graphs`)**, which builds the null-model idea from scratch, and work *upward*. If</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>you were comfortable, the top-down order is the right one.</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. [Temporal ERGMs](tergm.html)</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** you have a network measured at several time points and you want to</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>model *change*: reciprocation of last year&#39;s ties, the stickiness of existing relationships,</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>delayed effects. A cross-sectional ERGM on the last wave throws all of that away.</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon), whose final block (C4) taught the TERGM core.</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>This is the **day-4 deep dive**, picking up where the class session stopped.</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>**Prerequisites:** <span class="in">`btergm`</span>, <span class="in">`network`</span>, <span class="in">`networkDynamic`</span>, <span class="in">`tsna`</span>, <span class="in">`RSiena`</span>, <span class="in">`networkdata`</span>.</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>If you fit the TERGM in class and want the rest, read this first. It also fits a TERGM and a</span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>SAOM to the *same* classroom data and shows where they agree and where they do not.</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. [A hard SAOM: diplomatic recognition (Duque 2018)](saom_duque.html)</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** the taught SAOM converged quickly and looked easy. Real data</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>usually does not. This is a larger, directed network that **does not converge in one pass**, and</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>the document is about reading that failure honestly rather than reporting a number you should not</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>trust.</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** the taught SAOM converged quickly and looked easy. Real data usually does not. This is a larger, directed network that **does not converge in one pass**, and the document is about reading that failure honestly rather than reporting a number you should not trust.</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>**Extends:** the SAOM session (day 5, W3 Tue). **Prerequisites:** <span class="in">`RSiena`</span>, <span class="in">`networkdata`</span>. The fit is slow, so a precomputed result is included.</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. [Composition change in SAOMs](saom_composition.html)</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** actors who join or leave between waves: students transferring, firms folding, patients discharged. Dropping them biases what is left; SAOMs can handle them natively, and this shows how, plus why it is *not* the same as ordinary missing data.</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>**Extends:** the SAOM session (day 5, W3 Tue). **Prerequisites:** <span class="in">`RSiena`</span> (data files ship with the document).</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. [ERGMs in applied political science](ergm_applications.html)</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** the taught session ran on friendship data so nobody paid a translation tax. If you *came* for political science, here are two worked applications: Senate cosponsorship and rebel-group cooperation in civil wars (Gade et al. 2019), with the full build-fit-interpret pipeline on real, messy data.</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon). **Prerequisites:** <span class="in">`ergm`</span>, <span class="in">`network`</span>, <span class="in">`networkdata`</span>.</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. [Valued ERGMs, in depth](valued_ergm_depth.html)</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** your edges have *weights*: interaction counts, message volumes, trade values, durations: not just presence/absence. The taught session introduced the idea briefly; this is the rest of it: reference measures, valued mutuality and closure, and how to check a valued fit.</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon), block C3. **Prerequisites:** <span class="in">`ergm`</span>, <span class="in">`ergm.count`</span>, <span class="in">`network`</span>.</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## 6. [Ego-ERGMs: roles from local structure](ego_ergms.html)</span></span>
 <span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>**Extends:** the SAOM session (day 5, W3 Tue). **Prerequisites:** <span class="in">`RSiena`</span>, <span class="in">`networkdata`</span>.</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>The fit is slow, so a precomputed result is included.</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. [Composition change in SAOMs](saom_composition.html)</span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** actors who join or leave between waves: students transferring, firms</span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>folding, patients discharged. Dropping them biases what is left; SAOMs can handle them natively,</span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>and this shows how, plus why it is *not* the same as ordinary missing data.</span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>**Extends:** the SAOM session (day 5, W3 Tue). **Prerequisites:** <span class="in">`RSiena`</span> (data files ship with the</span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>document).</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** you want to group nodes by *structural role*: brokers, hubs, peripherals: rather than by community membership. Two nodes in different parts of the graph can play the same role, and community detection will never tell you that.</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon); connects to blockmodeling (day 2, W2 Thu) and week-1 community detection. **Prerequisites:** <span class="in">`ergm`</span>, <span class="in">`network`</span>, and <span class="in">`ego_ergm()`</span> from <span class="in">`networkdata`</span>.</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## 7. [Random graphs, and what a null model is for](random_graphs.html)</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** the conceptual foundation under everything else: why &quot;more clustered than chance&quot; is meaningless until you say *than what chance*, and why that question is what ERGMs exist to answer. Mostly revision if you were here in week 1; a gentle on-ramp if you were not.</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>**Extends:** it is the natural thing to read *before* the ERGM session. **Prerequisites:** <span class="in">`igraph`</span>, <span class="in">`sna`</span>, <span class="in">`ergm`</span>, <span class="in">`network`</span>.</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="fu"># Before you start: an environment check</span></span>
 <span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. [ERGMs in applied political science](ergm_applications.html)</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>Run this once. If it prints <span class="in">`ANCILLARY SETUP OK`</span>, every document on the shelf will run for you. If it names a missing package, install that package and re-run.</span>
 <span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** the taught session ran on friendship data so nobody paid a translation</span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>tax. If you *came* for political science, here are two worked applications: Senate cosponsorship</span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>and rebel-group cooperation in civil wars (Gade et al. 2019), with the full build-fit-interpret</span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>pipeline on real, messy data.</span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon). **Prerequisites:** <span class="in">`ergm`</span>, <span class="in">`network`</span>, <span class="in">`networkdata`</span>.</span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. [Valued ERGMs, in depth](valued_ergm_depth.html)</span></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** your edges have *weights*: interaction counts, message volumes, trade</span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>values, durations: not just presence/absence. The taught session introduced the idea briefly;</span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>this is the rest of it: reference measures, valued mutuality and closure, and how to</span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>check a valued fit.</span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon), block C3. **Prerequisites:** <span class="in">`ergm`</span>, <span class="in">`ergm.count`</span>,</span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a><span class="in">`network`</span>.</span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## 6. [Ego-ERGMs: roles from local structure](ego_ergms.html)</span></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** you want to group nodes by *structural role*: brokers, hubs,</span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>peripherals: rather than by community membership. Two nodes in different parts of the graph can</span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>play the same role, and community detection will never tell you that.</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: env-check</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>core   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;ergm.count&quot;</span>, <span class="st">&quot;network&quot;</span>, <span class="st">&quot;sna&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;RSiena&quot;</span>)</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>extras <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;btergm&quot;</span>, <span class="st">&quot;networkDynamic&quot;</span>, <span class="st">&quot;tsna&quot;</span>, <span class="st">&quot;networkdata&quot;</span>)</span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>missing <span class="ot">&lt;-</span> <span class="fu">c</span>(core, extras)[<span class="sc">!</span><span class="fu">vapply</span>(<span class="fu">c</span>(core, extras), requireNamespace,</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">logical</span>(<span class="dv">1</span>), <span class="at">quietly =</span> <span class="cn">TRUE</span>)]</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(missing)) {</span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;MISSING:&quot;</span>, <span class="fu">paste</span>(missing, <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Install CRAN packages with install.packages(); networkdata is GitHub:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;  remotes::install_github(&quot;ochyzh/networkdata&quot;)</span><span class="sc">\n</span><span class="st">&#39;</span>)</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;ANCILLARY SETUP OK</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title=&quot;One package is not on CRAN&quot;}</span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="in">`networkdata`</span> (Olga Chyzh&#39;s data-and-tools package, which carries the diplomacy, Senate, rebel, and Lazega datasets plus <span class="in">`ego_ergm()`</span>) installs from GitHub:</span>
 <span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon); connects to blockmodeling (day 2, W2 Thu) and week-1 community</span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>detection. **Prerequisites:** <span class="in">`ergm`</span>, <span class="in">`network`</span>, and <span class="in">`ego_ergm()`</span> from <span class="in">`networkdata`</span>.</span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## 7. [Random graphs, and what a null model is for](random_graphs.html)</span></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ochyzh/networkdata&quot;</span>)</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** the conceptual foundation under everything else: why &quot;more clustered</span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>than chance&quot; is meaningless until you say *than what chance*, and why that question is what ERGMs</span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>exist to answer. Mostly revision if you were here in week 1; a gentle on-ramp if you were not.</span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>**Extends:** it is the natural thing to read *before* the ERGM session. **Prerequisites:**</span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a><span class="in">`igraph`</span>, <span class="in">`sna`</span>, <span class="in">`ergm`</span>, <span class="in">`network`</span>.</span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>Installing from GitHub compiles from source, so you need build tools: **Rtools** on Windows, **Xcode command-line tools** (`xcode-select --install`) on macOS, `r-base-dev` on Linux. If the install fails on a managed or locked-down laptop and you cannot get it working, don&#39;t stall: **documents 3, 5, and 7 (`saom_composition`, `valued_ergm_depth`, `random_graphs`) need no `networkdata` at all**, so start there and come back to the other four once the install is sorted. Everything else is on CRAN.</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a><span class="fu"># A note on where these came from</span></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>If you took an earlier version of this course, some of this will look familiar: these topics used to be taught as lectures. In the 2026 redesign they did not fit the seven-day structure, so rather than delete them they were rebuilt as documents you can work through at your own pace.</span>
 <span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="fu"># Before you start: an environment check</span></span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>Run this once. If it prints <span class="in">`ANCILLARY SETUP OK`</span>, every document on the shelf will run for you.</span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>If it names a missing package, install that package and re-run.</span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: env-check</span></span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>core   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;ergm.count&quot;</span>, <span class="st">&quot;network&quot;</span>, <span class="st">&quot;sna&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;RSiena&quot;</span>)</span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>extras <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;btergm&quot;</span>, <span class="st">&quot;networkDynamic&quot;</span>, <span class="st">&quot;tsna&quot;</span>, <span class="st">&quot;networkdata&quot;</span>)</span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>missing <span class="ot">&lt;-</span> <span class="fu">c</span>(core, extras)[<span class="sc">!</span><span class="fu">vapply</span>(<span class="fu">c</span>(core, extras), requireNamespace,</span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">logical</span>(<span class="dv">1</span>), <span class="at">quietly =</span> <span class="cn">TRUE</span>)]</span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(missing)) {</span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;MISSING:&quot;</span>, <span class="fu">paste</span>(missing, <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Install CRAN packages with install.packages(); networkdata is GitHub:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;  remotes::install_github(&quot;ochyzh/networkdata&quot;)</span><span class="sc">\n</span><span class="st">&#39;</span>)</span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;ANCILLARY SETUP OK</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title=&quot;One package is not on CRAN&quot;}</span>
-<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a><span class="in">`networkdata`</span> (Olga Chyzh&#39;s data-and-tools package, which carries the diplomacy, Senate, rebel,</span>
-<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>and Lazega datasets plus <span class="in">`ego_ergm()`</span>) installs from GitHub:</span>
-<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
-<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ochyzh/networkdata&quot;</span>)</span>
-<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a>Installing from GitHub compiles from source, so you need build tools: **Rtools** on Windows,</span>
-<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a>**Xcode command-line tools** (<span class="in">`xcode-select --install`</span>) on macOS, <span class="in">`r-base-dev`</span> on Linux. If the</span>
-<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>install fails on a managed or locked-down laptop and you cannot get it working, don&#39;t stall: </span>
-<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a>**documents 3, 5, and 7 (<span class="in">`saom_composition`</span>, <span class="in">`valued_ergm_depth`</span>, <span class="in">`random_graphs`</span>) need no</span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="in">`networkdata`</span> at all**, so start there and come back to the other four once the install is sorted.</span>
-<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a>Everything else is on CRAN.</span>
-<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a><span class="fu"># A note on where these came from</span></span>
-<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>If you took an earlier version of this course, some of this will look familiar: these topics</span>
-<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>used to be taught as lectures. In the 2026 redesign they did not fit the seven-day structure, so</span>
-<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>rather than delete them they were rebuilt as documents you can work through at your own pace.</span>
-<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a>&quot;Rebuilt&quot; is the operative word. Each one was checked line by line, every fit was re-run against</span>
-<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a>current package versions, and a fair number of bugs that had accumulated in the old materials</span>
-<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a>were fixed along the way: some of which are called out in the documents themselves, because a</span>
-<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>wrong analysis that looks right is worth learning to spot. What you have here runs, and where a</span>
-<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>result is ugly or a model refuses to converge, the document says so rather than hiding it. That</span>
-<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>honesty is the point: the most useful thing these can teach, beyond the methods themselves, is</span>
-<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>what real analyses look like when they do not go smoothly.</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>&quot;Rebuilt&quot; is the operative word. Each one was checked line by line, every fit was re-run against current package versions, and a fair number of bugs that had accumulated in the old materials were fixed along the way: some of which are called out in the documents themselves, because a wrong analysis that looks right is worth learning to spot. What you have here runs, and where a result is ugly or a model refuses to converge, the document says so rather than hiding it. That honesty is the point: the most useful thing these can teach, beyond the methods themselves, is what real analyses look like when they do not go smoothly.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

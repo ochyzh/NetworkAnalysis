@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Shahryar Minhas">
-<meta name="dcterms.date" content="2026-07-21">
+<meta name="dcterms.date" content="2026-07-22">
 
 <title>ERGMs in applied political science</title>
 <style>
@@ -2390,7 +2390,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 21, 2026</p>
+      <p class="date">July 22, 2026</p>
     </div>
   </div>
   
@@ -3302,458 +3302,331 @@ window.Quarto = {
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>{{&lt; include _ancillary_header.qmd &gt;}}</span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title=&quot;What this extends, and why it is here&quot;}</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon). The taught session runs entirely on friendship data: </span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>adolescents and monks, so that nobody pays a translation tax on the substance while learning the</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>method. This document is the other half of that bargain: two worked **political-science**</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>applications, for the students who came for exactly this and who will get more out of the method</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>when it is attached to a question they care about.</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>**Two applications:**</span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Senate cosponsorship**: a small, clean, dyad-independent model. Good for seeing the whole</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>   pipeline (build the network, attach covariates, fit, interpret) with no MCMC in the way.</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Rebel-group cooperation in civil wars** (Gade et al. 2019), a pedagogical ERGM reanalysis</span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>   of data from a published AME application. It adds endogenous structure and a real</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>   specification choice about shared partners, but it is not a replication of the published</span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>   model.</span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>**Why it is optional in 2026:** the taught session had to pick datasets that work for a room that</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>is half non-political-science, and IR examples do not clear that bar. Here they are, done</span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>properly, for the people who want them. If you are *not* a political scientist, the method is</span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>identical to what you already saw: you can read this purely as &quot;the same pipeline on messier</span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>data&quot; and skip the substance.</span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>**What you need:** <span class="in">`ergm`</span>, <span class="in">`network`</span>, <span class="in">`networkdata`</span> (which carries both datasets: no</span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="in">`install_github`</span> is executed here).</span>
-<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. Senate cosponsorship: the whole pipeline, no MCMC</span></span>
-<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1.1 The question and the data</span></span>
-<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>Take the nine most ideologically extreme senators of the 109th Congress. Draw a directed edge</span>
-<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>from $i$ to $j$ when $i$ cosponsored at least two of $j$&#39;s bills. The substantive question: do</span>
-<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>senators cosponsor each other because they are **ideologically similar**, or because they are</span>
-<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>**geographically close**, or both?</span>
-<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>This maps onto three ERGM terms and nothing more, which is what makes it a good first example:</span>
-<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`edges`</span>: the baseline propensity to cosponsor (the intercept).</span>
-<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`absdiff(&quot;ideol&quot;)`</span>: ideological homophily: are cosponsorships more likely between senators</span>
-<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>  with similar DW-NOMINATE scores?</span>
-<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`edgecov(&quot;dist&quot;)`</span>: geographic distance: does physical distance between home states suppress</span>
-<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>  cosponsorship?</span>
-<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;What is DW-NOMINATE, for non-Americanists&quot;}</span>
-<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>DW-NOMINATE is a scaling of roll-call voting that places each legislator on a</span>
-<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>liberal–conservative dimension, roughly −1 (most liberal) to +1 (most conservative). It is the</span>
-<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>standard measure of ideology in the US-politics literature. For our purposes it is just a</span>
-<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>continuous nodal covariate; nothing about the method depends on what it measures.</span>
-<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>The data ship in <span class="in">`networkdata`</span> as <span class="in">`legnet`</span>, which provides three objects: <span class="in">`net`</span> (the</span>
-<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>adjacency matrix), <span class="in">`dwnom`</span> (ideology scores), and <span class="in">`edist`</span> (a matrix of geographic distances).</span>
-<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: senate-data</span></span>
-<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
-<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm)</span>
-<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(network)</span>
-<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(networkdata)</span>
-<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(legnet)</span>
-<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">nodes =</span> <span class="fu">nrow</span>(net), <span class="at">edges =</span> <span class="fu">sum</span>(net), <span class="at">dwnom_rows =</span> <span class="fu">nrow</span>(dwnom),</span>
-<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels_aligned =</span> <span class="fu">identical</span>(<span class="fu">rownames</span>(net), dwnom<span class="sc">$</span>labs))</span>
-<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon). The taught session runs entirely on friendship data: adolescents and monks, so that nobody pays a translation tax on the substance while learning the method. This document is the other half of that bargain: two worked **political-science** applications, for the students who came for exactly this and who will get more out of the method when it is attached to a question they care about.</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>**Two applications:**</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Senate cosponsorship**: a small, clean, dyad-independent model. Good for seeing the whole pipeline (build the network, attach covariates, fit, interpret) with no MCMC in the way.</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Rebel-group cooperation in civil wars** (Gade et al. 2019), a pedagogical ERGM reanalysis of data from a published AME application. It adds endogenous structure and a real specification choice about shared partners, but it is not a replication of the published model.</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>**Why it is optional in 2026:** the taught session had to pick datasets that work for a room that is half non-political-science, and IR examples do not clear that bar. Here they are, done properly, for the people who want them. If you are *not* a political scientist, the method is identical to what you already saw: you can read this purely as &quot;the same pipeline on messier data&quot; and skip the substance.</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>**What you need:** <span class="in">`ergm`</span>, <span class="in">`network`</span>, <span class="in">`networkdata`</span> (which carries both datasets: no <span class="in">`install_github`</span> is executed here).</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. Senate cosponsorship: the whole pipeline, no MCMC</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1.1 The question and the data</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>Take the nine most ideologically extreme senators of the 109th Congress. Draw a directed edge from $i$ to $j$ when $i$ cosponsored at least two of $j$&#39;s bills. The substantive question: do senators cosponsor each other because they are **ideologically similar**, or because they are **geographically close**, or both?</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>This maps onto three ERGM terms and nothing more, which is what makes it a good first example:</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`edges`</span>: the baseline propensity to cosponsor (the intercept).</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`absdiff(&quot;ideol&quot;)`</span>: ideological homophily: are cosponsorships more likely between senators with similar DW-NOMINATE scores?</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`edgecov(&quot;dist&quot;)`</span>: geographic distance: does physical distance between home states suppress cosponsorship?</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;What is DW-NOMINATE, for non-Americanists&quot;}</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>DW-NOMINATE is a scaling of roll-call voting that places each legislator on a liberal–conservative dimension, roughly −1 (most liberal) to +1 (most conservative). It is the standard measure of ideology in the US-politics literature. For our purposes it is just a continuous nodal covariate; nothing about the method depends on what it measures.</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>The data ship in <span class="in">`networkdata`</span> as <span class="in">`legnet`</span>, which provides three objects: <span class="in">`net`</span> (the adjacency matrix), <span class="in">`dwnom`</span> (ideology scores), and <span class="in">`edist`</span> (a matrix of geographic distances).</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: senate-data</span></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm)</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(network)</span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(networkdata)</span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(legnet)</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">nodes =</span> <span class="fu">nrow</span>(net), <span class="at">edges =</span> <span class="fu">sum</span>(net), <span class="at">dwnom_rows =</span> <span class="fu">nrow</span>(dwnom),</span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels_aligned =</span> <span class="fu">identical</span>(<span class="fu">rownames</span>(net), dwnom<span class="sc">$</span>labs))</span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>That last check: <span class="in">`labels_aligned`</span>: is not decorative. The single most common way to ruin a network analysis is to attach a covariate vector whose order does not match the network&#39;s nodes, which silently assigns the wrong ideology to every senator. Confirm alignment before you attach anything.</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;A trap the original version of this material fell into&quot;}</span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>An earlier version of this analysis built the network from an object called <span class="in">`el`</span> (an edge list) that **does not exist** in <span class="in">`legnet`</span>. With no <span class="in">`el`</span> in scope, R quietly resolved the bare name to <span class="in">`methods::el()`</span>: a function, and the whole downstream analysis cascaded from there.</span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>The fix, which is what we do below, is to build directly from the adjacency matrix <span class="in">`net`</span> that <span class="in">`legnet`</span> actually provides. The general lesson: if a data object seems to appear from nowhere, check it is not a function of the same name. <span class="in">`exists(&quot;el&quot;, where = globalenv())`</span> would have caught it.</span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1.2 Build the network and attach covariates</span></span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: senate-build</span></span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>senate <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="fu">as.matrix</span>(net), <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a><span class="co"># Ideology as a vertex attribute; labels already confirmed aligned above</span></span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>network<span class="sc">::</span><span class="fu">set.vertex.attribute</span>(senate, <span class="st">&quot;ideol&quot;</span>, dwnom<span class="sc">$</span>dwnom)</span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a><span class="co"># Geographic distance as a network (dyadic) attribute</span></span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a><span class="fu">set.network.attribute</span>(senate, <span class="st">&quot;dist&quot;</span>, <span class="fu">as.matrix</span>(edist))</span>
 <span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>That last check: <span class="in">`labels_aligned`</span>: is not decorative. The single most common way to ruin a</span>
-<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a>network analysis is to attach a covariate vector whose order does not match the network&#39;s nodes,</span>
-<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>which silently assigns the wrong ideology to every senator. Confirm alignment before you attach</span>
-<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a>anything.</span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>senate</span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1.3 Fit and interpret</span></span>
 <span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;A trap the original version of this material fell into&quot;}</span>
-<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a>An earlier version of this analysis built the network from an object called <span class="in">`el`</span> (an edge list)</span>
-<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>that **does not exist** in <span class="in">`legnet`</span>. With no <span class="in">`el`</span> in scope, R quietly resolved the bare name to</span>
-<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a><span class="in">`methods::el()`</span>: a function, and the whole downstream analysis cascaded from there.</span>
-<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a>The fix, which is what we do below, is to build directly from the adjacency matrix <span class="in">`net`</span> that</span>
-<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a><span class="in">`legnet`</span> actually provides. The general lesson: if a data object seems to appear from nowhere,</span>
-<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a>check it is not a function of the same name. <span class="in">`exists(&quot;el&quot;, where = globalenv())`</span> would have</span>
-<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a>caught it.</span>
-<span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: senate-fit</span></span>
+<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a>m_sen <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_senate&quot;</span>,</span>
+<span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(senate <span class="sc">~</span> edges <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;ideol&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;dist&quot;</span>),</span>
+<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m_sen), <span class="dv">4</span>)</span>
+<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a><span class="fu">is.dyad.independent</span>(m_sen)</span>
+<span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1.2 Build the network and attach covariates</span></span>
+<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a><span class="in">`is.dyad.independent()`</span> returns <span class="in">`TRUE`</span>, so this fit used no MCMC at all: it is exact logistic regression on the dyads, which is why it finished instantly and needs no convergence diagnostics. Good to know before you go looking for traceplots that do not exist.</span>
 <span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: senate-build</span></span>
-<span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a>senate <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="fu">as.matrix</span>(net), <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a><span class="co"># Ideology as a vertex attribute; labels already confirmed aligned above</span></span>
-<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a>network<span class="sc">::</span><span class="fu">set.vertex.attribute</span>(senate, <span class="st">&quot;ideol&quot;</span>, dwnom<span class="sc">$</span>dwnom)</span>
-<span id="cb18-112"><a href="#cb18-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a><span class="co"># Geographic distance as a network (dyadic) attribute</span></span>
-<span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a><span class="fu">set.network.attribute</span>(senate, <span class="st">&quot;dist&quot;</span>, <span class="fu">as.matrix</span>(edist))</span>
-<span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a>senate</span>
-<span id="cb18-117"><a href="#cb18-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1.3 Fit and interpret</span></span>
-<span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: senate-fit</span></span>
-<span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a>m_sen <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_senate&quot;</span>,</span>
-<span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(senate <span class="sc">~</span> edges <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;ideol&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;dist&quot;</span>),</span>
-<span id="cb18-127"><a href="#cb18-127" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb18-128"><a href="#cb18-128" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m_sen), <span class="dv">4</span>)</span>
-<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a><span class="fu">is.dyad.independent</span>(m_sen)</span>
-<span id="cb18-130"><a href="#cb18-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-131"><a href="#cb18-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-132"><a href="#cb18-132" aria-hidden="true" tabindex="-1"></a><span class="in">`is.dyad.independent()`</span> returns <span class="in">`TRUE`</span>, so this fit used no MCMC at all: it is exact logistic</span>
-<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a>regression on the dyads, which is why it finished instantly and needs no convergence diagnostics.</span>
-<span id="cb18-134"><a href="#cb18-134" aria-hidden="true" tabindex="-1"></a>Good to know before you go looking for traceplots that do not exist.</span>
-<span id="cb18-135"><a href="#cb18-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-136"><a href="#cb18-136" aria-hidden="true" tabindex="-1"></a>Now read the coefficients, remembering the rule from the taught session: each coefficient is a</span>
-<span id="cb18-137"><a href="#cb18-137" aria-hidden="true" tabindex="-1"></a>contribution to the **conditional log-odds** of a tie.</span>
+<span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a>Now read the coefficients, remembering the rule from the taught session: each coefficient is a contribution to the **conditional log-odds** of a tie.</span>
+<span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`absdiff(&quot;ideol&quot;)` is strongly negative.** `absdiff` grows as two senators become *more* different, so a negative coefficient means difference *suppresses* cosponsorship, which is ideological **homophily**. Similar senators cosponsor.</span>
+<span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`edgecov(&quot;dist&quot;)` is negative**, so greater geographic distance lowers the odds of cosponsorship, though the effect is small.</span>
+<span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a>Convert the homophily coefficient to something interpretable. Two senators one full DW-NOMINATE unit apart (about the width of the whole scale: a hard-left and a hard-right senator):</span>
+<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: senate-interp</span></span>
+<span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">coef</span>(m_sen)</span>
+<span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a><span class="co"># Odds ratio for a one-unit increase in ideological distance, holding geography fixed</span></span>
+<span id="cb18-117"><a href="#cb18-117" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(b[[<span class="st">&quot;absdiff.ideol&quot;</span>]])</span>
+<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a>An odds ratio around 0.04: moving from identical ideology to opposite ends of the scale cuts the odds of cosponsorship to a small fraction. In this chamber, ideology is doing most of the work, which for the most extreme senators of a polarised Congress is exactly what you would expect. That the model recovers it cleanly is the reassurance you want before trusting it on a harder question.</span>
+<span id="cb18-121"><a href="#cb18-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-122"><a href="#cb18-122" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. Rebel-group cooperation, reanalyzed with an ERGM</span></span>
+<span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a>Gade, Gabbay, Hafez &amp; Kelly (2019) ask why rebel groups in fragmented civil wars cooperate. Their answer, tested on Syrian rebel groups: **ideological similarity** is the primary driver, above shared sponsors or raw power. Their published regression is an additive and multiplicative effects model of a square-root-transformed count outcome, with raw-count and ordinal checks in the supplement. It is not an ERGM. We use their data for a binary ERGM teaching exercise, so the results below are a reanalysis, not a replication of Gade et al.</span>
+<span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.1 From edge list to network</span></span>
+<span id="cb18-127"><a href="#cb18-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-128"><a href="#cb18-128" aria-hidden="true" tabindex="-1"></a>The data arrive as <span class="in">`gadeData`</span>, one row per ordered pair of groups, with dyadic and nodal variables mixed together in the columns. Turning that into a network plus its covariates is most of the work, and it is worth doing carefully because it is exactly the shape most real relational data comes in.</span>
+<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-132"><a href="#cb18-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-data</span></span>
+<span id="cb18-134"><a href="#cb18-134" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gadeData)</span>
+<span id="cb18-135"><a href="#cb18-135" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(gadeData)</span>
+<span id="cb18-136"><a href="#cb18-136" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gadeData)</span>
+<span id="cb18-137"><a href="#cb18-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-138"><a href="#cb18-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-139"><a href="#cb18-139" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`absdiff(&quot;ideol&quot;)` is strongly negative.** <span class="in">`absdiff`</span> grows as two senators become *more*</span>
-<span id="cb18-140"><a href="#cb18-140" aria-hidden="true" tabindex="-1"></a>  different, so a negative coefficient means difference *suppresses* cosponsorship, which is</span>
-<span id="cb18-141"><a href="#cb18-141" aria-hidden="true" tabindex="-1"></a>  ideological **homophily**. Similar senators cosponsor.</span>
-<span id="cb18-142"><a href="#cb18-142" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`edgecov(&quot;dist&quot;)` is negative**, so greater geographic distance lowers the odds of</span>
-<span id="cb18-143"><a href="#cb18-143" aria-hidden="true" tabindex="-1"></a>  cosponsorship, though the effect is small.</span>
-<span id="cb18-144"><a href="#cb18-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-145"><a href="#cb18-145" aria-hidden="true" tabindex="-1"></a>Convert the homophily coefficient to something interpretable. Two senators one full DW-NOMINATE</span>
-<span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a>unit apart (about the width of the whole scale: a hard-left and a hard-right senator):</span>
-<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-150"><a href="#cb18-150" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: senate-interp</span></span>
-<span id="cb18-152"><a href="#cb18-152" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">coef</span>(m_sen)</span>
-<span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a><span class="co"># Odds ratio for a one-unit increase in ideological distance, holding geography fixed</span></span>
-<span id="cb18-154"><a href="#cb18-154" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(b[[<span class="st">&quot;absdiff.ideol&quot;</span>]])</span>
-<span id="cb18-155"><a href="#cb18-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-156"><a href="#cb18-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a>An odds ratio around 0.04: moving from identical ideology to opposite ends of the scale cuts</span>
-<span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a>the odds of cosponsorship to a small fraction. In this chamber, ideology is doing most of the</span>
-<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a>work, which for the most extreme senators of a polarised Congress is exactly what you would</span>
-<span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a>expect. That the model recovers it cleanly is the reassurance you want before trusting it on a</span>
-<span id="cb18-161"><a href="#cb18-161" aria-hidden="true" tabindex="-1"></a>harder question.</span>
+<span id="cb18-139"><a href="#cb18-139" aria-hidden="true" tabindex="-1"></a>The dependent variable, <span class="in">`coopActions`</span>, is a count of cooperative acts. We binarize it as any cooperation versus none so that the example stays within the binary ERGM material taught on Day</span>
+<span id="cb18-140"><a href="#cb18-140" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>This changes the estimand and discards intensity, so it cannot reproduce the article&#39;s count model.</span>
+<span id="cb18-141"><a href="#cb18-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-144"><a href="#cb18-144" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-145"><a href="#cb18-145" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-dv</span></span>
+<span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a>gadeData<span class="sc">$</span>coopBin <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(gadeData<span class="sc">$</span>coopActions <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(gadeData<span class="sc">$</span>coopBin)</span>
+<span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-150"><a href="#cb18-150" aria-hidden="true" tabindex="-1"></a>The reshaping. We have two kinds of covariate and they go to different places:</span>
+<span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-152"><a href="#cb18-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**dyadic** variables (`ideol_diff.dyad`, `powerdiff.dyad`, `loc.dyad`, `spons.dyad`) become **matrices**, one value per pair;</span>
+<span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**nodal** variables (`averageId.node`, `size.node`, `spons_actor.node`) become **vertex attributes**, one value per group.</span>
+<span id="cb18-154"><a href="#cb18-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-reshape</span></span>
+<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a>actors   <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(<span class="fu">c</span>(gadeData<span class="sc">$</span>Var1, gadeData<span class="sc">$</span>Var2)))</span>
+<span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a>n        <span class="ot">&lt;-</span> <span class="fu">length</span>(actors)</span>
+<span id="cb18-161"><a href="#cb18-161" aria-hidden="true" tabindex="-1"></a>dyadVars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;coopBin&quot;</span>, <span class="st">&quot;ideol_diff.dyad&quot;</span>, <span class="st">&quot;powerdiff.dyad&quot;</span>, <span class="st">&quot;loc.dyad&quot;</span>, <span class="st">&quot;spons.dyad&quot;</span>)</span>
 <span id="cb18-162"><a href="#cb18-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. Rebel-group cooperation, reanalyzed with an ERGM</span></span>
-<span id="cb18-164"><a href="#cb18-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-165"><a href="#cb18-165" aria-hidden="true" tabindex="-1"></a>Gade, Gabbay, Hafez &amp; Kelly (2019) ask why</span>
-<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a>rebel groups in fragmented civil wars cooperate. Their answer, tested on Syrian rebel groups:</span>
-<span id="cb18-167"><a href="#cb18-167" aria-hidden="true" tabindex="-1"></a>**ideological similarity** is the primary driver, above shared sponsors or raw power. Their</span>
-<span id="cb18-168"><a href="#cb18-168" aria-hidden="true" tabindex="-1"></a>published regression is an additive and multiplicative effects model of a square-root-transformed</span>
-<span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a>count outcome, with raw-count and ordinal checks in the supplement. It is not an ERGM. We use</span>
-<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a>their data for a binary ERGM teaching exercise, so the results below are a reanalysis, not a</span>
-<span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a>replication of Gade et al.</span>
-<span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-173"><a href="#cb18-173" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.1 From edge list to network</span></span>
-<span id="cb18-174"><a href="#cb18-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-175"><a href="#cb18-175" aria-hidden="true" tabindex="-1"></a>The data arrive as <span class="in">`gadeData`</span>, one row per ordered pair of groups, with dyadic and nodal</span>
-<span id="cb18-176"><a href="#cb18-176" aria-hidden="true" tabindex="-1"></a>variables mixed together in the columns. Turning that into a network plus its covariates is most</span>
-<span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a>of the work, and it is worth doing carefully because it is exactly the shape most real relational</span>
-<span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a>data comes in.</span>
+<span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill an actor x actor x variable array by NAME, never by position</span></span>
+<span id="cb18-164"><a href="#cb18-164" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">0</span>, <span class="at">dim =</span> <span class="fu">c</span>(n, n, <span class="fu">length</span>(dyadVars)),</span>
+<span id="cb18-165"><a href="#cb18-165" aria-hidden="true" tabindex="-1"></a>             <span class="at">dimnames =</span> <span class="fu">list</span>(actors, actors, dyadVars))</span>
+<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> dyadVars) {</span>
+<span id="cb18-167"><a href="#cb18-167" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(gadeData))) {</span>
+<span id="cb18-168"><a href="#cb18-168" aria-hidden="true" tabindex="-1"></a>    arr[gadeData<span class="sc">$</span>Var1[i], gadeData<span class="sc">$</span>Var2[i], v] <span class="ot">&lt;-</span> gadeData[i, v]</span>
+<span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a>nodeVars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;averageId.node&quot;</span>, <span class="st">&quot;size.node&quot;</span>, <span class="st">&quot;spons_actor.node&quot;</span>)</span>
+<span id="cb18-173"><a href="#cb18-173" aria-hidden="true" tabindex="-1"></a>nodeData <span class="ot">&lt;-</span> <span class="fu">unique</span>(gadeData[, <span class="fu">c</span>(<span class="st">&quot;Var1&quot;</span>, nodeVars)])</span>
+<span id="cb18-174"><a href="#cb18-174" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(nodeData) <span class="ot">&lt;-</span> nodeData<span class="sc">$</span>Var1</span>
+<span id="cb18-175"><a href="#cb18-175" aria-hidden="true" tabindex="-1"></a>nodeData <span class="ot">&lt;-</span> nodeData[actors, nodeVars]      <span class="co"># reorder to match `actors` exactly</span></span>
+<span id="cb18-176"><a href="#cb18-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n_actors =</span> n, <span class="at">cooperating_pairs =</span> <span class="fu">sum</span>(arr[, , <span class="st">&quot;coopBin&quot;</span>]) <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-179"><a href="#cb18-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-data</span></span>
-<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gadeData)</span>
-<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(gadeData)</span>
-<span id="cb18-186"><a href="#cb18-186" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gadeData)</span>
-<span id="cb18-187"><a href="#cb18-187" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a>The dependent variable, <span class="in">`coopActions`</span>, is a count of cooperative acts. We binarize it as any</span>
-<span id="cb18-190"><a href="#cb18-190" aria-hidden="true" tabindex="-1"></a>cooperation versus none so that the example stays within the binary ERGM material taught on Day</span>
-<span id="cb18-191"><a href="#cb18-191" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>This changes the estimand and discards intensity, so it cannot reproduce the article&#39;s count</span>
-<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a>model.</span>
-<span id="cb18-193"><a href="#cb18-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-197"><a href="#cb18-197" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-dv</span></span>
-<span id="cb18-198"><a href="#cb18-198" aria-hidden="true" tabindex="-1"></a>gadeData<span class="sc">$</span>coopBin <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(gadeData<span class="sc">$</span>coopActions <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb18-199"><a href="#cb18-199" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(gadeData<span class="sc">$</span>coopBin)</span>
-<span id="cb18-200"><a href="#cb18-200" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? Why fill the array by name and not by position&quot;}</span>
+<span id="cb18-181"><a href="#cb18-181" aria-hidden="true" tabindex="-1"></a>The loop indexes with <span class="in">`arr[gadeData$Var1[i], gadeData$Var2[i], v]`</span>: using the group *names* as indices into a named array. It does **not** loop over positions <span class="in">`1:n`</span>.</span>
+<span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a>This matters enormously. If you build the array positionally, you are trusting that the order of rows in <span class="in">`gadeData`</span> matches the order of <span class="in">`actors`</span>, and it does not: <span class="in">`actors`</span> is sorted, the data frame is not. Positional filling would misalign every pair. Name-based indexing cannot misalign, because R looks each name up. Whenever you reshape relational data, index by name and let R do the matching. The companion <span class="co">[</span><span class="ot">Duque SAOM document</span><span class="co">](saom_duque.html)</span> has a longer horror story about exactly this.</span>
+<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-net</span></span>
+<span id="cb18-190"><a href="#cb18-190" aria-hidden="true" tabindex="-1"></a>rebels <span class="ot">&lt;-</span> <span class="fu">as.network</span>(arr[, , <span class="st">&quot;coopBin&quot;</span>], <span class="at">directed =</span> <span class="cn">FALSE</span>, <span class="at">loops =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb18-191"><a href="#cb18-191" aria-hidden="true" tabindex="-1"></a>                     <span class="at">matrix.type =</span> <span class="st">&quot;adjacency&quot;</span>)</span>
+<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> nodeVars) network<span class="sc">::</span><span class="fu">set.vertex.attribute</span>(rebels, v, nodeData[, v])</span>
+<span id="cb18-193"><a href="#cb18-193" aria-hidden="true" tabindex="-1"></a><span class="fu">set.network.attribute</span>(rebels, <span class="st">&quot;loc.dyad&quot;</span>,   arr[, , <span class="st">&quot;loc.dyad&quot;</span>])</span>
+<span id="cb18-194"><a href="#cb18-194" aria-hidden="true" tabindex="-1"></a><span class="fu">set.network.attribute</span>(rebels, <span class="st">&quot;spons.dyad&quot;</span>, arr[, , <span class="st">&quot;spons.dyad&quot;</span>])</span>
+<span id="cb18-195"><a href="#cb18-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">groups =</span> <span class="fu">network.size</span>(rebels),</span>
+<span id="cb18-197"><a href="#cb18-197" aria-hidden="true" tabindex="-1"></a>           <span class="at">coop_ties =</span> <span class="fu">network.edgecount</span>(rebels))</span>
+<span id="cb18-198"><a href="#cb18-198" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-199"><a href="#cb18-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-200"><a href="#cb18-200" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.2 A dyad-independent model first</span></span>
 <span id="cb18-201"><a href="#cb18-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-202"><a href="#cb18-202" aria-hidden="true" tabindex="-1"></a>The reshaping. We have two kinds of covariate and they go to different places:</span>
+<span id="cb18-202"><a href="#cb18-202" aria-hidden="true" tabindex="-1"></a>Gade et al.&#39;s core hypotheses are all about covariates: ideological difference, power difference, shared location, shared sponsor. Start with exactly those and no structural terms.</span>
 <span id="cb18-203"><a href="#cb18-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-204"><a href="#cb18-204" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**dyadic** variables (<span class="in">`ideol_diff.dyad`</span>, <span class="in">`powerdiff.dyad`</span>, <span class="in">`loc.dyad`</span>, <span class="in">`spons.dyad`</span>) become</span>
-<span id="cb18-205"><a href="#cb18-205" aria-hidden="true" tabindex="-1"></a>  **matrices**, one value per pair;</span>
-<span id="cb18-206"><a href="#cb18-206" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**nodal** variables (<span class="in">`averageId.node`</span>, <span class="in">`size.node`</span>, <span class="in">`spons_actor.node`</span>) become **vertex</span>
-<span id="cb18-207"><a href="#cb18-207" aria-hidden="true" tabindex="-1"></a>  attributes**, one value per group.</span>
-<span id="cb18-208"><a href="#cb18-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-211"><a href="#cb18-211" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-212"><a href="#cb18-212" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-reshape</span></span>
-<span id="cb18-213"><a href="#cb18-213" aria-hidden="true" tabindex="-1"></a>actors   <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(<span class="fu">c</span>(gadeData<span class="sc">$</span>Var1, gadeData<span class="sc">$</span>Var2)))</span>
-<span id="cb18-214"><a href="#cb18-214" aria-hidden="true" tabindex="-1"></a>n        <span class="ot">&lt;-</span> <span class="fu">length</span>(actors)</span>
-<span id="cb18-215"><a href="#cb18-215" aria-hidden="true" tabindex="-1"></a>dyadVars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;coopBin&quot;</span>, <span class="st">&quot;ideol_diff.dyad&quot;</span>, <span class="st">&quot;powerdiff.dyad&quot;</span>, <span class="st">&quot;loc.dyad&quot;</span>, <span class="st">&quot;spons.dyad&quot;</span>)</span>
-<span id="cb18-216"><a href="#cb18-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-217"><a href="#cb18-217" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill an actor x actor x variable array by NAME, never by position</span></span>
-<span id="cb18-218"><a href="#cb18-218" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">0</span>, <span class="at">dim =</span> <span class="fu">c</span>(n, n, <span class="fu">length</span>(dyadVars)),</span>
-<span id="cb18-219"><a href="#cb18-219" aria-hidden="true" tabindex="-1"></a>             <span class="at">dimnames =</span> <span class="fu">list</span>(actors, actors, dyadVars))</span>
-<span id="cb18-220"><a href="#cb18-220" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> dyadVars) {</span>
-<span id="cb18-221"><a href="#cb18-221" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(gadeData))) {</span>
-<span id="cb18-222"><a href="#cb18-222" aria-hidden="true" tabindex="-1"></a>    arr[gadeData<span class="sc">$</span>Var1[i], gadeData<span class="sc">$</span>Var2[i], v] <span class="ot">&lt;-</span> gadeData[i, v]</span>
-<span id="cb18-223"><a href="#cb18-223" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb18-224"><a href="#cb18-224" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-206"><a href="#cb18-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-207"><a href="#cb18-207" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-m0</span></span>
+<span id="cb18-208"><a href="#cb18-208" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade0&quot;</span>,</span>
+<span id="cb18-209"><a href="#cb18-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(rebels <span class="sc">~</span> edges <span class="sc">+</span></span>
+<span id="cb18-210"><a href="#cb18-210" aria-hidden="true" tabindex="-1"></a>         <span class="fu">nodecov</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">nodecov</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-211"><a href="#cb18-211" aria-hidden="true" tabindex="-1"></a>         <span class="fu">absdiff</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-212"><a href="#cb18-212" aria-hidden="true" tabindex="-1"></a>         <span class="fu">edgecov</span>(<span class="st">&quot;loc.dyad&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;spons.dyad&quot;</span>),</span>
+<span id="cb18-213"><a href="#cb18-213" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb18-214"><a href="#cb18-214" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m0), <span class="dv">3</span>)</span>
+<span id="cb18-215"><a href="#cb18-215" aria-hidden="true" tabindex="-1"></a><span class="fu">is.dyad.independent</span>(m0)</span>
+<span id="cb18-216"><a href="#cb18-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-217"><a href="#cb18-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-218"><a href="#cb18-218" aria-hidden="true" tabindex="-1"></a>Dyad-independent, so again no MCMC. The headline is <span class="in">`absdiff(&quot;averageId.node&quot;)`</span>: **negative**, meaning groups that are *further apart* ideologically cooperate *less*. That is Gade et al.&#39;s central qualitative finding, ideological proximity goes with more cooperation, echoed in one term under our different binary specification. It is not a reproduction of their coefficient. <span class="in">`edgecov(&quot;loc.dyad&quot;)`</span> is strongly positive: groups operating in the same location cooperate much more, which makes sense and which you would want to control for before crediting ideology.</span>
+<span id="cb18-219"><a href="#cb18-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-220"><a href="#cb18-220" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.3 Adding endogenous structure, and a real choice</span></span>
+<span id="cb18-221"><a href="#cb18-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-222"><a href="#cb18-222" aria-hidden="true" tabindex="-1"></a>Here is where it stops being a logit. Cooperation among rebel groups plausibly has a **triadic** logic: if A cooperates with B and B with C, A and C have both a broker and a reason. That motivates a shared-partner term, which means MCMC and a decision about how to specify it. Whether that term represents closure rather than omitted actor activity is a separate question.</span>
+<span id="cb18-223"><a href="#cb18-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-224"><a href="#cb18-224" aria-hidden="true" tabindex="-1"></a>The naive choice is <span class="in">`triangle`</span>, and the taught session showed you why that ends in degeneracy. The right choice is <span class="in">`gwesp`</span>, geometrically weighted so that the tenth shared partner counts for less than the first.</span>
 <span id="cb18-225"><a href="#cb18-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-226"><a href="#cb18-226" aria-hidden="true" tabindex="-1"></a>nodeVars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;averageId.node&quot;</span>, <span class="st">&quot;size.node&quot;</span>, <span class="st">&quot;spons_actor.node&quot;</span>)</span>
-<span id="cb18-227"><a href="#cb18-227" aria-hidden="true" tabindex="-1"></a>nodeData <span class="ot">&lt;-</span> <span class="fu">unique</span>(gadeData[, <span class="fu">c</span>(<span class="st">&quot;Var1&quot;</span>, nodeVars)])</span>
-<span id="cb18-228"><a href="#cb18-228" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(nodeData) <span class="ot">&lt;-</span> nodeData<span class="sc">$</span>Var1</span>
-<span id="cb18-229"><a href="#cb18-229" aria-hidden="true" tabindex="-1"></a>nodeData <span class="ot">&lt;-</span> nodeData[actors, nodeVars]      <span class="co"># reorder to match `actors` exactly</span></span>
-<span id="cb18-230"><a href="#cb18-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-231"><a href="#cb18-231" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n_actors =</span> n, <span class="at">cooperating_pairs =</span> <span class="fu">sum</span>(arr[, , <span class="st">&quot;coopBin&quot;</span>]) <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb18-232"><a href="#cb18-232" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-233"><a href="#cb18-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-234"><a href="#cb18-234" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? Why fill the array by name and not by position&quot;}</span>
-<span id="cb18-235"><a href="#cb18-235" aria-hidden="true" tabindex="-1"></a>The loop indexes with <span class="in">`arr[gadeData$Var1[i], gadeData$Var2[i], v]`</span>: using the group *names* as</span>
-<span id="cb18-236"><a href="#cb18-236" aria-hidden="true" tabindex="-1"></a>indices into a named array. It does **not** loop over positions <span class="in">`1:n`</span>.</span>
-<span id="cb18-237"><a href="#cb18-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-238"><a href="#cb18-238" aria-hidden="true" tabindex="-1"></a>This matters enormously. If you build the array positionally, you are trusting that the order of</span>
-<span id="cb18-239"><a href="#cb18-239" aria-hidden="true" tabindex="-1"></a>rows in <span class="in">`gadeData`</span> matches the order of <span class="in">`actors`</span>, and it does not: <span class="in">`actors`</span> is sorted, the data</span>
-<span id="cb18-240"><a href="#cb18-240" aria-hidden="true" tabindex="-1"></a>frame is not. Positional filling would misalign every pair. Name-based indexing cannot misalign,</span>
-<span id="cb18-241"><a href="#cb18-241" aria-hidden="true" tabindex="-1"></a>because R looks each name up. Whenever you reshape relational data, index by name and let R do</span>
-<span id="cb18-242"><a href="#cb18-242" aria-hidden="true" tabindex="-1"></a>the matching. The companion <span class="co">[</span><span class="ot">Duque SAOM document</span><span class="co">](saom_duque.html)</span> has a longer horror story</span>
-<span id="cb18-243"><a href="#cb18-243" aria-hidden="true" tabindex="-1"></a>about exactly this.</span>
-<span id="cb18-244"><a href="#cb18-244" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-245"><a href="#cb18-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-248"><a href="#cb18-248" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-249"><a href="#cb18-249" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-net</span></span>
-<span id="cb18-250"><a href="#cb18-250" aria-hidden="true" tabindex="-1"></a>rebels <span class="ot">&lt;-</span> <span class="fu">as.network</span>(arr[, , <span class="st">&quot;coopBin&quot;</span>], <span class="at">directed =</span> <span class="cn">FALSE</span>, <span class="at">loops =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb18-251"><a href="#cb18-251" aria-hidden="true" tabindex="-1"></a>                     <span class="at">matrix.type =</span> <span class="st">&quot;adjacency&quot;</span>)</span>
-<span id="cb18-252"><a href="#cb18-252" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> nodeVars) network<span class="sc">::</span><span class="fu">set.vertex.attribute</span>(rebels, v, nodeData[, v])</span>
-<span id="cb18-253"><a href="#cb18-253" aria-hidden="true" tabindex="-1"></a><span class="fu">set.network.attribute</span>(rebels, <span class="st">&quot;loc.dyad&quot;</span>,   arr[, , <span class="st">&quot;loc.dyad&quot;</span>])</span>
-<span id="cb18-254"><a href="#cb18-254" aria-hidden="true" tabindex="-1"></a><span class="fu">set.network.attribute</span>(rebels, <span class="st">&quot;spons.dyad&quot;</span>, arr[, , <span class="st">&quot;spons.dyad&quot;</span>])</span>
-<span id="cb18-255"><a href="#cb18-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-256"><a href="#cb18-256" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">groups =</span> <span class="fu">network.size</span>(rebels),</span>
-<span id="cb18-257"><a href="#cb18-257" aria-hidden="true" tabindex="-1"></a>           <span class="at">coop_ties =</span> <span class="fu">network.edgecount</span>(rebels))</span>
-<span id="cb18-258"><a href="#cb18-258" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-259"><a href="#cb18-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-260"><a href="#cb18-260" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.2 A dyad-independent model first</span></span>
-<span id="cb18-261"><a href="#cb18-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-262"><a href="#cb18-262" aria-hidden="true" tabindex="-1"></a>Gade et al.&#39;s core hypotheses are all about covariates: ideological difference, power difference,</span>
-<span id="cb18-263"><a href="#cb18-263" aria-hidden="true" tabindex="-1"></a>shared location, shared sponsor. Start with exactly those and no structural terms.</span>
-<span id="cb18-264"><a href="#cb18-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-267"><a href="#cb18-267" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-268"><a href="#cb18-268" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-m0</span></span>
-<span id="cb18-269"><a href="#cb18-269" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade0&quot;</span>,</span>
-<span id="cb18-270"><a href="#cb18-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(rebels <span class="sc">~</span> edges <span class="sc">+</span></span>
-<span id="cb18-271"><a href="#cb18-271" aria-hidden="true" tabindex="-1"></a>         <span class="fu">nodecov</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">nodecov</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-272"><a href="#cb18-272" aria-hidden="true" tabindex="-1"></a>         <span class="fu">absdiff</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-273"><a href="#cb18-273" aria-hidden="true" tabindex="-1"></a>         <span class="fu">edgecov</span>(<span class="st">&quot;loc.dyad&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;spons.dyad&quot;</span>),</span>
-<span id="cb18-274"><a href="#cb18-274" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb18-275"><a href="#cb18-275" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m0), <span class="dv">3</span>)</span>
-<span id="cb18-276"><a href="#cb18-276" aria-hidden="true" tabindex="-1"></a><span class="fu">is.dyad.independent</span>(m0)</span>
-<span id="cb18-277"><a href="#cb18-277" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-278"><a href="#cb18-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-279"><a href="#cb18-279" aria-hidden="true" tabindex="-1"></a>Dyad-independent, so again no MCMC. The headline is <span class="in">`absdiff(&quot;averageId.node&quot;)`</span>: **negative**,</span>
-<span id="cb18-280"><a href="#cb18-280" aria-hidden="true" tabindex="-1"></a>meaning groups that are *further apart* ideologically cooperate *less*. That is Gade et al.&#39;s</span>
-<span id="cb18-281"><a href="#cb18-281" aria-hidden="true" tabindex="-1"></a>central qualitative finding, ideological proximity goes with more cooperation, echoed in one</span>
-<span id="cb18-282"><a href="#cb18-282" aria-hidden="true" tabindex="-1"></a>term under our different binary specification. It is not a reproduction of their coefficient.</span>
-<span id="cb18-283"><a href="#cb18-283" aria-hidden="true" tabindex="-1"></a><span class="in">`edgecov(&quot;loc.dyad&quot;)`</span> is strongly positive: groups operating in the same location cooperate much</span>
-<span id="cb18-284"><a href="#cb18-284" aria-hidden="true" tabindex="-1"></a>more, which makes sense and which you would want to control for before crediting ideology.</span>
-<span id="cb18-285"><a href="#cb18-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-286"><a href="#cb18-286" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.3 Adding endogenous structure, and a real choice</span></span>
+<span id="cb18-228"><a href="#cb18-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-229"><a href="#cb18-229" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-m1</span></span>
+<span id="cb18-230"><a href="#cb18-230" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade1&quot;</span>,</span>
+<span id="cb18-231"><a href="#cb18-231" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(rebels <span class="sc">~</span> edges <span class="sc">+</span></span>
+<span id="cb18-232"><a href="#cb18-232" aria-hidden="true" tabindex="-1"></a>         <span class="fu">nodecov</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">nodecov</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-233"><a href="#cb18-233" aria-hidden="true" tabindex="-1"></a>         <span class="fu">absdiff</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-234"><a href="#cb18-234" aria-hidden="true" tabindex="-1"></a>         <span class="fu">edgecov</span>(<span class="st">&quot;loc.dyad&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;spons.dyad&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-235"><a href="#cb18-235" aria-hidden="true" tabindex="-1"></a>         <span class="fu">gwesp</span>(<span class="fl">0.5</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-236"><a href="#cb18-236" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb18-237"><a href="#cb18-237" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m1), <span class="dv">3</span>)</span>
+<span id="cb18-238"><a href="#cb18-238" aria-hidden="true" tabindex="-1"></a><span class="fu">is.dyad.independent</span>(m1)</span>
+<span id="cb18-239"><a href="#cb18-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-240"><a href="#cb18-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-241"><a href="#cb18-241" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;<span class="in">`gwesp(0.5, fixed = TRUE)`</span>: the <span class="in">`fixed`</span> is load-bearing&quot;}</span>
+<span id="cb18-242"><a href="#cb18-242" aria-hidden="true" tabindex="-1"></a>Write <span class="in">`gwesp(decay = 0.5)`</span> without <span class="in">`fixed = TRUE`</span> and, as of <span class="in">`ergm`</span> 4, the decay value is **ignored** and you silently fit a many-parameter *curved* model instead of the one-parameter model you intended. The original version of this material had <span class="in">`gwesp(decay = 0.25)`</span>: unfixed: in five separate places, every one of which was fitting a curved model nobody meant to fit.</span>
+<span id="cb18-243"><a href="#cb18-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-244"><a href="#cb18-244" aria-hidden="true" tabindex="-1"></a>The rule from the taught session, restated because it is the single most common error in inherited ERGM code: **`fixed = TRUE` unless you are deliberately estimating a curved model.**</span>
+<span id="cb18-245"><a href="#cb18-245" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-246"><a href="#cb18-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-247"><a href="#cb18-247" aria-hidden="true" tabindex="-1"></a><span class="in">`gwesp`</span> comes out **positive**: conditional on this specification, ties with more shared partners have higher conditional log-odds. That is not yet evidence of a closure mechanism because hubs can mechanically create shared partners, and this model has no actor-specific activity term. And notice what happens to the covariate coefficients when you add it: they shift, because some of what looked like covariate effect in <span class="in">`m0`</span> was unmodelled structure. That shift is the reason you cannot stop at the dyad-independent model if you think structure is present.</span>
+<span id="cb18-248"><a href="#cb18-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-249"><a href="#cb18-249" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;But do not now compare m0 and m1 coefficients as effect sizes&quot;}</span>
+<span id="cb18-250"><a href="#cb18-250" aria-hidden="true" tabindex="-1"></a>It is tempting to say &quot;ideology&#39;s coefficient dropped from −0.24 to −0.23 when we added closure, so most of the ideology effect is real.&quot; Resist stating it that precisely. Per Duxbury (2023), adding a term to an ERGM rescales all the others even when they are uncorrelated, so part of any across-model shift is rescaling rather than substance. The *direction* is informative; the exact magnitude of the change is not. If you need the defensible version, compare average marginal effects with <span class="in">`ergMargins`</span>, not coefficients.</span>
+<span id="cb18-251"><a href="#cb18-251" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-252"><a href="#cb18-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-253"><a href="#cb18-253" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.4 Check the fit</span></span>
+<span id="cb18-254"><a href="#cb18-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-255"><a href="#cb18-255" aria-hidden="true" tabindex="-1"></a>A model with an endogenous term has to be checked: that is the whole discipline of the taught session&#39;s block C. Look at whether the model reproduces network features it was **not** fitted on.</span>
+<span id="cb18-256"><a href="#cb18-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-259"><a href="#cb18-259" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-260"><a href="#cb18-260" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-gof</span></span>
+<span id="cb18-261"><a href="#cb18-261" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb18-262"><a href="#cb18-262" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5.5</span></span>
+<span id="cb18-263"><a href="#cb18-263" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb18-264"><a href="#cb18-264" aria-hidden="true" tabindex="-1"></a>gof_m1 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade1_gof&quot;</span>,</span>
+<span id="cb18-265"><a href="#cb18-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gof</span>(m1, <span class="at">GOF =</span> <span class="sc">~</span> degree <span class="sc">+</span> espartners <span class="sc">+</span> distance <span class="sc">-</span> model))</span>
+<span id="cb18-266"><a href="#cb18-266" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb18-267"><a href="#cb18-267" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gof_m1)</span>
+<span id="cb18-268"><a href="#cb18-268" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-269"><a href="#cb18-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-270"><a href="#cb18-270" aria-hidden="true" tabindex="-1"></a>The observed values (the thick line) should sit inside the simulated boxplots. Where they do, the model reproduces that feature; where they stray outside, it does not. For a network this small, expect some ragged tails. Here the default panels broadly bracket the observed line, but that is compatibility with this chosen suite, not proof of fit or proof that <span class="in">`gwesp`</span> identifies closure. Day 7&#39;s common-yardstick analysis adds actor heterogeneity and revisits this exact interpretation.</span>
+<span id="cb18-271"><a href="#cb18-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-274"><a href="#cb18-274" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-275"><a href="#cb18-275" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-gof-tab</span></span>
+<span id="cb18-276"><a href="#cb18-276" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: hide</span></span>
+<span id="cb18-277"><a href="#cb18-277" aria-hidden="true" tabindex="-1"></a><span class="co"># The tabular, in-model version is faster and more legible than the plots</span></span>
+<span id="cb18-278"><a href="#cb18-278" aria-hidden="true" tabindex="-1"></a>gof_model <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade1_gofmodel&quot;</span>, <span class="fu">gof</span>(m1, <span class="at">GOF =</span> <span class="sc">~</span> model))</span>
+<span id="cb18-279"><a href="#cb18-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-280"><a href="#cb18-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-283"><a href="#cb18-283" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-284"><a href="#cb18-284" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-gof-tab-show</span></span>
+<span id="cb18-285"><a href="#cb18-285" aria-hidden="true" tabindex="-1"></a>gof_model</span>
+<span id="cb18-286"><a href="#cb18-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-287"><a href="#cb18-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-288"><a href="#cb18-288" aria-hidden="true" tabindex="-1"></a>Here is where it stops being a logit. Cooperation among rebel groups plausibly has a</span>
-<span id="cb18-289"><a href="#cb18-289" aria-hidden="true" tabindex="-1"></a>**triadic** logic: if A cooperates with B and B with C, A and C have both a broker and a reason.</span>
-<span id="cb18-290"><a href="#cb18-290" aria-hidden="true" tabindex="-1"></a>That motivates a shared-partner term, which means MCMC and a decision about how to specify it.</span>
-<span id="cb18-291"><a href="#cb18-291" aria-hidden="true" tabindex="-1"></a>Whether that term represents closure rather than omitted actor activity is a separate question.</span>
-<span id="cb18-292"><a href="#cb18-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-293"><a href="#cb18-293" aria-hidden="true" tabindex="-1"></a>The naive choice is <span class="in">`triangle`</span>, and the taught session showed you why that ends in degeneracy.</span>
-<span id="cb18-294"><a href="#cb18-294" aria-hidden="true" tabindex="-1"></a>The right choice is <span class="in">`gwesp`</span>, geometrically weighted so that the tenth shared partner counts for</span>
-<span id="cb18-295"><a href="#cb18-295" aria-hidden="true" tabindex="-1"></a>less than the first.</span>
-<span id="cb18-296"><a href="#cb18-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-299"><a href="#cb18-299" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-300"><a href="#cb18-300" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-m1</span></span>
-<span id="cb18-301"><a href="#cb18-301" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade1&quot;</span>,</span>
-<span id="cb18-302"><a href="#cb18-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(rebels <span class="sc">~</span> edges <span class="sc">+</span></span>
-<span id="cb18-303"><a href="#cb18-303" aria-hidden="true" tabindex="-1"></a>         <span class="fu">nodecov</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">nodecov</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-304"><a href="#cb18-304" aria-hidden="true" tabindex="-1"></a>         <span class="fu">absdiff</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-305"><a href="#cb18-305" aria-hidden="true" tabindex="-1"></a>         <span class="fu">edgecov</span>(<span class="st">&quot;loc.dyad&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;spons.dyad&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-306"><a href="#cb18-306" aria-hidden="true" tabindex="-1"></a>         <span class="fu">gwesp</span>(<span class="fl">0.5</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-307"><a href="#cb18-307" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb18-308"><a href="#cb18-308" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m1), <span class="dv">3</span>)</span>
-<span id="cb18-309"><a href="#cb18-309" aria-hidden="true" tabindex="-1"></a><span class="fu">is.dyad.independent</span>(m1)</span>
-<span id="cb18-310"><a href="#cb18-310" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-288"><a href="#cb18-288" aria-hidden="true" tabindex="-1"></a>The <span class="in">`GOF = ~model`</span> table checks the in-model statistics directly: each observed statistic against the distribution the fitted model simulates. P-values near the middle of the range mean the model reproduces its own targets, which is the minimum you should demand before interpreting anything.</span>
+<span id="cb18-289"><a href="#cb18-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-290"><a href="#cb18-290" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. Exercises</span></span>
+<span id="cb18-291"><a href="#cb18-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-292"><a href="#cb18-292" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb18-293"><a href="#cb18-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-294"><a href="#cb18-294" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
+<span id="cb18-295"><a href="#cb18-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-296"><a href="#cb18-296" aria-hidden="true" tabindex="-1"></a>Add <span class="in">`nodematch`</span> on shared sponsorship to the Senate model: except the Senate data has no sponsorship variable, so instead add the **reciprocity** term <span class="in">`mutual`</span> to the Senate model and refit.</span>
+<span id="cb18-297"><a href="#cb18-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-300"><a href="#cb18-300" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-301"><a href="#cb18-301" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb18-302"><a href="#cb18-302" aria-hidden="true" tabindex="-1"></a>m_sen2 <span class="ot">&lt;-</span> <span class="fu">ergm</span>(senate <span class="sc">~</span> edges <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;ideol&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;dist&quot;</span>) <span class="sc">+</span> ______,</span>
+<span id="cb18-303"><a href="#cb18-303" aria-hidden="true" tabindex="-1"></a>               <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>))</span>
+<span id="cb18-304"><a href="#cb18-304" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-305"><a href="#cb18-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-306"><a href="#cb18-306" aria-hidden="true" tabindex="-1"></a>Then answer: <span class="in">`is.dyad.independent()`</span> was <span class="in">`TRUE`</span> for the original Senate model. Predict what it returns now, and what that means for whether the fit uses MCMC.</span>
+<span id="cb18-307"><a href="#cb18-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-308"><a href="#cb18-308" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stretch</span></span>
+<span id="cb18-309"><a href="#cb18-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-310"><a href="#cb18-310" aria-hidden="true" tabindex="-1"></a>In the Gade model, <span class="in">`absdiff(&quot;averageId.node&quot;)`</span> tests ideological homophily as a *distance*. But Gade et al. theorise about ideological *positions*, not just distances: extremist groups might behave differently from moderate ones regardless of whom they are paired with.</span>
 <span id="cb18-311"><a href="#cb18-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-312"><a href="#cb18-312" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;<span class="in">`gwesp(0.5, fixed = TRUE)`</span>: the <span class="in">`fixed`</span> is load-bearing&quot;}</span>
-<span id="cb18-313"><a href="#cb18-313" aria-hidden="true" tabindex="-1"></a>Write <span class="in">`gwesp(decay = 0.5)`</span> without <span class="in">`fixed = TRUE`</span> and, as of <span class="in">`ergm`</span> 4, the decay value is</span>
-<span id="cb18-314"><a href="#cb18-314" aria-hidden="true" tabindex="-1"></a>**ignored** and you silently fit a many-parameter *curved* model instead of the one-parameter</span>
-<span id="cb18-315"><a href="#cb18-315" aria-hidden="true" tabindex="-1"></a>model you intended. The original version of this material had <span class="in">`gwesp(decay = 0.25)`</span>: unfixed: </span>
-<span id="cb18-316"><a href="#cb18-316" aria-hidden="true" tabindex="-1"></a>in five separate places, every one of which was fitting a curved model nobody meant to fit.</span>
-<span id="cb18-317"><a href="#cb18-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-318"><a href="#cb18-318" aria-hidden="true" tabindex="-1"></a>The rule from the taught session, restated because it is the single most common error in</span>
-<span id="cb18-319"><a href="#cb18-319" aria-hidden="true" tabindex="-1"></a>inherited ERGM code: **`fixed = TRUE` unless you are deliberately estimating a curved model.**</span>
-<span id="cb18-320"><a href="#cb18-320" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-321"><a href="#cb18-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-322"><a href="#cb18-322" aria-hidden="true" tabindex="-1"></a><span class="in">`gwesp`</span> comes out **positive**: conditional on this specification, ties with more shared partners</span>
-<span id="cb18-323"><a href="#cb18-323" aria-hidden="true" tabindex="-1"></a>have higher conditional log-odds. That is not yet evidence of a closure mechanism because hubs</span>
-<span id="cb18-324"><a href="#cb18-324" aria-hidden="true" tabindex="-1"></a>can mechanically create shared partners, and this model has no actor-specific activity term.</span>
-<span id="cb18-325"><a href="#cb18-325" aria-hidden="true" tabindex="-1"></a>And notice what happens to the covariate coefficients when you add</span>
-<span id="cb18-326"><a href="#cb18-326" aria-hidden="true" tabindex="-1"></a>it: they shift, because some of what looked like covariate effect in <span class="in">`m0`</span> was unmodelled</span>
-<span id="cb18-327"><a href="#cb18-327" aria-hidden="true" tabindex="-1"></a>structure. That shift is the reason you cannot stop at the dyad-independent model if you think</span>
-<span id="cb18-328"><a href="#cb18-328" aria-hidden="true" tabindex="-1"></a>structure is present.</span>
-<span id="cb18-329"><a href="#cb18-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-330"><a href="#cb18-330" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;But do not now compare m0 and m1 coefficients as effect sizes&quot;}</span>
-<span id="cb18-331"><a href="#cb18-331" aria-hidden="true" tabindex="-1"></a>It is tempting to say &quot;ideology&#39;s coefficient dropped from −0.24 to −0.23 when we added closure,</span>
-<span id="cb18-332"><a href="#cb18-332" aria-hidden="true" tabindex="-1"></a>so most of the ideology effect is real.&quot; Resist stating it that precisely. Per Duxbury (2023),</span>
-<span id="cb18-333"><a href="#cb18-333" aria-hidden="true" tabindex="-1"></a>adding a term to an ERGM rescales all the others even when they are uncorrelated, so part of any</span>
-<span id="cb18-334"><a href="#cb18-334" aria-hidden="true" tabindex="-1"></a>across-model shift is rescaling rather than substance. The *direction* is informative; the exact</span>
-<span id="cb18-335"><a href="#cb18-335" aria-hidden="true" tabindex="-1"></a>magnitude of the change is not. If you need the defensible version, compare average marginal</span>
-<span id="cb18-336"><a href="#cb18-336" aria-hidden="true" tabindex="-1"></a>effects with <span class="in">`ergMargins`</span>, not coefficients.</span>
-<span id="cb18-337"><a href="#cb18-337" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-338"><a href="#cb18-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-339"><a href="#cb18-339" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.4 Check the fit</span></span>
-<span id="cb18-340"><a href="#cb18-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-341"><a href="#cb18-341" aria-hidden="true" tabindex="-1"></a>A model with an endogenous term has to be checked: that is the whole discipline of the taught</span>
-<span id="cb18-342"><a href="#cb18-342" aria-hidden="true" tabindex="-1"></a>session&#39;s block C. Look at whether the model reproduces network features it was **not** fitted on.</span>
-<span id="cb18-343"><a href="#cb18-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-346"><a href="#cb18-346" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-347"><a href="#cb18-347" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-gof</span></span>
-<span id="cb18-348"><a href="#cb18-348" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
-<span id="cb18-349"><a href="#cb18-349" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5.5</span></span>
-<span id="cb18-350"><a href="#cb18-350" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb18-351"><a href="#cb18-351" aria-hidden="true" tabindex="-1"></a>gof_m1 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade1_gof&quot;</span>,</span>
-<span id="cb18-352"><a href="#cb18-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gof</span>(m1, <span class="at">GOF =</span> <span class="sc">~</span> degree <span class="sc">+</span> espartners <span class="sc">+</span> distance <span class="sc">-</span> model))</span>
-<span id="cb18-353"><a href="#cb18-353" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
-<span id="cb18-354"><a href="#cb18-354" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gof_m1)</span>
-<span id="cb18-355"><a href="#cb18-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-356"><a href="#cb18-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-357"><a href="#cb18-357" aria-hidden="true" tabindex="-1"></a>The observed values (the thick line) should sit inside the simulated boxplots. Where they do,</span>
-<span id="cb18-358"><a href="#cb18-358" aria-hidden="true" tabindex="-1"></a>the model reproduces that feature; where they stray outside, it does not. For a network this</span>
-<span id="cb18-359"><a href="#cb18-359" aria-hidden="true" tabindex="-1"></a>small, expect some ragged tails. Here the default panels broadly bracket the observed line, but</span>
-<span id="cb18-360"><a href="#cb18-360" aria-hidden="true" tabindex="-1"></a>that is compatibility with this chosen suite, not proof of fit or proof that <span class="in">`gwesp`</span> identifies</span>
-<span id="cb18-361"><a href="#cb18-361" aria-hidden="true" tabindex="-1"></a>closure. Day 7&#39;s common-yardstick analysis adds actor heterogeneity and revisits this exact</span>
-<span id="cb18-362"><a href="#cb18-362" aria-hidden="true" tabindex="-1"></a>interpretation.</span>
-<span id="cb18-363"><a href="#cb18-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-366"><a href="#cb18-366" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-367"><a href="#cb18-367" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-gof-tab</span></span>
-<span id="cb18-368"><a href="#cb18-368" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: hide</span></span>
-<span id="cb18-369"><a href="#cb18-369" aria-hidden="true" tabindex="-1"></a><span class="co"># The tabular, in-model version is faster and more legible than the plots</span></span>
-<span id="cb18-370"><a href="#cb18-370" aria-hidden="true" tabindex="-1"></a>gof_model <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade1_gofmodel&quot;</span>, <span class="fu">gof</span>(m1, <span class="at">GOF =</span> <span class="sc">~</span> model))</span>
-<span id="cb18-371"><a href="#cb18-371" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-372"><a href="#cb18-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-375"><a href="#cb18-375" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-376"><a href="#cb18-376" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gade-gof-tab-show</span></span>
-<span id="cb18-377"><a href="#cb18-377" aria-hidden="true" tabindex="-1"></a>gof_model</span>
-<span id="cb18-378"><a href="#cb18-378" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-379"><a href="#cb18-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-380"><a href="#cb18-380" aria-hidden="true" tabindex="-1"></a>The <span class="in">`GOF = ~model`</span> table checks the in-model statistics directly: each observed statistic against</span>
-<span id="cb18-381"><a href="#cb18-381" aria-hidden="true" tabindex="-1"></a>the distribution the fitted model simulates. P-values near the middle of the range mean the model</span>
-<span id="cb18-382"><a href="#cb18-382" aria-hidden="true" tabindex="-1"></a>reproduces its own targets, which is the minimum you should demand before interpreting anything.</span>
-<span id="cb18-383"><a href="#cb18-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-384"><a href="#cb18-384" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. Exercises</span></span>
-<span id="cb18-385"><a href="#cb18-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-386"><a href="#cb18-386" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
-<span id="cb18-387"><a href="#cb18-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-388"><a href="#cb18-388" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
-<span id="cb18-389"><a href="#cb18-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-390"><a href="#cb18-390" aria-hidden="true" tabindex="-1"></a>Add <span class="in">`nodematch`</span> on shared sponsorship to the Senate model: except the Senate data has no</span>
-<span id="cb18-391"><a href="#cb18-391" aria-hidden="true" tabindex="-1"></a>sponsorship variable, so instead add the **reciprocity** term <span class="in">`mutual`</span> to the Senate model and</span>
-<span id="cb18-392"><a href="#cb18-392" aria-hidden="true" tabindex="-1"></a>refit.</span>
-<span id="cb18-393"><a href="#cb18-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-396"><a href="#cb18-396" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-397"><a href="#cb18-397" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb18-398"><a href="#cb18-398" aria-hidden="true" tabindex="-1"></a>m_sen2 <span class="ot">&lt;-</span> <span class="fu">ergm</span>(senate <span class="sc">~</span> edges <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;ideol&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;dist&quot;</span>) <span class="sc">+</span> ______,</span>
-<span id="cb18-399"><a href="#cb18-399" aria-hidden="true" tabindex="-1"></a>               <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>))</span>
-<span id="cb18-400"><a href="#cb18-400" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-401"><a href="#cb18-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-402"><a href="#cb18-402" aria-hidden="true" tabindex="-1"></a>Then answer: <span class="in">`is.dyad.independent()`</span> was <span class="in">`TRUE`</span> for the original Senate model. Predict what it</span>
-<span id="cb18-403"><a href="#cb18-403" aria-hidden="true" tabindex="-1"></a>returns now, and what that means for whether the fit uses MCMC.</span>
-<span id="cb18-404"><a href="#cb18-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-405"><a href="#cb18-405" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stretch</span></span>
-<span id="cb18-406"><a href="#cb18-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-407"><a href="#cb18-407" aria-hidden="true" tabindex="-1"></a>In the Gade model, <span class="in">`absdiff(&quot;averageId.node&quot;)`</span> tests ideological homophily as a *distance*. But</span>
-<span id="cb18-408"><a href="#cb18-408" aria-hidden="true" tabindex="-1"></a>Gade et al. theorise about ideological *positions*, not just distances: extremist groups might</span>
-<span id="cb18-409"><a href="#cb18-409" aria-hidden="true" tabindex="-1"></a>behave differently from moderate ones regardless of whom they are paired with.</span>
-<span id="cb18-410"><a href="#cb18-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-411"><a href="#cb18-411" aria-hidden="true" tabindex="-1"></a>Add <span class="in">`nodecov(&quot;averageId.node&quot;)`</span> (already in the model) *and* think about whether an</span>
-<span id="cb18-412"><a href="#cb18-412" aria-hidden="true" tabindex="-1"></a>interaction or a squared term would test the &quot;extremists behave differently&quot; hypothesis. Fit</span>
-<span id="cb18-413"><a href="#cb18-413" aria-hidden="true" tabindex="-1"></a>something that tests it, and report whether the data support it. This is open-ended; the point is</span>
-<span id="cb18-414"><a href="#cb18-414" aria-hidden="true" tabindex="-1"></a>to translate a substantive hypothesis into a term, which is the actual skill.</span>
-<span id="cb18-415"><a href="#cb18-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-416"><a href="#cb18-416" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
-<span id="cb18-417"><a href="#cb18-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-420"><a href="#cb18-420" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-421"><a href="#cb18-421" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-senate</span></span>
-<span id="cb18-422"><a href="#cb18-422" aria-hidden="true" tabindex="-1"></a>m_sen2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_senate_mutual&quot;</span>,</span>
-<span id="cb18-423"><a href="#cb18-423" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(senate <span class="sc">~</span> edges <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;ideol&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;dist&quot;</span>) <span class="sc">+</span> mutual,</span>
-<span id="cb18-424"><a href="#cb18-424" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb18-425"><a href="#cb18-425" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m_sen2), <span class="dv">4</span>)</span>
-<span id="cb18-426"><a href="#cb18-426" aria-hidden="true" tabindex="-1"></a><span class="fu">is.dyad.independent</span>(m_sen2)</span>
-<span id="cb18-427"><a href="#cb18-427" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-428"><a href="#cb18-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-429"><a href="#cb18-429" aria-hidden="true" tabindex="-1"></a>**Core.** <span class="in">`is.dyad.independent()`</span> now returns <span class="in">`FALSE`</span>, and the model fits by MCMC because</span>
-<span id="cb18-430"><a href="#cb18-430" aria-hidden="true" tabindex="-1"></a><span class="in">`mutual`</span> makes the probability of the $i \to j$ tie depend on the $j \to i$ tie, which is</span>
-<span id="cb18-431"><a href="#cb18-431" aria-hidden="true" tabindex="-1"></a>precisely dyadic dependence. The moment you add it, you leave exact logistic regression behind:</span>
-<span id="cb18-432"><a href="#cb18-432" aria-hidden="true" tabindex="-1"></a>the fit becomes stochastic, it can in principle fail to converge, and you now owe the reader</span>
-<span id="cb18-433"><a href="#cb18-433" aria-hidden="true" tabindex="-1"></a><span class="in">`mcmc.diagnostics()`</span>. That single term is the boundary between the two halves of the taught</span>
-<span id="cb18-434"><a href="#cb18-434" aria-hidden="true" tabindex="-1"></a>session.</span>
-<span id="cb18-435"><a href="#cb18-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-436"><a href="#cb18-436" aria-hidden="true" tabindex="-1"></a>Substantively, <span class="in">`mutual`</span> comes out positive: cosponsorship is reciprocated, as you would expect</span>
-<span id="cb18-437"><a href="#cb18-437" aria-hidden="true" tabindex="-1"></a>, and the ideology and distance coefficients barely move, because in this small chamber</span>
-<span id="cb18-438"><a href="#cb18-438" aria-hidden="true" tabindex="-1"></a>reciprocity and homophily are not competing to explain the same ties.</span>
-<span id="cb18-439"><a href="#cb18-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-442"><a href="#cb18-442" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-443"><a href="#cb18-443" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-gade</span></span>
-<span id="cb18-444"><a href="#cb18-444" aria-hidden="true" tabindex="-1"></a><span class="co"># One way to test &quot;extremists behave differently&quot;: a squared ideology term.</span></span>
-<span id="cb18-445"><a href="#cb18-445" aria-hidden="true" tabindex="-1"></a><span class="co"># averageId.node is a group&#39;s mean ideology; its square is largest at the extremes.</span></span>
-<span id="cb18-446"><a href="#cb18-446" aria-hidden="true" tabindex="-1"></a>gadeData2 <span class="ot">&lt;-</span> gadeData</span>
-<span id="cb18-447"><a href="#cb18-447" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the squared nodal covariate on the network</span></span>
-<span id="cb18-448"><a href="#cb18-448" aria-hidden="true" tabindex="-1"></a>id2 <span class="ot">&lt;-</span> nodeData[, <span class="st">&quot;averageId.node&quot;</span>]<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb18-449"><a href="#cb18-449" aria-hidden="true" tabindex="-1"></a>network<span class="sc">::</span><span class="fu">set.vertex.attribute</span>(rebels, <span class="st">&quot;id_sq&quot;</span>, id2)</span>
-<span id="cb18-450"><a href="#cb18-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-451"><a href="#cb18-451" aria-hidden="true" tabindex="-1"></a>m_gade2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade_sq&quot;</span>,</span>
-<span id="cb18-452"><a href="#cb18-452" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(rebels <span class="sc">~</span> edges <span class="sc">+</span></span>
-<span id="cb18-453"><a href="#cb18-453" aria-hidden="true" tabindex="-1"></a>         <span class="fu">nodecov</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">nodecov</span>(<span class="st">&quot;id_sq&quot;</span>) <span class="sc">+</span> <span class="fu">nodecov</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-454"><a href="#cb18-454" aria-hidden="true" tabindex="-1"></a>         <span class="fu">absdiff</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-455"><a href="#cb18-455" aria-hidden="true" tabindex="-1"></a>         <span class="fu">edgecov</span>(<span class="st">&quot;loc.dyad&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;spons.dyad&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-456"><a href="#cb18-456" aria-hidden="true" tabindex="-1"></a>         <span class="fu">gwesp</span>(<span class="fl">0.5</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-457"><a href="#cb18-457" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb18-458"><a href="#cb18-458" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m_gade2), <span class="dv">3</span>)</span>
-<span id="cb18-459"><a href="#cb18-459" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-460"><a href="#cb18-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-461"><a href="#cb18-461" aria-hidden="true" tabindex="-1"></a>**Stretch.** Adding <span class="in">`nodecov(&quot;id_sq&quot;)`</span>: the square of a group&#39;s mean ideology, which is largest</span>
-<span id="cb18-462"><a href="#cb18-462" aria-hidden="true" tabindex="-1"></a>for the most extreme groups in either direction: tests whether extremists have a different</span>
-<span id="cb18-463"><a href="#cb18-463" aria-hidden="true" tabindex="-1"></a>baseline propensity to cooperate, separately from whom they are paired with.</span>
-<span id="cb18-464"><a href="#cb18-464" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-465"><a href="#cb18-465" aria-hidden="true" tabindex="-1"></a>Read the <span class="in">`nodecov.id_sq`</span> coefficient against its standard error (<span class="in">`summary(m_gade2)`</span> for the full</span>
-<span id="cb18-466"><a href="#cb18-466" aria-hidden="true" tabindex="-1"></a>table). If it is indistinguishable from zero, the data do not support &quot;extremists behave</span>
-<span id="cb18-467"><a href="#cb18-467" aria-hidden="true" tabindex="-1"></a>differently in level&quot; once you have already accounted for ideological *distance* via <span class="in">`absdiff`</span>: </span>
-<span id="cb18-468"><a href="#cb18-468" aria-hidden="true" tabindex="-1"></a>which would say only that this binary ERGM does not need the squared nodal term once pairwise</span>
-<span id="cb18-469"><a href="#cb18-469" aria-hidden="true" tabindex="-1"></a>ideological distance is included. It would not validate the article&#39;s model by itself.</span>
-<span id="cb18-470"><a href="#cb18-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-471"><a href="#cb18-471" aria-hidden="true" tabindex="-1"></a>The methodological point is the transferable one: a substantive hypothesis (&quot;extremists are</span>
-<span id="cb18-472"><a href="#cb18-472" aria-hidden="true" tabindex="-1"></a>different&quot;) became a specific term (<span class="in">`nodecov`</span> on a squared covariate), and the term is testable.</span>
-<span id="cb18-473"><a href="#cb18-473" aria-hidden="true" tabindex="-1"></a>Half of applied ERGM work is exactly this translation, and it is a skill worth more than any</span>
-<span id="cb18-474"><a href="#cb18-474" aria-hidden="true" tabindex="-1"></a>particular result.</span>
-<span id="cb18-475"><a href="#cb18-475" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-476"><a href="#cb18-476" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-477"><a href="#cb18-477" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Readings</span></span>
-<span id="cb18-478"><a href="#cb18-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-479"><a href="#cb18-479" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cranmer &amp; Desmarais (2011)**, &quot;Inferential network analysis with ERGMs,&quot; *Political</span>
-<span id="cb18-480"><a href="#cb18-480" aria-hidden="true" tabindex="-1"></a>  Analysis* 19(1):66–86. The methodological case for using ERGMs in political science. Assigned</span>
-<span id="cb18-481"><a href="#cb18-481" aria-hidden="true" tabindex="-1"></a>  for the taught session.</span>
-<span id="cb18-482"><a href="#cb18-482" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Gade, Gabbay, Hafez &amp; Kelly (2019)**, &quot;Networks of cooperation: Rebel alliances in</span>
-<span id="cb18-483"><a href="#cb18-483" aria-hidden="true" tabindex="-1"></a>  fragmented civil wars,&quot; *Journal of Conflict Resolution*. The data and substantive argument</span>
-<span id="cb18-484"><a href="#cb18-484" aria-hidden="true" tabindex="-1"></a>  behind the Section 2 reanalysis. The published regression is AME on a transformed count</span>
-<span id="cb18-485"><a href="#cb18-485" aria-hidden="true" tabindex="-1"></a>  outcome, not the binary ERGM fitted here.</span>
-<span id="cb18-486"><a href="#cb18-486" aria-hidden="true" tabindex="-1"></a>  Note this is a **day 3 (latent geometry, W2 Fri)** reading in 2026: it belongs to another session, and the</span>
-<span id="cb18-487"><a href="#cb18-487" aria-hidden="true" tabindex="-1"></a>  latent-factor treatment of the same data is the natural companion to this ERGM one.</span>
-<span id="cb18-488"><a href="#cb18-488" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Goodreau, Kitts &amp; Morris (2009)**, &quot;Birds of a feather, or friend of a friend?&quot;</span>
-<span id="cb18-489"><a href="#cb18-489" aria-hidden="true" tabindex="-1"></a>  *Demography* 46(1):103–125. The <span class="in">`mesa`</span>-style application the taught session is built on, and</span>
-<span id="cb18-490"><a href="#cb18-490" aria-hidden="true" tabindex="-1"></a>  the template for the &quot;covariates first, structure second&quot; workflow used in §2.</span>
-<span id="cb18-491"><a href="#cb18-491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-494"><a href="#cb18-494" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-495"><a href="#cb18-495" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
-<span id="cb18-496"><a href="#cb18-496" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb18-497"><a href="#cb18-497" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb18-498"><a href="#cb18-498" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions: expand if your numbers differ from mine&quot;</span></span>
-<span id="cb18-499"><a href="#cb18-499" aria-hidden="true" tabindex="-1"></a>pk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;network&quot;</span>, <span class="st">&quot;networkdata&quot;</span>)</span>
-<span id="cb18-500"><a href="#cb18-500" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> pk,</span>
-<span id="cb18-501"><a href="#cb18-501" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">sapply</span>(pk, <span class="cf">function</span>(p) <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(p))),</span>
-<span id="cb18-502"><a href="#cb18-502" aria-hidden="true" tabindex="-1"></a>           <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
-<span id="cb18-503"><a href="#cb18-503" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb18-504"><a href="#cb18-504" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-312"><a href="#cb18-312" aria-hidden="true" tabindex="-1"></a>Add <span class="in">`nodecov(&quot;averageId.node&quot;)`</span> (already in the model) *and* think about whether an interaction or a squared term would test the &quot;extremists behave differently&quot; hypothesis. Fit something that tests it, and report whether the data support it. This is open-ended; the point is to translate a substantive hypothesis into a term, which is the actual skill.</span>
+<span id="cb18-313"><a href="#cb18-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-314"><a href="#cb18-314" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
+<span id="cb18-315"><a href="#cb18-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-318"><a href="#cb18-318" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-319"><a href="#cb18-319" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-senate</span></span>
+<span id="cb18-320"><a href="#cb18-320" aria-hidden="true" tabindex="-1"></a>m_sen2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_senate_mutual&quot;</span>,</span>
+<span id="cb18-321"><a href="#cb18-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(senate <span class="sc">~</span> edges <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;ideol&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;dist&quot;</span>) <span class="sc">+</span> mutual,</span>
+<span id="cb18-322"><a href="#cb18-322" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb18-323"><a href="#cb18-323" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m_sen2), <span class="dv">4</span>)</span>
+<span id="cb18-324"><a href="#cb18-324" aria-hidden="true" tabindex="-1"></a><span class="fu">is.dyad.independent</span>(m_sen2)</span>
+<span id="cb18-325"><a href="#cb18-325" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-326"><a href="#cb18-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-327"><a href="#cb18-327" aria-hidden="true" tabindex="-1"></a>**Core.** <span class="in">`is.dyad.independent()`</span> now returns <span class="in">`FALSE`</span>, and the model fits by MCMC because <span class="in">`mutual`</span> makes the probability of the $i \to j$ tie depend on the $j \to i$ tie, which is precisely dyadic dependence. The moment you add it, you leave exact logistic regression behind: the fit becomes stochastic, it can in principle fail to converge, and you now owe the reader <span class="in">`mcmc.diagnostics()`</span>. That single term is the boundary between the two halves of the taught session.</span>
+<span id="cb18-328"><a href="#cb18-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-329"><a href="#cb18-329" aria-hidden="true" tabindex="-1"></a>Substantively, <span class="in">`mutual`</span> comes out positive: cosponsorship is reciprocated, as you would expect , and the ideology and distance coefficients barely move, because in this small chamber reciprocity and homophily are not competing to explain the same ties.</span>
+<span id="cb18-330"><a href="#cb18-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-333"><a href="#cb18-333" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-334"><a href="#cb18-334" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-gade</span></span>
+<span id="cb18-335"><a href="#cb18-335" aria-hidden="true" tabindex="-1"></a><span class="co"># One way to test &quot;extremists behave differently&quot;: a squared ideology term.</span></span>
+<span id="cb18-336"><a href="#cb18-336" aria-hidden="true" tabindex="-1"></a><span class="co"># averageId.node is a group&#39;s mean ideology; its square is largest at the extremes.</span></span>
+<span id="cb18-337"><a href="#cb18-337" aria-hidden="true" tabindex="-1"></a>gadeData2 <span class="ot">&lt;-</span> gadeData</span>
+<span id="cb18-338"><a href="#cb18-338" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the squared nodal covariate on the network</span></span>
+<span id="cb18-339"><a href="#cb18-339" aria-hidden="true" tabindex="-1"></a>id2 <span class="ot">&lt;-</span> nodeData[, <span class="st">&quot;averageId.node&quot;</span>]<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb18-340"><a href="#cb18-340" aria-hidden="true" tabindex="-1"></a>network<span class="sc">::</span><span class="fu">set.vertex.attribute</span>(rebels, <span class="st">&quot;id_sq&quot;</span>, id2)</span>
+<span id="cb18-341"><a href="#cb18-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-342"><a href="#cb18-342" aria-hidden="true" tabindex="-1"></a>m_gade2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;app_gade_sq&quot;</span>,</span>
+<span id="cb18-343"><a href="#cb18-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(rebels <span class="sc">~</span> edges <span class="sc">+</span></span>
+<span id="cb18-344"><a href="#cb18-344" aria-hidden="true" tabindex="-1"></a>         <span class="fu">nodecov</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">nodecov</span>(<span class="st">&quot;id_sq&quot;</span>) <span class="sc">+</span> <span class="fu">nodecov</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-345"><a href="#cb18-345" aria-hidden="true" tabindex="-1"></a>         <span class="fu">absdiff</span>(<span class="st">&quot;averageId.node&quot;</span>) <span class="sc">+</span> <span class="fu">absdiff</span>(<span class="st">&quot;size.node&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-346"><a href="#cb18-346" aria-hidden="true" tabindex="-1"></a>         <span class="fu">edgecov</span>(<span class="st">&quot;loc.dyad&quot;</span>) <span class="sc">+</span> <span class="fu">edgecov</span>(<span class="st">&quot;spons.dyad&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-347"><a href="#cb18-347" aria-hidden="true" tabindex="-1"></a>         <span class="fu">gwesp</span>(<span class="fl">0.5</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-348"><a href="#cb18-348" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb18-349"><a href="#cb18-349" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m_gade2), <span class="dv">3</span>)</span>
+<span id="cb18-350"><a href="#cb18-350" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-351"><a href="#cb18-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-352"><a href="#cb18-352" aria-hidden="true" tabindex="-1"></a>**Stretch.** Adding <span class="in">`nodecov(&quot;id_sq&quot;)`</span>: the square of a group&#39;s mean ideology, which is largest for the most extreme groups in either direction: tests whether extremists have a different baseline propensity to cooperate, separately from whom they are paired with.</span>
+<span id="cb18-353"><a href="#cb18-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-354"><a href="#cb18-354" aria-hidden="true" tabindex="-1"></a>Read the <span class="in">`nodecov.id_sq`</span> coefficient against its standard error (<span class="in">`summary(m_gade2)`</span> for the full table). If it is indistinguishable from zero, the data do not support &quot;extremists behave differently in level&quot; once you have already accounted for ideological *distance* via <span class="in">`absdiff`</span>: which would say only that this binary ERGM does not need the squared nodal term once pairwise ideological distance is included. It would not validate the article&#39;s model by itself.</span>
+<span id="cb18-355"><a href="#cb18-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-356"><a href="#cb18-356" aria-hidden="true" tabindex="-1"></a>The methodological point is the transferable one: a substantive hypothesis (&quot;extremists are different&quot;) became a specific term (<span class="in">`nodecov`</span> on a squared covariate), and the term is testable. Half of applied ERGM work is exactly this translation, and it is a skill worth more than any particular result.</span>
+<span id="cb18-357"><a href="#cb18-357" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-358"><a href="#cb18-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-359"><a href="#cb18-359" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Readings</span></span>
+<span id="cb18-360"><a href="#cb18-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-361"><a href="#cb18-361" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cranmer &amp; Desmarais (2011)**, &quot;Inferential network analysis with ERGMs,&quot; *Political Analysis* 19(1):66–86. The methodological case for using ERGMs in political science. Assigned for the taught session.</span>
+<span id="cb18-362"><a href="#cb18-362" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Gade, Gabbay, Hafez &amp; Kelly (2019)**, &quot;Networks of cooperation: Rebel alliances in fragmented civil wars,&quot; *Journal of Conflict Resolution*. The data and substantive argument behind the Section 2 reanalysis. The published regression is AME on a transformed count outcome, not the binary ERGM fitted here. Note this is a **day 3 (latent geometry, W2 Fri)** reading in 2026: it belongs to another session, and the latent-factor treatment of the same data is the natural companion to this ERGM one.</span>
+<span id="cb18-363"><a href="#cb18-363" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Goodreau, Kitts &amp; Morris (2009)**, &quot;Birds of a feather, or friend of a friend?&quot; *Demography* 46(1):103–125. The <span class="in">`mesa`</span>-style application the taught session is built on, and the template for the &quot;covariates first, structure second&quot; workflow used in §2.</span>
+<span id="cb18-364"><a href="#cb18-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-367"><a href="#cb18-367" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-368"><a href="#cb18-368" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
+<span id="cb18-369"><a href="#cb18-369" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
+<span id="cb18-370"><a href="#cb18-370" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb18-371"><a href="#cb18-371" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions: expand if your numbers differ from mine&quot;</span></span>
+<span id="cb18-372"><a href="#cb18-372" aria-hidden="true" tabindex="-1"></a>pk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;network&quot;</span>, <span class="st">&quot;networkdata&quot;</span>)</span>
+<span id="cb18-373"><a href="#cb18-373" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> pk,</span>
+<span id="cb18-374"><a href="#cb18-374" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">sapply</span>(pk, <span class="cf">function</span>(p) <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(p))),</span>
+<span id="cb18-375"><a href="#cb18-375" aria-hidden="true" tabindex="-1"></a>           <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb18-376"><a href="#cb18-376" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb18-377"><a href="#cb18-377" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
