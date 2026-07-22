@@ -1,75 +1,105 @@
 ---
 title: Homework Assignments
 ---
+<style>
+.homework-table-wrap {
+  overflow-x: auto;
+  margin-top: 1.25rem;
+}
+
+.homework-table {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-collapse: collapse;
+}
+
+.homework-table thead {
+  color: #FFFFFF;
+  background: #18453B;
+}
+
+.homework-table th,
+.homework-table td {
+  padding: 0.8rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(24, 69, 59, 0.2);
+}
+
+.homework-table tbody tr:nth-child(even) {
+  background: rgba(24, 69, 59, 0.05);
+}
+
+.homework-table a {
+  color: #18453B;
+  font-weight: 600;
+}
+
+.homework-table a:hover {
+  color: #008208;
+}
+
+.homework-status {
+  display: inline-block;
+  color: #18453B;
+  background: rgba(123, 189, 0, 0.15);
+  border: 1px solid #7BBD00;
+  border-radius: 999px;
+  padding: 0.08rem 0.55rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+  .homework-table th,
+  .homework-table td {
+    padding: 0.65rem;
+  }
+}
+</style>
+
 <p>
-Homework assignments and data are posted here.
+Homework assignments and supporting files are posted here as they become available.
 </p>
-<div>
-  <table class="table table-striped table-hover">
+<div class="homework-table-wrap">
+  <table class="homework-table">
     <thead>
       <tr>
-        <th>Due Date</th>
         <th>Homework</th>
+        <th>Due Date</th>
+        <th>Materials</th>
        </tr>
     </thead>
     <tbody>
       <tr>
-        <td>July 19</td>
         <td>
-          <dl>
-          <dd><a href="../materials/homeworks/ICPSR2026_homework01.html" target=_blank>Homework 1 </a>|
-          <a href="../materials/homeworks/ICPSR2026_homework01.Rmd" target=_blank>Homework 1 rmd </a>|
-          <a href="../materials/homeworks/emailnet.csv" target=_blank> email data </a>|
-          <a href="../materials/homeworks/EmployeeRecords.csv" target=_blank> employee data</a>
-          </dd>
-          </dl>
+          <strong>Homework 1</strong>
         </td>
+        <td>Sunday, July 19</td>
+        <td><a href="../materials/Homeworks/ICPSR2026_homework01.html" target="_blank">View assignment</a> | <a href="../materials/Homeworks/ICPSR2026_homework01.Rmd" download>R Markdown</a> | <a href="../materials/Homeworks/email%20headers.csv" download>Email data</a> | <a href="../materials/Homeworks/EmployeeRecords.csv" download>Employee data</a></td>
       </tr>
       <tr>
-        <td>Thu Jul 23</td>
         <td>
-          <dl>
-          <dd><a href="../materials/2026/hw3_srm.html" target=_blank> Homework 3: Social Relations Model </a> | <a href="../materials/2026/hw3_srm.zip" target=_blank> Assignment code &amp; data </a>
-          </dd>
-          </dl>
+          <strong>Homework 2</strong>
         </td>
+        <td>Wednesday, July 29</td>
+        <td><a href="../materials/Homeworks/ICPSR2026_homework02.html" target="_blank">View assignment</a> | <a href="../materials/Homeworks/ICPSR2026_homework02.Rmd" download>R Markdown</a></td>
       </tr>
       <tr>
-        <td>Tue Jul 28</td>
         <td>
-          <dl>
-          <dd><a href="../materials/2026/hw4_saom.html" target=_blank> Homework 4: Stochastic Actor-Oriented Models </a> | <a href="../materials/2026/hw4_saom.zip" target=_blank> Assignment code &amp; data </a>
-          </dd>
-          </dl>
+          <strong>Homework 3: Social Relations Model</strong>
         </td>
+        <td>Thursday, July 23</td>
+        <td><span class="homework-status">Materials coming soon</span></td>
       </tr>
       <tr>
-        <td>July 29</td>
         <td>
-          <dl>
-          <dd><a href="../materials/homeworks/.ICPSR2024_homework02.html" target=_blank>Homework 2</a>| <a href="../materials/homeworks/ICPSR2024_homework02.rmd" target=_blank> Homework 2 rmd </a>
-          </dd>
-          </dl>
+          <strong>Homework 4: Stochastic Actor-Oriented Models</strong>
         </td>
-       </tr>
-       <tr>
-        <td>ND</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/homeworks/.homework02.Rmd" target=_blank> Practice Homework </a>
-          </dd>
-          </dl>
-        </td>
-       </tr>
-       <tr>
-        <td>ND</td>
-        <td>
-          <dl>
-          <dd><a href="../materials/homeworks/.POL2578_homework03.Rmd" target=_blank> Homework 3</a>
-          </dd>
-          </dl>
-        </td>
-       </tr>
+        <td>Tuesday, July 28</td>
+        <td><span class="homework-status">Materials coming soon</span></td>
+      </tr>
       </tbody>
   </table>
 </div>
