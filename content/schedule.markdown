@@ -135,80 +135,80 @@ All the class materials will be posted/updated here.
       </tr>
       <tr>
         <td>Day 8<br>Wed Jul 22</td>
-        <td>Netify: building network data &amp; the map of the whole course</td>
+        <td>Netify: Building Network Data and the Map of the Whole Course</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/1_netify.html" target=_blank> walkthrough </a> | <a href="../materials/2026/1_netify.zip" target=_blank> code &amp; data </a> | <a href="https://netify-dev.github.io/netify/" target=_blank> netify website </a>
+          <dd><a href="../materials/2026/1_netify.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/1_netify.zip" target=_blank> Code &amp; data </a> | <a href="https://netify-dev.github.io/netify/" target=_blank> Netify website </a>
           </dd>
           </dl>
         </td>
       </tr>
       <tr>
         <td>Day 9<br>Thu Jul 23</td>
-        <td>Social Relations Model + Blockmodels <br><em>&mdash; HW 3 due</em></td>
+        <td>Social Relations Model and Blockmodels <br><em>(HW 3 Due)</em></td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/2_srm_blocks.html" target=_blank> walkthrough </a> | <a href="../materials/2026/2_srm_blocks.zip" target=_blank> code &amp; data </a> | <a href="../materials/2026/bayes_aside.zip" target=_blank> Bayesian workflow aside </a>
+          <dd><a href="../materials/2026/2_srm_blocks.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/2_srm_blocks.zip" target=_blank> Code &amp; data </a> | <a href="../materials/2026/bayes_aside.zip" target=_blank> Bayesian workflow aside </a>
           </dd>
           </dl>
         </td>
       </tr>
       <tr>
         <td>Day 10<br>Fri Jul 24</td>
-        <td>Latent geometry: the distance model &rarr; the factor model (AME)</td>
+        <td>Latent Geometry: The Distance Model &rarr; The Factor Model (AME)</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/3_latent.html" target=_blank> walkthrough </a> | <a href="../materials/2026/3_latent.zip" target=_blank> code &amp; data </a>
+          <dd><a href="../materials/2026/3_latent.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/3_latent.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
       </tr>
       <tr>
         <td>Day 11<br>Mon Jul 27</td>
-        <td>ERGMs &amp; temporal ERGMs</td>
+        <td>ERGMs and Temporal ERGMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/4_ergm.html" target=_blank> walkthrough </a> | <a href="../materials/2026/4_ergm.zip" target=_blank> code &amp; data </a>
+          <dd><a href="../materials/2026/4_ergm.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/4_ergm.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
       </tr>
       <tr>
         <td>Day 12<br>Tue Jul 28</td>
-        <td>Stochastic actor-oriented models (SAOMs) <br><em>&mdash; HW 4 due</em></td>
+        <td>Stochastic Actor-Oriented Models (SAOMs) <br><em>(HW 4 Due)</em></td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/5_saom.html" target=_blank> walkthrough </a> | <a href="../materials/2026/5_saom.zip" target=_blank> code &amp; data </a>
+          <dd><a href="../materials/2026/5_saom.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/5_saom.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
       </tr>
       <tr>
         <td>Day 13<br>Wed Jul 29</td>
-        <td>Causal inference on networks</td>
+        <td>Causal Inference on Networks</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/6_causal.html" target=_blank> walkthrough </a> | <a href="../materials/2026/6_causal.zip" target=_blank> code &amp; data </a>
+          <dd><a href="../materials/2026/6_causal.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/6_causal.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
       </tr>
       <tr>
         <td>Day 14<br>Thu Jul 30</td>
-        <td>Which model when? + the frontier</td>
+        <td>Which Model When? The Frontier</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/7_capstone.html" target=_blank> walkthrough </a> | <a href="../materials/2026/7_capstone.zip" target=_blank> code &amp; data </a>
+          <dd><a href="../materials/2026/7_capstone.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/7_capstone.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
       </tr>
       <tr>
         <td>Extras</td>
-        <td>Ancillary shelf &mdash; optional deep dives (TERGM, random graphs, ego-ERGMs, valued ERGMs, SAOM extensions)</td>
+        <td>Ancillary Shelf: Optional Deep Dives (TERGM, Random Graphs, Ego-ERGMs, Valued ERGMs, SAOM Extensions)</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/ancillary/index.html" target=_blank> shelf index </a> | <a href="../materials/2026/ancillary.zip" target=_blank> all as zip </a>
+          <dd><a href="../materials/2026/ancillary/index.html" target=_blank> Shelf index </a> | <a href="../materials/2026/ancillary.zip" target=_blank> All as ZIP </a>
           </dd>
           </dl>
         </td>

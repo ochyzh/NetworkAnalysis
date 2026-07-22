@@ -2357,7 +2357,7 @@ window.Quarto = {
   <li><a href="#covariates-and-the-data-object" id="toc-covariates-and-the-data-object" class="nav-link" data-scroll-target="#covariates-and-the-data-object">3.3 Covariates and the data object</a></li>
   </ul></li>
   <li><a href="#fitting-and-what-changes" id="toc-fitting-and-what-changes" class="nav-link" data-scroll-target="#fitting-and-what-changes">4. Fitting, and what changes</a></li>
-  <li><a href="#structural-zeros-the-older-approach-and-why-not-to-use-it" id="toc-structural-zeros-the-older-approach-and-why-not-to-use-it" class="nav-link" data-scroll-target="#structural-zeros-the-older-approach-and-why-not-to-use-it">5. Structural zeros — the older approach, and why not to use it</a></li>
+  <li><a href="#structural-zeros-the-alternative-approach" id="toc-structural-zeros-the-alternative-approach" class="nav-link" data-scroll-target="#structural-zeros-the-alternative-approach">5. Structural zeros, the alternative approach</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">6. Exercises</a></li>
   <li><a href="#readings" id="toc-readings" class="nav-link" data-scroll-target="#readings">7. Readings</a></li>
   </ul>
@@ -2399,19 +2399,19 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-important callout-titled" title="Optional — not covered in the 2026 course">
+<div class="callout callout-style-default callout-important callout-titled" title="Optional: not covered in the 2026 course">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Optional — not covered in the 2026 course
+<span class="screen-reader-only">Important</span>Optional: not covered in the 2026 course
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>This document is <strong>not</strong> part of any taught session. Nobody is going to lecture it at you, nobody is going to grade you on it, and you can ignore it completely without falling behind.</p>
-<p>It exists because it is a thing you will plausibly need next, and because it is easier to hand you something that works than to hand you a citation and wish you luck. Everything here runs end to end on the same machine setup you used in class. Every number and every figure on this page was produced by a chunk in this file — there are no screenshots of R output anywhere in the ancillary package.</p>
-<p><strong>How to work through it alone.</strong> Get the source (click the <code>&lt;/&gt;</code> <strong>Code</strong> button at the top right, then <strong>View Source</strong>, and copy it into a <code>.qmd</code> file — or open the <code>.qmd</code> you were given directly), run the chunks in order, and read the prose between them — the prose is where the argument lives. Runtime badges tell you what to expect before you press Enter: <span class="rt rt-live">live ~8s</span> runs now · <span class="rt rt-slow">slow ~90s</span> runs, but go make coffee · <span class="rt rt-precmp">precomputed</span> loads a shipped result and shows you the code that made it. Folded <strong>Depth</strong> boxes are optional extras; folded <strong>Stuck?</strong> boxes are hints. Open whichever you need and ignore the other. Exercises have a <strong>Solution</strong> tab — you are working alone, so use it.</p>
+<p>It exists because it is a thing you will plausibly need next, and because it is easier to hand you something that works than to hand you a citation and wish you luck. Everything here runs end to end on the same machine setup you used in class. Every number and every figure on this page was produced by a chunk in this file: there are no screenshots of R output anywhere in the ancillary package.</p>
+<p><strong>How to work through it alone.</strong> Get the source (click the <code>&lt;/&gt;</code> <strong>Code</strong> button at the top right, then <strong>View Source</strong>, and copy it into a <code>.qmd</code> file: or open the <code>.qmd</code> you were given directly), run the chunks in order, and read the prose between them: the prose is where the argument lives. Slow fits are identified in the prose, and precomputed fits load a shipped result while still showing you the code that produced it. Folded <strong>Depth</strong> boxes are optional extras; folded <strong>Stuck?</strong> boxes are hints. Open whichever you need and ignore the other. Exercises have a <strong>Solution</strong> tab: you are working alone, so use it.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled" title="What this extends, and why it is here">
@@ -2424,10 +2424,9 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Extends:</strong> the SAOM session (day 5, W3 Tue). We fitted <code>s50</code>, which is a tidy dataset — 50 girls, all present at all three waves. Your data will not be like that.</p>
-<p><strong>The problem it solves:</strong> actors who join or leave between waves. Students transfer schools, firms are founded and go bankrupt, states enter and exit the international system, patients are discharged. If you have panel network data of any real duration, you have this problem, and the default thing people do about it — drop everyone who was not there the whole time — throws away data and can bias what is left.</p>
+<p><strong>Extends:</strong> the SAOM session (day 5, W3 Tue). We fitted <code>s50</code>, which is a tidy dataset: 50 girls, all present at all three waves. Your data will not be like that.</p>
+<p><strong>The problem it solves:</strong> actors who join or leave between waves. Students transfer schools, firms are founded and go bankrupt, states enter and exit the international system, patients are discharged. If you have panel network data of any real duration, you have this problem, and the default thing people do about it: drop everyone who was not there the whole time: throws away data and can bias what is left.</p>
 <p><strong>What you need:</strong> <code>RSiena</code>, plus the four <code>klas12p-*.dat</code> files shipped alongside this document in <code>data/</code>. Nothing to download.</p>
-<p><strong>Total runtime, cold:</strong> about <strong>20 seconds</strong>.</p>
 </div>
 </div>
 <section id="why-this-is-not-just-a-missing-data-problem" class="level1">
@@ -2435,21 +2434,21 @@ window.Quarto = {
 <p>There is a distinction here that is easy to blur and expensive to get wrong.</p>
 <p><strong>Missing data</strong> means the tie exists as a question but you do not know the answer. Pupil 7 was off sick the day the survey ran, so you do not know whether 7 nominated 12 as a friend. The tie variable <span class="math inline">\(y_{7,12}\)</span> is well defined; you just did not observe it. RSiena handles this by imputing during simulation and excluding the cell from the target statistics.</p>
 <p><strong>Composition change</strong> means the tie does not exist as a question at all. Pupil 7 had not yet joined the class. There is no fact of the matter about whether 7 nominated 12, because 7 was not there to nominate anybody. <span class="math inline">\(y_{7,12}\)</span> is not unknown, it is <strong>undefined</strong>.</p>
-<p>Treating the second as if it were the first inflates your sample with cells that were never real, and — more insidiously — it tells the model that a bunch of actors spent a wave making the deliberate choice to have zero friends. The rate function will then work hard to explain why those actors were so inactive. They were not inactive. They were absent.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Depth — why the actor-oriented formulation can do this at all">
+<p>Treating the second as if it were the first inflates your sample with cells that were never real, and: more insidiously: it tells the model that a bunch of actors spent a wave making the deliberate choice to have zero friends. The rate function will then work hard to explain why those actors were so inactive. They were not inactive. They were absent.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Depth: why the actor-oriented formulation can do this at all">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Depth — why the actor-oriented formulation can do this at all
+<span class="screen-reader-only">Note</span>Depth: why the actor-oriented formulation can do this at all
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>This is one of the genuinely nice consequences of writing the model at the level of actors rather than graphs.</p>
-<p>A SAOM says: time runs continuously; every so often an actor gets an opportunity to change one tie; when they do, they pick the option that maximises their objective function plus noise. The model is a description of <strong>what individual actors do</strong>. If an actor is not present during some stretch of time, that is not a hole in the data — it simply means the actor had no opportunities during that stretch, which the model expresses directly by not giving them any.</p>
+<p>A SAOM says: time runs continuously; every so often an actor gets an opportunity to change one tie; when they do, they pick the option that maximises their objective function plus noise. The model is a description of <strong>what individual actors do</strong>. If an actor is not present during some stretch of time, that is not a hole in the data: it simply means the actor had no opportunities during that stretch, which the model expresses directly by not giving them any.</p>
 <p>An ERGM or a TERGM has no comparable move available, because it is defined as a probability distribution <strong>over graphs on a fixed node set</strong>. A graph on 26 nodes and a graph on 22 nodes are elements of different sample spaces, and there is no natural way to write a single ERGM over both. This is why the TERGM companion document has to drop four pupils and take the loss, and it is a real, if narrow, advantage of the actor-oriented framing. See <a href="tergm.html#a-composition-problem-and-why-it-is-not-a-nuisance">Temporal ERGMs §6.1</a>.</p>
 </div>
 </div>
@@ -2510,14 +2509,13 @@ window.Quarto = {
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    0    1    9   10 </span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3346  499  125  386</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-live">live &lt;1s</span></p>
 <p>Nearly 400 cells coded <code>10</code>. Those are the ones this document is about.</p>
 </section>
 <section id="building-the-composition-change-object" class="level1">
 <h1>3. Building the composition-change object</h1>
 <section id="first-the-two-missing-codes-go-to-na" class="level2">
 <h2 class="anchored" data-anchor-id="first-the-two-missing-codes-go-to-na">3.1 First, the two missing codes go to <code>NA</code></h2>
-<p>Both <code>9</code> and <code>10</code> become <code>NA</code> in the network array. That may look like it defeats the purpose — we just said they are different things. The point is that the <em>distinction</em> is carried by a <strong>separate object</strong>, not by the tie values. RSiena needs to be told who was present when, and once it knows that, it can tell which <code>NA</code>s are structural and which are incidental.</p>
+<p>Both <code>9</code> and <code>10</code> become <code>NA</code> in the network array. That may look like it defeats the purpose: we just said they are different things. The point is that the <em>distinction</em> is carried by a <strong>separate object</strong>, not by the tie values. RSiena needs to be told who was present when, and once it knows that, it can tell which <code>NA</code>s are structural and which are incidental.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(raw[[<span class="dv">1</span>]])</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_integer_</span>, <span class="at">dim =</span> <span class="fu">c</span>(n, n, <span class="dv">4</span>))</span>
@@ -2547,13 +2545,13 @@ window.Quarto = {
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   2.5   0   0  1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Thirty of the 33 pupils were present the whole time (<code>1</code> to <code>4</code>). Three were not: one <strong>left</strong> at 1.5 (partway through period 1), one <strong>left</strong> at 3.5 (partway through period 3), and one <strong>arrived</strong> at 2.5 (partway through period 2).</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Stuck? — what the fractional times mean">
+<div class="callout callout-style-default callout-tip callout-titled" title="Stuck? What the fractional times mean">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Stuck? — what the fractional times mean
+<span class="screen-reader-only">Tip</span>Stuck? What the fractional times mean
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -2606,8 +2604,7 @@ window.Quarto = {
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Constant covariates:  sex</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-live">live &lt;1s</span></p>
-<p>Read the print-out. The line that matters is <strong><code>With composition change.</code></strong> — that is your confirmation that RSiena took the object and will use it. If it is absent, <code>cc</code> did not make it into <code>sienaDataCreate()</code> and everything below is wrong.</p>
+<p>Read the print-out. The line that matters is <strong><code>With composition change.</code></strong> That is your confirmation that RSiena took the object and will use it. If it is absent, <code>cc</code> did not make it into <code>sienaDataCreate()</code> and everything below is wrong.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">actors =</span> n,</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">waves =</span> <span class="dv">4</span>,</span>
@@ -2652,7 +2649,6 @@ window.Quarto = {
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                    3-cycles -0.599 0.116</span></span>
 <span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                    same sex  0.814 0.149</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-live">live ~6s</span></p>
 <p>Convergence first, as always:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">as.numeric</span>(ans<span class="sc">$</span>tconv.max), <span class="dv">4</span>)</span>
@@ -2661,14 +2657,14 @@ window.Quarto = {
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05297928</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>tconv.max</code> under 0.25 and all individual t-ratios under 0.1: this converged properly and you could report it.</p>
-<p>Substantively: strong reciprocity, positive transitive triplets, negative 3-cycles (so closure is hierarchical rather than egalitarian — ties close into transitive triads but not into cycles), and same-sex friendship is clearly favoured. Standard adolescent-friendship findings, which is reassuring on a dataset this small.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Depth — what the rate parameters are telling you">
+<p>Substantively: strong reciprocity, positive transitive triplets, negative 3-cycles (so closure is hierarchical rather than egalitarian: ties close into transitive triads but not into cycles), and same-sex friendship is clearly favoured. Standard adolescent-friendship findings, which is reassuring on a dataset this small.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Depth: what the rate parameters are telling you">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Depth — what the rate parameters are telling you
+<span class="screen-reader-only">Note</span>Depth: what the rate parameters are telling you
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -2677,22 +2673,22 @@ window.Quarto = {
 <p>First, a note on why they are visible at all. By default <code>siena07</code> uses <strong>conditional estimation</strong>, which conditions on the observed number of changes and does not report the rates as estimated parameters. Composition change makes conditional estimation impossible, so RSiena switches to unconditional estimation and the rate parameters appear in the output. You get them here as a side effect of the thing this document is about. (The Core exercise below turns this into the diagnostic it deserves to be.)</p>
 <p>The three <code>constant fr rate</code> parameters are the estimated number of opportunities each actor gets to change a tie in each period. They are around 6, meaning the model thinks a typical pupil considered changing about six ties between consecutive waves.</p>
 <p>Two things to notice.</p>
-<p>First, these are <strong>opportunities, not changes.</strong> An actor who gets an opportunity is free to decide their current network is fine and change nothing — that is the “no change” option in the multinomial choice, and it is chosen often.</p>
+<p>First, these are <strong>opportunities, not changes.</strong> An actor who gets an opportunity is free to decide their current network is fine and change nothing: that is the “no change” option in the multinomial choice, and it is chosen often.</p>
 <p>Second, this is precisely the parameter that composition change protects. Absent actors get <strong>zero</strong> opportunities in the periods when they are away, rather than being scored as actors who had six opportunities and used all of them to do nothing. Drop the composition-change object and the rate estimates absorb the absences, which distorts your reading of how fast the network is actually moving.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="structural-zeros-the-older-approach-and-why-not-to-use-it" class="level1">
-<h1>5. Structural zeros — the older approach, and why not to use it</h1>
+<section id="structural-zeros-the-alternative-approach" class="level1">
+<h1>5. Structural zeros, the alternative approach</h1>
 <p>You will see a different technique in the literature and in older teaching material: code the absent actors’ ties as <strong>structural zeros</strong> (value <code>10</code> in the network array, with <code>allowOnly = FALSE</code>), which tells RSiena those cells are fixed and not to be modelled.</p>
-<p>It works, in the sense that it runs. But the current RSiena manual is direct about it: structural zeros for this purpose are <strong>“not a recommended option,”</strong> retained <strong>“mainly for historical reasons (to understand earlier publications).”</strong></p>
+<p>This is a supported approach for method-of-moments estimation, not a deprecated feature kept only for historical replication. The current RSiena manual presents structural-zero coding and composition-change directives as two ways to represent changing composition. It prefers a composition-change object when endowment or creation effects are needed, and it documents additional caveats for maximum-likelihood and Bayesian estimation. Those qualifications are more specific than a blanket rule against structural zeros.</p>
 <p>Two reasons to prefer <code>sienaCompositionChange()</code>:</p>
 <ol type="1">
 <li><strong>A structural zero says “this tie is fixed at zero.”</strong> That is a statement about a tie that exists as a question. Composition change says “this actor was not here.” Only the second one is true, and only the second one correctly removes the actor from the rate function.</li>
-<li><strong>Structural zeros are all-or-nothing per wave.</strong> Composition change accepts the fractional entry and exit times you saw in §3.2, which is closer to what actually happened.</li>
+<li><strong>Composition directives can encode fractional entry and exit times directly.</strong> Structural zero coding records the constraint at observation waves. The directive therefore uses more timing information when those entry and exit times are known.</li>
 </ol>
-<p>So why does the older approach persist? Because it predates the alternative, and because a large body of published work uses it — you need to recognise it to read that work. If you are replicating a paper that used structural zeros, use structural zeros, and say so. If you are writing something new, use composition change.</p>
+<p>Structural-zero coding persists because it remains useful and because a large body of published work uses it. If you are replicating a paper that used structural zeros, preserve the coding and say so. For a new method-of-moments analysis with known entry and exit times, a composition-change object is usually the clearer representation, especially when creation or endowment effects are part of the specification.</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="What structural zeros are legitimately for">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2714,7 +2710,7 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href>Core</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href>Stretch</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href>Solution</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p>Refit the §4 model <strong>without</strong> the composition-change object — that is, using only <code>sienaDataCreate(fr, sex)</code> — and compare the rate parameters with the ones you got in §4.</p>
+<p>Refit the §4 model <strong>without</strong> the composition-change object: that is, using only <code>sienaDataCreate(fr, sex)</code>, and compare the rate parameters with the ones you got in §4.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dat_nocc <span class="ot">&lt;-</span> <span class="fu">sienaDataCreate</span>(fr, sex)          <span class="co"># note: no `cc`</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">getEffects</span>(dat_nocc)</span>
@@ -2727,7 +2723,7 @@ window.Quarto = {
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>Only three of 33 pupils move in and out here, which is why the §4 vs Core comparison is undramatic. Construct a harsher test: build a second composition-change object that additionally treats the pupils with the <strong>most incidentally missing data</strong> (code <code>9</code>) as if they had been absent for the wave in which they are missing, refit, and see how much further the estimates shift.</p>
-<p>Then argue — this is the real exercise — whether that second object is a <em>better</em> description of the data than the first, or a worse one. There is a defensible answer in each direction and what matters is that you can say which distinction from §1 you are relying on.</p>
+<p>Then argue: this is the real exercise: whether that second object is a <em>better</em> description of the data than the first, or a worse one. There is a defensible answer in each direction and what matters is that you can say which distinction from §1 you are relying on.</p>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <div class="cell">
@@ -2758,7 +2754,7 @@ window.Quarto = {
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    with_comp without_comp </span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        FALSE         TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Without composition change, RSiena used <strong>conditional estimation</strong>: it conditions on the observed number of tie changes in each period and does not estimate the rate parameters as free parameters at all — they are recovered afterwards and stored in <code>$rate</code>. With composition change, conditional estimation is <strong>not available</strong>, so RSiena silently switched to unconditional estimation and the rates became ordinary parameters in <code>$theta</code>.</p>
+<p>Without composition change, RSiena used <strong>conditional estimation</strong>: it conditions on the observed number of tie changes in each period and does not estimate the rate parameters as free parameters at all: they are recovered afterwards and stored in <code>$rate</code>. With composition change, conditional estimation is <strong>not available</strong>, so RSiena silently switched to unconditional estimation and the rates became ordinary parameters in <code>$theta</code>.</p>
 <p>Nothing warned you about this. It is a good habit to check <code>length(theta)</code> and <code>$cconditional</code> whenever two SAOM fits refuse to line up.</p>
 <p>Now the actual comparison. Rates first, pulling them from wherever each fit put them:</p>
 <div class="cell">
@@ -2794,16 +2790,16 @@ window.Quarto = {
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    with_comp without_comp </span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    0.1151797    0.1087032</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Core.</strong> The <strong>rate parameters move and the structural effects barely do</strong> — which is what §4’s Depth box predicted, and the pattern of movement is sharper than you might expect.</p>
-<p>Look at <em>which</em> period moves. Periods 1 and 3 agree to within a fraction of a percent. <strong>Period 2 is off by more than twenty percent</strong> — and period 2 is the one containing the arrival, the pupil who joins at time 2.5.</p>
-<p>The general mechanism is the one described earlier: without the composition-change object, an actor who was not in the class is scored as an actor who <em>was</em> there, was handed a full allocation of opportunities, and used every one of them to change nothing. The model has only one dial for that, the rate, so it concludes the network was moving more slowly than it really was — which is the direction we see.</p>
-<p>I will not pretend to a complete account of why the <em>arrival</em> distorts period 2 so much more than the two departures distort periods 1 and 3. Plausibly an arriving actor is the harder case: their ties all become visible at once, and how the estimator reads that burst depends on whether it knows the actor is new. If you want to settle it, the experiment is right there — vary the composition list one mover at a time and refit. That is a genuinely good afternoon’s work and I would rather flag the open question than paper over it.</p>
-<p>The structural parameters — reciprocity, transitivity, homophily — hardly shift, because they are estimated from the actors who actually acted, and those are the same actors in both fits.</p>
-<p>The honest summary of <em>this</em> comparison is that with three movers out of 33 the substantive conclusions do not change. <strong>Do not generalise from that.</strong> The distortion scales with the fraction of your panel that turns over, and it lands hardest on the periods where the turnover happens. With a third of the panel moving in and out — completely ordinary in organisational or clinical data — you get rate estimates that are badly wrong in specific periods, and if the timing of the turnover correlates with anything substantive, the structural estimates follow.</p>
+<p><strong>Core.</strong> The <strong>rate parameters move and the structural effects barely do</strong>, which is what §4’s Depth box predicted, and the pattern of movement is sharper than you might expect.</p>
+<p>Look at <em>which</em> period moves. Periods 1 and 3 agree to within a fraction of a percent. <strong>Period 2 is off by more than twenty percent</strong>, and period 2 is the one containing the arrival, the pupil who joins at time 2.5.</p>
+<p>The general mechanism is the one described earlier: without the composition-change object, an actor who was not in the class is scored as an actor who <em>was</em> there, was handed a full allocation of opportunities, and used every one of them to change nothing. The model has only one dial for that, the rate, so it concludes the network was moving more slowly than it really was. That is the direction we see.</p>
+<p>I will not pretend to a complete account of why the <em>arrival</em> distorts period 2 so much more than the two departures distort periods 1 and 3. Plausibly an arriving actor is the harder case: their ties all become visible at once, and how the estimator reads that burst depends on whether it knows the actor is new. If you want to settle it, the experiment is right there: vary the composition list one mover at a time and refit. That is a genuinely good afternoon’s work and I would rather flag the open question than paper over it.</p>
+<p>The structural parameters: reciprocity, transitivity, homophily: hardly shift, because they are estimated from the actors who actually acted, and those are the same actors in both fits.</p>
+<p>The honest summary of <em>this</em> comparison is that with three movers out of 33 the substantive conclusions do not change. <strong>Do not generalise from that.</strong> The distortion scales with the fraction of your panel that turns over, and it lands hardest on the periods where the turnover happens. With a third of the panel moving in and out: completely ordinary in organisational or clinical data: you get rate estimates that are badly wrong in specific periods, and if the timing of the turnover correlates with anything substantive, the structural estimates follow.</p>
 <p>So the reason to use composition change here is not that it rescues this analysis. It is that it is the correct model of what happened, it costs three lines, and you will not remember to add it later when the stakes are higher.</p>
-<p><strong>Stretch.</strong> The argument against the harsher object: a pupil who was absent on survey day is a <strong>genuine missing-data</strong> problem, and RSiena’s missing-data machinery is designed for it — it imputes during simulation and excludes those cells from the target statistics, which is the statistically correct treatment. Recoding them as composition change tells the model something false (they were not in the class) in order to avoid a problem the model already handles well.</p>
-<p>The argument for it: if a pupil is missing at a wave, you have no information about their choices at that wave either way, and the rate function is arguably better off not attributing opportunities to them. This is more defensible when the missingness is heavy and long — a pupil missing three of four waves is functionally absent whatever the coding says.</p>
-<p>The distinction from §1 that decides it: <strong>was the tie well defined and unobserved, or undefined?</strong> For a pupil who was enrolled but off sick, the tie was well defined. That points to missing data, not composition change. The line genuinely blurs when absences get long enough that “enrolled” stops describing anything real — and at that point you should say in your write-up which choice you made and why, because a reader cannot tell from the coefficients.</p>
+<p><strong>Stretch.</strong> The argument against the harsher object: a pupil who was absent on survey day is a <strong>genuine missing-data</strong> problem, and RSiena’s missing-data machinery is designed for it: it imputes during simulation and excludes those cells from the target statistics, which is the statistically correct treatment. Recoding them as composition change tells the model something false (they were not in the class) in order to avoid a problem the model already handles well.</p>
+<p>The argument for it: if a pupil is missing at a wave, you have no information about their choices at that wave either way, and the rate function is arguably better off not attributing opportunities to them. This is more defensible when the missingness is heavy and long: a pupil missing three of four waves is functionally absent whatever the coding says.</p>
+<p>The distinction from §1 that decides it: <strong>was the tie well defined and unobserved, or undefined?</strong> For a pupil who was enrolled but off sick, the tie was well defined. That points to missing data, not composition change. The line genuinely blurs when absences get long enough that “enrolled” stops describing anything real, and at that point you should say in your write-up which choice you made and why, because a reader cannot tell from the coefficients.</p>
 </div>
 </div>
 </div>
@@ -2811,13 +2807,13 @@ window.Quarto = {
 <section id="readings" class="level1">
 <h1>7. Readings</h1>
 <ul>
-<li><strong>Ripley, Snijders, Boda &amp; Vörös</strong>, <em>Manual for RSiena</em> (current edition — check <a href="https://www.stats.ox.ac.uk/~snijders/siena/">stats.ox.ac.uk/~snijders/siena</a> for the latest). The composition-change section is short and worth reading in full. <strong>Note the syllabus cites a 2012 edition with Preciado as an author</strong> — that is roughly fourteen years stale and the author line has changed. Use the current one.</li>
+<li><strong>Ripley, Snijders, Boda &amp; Vörös</strong>, <em>Manual for RSiena</em> (current edition: check <a href="https://www.stats.ox.ac.uk/~snijders/siena/">stats.ox.ac.uk/~snijders/siena</a> for the latest). The composition-change section is short and worth reading in full. <strong>Note the syllabus cites a 2012 edition with Preciado as an author</strong>, which is roughly fourteen years stale, and the author line has changed. Use the current one.</li>
 <li><strong>Huisman &amp; Snijders (2003)</strong>, “Statistical analysis of longitudinal network data with changing composition,” <em>Sociological Methods &amp; Research</em> 32(2):253–287. The method underneath <code>sienaCompositionChange()</code>.</li>
 <li><strong>Huisman &amp; Steglich (2008)</strong>, “Treatment of non-response in longitudinal network studies,” <em>Social Networks</em> 30(4):297–308. On the §1 distinction, done carefully, with simulations showing when it matters.</li>
 </ul>
 <div class="cell">
 <details class="code-fold">
-<summary>Versions — expand if your numbers differ from mine</summary>
+<summary>Versions: expand if your numbers differ from mine</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> <span class="st">&quot;RSiena&quot;</span>,</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;RSiena&quot;</span>)))</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   package version</span></span>
@@ -3299,443 +3295,441 @@ window.Quarto = {
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>{{&lt; include _ancillary_header.qmd &gt;}}</span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title=&quot;What this extends, and why it is here&quot;}</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>**Extends:** the SAOM session (day 5, W3 Tue). We fitted <span class="in">`s50`</span>, which is a tidy dataset — 50 girls, all</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>**Extends:** the SAOM session (day 5, W3 Tue). We fitted <span class="in">`s50`</span>, which is a tidy dataset: 50 girls, all</span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>present at all three waves. Your data will not be like that.</span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>**The problem it solves:** actors who join or leave between waves. Students transfer schools,</span>
 <span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>firms are founded and go bankrupt, states enter and exit the international system, patients are</span>
 <span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>discharged. If you have panel network data of any real duration, you have this problem, and the</span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>default thing people do about it — drop everyone who was not there the whole time — throws away</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>default thing people do about it: drop everyone who was not there the whole time: throws away</span>
 <span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>data and can bias what is left.</span>
 <span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>**What you need:** <span class="in">`RSiena`</span>, plus the four <span class="in">`klas12p-*.dat`</span> files shipped alongside this document</span>
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>in <span class="in">`data/`</span>. Nothing to download.</span>
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>**Total runtime, cold:** about **20 seconds**.</span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. Why this is not just a missing-data problem</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>There is a distinction here that is easy to blur and expensive to get wrong.</span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>**Missing data** means the tie exists as a question but you do not know the answer. Pupil 7 was</span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>off sick the day the survey ran, so you do not know whether 7 nominated 12 as a friend. The tie</span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>variable $y_{7,12}$ is well defined; you just did not observe it. RSiena handles this by</span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>imputing during simulation and excluding the cell from the target statistics.</span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>**Composition change** means the tie does not exist as a question at all. Pupil 7 had not yet</span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>joined the class. There is no fact of the matter about whether 7 nominated 12, because 7 was</span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>not there to nominate anybody. $y_{7,12}$ is not unknown, it is **undefined**.</span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>Treating the second as if it were the first inflates your sample with cells that were never</span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>real, and — more insidiously — it tells the model that a bunch of actors spent a wave making</span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>the deliberate choice to have zero friends. The rate function will then work hard to explain</span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>why those actors were so inactive. They were not inactive. They were absent.</span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth — why the actor-oriented formulation can do this at all&quot;}</span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>This is one of the genuinely nice consequences of writing the model at the level of actors</span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>rather than graphs.</span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>A SAOM says: time runs continuously; every so often an actor gets an opportunity to change one</span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>tie; when they do, they pick the option that maximises their objective function plus noise. The</span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>model is a description of **what individual actors do**. If an actor is not present during some</span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>stretch of time, that is not a hole in the data — it simply means the actor had no opportunities</span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>during that stretch, which the model expresses directly by not giving them any.</span>
-<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>An ERGM or a TERGM has no comparable move available, because it is defined as a probability</span>
-<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>distribution **over graphs on a fixed node set**. A graph on 26 nodes and a graph on 22 nodes</span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>are elements of different sample spaces, and there is no natural way to write a single ERGM</span>
-<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>over both. This is why the TERGM companion document has to drop four pupils and take the loss,</span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>and it is a real, if narrow, advantage of the actor-oriented framing. See</span>
-<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Temporal ERGMs §6.1</span><span class="co">](tergm.html#a-composition-problem-and-why-it-is-not-a-nuisance)</span>.</span>
-<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. The data</span></span>
-<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>Andrea Knecht&#39;s Dutch classroom study, class 12p: 33 pupils, four waves of friendship</span>
-<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>nominations, with pupils entering and leaving. The files ship with this document.</span>
-<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a>The coding scheme matters and it is exactly the distinction from §1:</span>
-<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> code <span class="pp">|</span> meaning <span class="pp">|</span> what to do with it <span class="pp">|</span></span>
-<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`0`</span> <span class="pp">|</span> no friendship <span class="pp">|</span> leave as 0 <span class="pp">|</span></span>
-<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`1`</span> <span class="pp">|</span> friendship <span class="pp">|</span> leave as 1 <span class="pp">|</span></span>
-<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`9`</span> <span class="pp">|</span> **incidentally** missing nominator (absent that day) <span class="pp">|</span> → <span class="in">`NA`</span>, genuine missing data <span class="pp">|</span></span>
-<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`10`</span> <span class="pp">|</span> **structurally** missing (not in the class at that wave) <span class="pp">|</span> → composition change <span class="pp">|</span></span>
-<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: read</span></span>
-<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(RSiena))</span>
-<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>rd <span class="ot">&lt;-</span> <span class="cf">function</span>(f) <span class="fu">as.matrix</span>(<span class="fu">read.table</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, f)))</span>
-<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>wave_files <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;klas12p-friends-wave&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;D&quot;</span>), <span class="st">&quot;.dat&quot;</span>)</span>
-<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">&lt;-</span> <span class="fu">lapply</span>(wave_files, rd)</span>
-<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n_actors =</span> <span class="fu">nrow</span>(raw[[<span class="dv">1</span>]]), <span class="at">n_waves =</span> <span class="fu">length</span>(raw))</span>
-<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">unlist</span>(raw))</span>
-<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live &lt;1s</span><span class="co">]</span>{.rt .rt-live}</span>
-<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a>Nearly 400 cells coded <span class="in">`10`</span>. Those are the ones this document is about.</span>
-<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. Building the composition-change object</span></span>
-<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3.1 First, the two missing codes go to `NA`</span></span>
-<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>Both <span class="in">`9`</span> and <span class="in">`10`</span> become <span class="in">`NA`</span> in the network array. That may look like it defeats the purpose —</span>
-<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a>we just said they are different things. The point is that the *distinction* is carried by a</span>
-<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>**separate object**, not by the tie values. RSiena needs to be told who was present when, and</span>
-<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>once it knows that, it can tell which <span class="in">`NA`</span>s are structural and which are incidental.</span>
-<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: array</span></span>
-<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(raw[[<span class="dv">1</span>]])</span>
-<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_integer_</span>, <span class="at">dim =</span> <span class="fu">c</span>(n, n, <span class="dv">4</span>))</span>
-<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
-<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> raw[[i]]</span>
-<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a>  m[m <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">9</span>, <span class="dv">10</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(m) <span class="ot">&lt;-</span> <span class="cn">NA</span>                      <span class="co"># self-ties are never defined</span></span>
-<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>  arr[, , i] <span class="ot">&lt;-</span> m</span>
-<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a>fr <span class="ot">&lt;-</span> <span class="fu">sienaDependent</span>(arr)</span>
-<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a>fr</span>
-<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3.2 Then, who was present when</span></span>
-<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a><span class="in">`klas12p-composition.dat`</span> has one row per actor and two columns: the wave at which they</span>
-<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a>**entered** and the wave at which they **left**, on a continuous scale where wave 1 is time 1</span>
-<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a>and wave 4 is time 4. A value of <span class="in">`2.5`</span> means the actor arrived halfway between waves 2 and 3.</span>
-<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: comp</span></span>
-<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a>comp <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;klas12p-composition.dat&quot;</span>))</span>
-<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(comp) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;enters&quot;</span>, <span class="st">&quot;leaves&quot;</span>)</span>
-<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(comp<span class="sc">$</span>enters, comp<span class="sc">$</span>leaves)</span>
-<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a>Thirty of the 33 pupils were present the whole time (<span class="in">`1`</span> to <span class="in">`4`</span>). Three were not: one **left**</span>
-<span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a>at 1.5 (partway through period 1), one **left** at 3.5 (partway through period 3), and one</span>
-<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a>**arrived** at 2.5 (partway through period 2).</span>
-<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? — what the fractional times mean&quot;}</span>
-<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a>The intervals are on the same continuous clock the SAOM uses internally. Because the model runs</span>
-<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a>in continuous time between waves, it can accept &quot;this actor joined partway through period 2&quot;</span>
-<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a>and simply give them opportunities to act from that moment onward.</span>
-<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-151"><a href="#cb16-151" aria-hidden="true" tabindex="-1"></a>If you do not know when someone joined, use the wave at which you first observed them. Being</span>
-<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a>approximately right is much better than pretending they were there all along, and much better</span>
-<span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a>than deleting them.</span>
-<span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. Why this is not just a missing-data problem</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>There is a distinction here that is easy to blur and expensive to get wrong.</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>**Missing data** means the tie exists as a question but you do not know the answer. Pupil 7 was</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>off sick the day the survey ran, so you do not know whether 7 nominated 12 as a friend. The tie</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>variable $y_{7,12}$ is well defined; you just did not observe it. RSiena handles this by</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>imputing during simulation and excluding the cell from the target statistics.</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>**Composition change** means the tie does not exist as a question at all. Pupil 7 had not yet</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>joined the class. There is no fact of the matter about whether 7 nominated 12, because 7 was</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>not there to nominate anybody. $y_{7,12}$ is not unknown, it is **undefined**.</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>Treating the second as if it were the first inflates your sample with cells that were never</span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>real, and: more insidiously: it tells the model that a bunch of actors spent a wave making</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>the deliberate choice to have zero friends. The rate function will then work hard to explain</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>why those actors were so inactive. They were not inactive. They were absent.</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: why the actor-oriented formulation can do this at all&quot;}</span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>This is one of the genuinely nice consequences of writing the model at the level of actors</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>rather than graphs.</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>A SAOM says: time runs continuously; every so often an actor gets an opportunity to change one</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>tie; when they do, they pick the option that maximises their objective function plus noise. The</span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>model is a description of **what individual actors do**. If an actor is not present during some</span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>stretch of time, that is not a hole in the data: it simply means the actor had no opportunities</span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>during that stretch, which the model expresses directly by not giving them any.</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>An ERGM or a TERGM has no comparable move available, because it is defined as a probability</span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>distribution **over graphs on a fixed node set**. A graph on 26 nodes and a graph on 22 nodes</span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>are elements of different sample spaces, and there is no natural way to write a single ERGM</span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>over both. This is why the TERGM companion document has to drop four pupils and take the loss,</span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>and it is a real, if narrow, advantage of the actor-oriented framing. See</span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Temporal ERGMs §6.1</span><span class="co">](tergm.html#a-composition-problem-and-why-it-is-not-a-nuisance)</span>.</span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. The data</span></span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>Andrea Knecht&#39;s Dutch classroom study, class 12p: 33 pupils, four waves of friendship</span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>nominations, with pupils entering and leaving. The files ship with this document.</span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>The coding scheme matters and it is exactly the distinction from §1:</span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> code <span class="pp">|</span> meaning <span class="pp">|</span> what to do with it <span class="pp">|</span></span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`0`</span> <span class="pp">|</span> no friendship <span class="pp">|</span> leave as 0 <span class="pp">|</span></span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`1`</span> <span class="pp">|</span> friendship <span class="pp">|</span> leave as 1 <span class="pp">|</span></span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`9`</span> <span class="pp">|</span> **incidentally** missing nominator (absent that day) <span class="pp">|</span> → <span class="in">`NA`</span>, genuine missing data <span class="pp">|</span></span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`10`</span> <span class="pp">|</span> **structurally** missing (not in the class at that wave) <span class="pp">|</span> → composition change <span class="pp">|</span></span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: read</span></span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(RSiena))</span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>rd <span class="ot">&lt;-</span> <span class="cf">function</span>(f) <span class="fu">as.matrix</span>(<span class="fu">read.table</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, f)))</span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>wave_files <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;klas12p-friends-wave&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;D&quot;</span>), <span class="st">&quot;.dat&quot;</span>)</span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">&lt;-</span> <span class="fu">lapply</span>(wave_files, rd)</span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n_actors =</span> <span class="fu">nrow</span>(raw[[<span class="dv">1</span>]]), <span class="at">n_waves =</span> <span class="fu">length</span>(raw))</span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">unlist</span>(raw))</span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a>Nearly 400 cells coded <span class="in">`10`</span>. Those are the ones this document is about.</span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. Building the composition-change object</span></span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3.1 First, the two missing codes go to `NA`</span></span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>Both <span class="in">`9`</span> and <span class="in">`10`</span> become <span class="in">`NA`</span> in the network array. That may look like it defeats the purpose: </span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>we just said they are different things. The point is that the *distinction* is carried by a</span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a>**separate object**, not by the tie values. RSiena needs to be told who was present when, and</span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>once it knows that, it can tell which <span class="in">`NA`</span>s are structural and which are incidental.</span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: array</span></span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(raw[[<span class="dv">1</span>]])</span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_integer_</span>, <span class="at">dim =</span> <span class="fu">c</span>(n, n, <span class="dv">4</span>))</span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> raw[[i]]</span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>  m[m <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">9</span>, <span class="dv">10</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(m) <span class="ot">&lt;-</span> <span class="cn">NA</span>                      <span class="co"># self-ties are never defined</span></span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a>  arr[, , i] <span class="ot">&lt;-</span> m</span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a>fr <span class="ot">&lt;-</span> <span class="fu">sienaDependent</span>(arr)</span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>fr</span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3.2 Then, who was present when</span></span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a><span class="in">`klas12p-composition.dat`</span> has one row per actor and two columns: the wave at which they</span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a>**entered** and the wave at which they **left**, on a continuous scale where wave 1 is time 1</span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a>and wave 4 is time 4. A value of <span class="in">`2.5`</span> means the actor arrived halfway between waves 2 and 3.</span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: comp</span></span>
+<span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a>comp <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;klas12p-composition.dat&quot;</span>))</span>
+<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(comp) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;enters&quot;</span>, <span class="st">&quot;leaves&quot;</span>)</span>
+<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(comp<span class="sc">$</span>enters, comp<span class="sc">$</span>leaves)</span>
+<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>Thirty of the 33 pupils were present the whole time (<span class="in">`1`</span> to <span class="in">`4`</span>). Three were not: one **left**</span>
+<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a>at 1.5 (partway through period 1), one **left** at 3.5 (partway through period 3), and one</span>
+<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a>**arrived** at 2.5 (partway through period 2).</span>
+<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? What the fractional times mean&quot;}</span>
+<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a>The intervals are on the same continuous clock the SAOM uses internally. Because the model runs</span>
+<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a>in continuous time between waves, it can accept &quot;this actor joined partway through period 2&quot;</span>
+<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a>and simply give them opportunities to act from that moment onward.</span>
+<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a>If you do not know when someone joined, use the wave at which you first observed them. Being</span>
+<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a>approximately right is much better than pretending they were there all along, and much better</span>
+<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a>than deleting them.</span>
+<span id="cb16-151"><a href="#cb16-151" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a><span class="in">`sienaCompositionChange()`</span> wants a **list**, one element per actor, each a numeric vector of</span>
+<span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a>the intervals during which that actor was present.</span>
 <span id="cb16-155"><a href="#cb16-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-156"><a href="#cb16-156" aria-hidden="true" tabindex="-1"></a><span class="in">`sienaCompositionChange()`</span> wants a **list**, one element per actor, each a numeric vector of</span>
-<span id="cb16-157"><a href="#cb16-157" aria-hidden="true" tabindex="-1"></a>the intervals during which that actor was present.</span>
-<span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: compchange</span></span>
-<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a>cc_list <span class="ot">&lt;-</span> <span class="fu">Map</span>(<span class="cf">function</span>(a, b) <span class="fu">c</span>(a, b), comp<span class="sc">$</span>enters, comp<span class="sc">$</span>leaves)</span>
-<span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a>movers <span class="ot">&lt;-</span> <span class="fu">which</span>(comp<span class="sc">$</span>enters <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> comp<span class="sc">$</span>leaves <span class="sc">!=</span> <span class="dv">4</span>)</span>
-<span id="cb16-166"><a href="#cb16-166" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc_list[movers])                 <span class="co"># the three who moved</span></span>
-<span id="cb16-167"><a href="#cb16-167" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc_list[<span class="dv">1</span>])                      <span class="co"># a typical pupil, present throughout</span></span>
-<span id="cb16-168"><a href="#cb16-168" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">sienaCompositionChange</span>(cc_list)</span>
-<span id="cb16-169"><a href="#cb16-169" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-170"><a href="#cb16-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-171"><a href="#cb16-171" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3.3 Covariates and the data object</span></span>
-<span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: covars</span></span>
-<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a>dem <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;klas12p-demographics.dat&quot;</span>))</span>
-<span id="cb16-178"><a href="#cb16-178" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(dem) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;ethnicity&quot;</span>, <span class="st">&quot;religion&quot;</span>)</span>
-<span id="cb16-179"><a href="#cb16-179" aria-hidden="true" tabindex="-1"></a>dem[dem <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span>                  <span class="co"># 0 is the missing code for all four</span></span>
-<span id="cb16-180"><a href="#cb16-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-181"><a href="#cb16-181" aria-hidden="true" tabindex="-1"></a>sex <span class="ot">&lt;-</span> <span class="fu">coCovar</span>(dem<span class="sc">$</span>sex)</span>
-<span id="cb16-182"><a href="#cb16-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-183"><a href="#cb16-183" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">sienaDataCreate</span>(fr, sex, cc)</span>
-<span id="cb16-184"><a href="#cb16-184" aria-hidden="true" tabindex="-1"></a>dat</span>
-<span id="cb16-185"><a href="#cb16-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-186"><a href="#cb16-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-187"><a href="#cb16-187" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live &lt;1s</span><span class="co">]</span>{.rt .rt-live}</span>
-<span id="cb16-188"><a href="#cb16-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-189"><a href="#cb16-189" aria-hidden="true" tabindex="-1"></a>Read the print-out. The line that matters is **`With composition change.`** — that is your</span>
-<span id="cb16-190"><a href="#cb16-190" aria-hidden="true" tabindex="-1"></a>confirmation that RSiena took the object and will use it. If it is absent, <span class="in">`cc`</span> did not make</span>
-<span id="cb16-191"><a href="#cb16-191" aria-hidden="true" tabindex="-1"></a>it into <span class="in">`sienaDataCreate()`</span> and everything below is wrong.</span>
-<span id="cb16-192"><a href="#cb16-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-195"><a href="#cb16-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-196"><a href="#cb16-196" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: checkpoint-1</span></span>
-<span id="cb16-197"><a href="#cb16-197" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">actors =</span> n,</span>
-<span id="cb16-198"><a href="#cb16-198" aria-hidden="true" tabindex="-1"></a>           <span class="at">waves =</span> <span class="dv">4</span>,</span>
-<span id="cb16-199"><a href="#cb16-199" aria-hidden="true" tabindex="-1"></a>           <span class="at">movers =</span> <span class="fu">sum</span>(comp<span class="sc">$</span>enters <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> comp<span class="sc">$</span>leaves <span class="sc">!=</span> <span class="dv">4</span>))</span>
-<span id="cb16-200"><a href="#cb16-200" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-201"><a href="#cb16-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-202"><a href="#cb16-202" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Fitting, and what changes</span></span>
-<span id="cb16-203"><a href="#cb16-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-206"><a href="#cb16-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-207"><a href="#cb16-207" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit</span></span>
-<span id="cb16-208"><a href="#cb16-208" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">getEffects</span>(dat)</span>
-<span id="cb16-209"><a href="#cb16-209" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff, transTrip, cycle3)</span>
-<span id="cb16-210"><a href="#cb16-210" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff, sameX, <span class="at">interaction1 =</span> <span class="st">&quot;sex&quot;</span>)</span>
+<span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: compchange</span></span>
+<span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a>cc_list <span class="ot">&lt;-</span> <span class="fu">Map</span>(<span class="cf">function</span>(a, b) <span class="fu">c</span>(a, b), comp<span class="sc">$</span>enters, comp<span class="sc">$</span>leaves)</span>
+<span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a>movers <span class="ot">&lt;-</span> <span class="fu">which</span>(comp<span class="sc">$</span>enters <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> comp<span class="sc">$</span>leaves <span class="sc">!=</span> <span class="dv">4</span>)</span>
+<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc_list[movers])                 <span class="co"># the three who moved</span></span>
+<span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc_list[<span class="dv">1</span>])                      <span class="co"># a typical pupil, present throughout</span></span>
+<span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">sienaCompositionChange</span>(cc_list)</span>
+<span id="cb16-166"><a href="#cb16-166" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-167"><a href="#cb16-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-168"><a href="#cb16-168" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3.3 Covariates and the data object</span></span>
+<span id="cb16-169"><a href="#cb16-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: covars</span></span>
+<span id="cb16-174"><a href="#cb16-174" aria-hidden="true" tabindex="-1"></a>dem <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;klas12p-demographics.dat&quot;</span>))</span>
+<span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(dem) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;ethnicity&quot;</span>, <span class="st">&quot;religion&quot;</span>)</span>
+<span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a>dem[dem <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span>                  <span class="co"># 0 is the missing code for all four</span></span>
+<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-178"><a href="#cb16-178" aria-hidden="true" tabindex="-1"></a>sex <span class="ot">&lt;-</span> <span class="fu">coCovar</span>(dem<span class="sc">$</span>sex)</span>
+<span id="cb16-179"><a href="#cb16-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-180"><a href="#cb16-180" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">sienaDataCreate</span>(fr, sex, cc)</span>
+<span id="cb16-181"><a href="#cb16-181" aria-hidden="true" tabindex="-1"></a>dat</span>
+<span id="cb16-182"><a href="#cb16-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-183"><a href="#cb16-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-184"><a href="#cb16-184" aria-hidden="true" tabindex="-1"></a>Read the print-out. The line that matters is **`With composition change.`** That is your</span>
+<span id="cb16-185"><a href="#cb16-185" aria-hidden="true" tabindex="-1"></a>confirmation that RSiena took the object and will use it. If it is absent, <span class="in">`cc`</span> did not make</span>
+<span id="cb16-186"><a href="#cb16-186" aria-hidden="true" tabindex="-1"></a>it into <span class="in">`sienaDataCreate()`</span> and everything below is wrong.</span>
+<span id="cb16-187"><a href="#cb16-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-190"><a href="#cb16-190" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-191"><a href="#cb16-191" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: checkpoint-1</span></span>
+<span id="cb16-192"><a href="#cb16-192" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">actors =</span> n,</span>
+<span id="cb16-193"><a href="#cb16-193" aria-hidden="true" tabindex="-1"></a>           <span class="at">waves =</span> <span class="dv">4</span>,</span>
+<span id="cb16-194"><a href="#cb16-194" aria-hidden="true" tabindex="-1"></a>           <span class="at">movers =</span> <span class="fu">sum</span>(comp<span class="sc">$</span>enters <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> comp<span class="sc">$</span>leaves <span class="sc">!=</span> <span class="dv">4</span>))</span>
+<span id="cb16-195"><a href="#cb16-195" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-196"><a href="#cb16-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-197"><a href="#cb16-197" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Fitting, and what changes</span></span>
+<span id="cb16-198"><a href="#cb16-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-201"><a href="#cb16-201" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-202"><a href="#cb16-202" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit</span></span>
+<span id="cb16-203"><a href="#cb16-203" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">getEffects</span>(dat)</span>
+<span id="cb16-204"><a href="#cb16-204" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff, transTrip, cycle3)</span>
+<span id="cb16-205"><a href="#cb16-205" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff, sameX, <span class="at">interaction1 =</span> <span class="st">&quot;sex&quot;</span>)</span>
+<span id="cb16-206"><a href="#cb16-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-207"><a href="#cb16-207" aria-hidden="true" tabindex="-1"></a>alg <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
+<span id="cb16-208"><a href="#cb16-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-209"><a href="#cb16-209" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;saom_comp&quot;</span>,</span>
+<span id="cb16-210"><a href="#cb16-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff, <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb16-211"><a href="#cb16-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-212"><a href="#cb16-212" aria-hidden="true" tabindex="-1"></a>alg <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
-<span id="cb16-213"><a href="#cb16-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-214"><a href="#cb16-214" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;saom_comp&quot;</span>,</span>
-<span id="cb16-215"><a href="#cb16-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff, <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb16-212"><a href="#cb16-212" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">effect =</span> ans<span class="sc">$</span>effects<span class="sc">$</span>effectName,</span>
+<span id="cb16-213"><a href="#cb16-213" aria-hidden="true" tabindex="-1"></a>           <span class="at">est =</span> <span class="fu">round</span>(ans<span class="sc">$</span>theta, <span class="dv">3</span>),</span>
+<span id="cb16-214"><a href="#cb16-214" aria-hidden="true" tabindex="-1"></a>           <span class="at">se  =</span> <span class="fu">round</span>(<span class="fu">sqrt</span>(<span class="fu">diag</span>(ans<span class="sc">$</span>covtheta)), <span class="dv">3</span>))</span>
+<span id="cb16-215"><a href="#cb16-215" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb16-216"><a href="#cb16-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-217"><a href="#cb16-217" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">effect =</span> ans<span class="sc">$</span>effects<span class="sc">$</span>effectName,</span>
-<span id="cb16-218"><a href="#cb16-218" aria-hidden="true" tabindex="-1"></a>           <span class="at">est =</span> <span class="fu">round</span>(ans<span class="sc">$</span>theta, <span class="dv">3</span>),</span>
-<span id="cb16-219"><a href="#cb16-219" aria-hidden="true" tabindex="-1"></a>           <span class="at">se  =</span> <span class="fu">round</span>(<span class="fu">sqrt</span>(<span class="fu">diag</span>(ans<span class="sc">$</span>covtheta)), <span class="dv">3</span>))</span>
-<span id="cb16-220"><a href="#cb16-220" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live ~6s</span><span class="co">]</span>{.rt .rt-live}</span>
-<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a>Convergence first, as always:</span>
-<span id="cb16-225"><a href="#cb16-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-228"><a href="#cb16-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-229"><a href="#cb16-229" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: conv</span></span>
-<span id="cb16-230"><a href="#cb16-230" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">as.numeric</span>(ans<span class="sc">$</span>tconv.max), <span class="dv">4</span>)</span>
-<span id="cb16-231"><a href="#cb16-231" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(<span class="fu">abs</span>(ans<span class="sc">$</span>tstat))</span>
-<span id="cb16-232"><a href="#cb16-232" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-233"><a href="#cb16-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-234"><a href="#cb16-234" aria-hidden="true" tabindex="-1"></a><span class="in">`tconv.max`</span> under 0.25 and all individual t-ratios under 0.1: this converged properly and you</span>
-<span id="cb16-235"><a href="#cb16-235" aria-hidden="true" tabindex="-1"></a>could report it.</span>
-<span id="cb16-236"><a href="#cb16-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-237"><a href="#cb16-237" aria-hidden="true" tabindex="-1"></a>Substantively: strong reciprocity, positive transitive triplets, negative 3-cycles (so closure</span>
-<span id="cb16-238"><a href="#cb16-238" aria-hidden="true" tabindex="-1"></a>is hierarchical rather than egalitarian — ties close into transitive triads but not into</span>
-<span id="cb16-239"><a href="#cb16-239" aria-hidden="true" tabindex="-1"></a>cycles), and same-sex friendship is clearly favoured. Standard adolescent-friendship findings,</span>
-<span id="cb16-240"><a href="#cb16-240" aria-hidden="true" tabindex="-1"></a>which is reassuring on a dataset this small.</span>
-<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth — what the rate parameters are telling you&quot;}</span>
-<span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a>First, a note on why they are visible at all. By default <span class="in">`siena07`</span> uses **conditional</span>
-<span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a>estimation**, which conditions on the observed number of changes and does not report the rates</span>
-<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a>as estimated parameters. Composition change makes conditional estimation impossible, so RSiena</span>
-<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a>switches to unconditional estimation and the rate parameters appear in the output. You get them</span>
-<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a>here as a side effect of the thing this document is about. (The Core exercise below turns this</span>
-<span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a>into the diagnostic it deserves to be.)</span>
-<span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a>The three <span class="in">`constant fr rate`</span> parameters are the estimated number of opportunities each actor</span>
-<span id="cb16-251"><a href="#cb16-251" aria-hidden="true" tabindex="-1"></a>gets to change a tie in each period. They are around 6, meaning the model thinks a typical</span>
-<span id="cb16-252"><a href="#cb16-252" aria-hidden="true" tabindex="-1"></a>pupil considered changing about six ties between consecutive waves.</span>
-<span id="cb16-253"><a href="#cb16-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-254"><a href="#cb16-254" aria-hidden="true" tabindex="-1"></a>Two things to notice.</span>
-<span id="cb16-255"><a href="#cb16-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a>First, these are **opportunities, not changes.** An actor who gets an opportunity is free to</span>
-<span id="cb16-257"><a href="#cb16-257" aria-hidden="true" tabindex="-1"></a>decide their current network is fine and change nothing — that is the &quot;no change&quot; option in the</span>
-<span id="cb16-258"><a href="#cb16-258" aria-hidden="true" tabindex="-1"></a>multinomial choice, and it is chosen often.</span>
+<span id="cb16-217"><a href="#cb16-217" aria-hidden="true" tabindex="-1"></a>Convergence first, as always:</span>
+<span id="cb16-218"><a href="#cb16-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: conv</span></span>
+<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">as.numeric</span>(ans<span class="sc">$</span>tconv.max), <span class="dv">4</span>)</span>
+<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(<span class="fu">abs</span>(ans<span class="sc">$</span>tstat))</span>
+<span id="cb16-225"><a href="#cb16-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-226"><a href="#cb16-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-227"><a href="#cb16-227" aria-hidden="true" tabindex="-1"></a><span class="in">`tconv.max`</span> under 0.25 and all individual t-ratios under 0.1: this converged properly and you</span>
+<span id="cb16-228"><a href="#cb16-228" aria-hidden="true" tabindex="-1"></a>could report it.</span>
+<span id="cb16-229"><a href="#cb16-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-230"><a href="#cb16-230" aria-hidden="true" tabindex="-1"></a>Substantively: strong reciprocity, positive transitive triplets, negative 3-cycles (so closure</span>
+<span id="cb16-231"><a href="#cb16-231" aria-hidden="true" tabindex="-1"></a>is hierarchical rather than egalitarian: ties close into transitive triads but not into</span>
+<span id="cb16-232"><a href="#cb16-232" aria-hidden="true" tabindex="-1"></a>cycles), and same-sex friendship is clearly favoured. Standard adolescent-friendship findings,</span>
+<span id="cb16-233"><a href="#cb16-233" aria-hidden="true" tabindex="-1"></a>which is reassuring on a dataset this small.</span>
+<span id="cb16-234"><a href="#cb16-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-235"><a href="#cb16-235" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: what the rate parameters are telling you&quot;}</span>
+<span id="cb16-236"><a href="#cb16-236" aria-hidden="true" tabindex="-1"></a>First, a note on why they are visible at all. By default <span class="in">`siena07`</span> uses **conditional</span>
+<span id="cb16-237"><a href="#cb16-237" aria-hidden="true" tabindex="-1"></a>estimation**, which conditions on the observed number of changes and does not report the rates</span>
+<span id="cb16-238"><a href="#cb16-238" aria-hidden="true" tabindex="-1"></a>as estimated parameters. Composition change makes conditional estimation impossible, so RSiena</span>
+<span id="cb16-239"><a href="#cb16-239" aria-hidden="true" tabindex="-1"></a>switches to unconditional estimation and the rate parameters appear in the output. You get them</span>
+<span id="cb16-240"><a href="#cb16-240" aria-hidden="true" tabindex="-1"></a>here as a side effect of the thing this document is about. (The Core exercise below turns this</span>
+<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a>into the diagnostic it deserves to be.)</span>
+<span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a>The three <span class="in">`constant fr rate`</span> parameters are the estimated number of opportunities each actor</span>
+<span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a>gets to change a tie in each period. They are around 6, meaning the model thinks a typical</span>
+<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a>pupil considered changing about six ties between consecutive waves.</span>
+<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a>Two things to notice.</span>
+<span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a>First, these are **opportunities, not changes.** An actor who gets an opportunity is free to</span>
+<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a>decide their current network is fine and change nothing: that is the &quot;no change&quot; option in the</span>
+<span id="cb16-251"><a href="#cb16-251" aria-hidden="true" tabindex="-1"></a>multinomial choice, and it is chosen often.</span>
+<span id="cb16-252"><a href="#cb16-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-253"><a href="#cb16-253" aria-hidden="true" tabindex="-1"></a>Second, this is precisely the parameter that composition change protects. Absent actors get</span>
+<span id="cb16-254"><a href="#cb16-254" aria-hidden="true" tabindex="-1"></a>**zero** opportunities in the periods when they are away, rather than being scored as actors</span>
+<span id="cb16-255"><a href="#cb16-255" aria-hidden="true" tabindex="-1"></a>who had six opportunities and used all of them to do nothing. Drop the composition-change</span>
+<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a>object and the rate estimates absorb the absences, which distorts your reading of how fast the</span>
+<span id="cb16-257"><a href="#cb16-257" aria-hidden="true" tabindex="-1"></a>network is actually moving.</span>
+<span id="cb16-258"><a href="#cb16-258" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb16-259"><a href="#cb16-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-260"><a href="#cb16-260" aria-hidden="true" tabindex="-1"></a>Second, this is precisely the parameter that composition change protects. Absent actors get</span>
-<span id="cb16-261"><a href="#cb16-261" aria-hidden="true" tabindex="-1"></a>**zero** opportunities in the periods when they are away, rather than being scored as actors</span>
-<span id="cb16-262"><a href="#cb16-262" aria-hidden="true" tabindex="-1"></a>who had six opportunities and used all of them to do nothing. Drop the composition-change</span>
-<span id="cb16-263"><a href="#cb16-263" aria-hidden="true" tabindex="-1"></a>object and the rate estimates absorb the absences, which distorts your reading of how fast the</span>
-<span id="cb16-264"><a href="#cb16-264" aria-hidden="true" tabindex="-1"></a>network is actually moving.</span>
-<span id="cb16-265"><a href="#cb16-265" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Structural zeros — the older approach, and why not to use it</span></span>
-<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a>You will see a different technique in the literature and in older teaching material: code the</span>
-<span id="cb16-270"><a href="#cb16-270" aria-hidden="true" tabindex="-1"></a>absent actors&#39; ties as **structural zeros** (value <span class="in">`10`</span> in the network array, with</span>
-<span id="cb16-271"><a href="#cb16-271" aria-hidden="true" tabindex="-1"></a><span class="in">`allowOnly = FALSE`</span>), which tells RSiena those cells are fixed and not to be modelled.</span>
+<span id="cb16-260"><a href="#cb16-260" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Structural zeros, the alternative approach</span></span>
+<span id="cb16-261"><a href="#cb16-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-262"><a href="#cb16-262" aria-hidden="true" tabindex="-1"></a>You will see a different technique in the literature and in older teaching material: code the</span>
+<span id="cb16-263"><a href="#cb16-263" aria-hidden="true" tabindex="-1"></a>absent actors&#39; ties as **structural zeros** (value <span class="in">`10`</span> in the network array, with</span>
+<span id="cb16-264"><a href="#cb16-264" aria-hidden="true" tabindex="-1"></a><span class="in">`allowOnly = FALSE`</span>), which tells RSiena those cells are fixed and not to be modelled.</span>
+<span id="cb16-265"><a href="#cb16-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a>This is a supported approach for method-of-moments estimation, not a deprecated feature kept</span>
+<span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a>only for historical replication. The current RSiena manual presents structural-zero coding and</span>
+<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a>composition-change directives as two ways to represent changing composition. It prefers a</span>
+<span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a>composition-change object when endowment or creation effects are needed, and it documents</span>
+<span id="cb16-270"><a href="#cb16-270" aria-hidden="true" tabindex="-1"></a>additional caveats for maximum-likelihood and Bayesian estimation. Those qualifications are</span>
+<span id="cb16-271"><a href="#cb16-271" aria-hidden="true" tabindex="-1"></a>more specific than a blanket rule against structural zeros.</span>
 <span id="cb16-272"><a href="#cb16-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-273"><a href="#cb16-273" aria-hidden="true" tabindex="-1"></a>It works, in the sense that it runs. But the current RSiena manual is direct about it:</span>
-<span id="cb16-274"><a href="#cb16-274" aria-hidden="true" tabindex="-1"></a>structural zeros for this purpose are **&quot;not a recommended option,&quot;** retained</span>
-<span id="cb16-275"><a href="#cb16-275" aria-hidden="true" tabindex="-1"></a>**&quot;mainly for historical reasons (to understand earlier publications).&quot;**</span>
-<span id="cb16-276"><a href="#cb16-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-277"><a href="#cb16-277" aria-hidden="true" tabindex="-1"></a>Two reasons to prefer <span class="in">`sienaCompositionChange()`</span>:</span>
-<span id="cb16-278"><a href="#cb16-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-279"><a href="#cb16-279" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**A structural zero says &quot;this tie is fixed at zero.&quot;** That is a statement about a tie that</span>
-<span id="cb16-280"><a href="#cb16-280" aria-hidden="true" tabindex="-1"></a>   exists as a question. Composition change says &quot;this actor was not here.&quot; Only the second one</span>
-<span id="cb16-281"><a href="#cb16-281" aria-hidden="true" tabindex="-1"></a>   is true, and only the second one correctly removes the actor from the rate function.</span>
-<span id="cb16-282"><a href="#cb16-282" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Structural zeros are all-or-nothing per wave.** Composition change accepts the fractional</span>
-<span id="cb16-283"><a href="#cb16-283" aria-hidden="true" tabindex="-1"></a>   entry and exit times you saw in §3.2, which is closer to what actually happened.</span>
-<span id="cb16-284"><a href="#cb16-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-285"><a href="#cb16-285" aria-hidden="true" tabindex="-1"></a>So why does the older approach persist? Because it predates the alternative, and because a</span>
-<span id="cb16-286"><a href="#cb16-286" aria-hidden="true" tabindex="-1"></a>large body of published work uses it — you need to recognise it to read that work. If you are</span>
-<span id="cb16-287"><a href="#cb16-287" aria-hidden="true" tabindex="-1"></a>replicating a paper that used structural zeros, use structural zeros, and say so. If you are</span>
-<span id="cb16-288"><a href="#cb16-288" aria-hidden="true" tabindex="-1"></a>writing something new, use composition change.</span>
-<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-290"><a href="#cb16-290" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;What structural zeros are legitimately for&quot;}</span>
-<span id="cb16-291"><a href="#cb16-291" aria-hidden="true" tabindex="-1"></a>Do not conclude that structural zeros are obsolete generally. They are the right tool whenever</span>
-<span id="cb16-292"><a href="#cb16-292" aria-hidden="true" tabindex="-1"></a>a tie is genuinely **impossible** rather than merely absent: a directed network where some</span>
-<span id="cb16-293"><a href="#cb16-293" aria-hidden="true" tabindex="-1"></a>actors cannot by construction send ties, two departments that are forbidden to collaborate, a</span>
-<span id="cb16-294"><a href="#cb16-294" aria-hidden="true" tabindex="-1"></a>bipartite structure encoded in a one-mode array.</span>
-<span id="cb16-295"><a href="#cb16-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-296"><a href="#cb16-296" aria-hidden="true" tabindex="-1"></a>The objection here is narrow and specific: using them to represent *actors who were not there*</span>
-<span id="cb16-297"><a href="#cb16-297" aria-hidden="true" tabindex="-1"></a>is a workaround for a problem that now has a purpose-built solution.</span>
-<span id="cb16-298"><a href="#cb16-298" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-273"><a href="#cb16-273" aria-hidden="true" tabindex="-1"></a>Two reasons to prefer <span class="in">`sienaCompositionChange()`</span>:</span>
+<span id="cb16-274"><a href="#cb16-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-275"><a href="#cb16-275" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**A structural zero says &quot;this tie is fixed at zero.&quot;** That is a statement about a tie that</span>
+<span id="cb16-276"><a href="#cb16-276" aria-hidden="true" tabindex="-1"></a>   exists as a question. Composition change says &quot;this actor was not here.&quot; Only the second one</span>
+<span id="cb16-277"><a href="#cb16-277" aria-hidden="true" tabindex="-1"></a>   is true, and only the second one correctly removes the actor from the rate function.</span>
+<span id="cb16-278"><a href="#cb16-278" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Composition directives can encode fractional entry and exit times directly.** Structural</span>
+<span id="cb16-279"><a href="#cb16-279" aria-hidden="true" tabindex="-1"></a>   zero coding records the constraint at observation waves. The directive therefore uses more</span>
+<span id="cb16-280"><a href="#cb16-280" aria-hidden="true" tabindex="-1"></a>   timing information when those entry and exit times are known.</span>
+<span id="cb16-281"><a href="#cb16-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-282"><a href="#cb16-282" aria-hidden="true" tabindex="-1"></a>Structural-zero coding persists because it remains useful and because a large body of published</span>
+<span id="cb16-283"><a href="#cb16-283" aria-hidden="true" tabindex="-1"></a>work uses it. If you are replicating a paper that used structural zeros, preserve the coding and</span>
+<span id="cb16-284"><a href="#cb16-284" aria-hidden="true" tabindex="-1"></a>say so. For a new method-of-moments analysis with known entry and exit times, a composition-change</span>
+<span id="cb16-285"><a href="#cb16-285" aria-hidden="true" tabindex="-1"></a>object is usually the clearer representation, especially when creation or endowment effects are</span>
+<span id="cb16-286"><a href="#cb16-286" aria-hidden="true" tabindex="-1"></a>part of the specification.</span>
+<span id="cb16-287"><a href="#cb16-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-288"><a href="#cb16-288" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;What structural zeros are legitimately for&quot;}</span>
+<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a>Do not conclude that structural zeros are obsolete generally. They are the right tool whenever</span>
+<span id="cb16-290"><a href="#cb16-290" aria-hidden="true" tabindex="-1"></a>a tie is genuinely **impossible** rather than merely absent: a directed network where some</span>
+<span id="cb16-291"><a href="#cb16-291" aria-hidden="true" tabindex="-1"></a>actors cannot by construction send ties, two departments that are forbidden to collaborate, a</span>
+<span id="cb16-292"><a href="#cb16-292" aria-hidden="true" tabindex="-1"></a>bipartite structure encoded in a one-mode array.</span>
+<span id="cb16-293"><a href="#cb16-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-294"><a href="#cb16-294" aria-hidden="true" tabindex="-1"></a>The objection here is narrow and specific: using them to represent *actors who were not there*</span>
+<span id="cb16-295"><a href="#cb16-295" aria-hidden="true" tabindex="-1"></a>is a workaround for a problem that now has a purpose-built solution.</span>
+<span id="cb16-296"><a href="#cb16-296" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-297"><a href="#cb16-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-298"><a href="#cb16-298" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Exercises</span></span>
 <span id="cb16-299"><a href="#cb16-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-300"><a href="#cb16-300" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Exercises</span></span>
+<span id="cb16-300"><a href="#cb16-300" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
 <span id="cb16-301"><a href="#cb16-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-302"><a href="#cb16-302" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb16-302"><a href="#cb16-302" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
 <span id="cb16-303"><a href="#cb16-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-304"><a href="#cb16-304" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
-<span id="cb16-305"><a href="#cb16-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-306"><a href="#cb16-306" aria-hidden="true" tabindex="-1"></a>Refit the §4 model **without** the composition-change object — that is, using only</span>
-<span id="cb16-307"><a href="#cb16-307" aria-hidden="true" tabindex="-1"></a><span class="in">`sienaDataCreate(fr, sex)`</span> — and compare the rate parameters with the ones you got in §4.</span>
-<span id="cb16-308"><a href="#cb16-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-311"><a href="#cb16-311" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-312"><a href="#cb16-312" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb16-313"><a href="#cb16-313" aria-hidden="true" tabindex="-1"></a>dat_nocc <span class="ot">&lt;-</span> <span class="fu">sienaDataCreate</span>(fr, sex)          <span class="co"># note: no `cc`</span></span>
-<span id="cb16-314"><a href="#cb16-314" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">getEffects</span>(dat_nocc)</span>
-<span id="cb16-315"><a href="#cb16-315" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff2, ________, ________)</span>
-<span id="cb16-316"><a href="#cb16-316" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff2, sameX, <span class="at">interaction1 =</span> <span class="st">&quot;sex&quot;</span>)</span>
-<span id="cb16-317"><a href="#cb16-317" aria-hidden="true" tabindex="-1"></a>ans2 <span class="ot">&lt;-</span> <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat_nocc, <span class="at">effects =</span> eff2,</span>
-<span id="cb16-318"><a href="#cb16-318" aria-hidden="true" tabindex="-1"></a>                <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-319"><a href="#cb16-319" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-320"><a href="#cb16-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-321"><a href="#cb16-321" aria-hidden="true" tabindex="-1"></a>In two sentences: which parameters move most, and does the direction of the change match what</span>
-<span id="cb16-322"><a href="#cb16-322" aria-hidden="true" tabindex="-1"></a>§4&#39;s Depth box predicted?</span>
+<span id="cb16-304"><a href="#cb16-304" aria-hidden="true" tabindex="-1"></a>Refit the §4 model **without** the composition-change object: that is, using only</span>
+<span id="cb16-305"><a href="#cb16-305" aria-hidden="true" tabindex="-1"></a><span class="in">`sienaDataCreate(fr, sex)`</span>, and compare the rate parameters with the ones you got in §4.</span>
+<span id="cb16-306"><a href="#cb16-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-309"><a href="#cb16-309" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-310"><a href="#cb16-310" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb16-311"><a href="#cb16-311" aria-hidden="true" tabindex="-1"></a>dat_nocc <span class="ot">&lt;-</span> <span class="fu">sienaDataCreate</span>(fr, sex)          <span class="co"># note: no `cc`</span></span>
+<span id="cb16-312"><a href="#cb16-312" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">getEffects</span>(dat_nocc)</span>
+<span id="cb16-313"><a href="#cb16-313" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff2, ________, ________)</span>
+<span id="cb16-314"><a href="#cb16-314" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff2, sameX, <span class="at">interaction1 =</span> <span class="st">&quot;sex&quot;</span>)</span>
+<span id="cb16-315"><a href="#cb16-315" aria-hidden="true" tabindex="-1"></a>ans2 <span class="ot">&lt;-</span> <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat_nocc, <span class="at">effects =</span> eff2,</span>
+<span id="cb16-316"><a href="#cb16-316" aria-hidden="true" tabindex="-1"></a>                <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-317"><a href="#cb16-317" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-318"><a href="#cb16-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-319"><a href="#cb16-319" aria-hidden="true" tabindex="-1"></a>In two sentences: which parameters move most, and does the direction of the change match what</span>
+<span id="cb16-320"><a href="#cb16-320" aria-hidden="true" tabindex="-1"></a>§4&#39;s Depth box predicted?</span>
+<span id="cb16-321"><a href="#cb16-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-322"><a href="#cb16-322" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stretch</span></span>
 <span id="cb16-323"><a href="#cb16-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-324"><a href="#cb16-324" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stretch</span></span>
-<span id="cb16-325"><a href="#cb16-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-326"><a href="#cb16-326" aria-hidden="true" tabindex="-1"></a>Only three of 33 pupils move in and out here, which is why the §4 vs Core comparison is</span>
-<span id="cb16-327"><a href="#cb16-327" aria-hidden="true" tabindex="-1"></a>undramatic. Construct a harsher test: build a second composition-change object that additionally</span>
-<span id="cb16-328"><a href="#cb16-328" aria-hidden="true" tabindex="-1"></a>treats the pupils with the **most incidentally missing data** (code <span class="in">`9`</span>) as if they had been</span>
-<span id="cb16-329"><a href="#cb16-329" aria-hidden="true" tabindex="-1"></a>absent for the wave in which they are missing, refit, and see how much further the estimates</span>
-<span id="cb16-330"><a href="#cb16-330" aria-hidden="true" tabindex="-1"></a>shift.</span>
-<span id="cb16-331"><a href="#cb16-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-332"><a href="#cb16-332" aria-hidden="true" tabindex="-1"></a>Then argue — this is the real exercise — whether that second object is a *better* description</span>
-<span id="cb16-333"><a href="#cb16-333" aria-hidden="true" tabindex="-1"></a>of the data than the first, or a worse one. There is a defensible answer in each direction and</span>
-<span id="cb16-334"><a href="#cb16-334" aria-hidden="true" tabindex="-1"></a>what matters is that you can say which distinction from §1 you are relying on.</span>
+<span id="cb16-324"><a href="#cb16-324" aria-hidden="true" tabindex="-1"></a>Only three of 33 pupils move in and out here, which is why the §4 vs Core comparison is</span>
+<span id="cb16-325"><a href="#cb16-325" aria-hidden="true" tabindex="-1"></a>undramatic. Construct a harsher test: build a second composition-change object that additionally</span>
+<span id="cb16-326"><a href="#cb16-326" aria-hidden="true" tabindex="-1"></a>treats the pupils with the **most incidentally missing data** (code <span class="in">`9`</span>) as if they had been</span>
+<span id="cb16-327"><a href="#cb16-327" aria-hidden="true" tabindex="-1"></a>absent for the wave in which they are missing, refit, and see how much further the estimates</span>
+<span id="cb16-328"><a href="#cb16-328" aria-hidden="true" tabindex="-1"></a>shift.</span>
+<span id="cb16-329"><a href="#cb16-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-330"><a href="#cb16-330" aria-hidden="true" tabindex="-1"></a>Then argue: this is the real exercise: whether that second object is a *better* description</span>
+<span id="cb16-331"><a href="#cb16-331" aria-hidden="true" tabindex="-1"></a>of the data than the first, or a worse one. There is a defensible answer in each direction and</span>
+<span id="cb16-332"><a href="#cb16-332" aria-hidden="true" tabindex="-1"></a>what matters is that you can say which distinction from §1 you are relying on.</span>
+<span id="cb16-333"><a href="#cb16-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-334"><a href="#cb16-334" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
 <span id="cb16-335"><a href="#cb16-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-336"><a href="#cb16-336" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
-<span id="cb16-337"><a href="#cb16-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-340"><a href="#cb16-340" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-341"><a href="#cb16-341" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-solution</span></span>
-<span id="cb16-342"><a href="#cb16-342" aria-hidden="true" tabindex="-1"></a>dat_nocc <span class="ot">&lt;-</span> <span class="fu">sienaDataCreate</span>(fr, sex)</span>
-<span id="cb16-343"><a href="#cb16-343" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">getEffects</span>(dat_nocc)</span>
-<span id="cb16-344"><a href="#cb16-344" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff2, transTrip, cycle3)</span>
-<span id="cb16-345"><a href="#cb16-345" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff2, sameX, <span class="at">interaction1 =</span> <span class="st">&quot;sex&quot;</span>)</span>
-<span id="cb16-346"><a href="#cb16-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-347"><a href="#cb16-347" aria-hidden="true" tabindex="-1"></a>ans2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;saom_nocomp&quot;</span>,</span>
-<span id="cb16-348"><a href="#cb16-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat_nocc, <span class="at">effects =</span> eff2,</span>
-<span id="cb16-349"><a href="#cb16-349" aria-hidden="true" tabindex="-1"></a>          <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb16-350"><a href="#cb16-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-351"><a href="#cb16-351" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">with_comp =</span> <span class="fu">length</span>(ans<span class="sc">$</span>theta), <span class="at">without_comp =</span> <span class="fu">length</span>(ans2<span class="sc">$</span>theta))</span>
-<span id="cb16-352"><a href="#cb16-352" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-353"><a href="#cb16-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-354"><a href="#cb16-354" aria-hidden="true" tabindex="-1"></a>The two fits do not have the same number of parameters, so you cannot line them up in a data</span>
-<span id="cb16-355"><a href="#cb16-355" aria-hidden="true" tabindex="-1"></a>frame. **That is the first finding, not an obstacle.** Here is why:</span>
-<span id="cb16-356"><a href="#cb16-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-359"><a href="#cb16-359" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-360"><a href="#cb16-360" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-cond</span></span>
-<span id="cb16-361"><a href="#cb16-361" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">with_comp =</span> ans<span class="sc">$</span>cconditional, <span class="at">without_comp =</span> ans2<span class="sc">$</span>cconditional)</span>
-<span id="cb16-362"><a href="#cb16-362" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-363"><a href="#cb16-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-364"><a href="#cb16-364" aria-hidden="true" tabindex="-1"></a>Without composition change, RSiena used **conditional estimation**: it conditions on the</span>
-<span id="cb16-365"><a href="#cb16-365" aria-hidden="true" tabindex="-1"></a>observed number of tie changes in each period and does not estimate the rate parameters as</span>
-<span id="cb16-366"><a href="#cb16-366" aria-hidden="true" tabindex="-1"></a>free parameters at all — they are recovered afterwards and stored in <span class="in">`$rate`</span>. With composition</span>
-<span id="cb16-367"><a href="#cb16-367" aria-hidden="true" tabindex="-1"></a>change, conditional estimation is **not available**, so RSiena silently switched to</span>
-<span id="cb16-368"><a href="#cb16-368" aria-hidden="true" tabindex="-1"></a>unconditional estimation and the rates became ordinary parameters in <span class="in">`$theta`</span>.</span>
-<span id="cb16-369"><a href="#cb16-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-370"><a href="#cb16-370" aria-hidden="true" tabindex="-1"></a>Nothing warned you about this. It is a good habit to check <span class="in">`length(theta)`</span> and <span class="in">`$cconditional`</span></span>
-<span id="cb16-371"><a href="#cb16-371" aria-hidden="true" tabindex="-1"></a>whenever two SAOM fits refuse to line up.</span>
+<span id="cb16-338"><a href="#cb16-338" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-339"><a href="#cb16-339" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-solution</span></span>
+<span id="cb16-340"><a href="#cb16-340" aria-hidden="true" tabindex="-1"></a>dat_nocc <span class="ot">&lt;-</span> <span class="fu">sienaDataCreate</span>(fr, sex)</span>
+<span id="cb16-341"><a href="#cb16-341" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">getEffects</span>(dat_nocc)</span>
+<span id="cb16-342"><a href="#cb16-342" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff2, transTrip, cycle3)</span>
+<span id="cb16-343"><a href="#cb16-343" aria-hidden="true" tabindex="-1"></a>eff2 <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff2, sameX, <span class="at">interaction1 =</span> <span class="st">&quot;sex&quot;</span>)</span>
+<span id="cb16-344"><a href="#cb16-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-345"><a href="#cb16-345" aria-hidden="true" tabindex="-1"></a>ans2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;saom_nocomp&quot;</span>,</span>
+<span id="cb16-346"><a href="#cb16-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat_nocc, <span class="at">effects =</span> eff2,</span>
+<span id="cb16-347"><a href="#cb16-347" aria-hidden="true" tabindex="-1"></a>          <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb16-348"><a href="#cb16-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-349"><a href="#cb16-349" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">with_comp =</span> <span class="fu">length</span>(ans<span class="sc">$</span>theta), <span class="at">without_comp =</span> <span class="fu">length</span>(ans2<span class="sc">$</span>theta))</span>
+<span id="cb16-350"><a href="#cb16-350" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-351"><a href="#cb16-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-352"><a href="#cb16-352" aria-hidden="true" tabindex="-1"></a>The two fits do not have the same number of parameters, so you cannot line them up in a data</span>
+<span id="cb16-353"><a href="#cb16-353" aria-hidden="true" tabindex="-1"></a>frame. **That is the first finding, not an obstacle.** Here is why:</span>
+<span id="cb16-354"><a href="#cb16-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-357"><a href="#cb16-357" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-358"><a href="#cb16-358" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-cond</span></span>
+<span id="cb16-359"><a href="#cb16-359" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">with_comp =</span> ans<span class="sc">$</span>cconditional, <span class="at">without_comp =</span> ans2<span class="sc">$</span>cconditional)</span>
+<span id="cb16-360"><a href="#cb16-360" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-361"><a href="#cb16-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-362"><a href="#cb16-362" aria-hidden="true" tabindex="-1"></a>Without composition change, RSiena used **conditional estimation**: it conditions on the</span>
+<span id="cb16-363"><a href="#cb16-363" aria-hidden="true" tabindex="-1"></a>observed number of tie changes in each period and does not estimate the rate parameters as</span>
+<span id="cb16-364"><a href="#cb16-364" aria-hidden="true" tabindex="-1"></a>free parameters at all: they are recovered afterwards and stored in <span class="in">`$rate`</span>. With composition</span>
+<span id="cb16-365"><a href="#cb16-365" aria-hidden="true" tabindex="-1"></a>change, conditional estimation is **not available**, so RSiena silently switched to</span>
+<span id="cb16-366"><a href="#cb16-366" aria-hidden="true" tabindex="-1"></a>unconditional estimation and the rates became ordinary parameters in <span class="in">`$theta`</span>.</span>
+<span id="cb16-367"><a href="#cb16-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-368"><a href="#cb16-368" aria-hidden="true" tabindex="-1"></a>Nothing warned you about this. It is a good habit to check <span class="in">`length(theta)`</span> and <span class="in">`$cconditional`</span></span>
+<span id="cb16-369"><a href="#cb16-369" aria-hidden="true" tabindex="-1"></a>whenever two SAOM fits refuse to line up.</span>
+<span id="cb16-370"><a href="#cb16-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-371"><a href="#cb16-371" aria-hidden="true" tabindex="-1"></a>Now the actual comparison. Rates first, pulling them from wherever each fit put them:</span>
 <span id="cb16-372"><a href="#cb16-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-373"><a href="#cb16-373" aria-hidden="true" tabindex="-1"></a>Now the actual comparison. Rates first, pulling them from wherever each fit put them:</span>
-<span id="cb16-374"><a href="#cb16-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-377"><a href="#cb16-377" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-378"><a href="#cb16-378" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-rates</span></span>
-<span id="cb16-379"><a href="#cb16-379" aria-hidden="true" tabindex="-1"></a>rate_with    <span class="ot">&lt;-</span> ans<span class="sc">$</span>theta[<span class="fu">grep</span>(<span class="st">&quot;rate&quot;</span>, ans<span class="sc">$</span>effects<span class="sc">$</span>effectName)]</span>
-<span id="cb16-380"><a href="#cb16-380" aria-hidden="true" tabindex="-1"></a>rate_without <span class="ot">&lt;-</span> ans2<span class="sc">$</span>rate</span>
-<span id="cb16-381"><a href="#cb16-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-382"><a href="#cb16-382" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">period     =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,</span>
-<span id="cb16-383"><a href="#cb16-383" aria-hidden="true" tabindex="-1"></a>           <span class="at">with_comp  =</span> <span class="fu">round</span>(rate_with, <span class="dv">3</span>),</span>
-<span id="cb16-384"><a href="#cb16-384" aria-hidden="true" tabindex="-1"></a>           <span class="at">without    =</span> <span class="fu">round</span>(rate_without, <span class="dv">3</span>),</span>
-<span id="cb16-385"><a href="#cb16-385" aria-hidden="true" tabindex="-1"></a>           <span class="at">pct_diff   =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> (rate_with <span class="sc">-</span> rate_without) <span class="sc">/</span> rate_without, <span class="dv">1</span>))</span>
-<span id="cb16-386"><a href="#cb16-386" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-375"><a href="#cb16-375" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-376"><a href="#cb16-376" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-rates</span></span>
+<span id="cb16-377"><a href="#cb16-377" aria-hidden="true" tabindex="-1"></a>rate_with    <span class="ot">&lt;-</span> ans<span class="sc">$</span>theta[<span class="fu">grep</span>(<span class="st">&quot;rate&quot;</span>, ans<span class="sc">$</span>effects<span class="sc">$</span>effectName)]</span>
+<span id="cb16-378"><a href="#cb16-378" aria-hidden="true" tabindex="-1"></a>rate_without <span class="ot">&lt;-</span> ans2<span class="sc">$</span>rate</span>
+<span id="cb16-379"><a href="#cb16-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-380"><a href="#cb16-380" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">period     =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,</span>
+<span id="cb16-381"><a href="#cb16-381" aria-hidden="true" tabindex="-1"></a>           <span class="at">with_comp  =</span> <span class="fu">round</span>(rate_with, <span class="dv">3</span>),</span>
+<span id="cb16-382"><a href="#cb16-382" aria-hidden="true" tabindex="-1"></a>           <span class="at">without    =</span> <span class="fu">round</span>(rate_without, <span class="dv">3</span>),</span>
+<span id="cb16-383"><a href="#cb16-383" aria-hidden="true" tabindex="-1"></a>           <span class="at">pct_diff   =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> (rate_with <span class="sc">-</span> rate_without) <span class="sc">/</span> rate_without, <span class="dv">1</span>))</span>
+<span id="cb16-384"><a href="#cb16-384" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-385"><a href="#cb16-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-386"><a href="#cb16-386" aria-hidden="true" tabindex="-1"></a>And the structural effects, matched by name:</span>
 <span id="cb16-387"><a href="#cb16-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-388"><a href="#cb16-388" aria-hidden="true" tabindex="-1"></a>And the structural effects, matched by name:</span>
-<span id="cb16-389"><a href="#cb16-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-392"><a href="#cb16-392" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-393"><a href="#cb16-393" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-struct</span></span>
-<span id="cb16-394"><a href="#cb16-394" aria-hidden="true" tabindex="-1"></a>nm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;outdegree (density)&quot;</span>, <span class="st">&quot;reciprocity&quot;</span>, <span class="st">&quot;transitive triplets&quot;</span>, <span class="st">&quot;3-cycles&quot;</span>, <span class="st">&quot;same sex&quot;</span>)</span>
-<span id="cb16-395"><a href="#cb16-395" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb16-396"><a href="#cb16-396" aria-hidden="true" tabindex="-1"></a>  <span class="at">effect     =</span> nm,</span>
-<span id="cb16-397"><a href="#cb16-397" aria-hidden="true" tabindex="-1"></a>  <span class="at">with_comp  =</span> <span class="fu">round</span>(ans<span class="sc">$</span>theta[<span class="fu">match</span>(nm, ans<span class="sc">$</span>effects<span class="sc">$</span>effectName)], <span class="dv">3</span>),</span>
-<span id="cb16-398"><a href="#cb16-398" aria-hidden="true" tabindex="-1"></a>  <span class="at">without    =</span> <span class="fu">round</span>(ans2<span class="sc">$</span>theta[<span class="fu">match</span>(nm, ans2<span class="sc">$</span>effects<span class="sc">$</span>effectName)], <span class="dv">3</span>),</span>
-<span id="cb16-399"><a href="#cb16-399" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names  =</span> <span class="cn">NULL</span>)</span>
-<span id="cb16-400"><a href="#cb16-400" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-401"><a href="#cb16-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-404"><a href="#cb16-404" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-405"><a href="#cb16-405" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-conv</span></span>
-<span id="cb16-406"><a href="#cb16-406" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">with_comp =</span> <span class="fu">as.numeric</span>(ans<span class="sc">$</span>tconv.max), <span class="at">without_comp =</span> <span class="fu">as.numeric</span>(ans2<span class="sc">$</span>tconv.max))</span>
-<span id="cb16-407"><a href="#cb16-407" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-408"><a href="#cb16-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-409"><a href="#cb16-409" aria-hidden="true" tabindex="-1"></a>**Core.** The **rate parameters move and the structural effects barely do** — which is what</span>
-<span id="cb16-410"><a href="#cb16-410" aria-hidden="true" tabindex="-1"></a>§4&#39;s Depth box predicted, and the pattern of movement is sharper than you might expect.</span>
-<span id="cb16-411"><a href="#cb16-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-412"><a href="#cb16-412" aria-hidden="true" tabindex="-1"></a>Look at *which* period moves. Periods 1 and 3 agree to within a fraction of a percent. **Period</span>
-<span id="cb16-413"><a href="#cb16-413" aria-hidden="true" tabindex="-1"></a>2 is off by more than twenty percent** — and period 2 is the one containing the arrival, the</span>
-<span id="cb16-414"><a href="#cb16-414" aria-hidden="true" tabindex="-1"></a>pupil who joins at time 2.5.</span>
-<span id="cb16-415"><a href="#cb16-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-416"><a href="#cb16-416" aria-hidden="true" tabindex="-1"></a>The general mechanism is the one described earlier: without the composition-change object, an</span>
-<span id="cb16-417"><a href="#cb16-417" aria-hidden="true" tabindex="-1"></a>actor who was not in the class is scored as an actor who *was* there, was handed a full</span>
-<span id="cb16-418"><a href="#cb16-418" aria-hidden="true" tabindex="-1"></a>allocation of opportunities, and used every one of them to change nothing. The model has only</span>
-<span id="cb16-419"><a href="#cb16-419" aria-hidden="true" tabindex="-1"></a>one dial for that, the rate, so it concludes the network was moving more slowly than it really</span>
-<span id="cb16-420"><a href="#cb16-420" aria-hidden="true" tabindex="-1"></a>was — which is the direction we see.</span>
-<span id="cb16-421"><a href="#cb16-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-422"><a href="#cb16-422" aria-hidden="true" tabindex="-1"></a>I will not pretend to a complete account of why the *arrival* distorts period 2 so much more</span>
-<span id="cb16-423"><a href="#cb16-423" aria-hidden="true" tabindex="-1"></a>than the two departures distort periods 1 and 3. Plausibly an arriving actor is the harder</span>
-<span id="cb16-424"><a href="#cb16-424" aria-hidden="true" tabindex="-1"></a>case: their ties all become visible at once, and how the estimator reads that burst depends on</span>
-<span id="cb16-425"><a href="#cb16-425" aria-hidden="true" tabindex="-1"></a>whether it knows the actor is new. If you want to settle it, the experiment is right there —</span>
-<span id="cb16-426"><a href="#cb16-426" aria-hidden="true" tabindex="-1"></a>vary the composition list one mover at a time and refit. That is a genuinely good afternoon&#39;s</span>
-<span id="cb16-427"><a href="#cb16-427" aria-hidden="true" tabindex="-1"></a>work and I would rather flag the open question than paper over it.</span>
-<span id="cb16-428"><a href="#cb16-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-429"><a href="#cb16-429" aria-hidden="true" tabindex="-1"></a>The structural parameters — reciprocity, transitivity, homophily — hardly shift, because they</span>
-<span id="cb16-430"><a href="#cb16-430" aria-hidden="true" tabindex="-1"></a>are estimated from the actors who actually acted, and those are the same actors in both fits.</span>
-<span id="cb16-431"><a href="#cb16-431" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-432"><a href="#cb16-432" aria-hidden="true" tabindex="-1"></a>The honest summary of *this* comparison is that with three movers out of 33 the substantive</span>
-<span id="cb16-433"><a href="#cb16-433" aria-hidden="true" tabindex="-1"></a>conclusions do not change. **Do not generalise from that.** The distortion scales with the</span>
-<span id="cb16-434"><a href="#cb16-434" aria-hidden="true" tabindex="-1"></a>fraction of your panel that turns over, and it lands hardest on the periods where the turnover</span>
-<span id="cb16-435"><a href="#cb16-435" aria-hidden="true" tabindex="-1"></a>happens. With a third of the panel moving in and out — completely ordinary in organisational or</span>
-<span id="cb16-436"><a href="#cb16-436" aria-hidden="true" tabindex="-1"></a>clinical data — you get rate estimates that are badly wrong in specific periods, and if the</span>
-<span id="cb16-437"><a href="#cb16-437" aria-hidden="true" tabindex="-1"></a>timing of the turnover correlates with anything substantive, the structural estimates follow.</span>
-<span id="cb16-438"><a href="#cb16-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-439"><a href="#cb16-439" aria-hidden="true" tabindex="-1"></a>So the reason to use composition change here is not that it rescues this analysis. It is that</span>
-<span id="cb16-440"><a href="#cb16-440" aria-hidden="true" tabindex="-1"></a>it is the correct model of what happened, it costs three lines, and you will not remember to</span>
-<span id="cb16-441"><a href="#cb16-441" aria-hidden="true" tabindex="-1"></a>add it later when the stakes are higher.</span>
-<span id="cb16-442"><a href="#cb16-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-443"><a href="#cb16-443" aria-hidden="true" tabindex="-1"></a>**Stretch.** The argument against the harsher object: a pupil who was absent on survey day is a</span>
-<span id="cb16-444"><a href="#cb16-444" aria-hidden="true" tabindex="-1"></a>**genuine missing-data** problem, and RSiena&#39;s missing-data machinery is designed for it — it</span>
-<span id="cb16-445"><a href="#cb16-445" aria-hidden="true" tabindex="-1"></a>imputes during simulation and excludes those cells from the target statistics, which is the</span>
-<span id="cb16-446"><a href="#cb16-446" aria-hidden="true" tabindex="-1"></a>statistically correct treatment. Recoding them as composition change tells the model something</span>
-<span id="cb16-447"><a href="#cb16-447" aria-hidden="true" tabindex="-1"></a>false (they were not in the class) in order to avoid a problem the model already handles well.</span>
-<span id="cb16-448"><a href="#cb16-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-449"><a href="#cb16-449" aria-hidden="true" tabindex="-1"></a>The argument for it: if a pupil is missing at a wave, you have no information about their</span>
-<span id="cb16-450"><a href="#cb16-450" aria-hidden="true" tabindex="-1"></a>choices at that wave either way, and the rate function is arguably better off not attributing</span>
-<span id="cb16-451"><a href="#cb16-451" aria-hidden="true" tabindex="-1"></a>opportunities to them. This is more defensible when the missingness is heavy and long — a pupil</span>
-<span id="cb16-452"><a href="#cb16-452" aria-hidden="true" tabindex="-1"></a>missing three of four waves is functionally absent whatever the coding says.</span>
-<span id="cb16-453"><a href="#cb16-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-454"><a href="#cb16-454" aria-hidden="true" tabindex="-1"></a>The distinction from §1 that decides it: **was the tie well defined and unobserved, or</span>
-<span id="cb16-455"><a href="#cb16-455" aria-hidden="true" tabindex="-1"></a>undefined?** For a pupil who was enrolled but off sick, the tie was well defined. That points to</span>
-<span id="cb16-456"><a href="#cb16-456" aria-hidden="true" tabindex="-1"></a>missing data, not composition change. The line genuinely blurs when absences get long enough</span>
-<span id="cb16-457"><a href="#cb16-457" aria-hidden="true" tabindex="-1"></a>that &quot;enrolled&quot; stops describing anything real — and at that point you should say in your</span>
-<span id="cb16-458"><a href="#cb16-458" aria-hidden="true" tabindex="-1"></a>write-up which choice you made and why, because a reader cannot tell from the coefficients.</span>
-<span id="cb16-459"><a href="#cb16-459" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-390"><a href="#cb16-390" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-391"><a href="#cb16-391" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-struct</span></span>
+<span id="cb16-392"><a href="#cb16-392" aria-hidden="true" tabindex="-1"></a>nm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;outdegree (density)&quot;</span>, <span class="st">&quot;reciprocity&quot;</span>, <span class="st">&quot;transitive triplets&quot;</span>, <span class="st">&quot;3-cycles&quot;</span>, <span class="st">&quot;same sex&quot;</span>)</span>
+<span id="cb16-393"><a href="#cb16-393" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb16-394"><a href="#cb16-394" aria-hidden="true" tabindex="-1"></a>  <span class="at">effect     =</span> nm,</span>
+<span id="cb16-395"><a href="#cb16-395" aria-hidden="true" tabindex="-1"></a>  <span class="at">with_comp  =</span> <span class="fu">round</span>(ans<span class="sc">$</span>theta[<span class="fu">match</span>(nm, ans<span class="sc">$</span>effects<span class="sc">$</span>effectName)], <span class="dv">3</span>),</span>
+<span id="cb16-396"><a href="#cb16-396" aria-hidden="true" tabindex="-1"></a>  <span class="at">without    =</span> <span class="fu">round</span>(ans2<span class="sc">$</span>theta[<span class="fu">match</span>(nm, ans2<span class="sc">$</span>effects<span class="sc">$</span>effectName)], <span class="dv">3</span>),</span>
+<span id="cb16-397"><a href="#cb16-397" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names  =</span> <span class="cn">NULL</span>)</span>
+<span id="cb16-398"><a href="#cb16-398" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-399"><a href="#cb16-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-402"><a href="#cb16-402" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-403"><a href="#cb16-403" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-conv</span></span>
+<span id="cb16-404"><a href="#cb16-404" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">with_comp =</span> <span class="fu">as.numeric</span>(ans<span class="sc">$</span>tconv.max), <span class="at">without_comp =</span> <span class="fu">as.numeric</span>(ans2<span class="sc">$</span>tconv.max))</span>
+<span id="cb16-405"><a href="#cb16-405" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-406"><a href="#cb16-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-407"><a href="#cb16-407" aria-hidden="true" tabindex="-1"></a>**Core.** The **rate parameters move and the structural effects barely do**, which is what</span>
+<span id="cb16-408"><a href="#cb16-408" aria-hidden="true" tabindex="-1"></a>§4&#39;s Depth box predicted, and the pattern of movement is sharper than you might expect.</span>
+<span id="cb16-409"><a href="#cb16-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-410"><a href="#cb16-410" aria-hidden="true" tabindex="-1"></a>Look at *which* period moves. Periods 1 and 3 agree to within a fraction of a percent. **Period</span>
+<span id="cb16-411"><a href="#cb16-411" aria-hidden="true" tabindex="-1"></a>2 is off by more than twenty percent**, and period 2 is the one containing the arrival, the</span>
+<span id="cb16-412"><a href="#cb16-412" aria-hidden="true" tabindex="-1"></a>pupil who joins at time 2.5.</span>
+<span id="cb16-413"><a href="#cb16-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-414"><a href="#cb16-414" aria-hidden="true" tabindex="-1"></a>The general mechanism is the one described earlier: without the composition-change object, an</span>
+<span id="cb16-415"><a href="#cb16-415" aria-hidden="true" tabindex="-1"></a>actor who was not in the class is scored as an actor who *was* there, was handed a full</span>
+<span id="cb16-416"><a href="#cb16-416" aria-hidden="true" tabindex="-1"></a>allocation of opportunities, and used every one of them to change nothing. The model has only</span>
+<span id="cb16-417"><a href="#cb16-417" aria-hidden="true" tabindex="-1"></a>one dial for that, the rate, so it concludes the network was moving more slowly than it really</span>
+<span id="cb16-418"><a href="#cb16-418" aria-hidden="true" tabindex="-1"></a>was. That is the direction we see.</span>
+<span id="cb16-419"><a href="#cb16-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-420"><a href="#cb16-420" aria-hidden="true" tabindex="-1"></a>I will not pretend to a complete account of why the *arrival* distorts period 2 so much more</span>
+<span id="cb16-421"><a href="#cb16-421" aria-hidden="true" tabindex="-1"></a>than the two departures distort periods 1 and 3. Plausibly an arriving actor is the harder</span>
+<span id="cb16-422"><a href="#cb16-422" aria-hidden="true" tabindex="-1"></a>case: their ties all become visible at once, and how the estimator reads that burst depends on</span>
+<span id="cb16-423"><a href="#cb16-423" aria-hidden="true" tabindex="-1"></a>whether it knows the actor is new. If you want to settle it, the experiment is right there: </span>
+<span id="cb16-424"><a href="#cb16-424" aria-hidden="true" tabindex="-1"></a>vary the composition list one mover at a time and refit. That is a genuinely good afternoon&#39;s</span>
+<span id="cb16-425"><a href="#cb16-425" aria-hidden="true" tabindex="-1"></a>work and I would rather flag the open question than paper over it.</span>
+<span id="cb16-426"><a href="#cb16-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-427"><a href="#cb16-427" aria-hidden="true" tabindex="-1"></a>The structural parameters: reciprocity, transitivity, homophily: hardly shift, because they</span>
+<span id="cb16-428"><a href="#cb16-428" aria-hidden="true" tabindex="-1"></a>are estimated from the actors who actually acted, and those are the same actors in both fits.</span>
+<span id="cb16-429"><a href="#cb16-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-430"><a href="#cb16-430" aria-hidden="true" tabindex="-1"></a>The honest summary of *this* comparison is that with three movers out of 33 the substantive</span>
+<span id="cb16-431"><a href="#cb16-431" aria-hidden="true" tabindex="-1"></a>conclusions do not change. **Do not generalise from that.** The distortion scales with the</span>
+<span id="cb16-432"><a href="#cb16-432" aria-hidden="true" tabindex="-1"></a>fraction of your panel that turns over, and it lands hardest on the periods where the turnover</span>
+<span id="cb16-433"><a href="#cb16-433" aria-hidden="true" tabindex="-1"></a>happens. With a third of the panel moving in and out: completely ordinary in organisational or</span>
+<span id="cb16-434"><a href="#cb16-434" aria-hidden="true" tabindex="-1"></a>clinical data: you get rate estimates that are badly wrong in specific periods, and if the</span>
+<span id="cb16-435"><a href="#cb16-435" aria-hidden="true" tabindex="-1"></a>timing of the turnover correlates with anything substantive, the structural estimates follow.</span>
+<span id="cb16-436"><a href="#cb16-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-437"><a href="#cb16-437" aria-hidden="true" tabindex="-1"></a>So the reason to use composition change here is not that it rescues this analysis. It is that</span>
+<span id="cb16-438"><a href="#cb16-438" aria-hidden="true" tabindex="-1"></a>it is the correct model of what happened, it costs three lines, and you will not remember to</span>
+<span id="cb16-439"><a href="#cb16-439" aria-hidden="true" tabindex="-1"></a>add it later when the stakes are higher.</span>
+<span id="cb16-440"><a href="#cb16-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-441"><a href="#cb16-441" aria-hidden="true" tabindex="-1"></a>**Stretch.** The argument against the harsher object: a pupil who was absent on survey day is a</span>
+<span id="cb16-442"><a href="#cb16-442" aria-hidden="true" tabindex="-1"></a>**genuine missing-data** problem, and RSiena&#39;s missing-data machinery is designed for it: it</span>
+<span id="cb16-443"><a href="#cb16-443" aria-hidden="true" tabindex="-1"></a>imputes during simulation and excludes those cells from the target statistics, which is the</span>
+<span id="cb16-444"><a href="#cb16-444" aria-hidden="true" tabindex="-1"></a>statistically correct treatment. Recoding them as composition change tells the model something</span>
+<span id="cb16-445"><a href="#cb16-445" aria-hidden="true" tabindex="-1"></a>false (they were not in the class) in order to avoid a problem the model already handles well.</span>
+<span id="cb16-446"><a href="#cb16-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-447"><a href="#cb16-447" aria-hidden="true" tabindex="-1"></a>The argument for it: if a pupil is missing at a wave, you have no information about their</span>
+<span id="cb16-448"><a href="#cb16-448" aria-hidden="true" tabindex="-1"></a>choices at that wave either way, and the rate function is arguably better off not attributing</span>
+<span id="cb16-449"><a href="#cb16-449" aria-hidden="true" tabindex="-1"></a>opportunities to them. This is more defensible when the missingness is heavy and long: a pupil</span>
+<span id="cb16-450"><a href="#cb16-450" aria-hidden="true" tabindex="-1"></a>missing three of four waves is functionally absent whatever the coding says.</span>
+<span id="cb16-451"><a href="#cb16-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-452"><a href="#cb16-452" aria-hidden="true" tabindex="-1"></a>The distinction from §1 that decides it: **was the tie well defined and unobserved, or</span>
+<span id="cb16-453"><a href="#cb16-453" aria-hidden="true" tabindex="-1"></a>undefined?** For a pupil who was enrolled but off sick, the tie was well defined. That points to</span>
+<span id="cb16-454"><a href="#cb16-454" aria-hidden="true" tabindex="-1"></a>missing data, not composition change. The line genuinely blurs when absences get long enough</span>
+<span id="cb16-455"><a href="#cb16-455" aria-hidden="true" tabindex="-1"></a>that &quot;enrolled&quot; stops describing anything real, and at that point you should say in your</span>
+<span id="cb16-456"><a href="#cb16-456" aria-hidden="true" tabindex="-1"></a>write-up which choice you made and why, because a reader cannot tell from the coefficients.</span>
+<span id="cb16-457"><a href="#cb16-457" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-458"><a href="#cb16-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-459"><a href="#cb16-459" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7. Readings</span></span>
 <span id="cb16-460"><a href="#cb16-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-461"><a href="#cb16-461" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7. Readings</span></span>
-<span id="cb16-462"><a href="#cb16-462" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-463"><a href="#cb16-463" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Ripley, Snijders, Boda &amp; Vörös**, *Manual for RSiena* (current edition — check</span>
-<span id="cb16-464"><a href="#cb16-464" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">stats.ox.ac.uk/~snijders/siena</span><span class="co">](https://www.stats.ox.ac.uk/~snijders/siena/)</span> for the latest).</span>
-<span id="cb16-465"><a href="#cb16-465" aria-hidden="true" tabindex="-1"></a>  The composition-change section is short and worth reading in full. **Note the syllabus cites</span>
-<span id="cb16-466"><a href="#cb16-466" aria-hidden="true" tabindex="-1"></a>  a 2012 edition with Preciado as an author** — that is roughly fourteen years stale and the</span>
-<span id="cb16-467"><a href="#cb16-467" aria-hidden="true" tabindex="-1"></a>  author line has changed. Use the current one.</span>
-<span id="cb16-468"><a href="#cb16-468" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Huisman &amp; Snijders (2003)**, &quot;Statistical analysis of longitudinal network data with</span>
-<span id="cb16-469"><a href="#cb16-469" aria-hidden="true" tabindex="-1"></a>  changing composition,&quot; *Sociological Methods &amp; Research* 32(2):253–287. The method underneath</span>
-<span id="cb16-470"><a href="#cb16-470" aria-hidden="true" tabindex="-1"></a>  <span class="in">`sienaCompositionChange()`</span>.</span>
-<span id="cb16-471"><a href="#cb16-471" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Huisman &amp; Steglich (2008)**, &quot;Treatment of non-response in longitudinal network studies,&quot;</span>
-<span id="cb16-472"><a href="#cb16-472" aria-hidden="true" tabindex="-1"></a>  *Social Networks* 30(4):297–308. On the §1 distinction, done carefully, with simulations</span>
-<span id="cb16-473"><a href="#cb16-473" aria-hidden="true" tabindex="-1"></a>  showing when it matters.</span>
-<span id="cb16-474"><a href="#cb16-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-477"><a href="#cb16-477" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-478"><a href="#cb16-478" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
-<span id="cb16-479"><a href="#cb16-479" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb16-480"><a href="#cb16-480" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb16-481"><a href="#cb16-481" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions — expand if your numbers differ from mine&quot;</span></span>
-<span id="cb16-482"><a href="#cb16-482" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> <span class="st">&quot;RSiena&quot;</span>,</span>
-<span id="cb16-483"><a href="#cb16-483" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;RSiena&quot;</span>)))</span>
-<span id="cb16-484"><a href="#cb16-484" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb16-485"><a href="#cb16-485" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-461"><a href="#cb16-461" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Ripley, Snijders, Boda &amp; Vörös**, *Manual for RSiena* (current edition: check</span>
+<span id="cb16-462"><a href="#cb16-462" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">stats.ox.ac.uk/~snijders/siena</span><span class="co">](https://www.stats.ox.ac.uk/~snijders/siena/)</span> for the latest).</span>
+<span id="cb16-463"><a href="#cb16-463" aria-hidden="true" tabindex="-1"></a>  The composition-change section is short and worth reading in full. **Note the syllabus cites</span>
+<span id="cb16-464"><a href="#cb16-464" aria-hidden="true" tabindex="-1"></a>  a 2012 edition with Preciado as an author**, which is roughly fourteen years stale, and the</span>
+<span id="cb16-465"><a href="#cb16-465" aria-hidden="true" tabindex="-1"></a>  author line has changed. Use the current one.</span>
+<span id="cb16-466"><a href="#cb16-466" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Huisman &amp; Snijders (2003)**, &quot;Statistical analysis of longitudinal network data with</span>
+<span id="cb16-467"><a href="#cb16-467" aria-hidden="true" tabindex="-1"></a>  changing composition,&quot; *Sociological Methods &amp; Research* 32(2):253–287. The method underneath</span>
+<span id="cb16-468"><a href="#cb16-468" aria-hidden="true" tabindex="-1"></a>  <span class="in">`sienaCompositionChange()`</span>.</span>
+<span id="cb16-469"><a href="#cb16-469" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Huisman &amp; Steglich (2008)**, &quot;Treatment of non-response in longitudinal network studies,&quot;</span>
+<span id="cb16-470"><a href="#cb16-470" aria-hidden="true" tabindex="-1"></a>  *Social Networks* 30(4):297–308. On the §1 distinction, done carefully, with simulations</span>
+<span id="cb16-471"><a href="#cb16-471" aria-hidden="true" tabindex="-1"></a>  showing when it matters.</span>
+<span id="cb16-472"><a href="#cb16-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-475"><a href="#cb16-475" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-476"><a href="#cb16-476" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
+<span id="cb16-477"><a href="#cb16-477" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
+<span id="cb16-478"><a href="#cb16-478" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb16-479"><a href="#cb16-479" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions: expand if your numbers differ from mine&quot;</span></span>
+<span id="cb16-480"><a href="#cb16-480" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> <span class="st">&quot;RSiena&quot;</span>,</span>
+<span id="cb16-481"><a href="#cb16-481" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;RSiena&quot;</span>)))</span>
+<span id="cb16-482"><a href="#cb16-482" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb16-483"><a href="#cb16-483" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

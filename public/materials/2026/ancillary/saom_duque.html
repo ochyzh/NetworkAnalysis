@@ -2210,8 +2210,8 @@ vertical-align: -.125em;
    
   <ul>
   <li><a href="#the-setting" id="toc-the-setting" class="nav-link active" data-scroll-target="#the-setting">1. The setting</a></li>
-  <li><a href="#data-preparation-where-most-of-the-danger-lives" id="toc-data-preparation-where-most-of-the-danger-lives" class="nav-link" data-scroll-target="#data-preparation-where-most-of-the-danger-lives">2. Data preparation — where most of the danger lives</a></li>
-  <li><a href="#the-fit-and-reading-a-convergence-failure-honestly" id="toc-the-fit-and-reading-a-convergence-failure-honestly" class="nav-link" data-scroll-target="#the-fit-and-reading-a-convergence-failure-honestly">3. The fit — and reading a convergence failure honestly</a></li>
+  <li><a href="#data-preparation-where-most-of-the-danger-lives" id="toc-data-preparation-where-most-of-the-danger-lives" class="nav-link" data-scroll-target="#data-preparation-where-most-of-the-danger-lives">2. Data preparation: where most of the danger lives</a></li>
+  <li><a href="#the-fit-and-reading-a-convergence-failure-honestly" id="toc-the-fit-and-reading-a-convergence-failure-honestly" class="nav-link" data-scroll-target="#the-fit-and-reading-a-convergence-failure-honestly">3. The fit, and reading a convergence failure honestly</a></li>
   <li><a href="#what-you-would-actually-do-next" id="toc-what-you-would-actually-do-next" class="nav-link" data-scroll-target="#what-you-would-actually-do-next">4. What you would actually do next</a></li>
   <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise">5. Exercise</a></li>
   <li><a href="#readings" id="toc-readings" class="nav-link" data-scroll-target="#readings">6. Readings</a></li>
@@ -2254,19 +2254,19 @@ vertical-align: -.125em;
 </header>
 
 
-<div class="callout callout-style-default callout-important callout-titled" title="Optional — not covered in the 2026 course">
+<div class="callout callout-style-default callout-important callout-titled" title="Optional: not covered in the 2026 course">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Optional — not covered in the 2026 course
+<span class="screen-reader-only">Important</span>Optional: not covered in the 2026 course
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>This document is <strong>not</strong> part of any taught session. Nobody is going to lecture it at you, nobody is going to grade you on it, and you can ignore it completely without falling behind.</p>
-<p>It exists because it is a thing you will plausibly need next, and because it is easier to hand you something that works than to hand you a citation and wish you luck. Everything here runs end to end on the same machine setup you used in class. Every number and every figure on this page was produced by a chunk in this file — there are no screenshots of R output anywhere in the ancillary package.</p>
-<p><strong>How to work through it alone.</strong> Get the source (click the <code>&lt;/&gt;</code> <strong>Code</strong> button at the top right, then <strong>View Source</strong>, and copy it into a <code>.qmd</code> file — or open the <code>.qmd</code> you were given directly), run the chunks in order, and read the prose between them — the prose is where the argument lives. Runtime badges tell you what to expect before you press Enter: <span class="rt rt-live">live ~8s</span> runs now · <span class="rt rt-slow">slow ~90s</span> runs, but go make coffee · <span class="rt rt-precmp">precomputed</span> loads a shipped result and shows you the code that made it. Folded <strong>Depth</strong> boxes are optional extras; folded <strong>Stuck?</strong> boxes are hints. Open whichever you need and ignore the other. Exercises have a <strong>Solution</strong> tab — you are working alone, so use it.</p>
+<p>It exists because it is a thing you will plausibly need next, and because it is easier to hand you something that works than to hand you a citation and wish you luck. Everything here runs end to end on the same machine setup you used in class. Every number and every figure on this page was produced by a chunk in this file: there are no screenshots of R output anywhere in the ancillary package.</p>
+<p><strong>How to work through it alone.</strong> Get the source (click the <code>&lt;/&gt;</code> <strong>Code</strong> button at the top right, then <strong>View Source</strong>, and copy it into a <code>.qmd</code> file: or open the <code>.qmd</code> you were given directly), run the chunks in order, and read the prose between them: the prose is where the argument lives. Slow fits are identified in the prose, and precomputed fits load a shipped result while still showing you the code that produced it. Folded <strong>Depth</strong> boxes are optional extras; folded <strong>Stuck?</strong> boxes are hints. Open whichever you need and ignore the other. Exercises have a <strong>Solution</strong> tab: you are working alone, so use it.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled" title="What this extends, and why it is here">
@@ -2279,23 +2279,23 @@ vertical-align: -.125em;
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Extends:</strong> the SAOM session (day 5, W3 Tue). The taught session runs on <code>s50</code>, which is a well-behaved dataset: it fits in seconds and converges cleanly. This document is the opposite experience on purpose — a larger, directed, IR network that is <strong>genuinely hard to fit</strong>, and does not fully converge in one pass.</p>
+<p><strong>Extends:</strong> the SAOM session (day 5, W3 Tue). The taught session runs on <code>s50</code>, which is a well-behaved dataset: it fits quickly and converges cleanly. This document is the opposite experience on purpose: a larger, directed, IR network that is <strong>genuinely hard to fit</strong>, and does not fully converge in one pass.</p>
 <p><strong>Why that is worth your time.</strong> Most of what you will meet in the wild looks like this, not like <code>s50</code>. A document that only ever shows you a SAOM that works teaches you nothing about the far more common situation where it does not, and where the skill is reading the diagnostics honestly rather than reporting a number you should not trust. This is the “what a hard SAOM actually looks like” document.</p>
-<p><strong>What you need:</strong> <code>RSiena</code>, <code>networkdata</code> (carries the Duque data; no <code>install_github</code> runs here). <strong>Runtime:</strong> the data prep is instant; the fit itself takes about <strong>2.5 minutes</strong>, so it is precomputed and shipped — the code is shown and you can run it yourself with <code>options(session.refit = TRUE)</code>.</p>
+<p><strong>What you need:</strong> <code>RSiena</code>, <code>networkdata</code> (carries the Duque data; no <code>install_github</code> runs here). The fit is slow, so it is precomputed and shipped. The code is shown, and you can run it yourself with <code>options(session.refit = TRUE)</code>.</p>
 </div>
 </div>
 <section id="the-setting" class="level1">
 <h1>1. The setting</h1>
-<p>Duque (2018) studies <strong>status recognition</strong> between states. A state “recognises” another by establishing a diplomatic mission — an embassy. The claim is that recognition is <em>social</em>: you get recognised because of your position in the network of recognition, not only because of your material attributes. That is a dynamic, endogenous story about who recognises whom over time, which is SAOM territory.</p>
-<p>The data: <code>dipl_ties</code>, eight waves (1970–2005, every five years) of directed diplomatic ties among states, plus contiguity, alliances, and regime type. We will use the first three waves, to keep the fit to a couple of minutes.</p>
+<p>Duque (2018) studies <strong>status recognition</strong> between states. A state “recognises” another by establishing a diplomatic mission: an embassy. The claim is that recognition is <em>social</em>: you get recognised because of your position in the network of recognition, not only because of your material attributes. That is a dynamic, endogenous story about who recognises whom over time, which is SAOM territory.</p>
+<p>The data: <code>dipl_ties</code>, eight waves (1970–2005, every five years) of directed diplomatic ties among states, plus contiguity, alliances, and regime type. We will use the first three waves to keep the fit manageable.</p>
 <p>Two features make this hard in ways <code>s50</code> was not:</p>
 <ol type="1">
-<li><strong>The node set changes</strong> — states enter and leave the international system across waves.</li>
-<li><strong>It is directed and dense</strong> — 158 states, thousands of ties, and the density plus the directedness make the estimator work much harder than 50 sparse friendships did.</li>
+<li><strong>The node set changes</strong>: states enter and leave the international system across waves.</li>
+<li><strong>It is directed and dense</strong>: 158 states, thousands of ties, and the density plus the directedness make the estimator work much harder than 50 sparse friendships did.</li>
 </ol>
 </section>
 <section id="data-preparation-where-most-of-the-danger-lives" class="level1">
-<h1>2. Data preparation — where most of the danger lives</h1>
+<h1>2. Data preparation: where most of the danger lives</h1>
 <p>This is the part that has to be right, and it is the part that is easy to get silently wrong. The original version of this construction was wrong in three independent ways, none of which threw an error. We will do it correctly and then, in the warning box, name exactly what the three errors were, because they are errors you are likely to make yourself.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
@@ -2327,9 +2327,8 @@ vertical-align: -.125em;
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     0     1    10  &lt;NA&gt; </span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49948 13536 10822   586</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-live">live &lt;1s</span></p>
 <p>The <code>10</code> code marks structural zeros: a state that is not in the system at a given wave has all its ties coded <code>10</code>, which tells RSiena “this actor is not available here” rather than “this actor chose to have no ties.” The scattered <code>NA</code>s (586 of them) are genuine missing data from the <code>&quot;.&quot;</code> code.</p>
-<p>Confirm the network is still <strong>directed</strong> after all that reshaping — the single most important check, because the substantive question is entirely about asymmetry:</p>
+<p>Confirm the network is still <strong>directed</strong> after all that reshaping: the single most important check, because the substantive question is entirely about asymmetry:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>asym <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>W, <span class="cf">function</span>(t) {</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> dipl[, , t]; m[m <span class="sc">==</span> <span class="dv">10</span> <span class="sc">|</span> <span class="fu">is.na</span>(m)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
@@ -2353,16 +2352,16 @@ vertical-align: -.125em;
 <div class="callout-body-container callout-body">
 <p>The version that circulated in the original teaching materials was <code>eval = FALSE</code>, so it never ran and never errored, and was handed to students as a template. It was wrong three ways:</p>
 <ol type="1">
-<li><p><strong>Positional indexing into a name-dimensioned array.</strong> It looped <code>for (i in 1:nrow(d))</code> and wrote <code>dipl[i, j, t] &lt;- val</code>, but <code>dipl</code> was dimensioned by the <em>pooled</em> 158-actor list while <code>d</code> had only that wave’s actors (134 in wave 1). So from about the third actor onward, every value was written to the wrong cell. The fix is name-based assignment — <code>dipl[ids, ids, t] &lt;- d</code> — which cannot misalign because R matches the names.</p></li>
+<li><p><strong>Positional indexing into a name-dimensioned array.</strong> It looped <code>for (i in 1:nrow(d))</code> and wrote <code>dipl[i, j, t] &lt;- val</code>, but <code>dipl</code> was dimensioned by the <em>pooled</em> 158-actor list while <code>d</code> had only that wave’s actors (134 in wave 1). So from about the third actor onward, every value was written to the wrong cell. The fix is name-based assignment: <code>dipl[ids, ids, t] &lt;- d</code>, which cannot misalign because R matches the names.</p></li>
 <li><p><strong>Silent symmetrisation.</strong> It wrote both <code>dipl[i, j, t] &lt;- val</code> and <code>dipl[j, i, t] &lt;- val</code>, forcing symmetry on a directed network. That corrupts roughly a thousand cells per wave and erases the asymmetry the study depends on. We never write the transpose.</p></li>
-<li><p><strong>Coercion of the missing code without noticing.</strong> <code>as.numeric(as.character(d))</code> turned the <code>&quot;.&quot;</code> missing code into <code>NA</code> with a warning nobody read — 586 cells. We handle <code>&quot;.&quot;</code> explicitly with <code>d[d == &quot;.&quot;] &lt;- NA</code> so the missingness is deliberate and countable.</p></li>
+<li><p><strong>Coercion of the missing code without noticing.</strong> <code>as.numeric(as.character(d))</code> turned the <code>&quot;.&quot;</code> missing code into <code>NA</code> with a warning nobody read: 586 cells. We handle <code>&quot;.&quot;</code> explicitly with <code>d[d == &quot;.&quot;] &lt;- NA</code> so the missingness is deliberate and countable.</p></li>
 </ol>
 <p>The answer key that shipped alongside the slides actually had the <strong>correct</strong> name-based form. The slide was a degraded copy of working code. The lesson is the one from the ERGM applications document, restated: <strong>index relational data by name, and check <code>dim()</code>, <code>table()</code>, and symmetry after every reshape.</strong></p>
 </div>
 </div>
 </section>
 <section id="the-fit-and-reading-a-convergence-failure-honestly" class="level1">
-<h1>3. The fit — and reading a convergence failure honestly</h1>
+<h1>3. The fit, and reading a convergence failure honestly</h1>
 <p>Build the RSiena data object and a minimal three-effect specification: density, reciprocity, and transitive ties.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dv  <span class="ot">&lt;-</span> <span class="fu">sienaDependent</span>(dipl, <span class="at">allowOnly =</span> <span class="cn">FALSE</span>)</span>
@@ -2373,13 +2372,13 @@ vertical-align: -.125em;
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 44           transitive ties transTies TRUE    FALSE FALSE          0   0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This runs for ~2.5 minutes. Precomputed below; run it yourself with</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a slow fit. A precomputed result appears below; run it yourself with</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># options(session.refit = TRUE).</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>alg <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff,</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-precmp">precomputed ~2.5m</span></p>
+<p>The result below is precomputed from the code above.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">effect =</span> ans<span class="sc">$</span>effects<span class="sc">$</span>effectName,</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">est =</span> <span class="fu">round</span>(ans<span class="sc">$</span>theta, <span class="dv">3</span>),</span>
@@ -2404,9 +2403,9 @@ vertical-align: -.125em;
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The overall maximum convergence ratio is well <strong>above</strong> the 0.25 threshold the RSiena manual sets for publishable results — and above even the loose 0.35 “nearly converged” bar. By the manual’s own standard, <strong>you may not report these estimates.</strong></p>
-<p>The honest description of what happened: a clean three-effect run on this data does not converge in a single pass. The stored result that circulated with the original materials showed a <code>tconv.max</code> around 0.10 — a converged fit — but reaching that took undocumented restarts with <code>prevAns</code>, chaining one run’s ending values into the next run’s starting values, repeated until the ratio came down. The single-pass number you see here is the truthful one.</p>
-<p>This is not a defect in the data or the method. It is what a hard SAOM looks like, and the skill this document is really teaching is the discipline to look at <code>tconv.max</code> <strong>before</strong> you believe the coefficients — and to keep restarting until it passes, rather than reporting the first fit that ran without erroring.</p>
+<p>The overall maximum convergence ratio is well <strong>above</strong> the 0.25 threshold the RSiena manual sets for publishable results, and above even the loose 0.35 “nearly converged” bar. By the manual’s own standard, <strong>you may not report these estimates.</strong></p>
+<p>The honest description of what happened: a clean three-effect run on this data does not converge in a single pass. The stored result that circulated with the original materials showed a <code>tconv.max</code> around 0.10: a converged fit, but reaching that took undocumented restarts with <code>prevAns</code>, chaining one run’s ending values into the next run’s starting values, repeated until the ratio came down. The single-pass number you see here is the truthful one.</p>
+<p>This is not a defect in the data or the method. It is what a hard SAOM looks like, and the skill this document is really teaching is the discipline to look at <code>tconv.max</code> <strong>before</strong> you believe the coefficients, and to keep restarting until it passes, rather than reporting the first fit that ran without erroring.</p>
 </div>
 </div>
 </section>
@@ -2414,8 +2413,8 @@ vertical-align: -.125em;
 <h1>4. What you would actually do next</h1>
 <p>Not report the table above. Instead, the standard repair loop from the taught session, made concrete:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># feed the previous run&#39;s estimates in as starting values, and refit.</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># repeat until tconv.max &lt; 0.25. each restart is faster than the first</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Feed the previous run&#39;s estimates in as starting values, and refit.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat until tconv.max &lt; 0.25. Each restart is faster than the first</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># because you begin much closer to the solution.</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>alg  <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ans2 <span class="ot">&lt;-</span> <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff, <span class="at">prevAns =</span> ans,</span>
@@ -2426,15 +2425,15 @@ vertical-align: -.125em;
 <ol type="1">
 <li><strong><code>prevAns</code> is the whole trick.</strong> Each restart begins from the last run’s estimates, so it starts near the solution and both converges faster and pushes <code>tconv.max</code> down. Re-running from scratch, or giving up, are the two things people do instead, and both are wrong.</li>
 <li><strong>It can take several passes</strong> on data this hard. That is normal. Budget for it.</li>
-<li><strong>If it will not come down after several restarts</strong>, the message is about your <em>model</em>, not your patience. A specification the data cannot support will not converge no matter how many times you restart it — at which point you simplify the model, not the threshold.</li>
+<li><strong>If it will not come down after several restarts</strong>, the message is about your <em>model</em>, not your patience. A specification the data cannot support will not converge no matter how many times you restart it: at which point you simplify the model, not the threshold.</li>
 </ol>
-<div class="callout callout-style-default callout-note callout-titled" title="Depth — why this network is so much harder than s50">
+<div class="callout callout-style-default callout-note callout-titled" title="Depth: why this network is so much harder than s50">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Depth — why this network is so much harder than s50
+<span class="screen-reader-only">Note</span>Depth: why this network is so much harder than s50
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -2442,7 +2441,7 @@ vertical-align: -.125em;
 <div class="callout-body-container callout-body">
 <p>Two reasons, both structural.</p>
 <p><strong>Density and direction.</strong> <code>s50</code> is 50 nodes at about 5% density, undirected in effect for the structural terms that matter. Duque is 158 nodes at far higher density, fully directed. The simulation the method of moments relies on has to explore a vastly larger and more constrained space, and the targets it is matching are correspondingly noisier.</p>
-<p><strong>Composition change via structural zeros.</strong> Using <code>10</code>-coded structural zeros for states that enter and leave (rather than <code>sienaCompositionChange()</code>) is the older approach the current manual discourages — see the <a href="saom_composition.html">composition-change document</a>. It works, but it makes the estimation problem harder, because a large block of the array is fixed and the estimator has to respect that while still matching the moving targets. A cleaner run would model composition change properly. This document keeps the structural-zero approach precisely because it is what you will find in the published replication files, and recognising it is part of reading that literature.</p>
+<p><strong>Composition change via structural zeros.</strong> The <code>10</code> coding used for states that enter and leave is one supported method-of-moments representation, not an obsolete error. A <code>sienaCompositionChange()</code> object can use known entry and exit times more directly and is needed when creation or endowment effects are part of the model. See the <a href="saom_composition.html">composition-change document</a> for the tradeoffs. This document preserves the structural-zero approach because it is what the published replication files use, and recognizing that coding is part of reading the literature.</p>
 </div>
 </div>
 </div>
@@ -2453,14 +2452,14 @@ vertical-align: -.125em;
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href>Core</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href>Solution</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p>Before touching <code>prevAns</code>, ask whether this data should be modelled as an evolving network at all. Compute the <strong>Jaccard index</strong> between consecutive waves — the pre-flight check from the taught session — and compare against the manual’s thresholds (≥ 0.3 good, &lt; 0.2 trouble, &lt; 0.1 quite low).</p>
+<p>Before touching <code>prevAns</code>, ask whether this data should be modelled as an evolving network at all. Compute the <strong>Jaccard index</strong> between consecutive waves: the pre-flight check from the taught session, and compare against the manual’s thresholds (≥ 0.3 good, &lt; 0.2 trouble, &lt; 0.1 quite low).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>jac <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> a <span class="sc">==</span> <span class="dv">1</span>; b <span class="ot">&lt;-</span> b <span class="sc">==</span> <span class="dv">1</span>                       <span class="co"># ties only; ignore NA / structural zeros</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(a <span class="sc">&amp;</span> b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">sum</span>(______, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Then answer: if the Jaccard indices are healthy but the model still will not converge, what does that tell you about <em>where</em> the problem is — the data, or the specification?</p>
+<p>Then answer: if the Jaccard indices are healthy but the model still will not converge, what does that tell you about <em>where</em> the problem is: the data, or the specification?</p>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
@@ -2477,9 +2476,9 @@ vertical-align: -.125em;
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 wave 1 -&gt; 2   0.615</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 wave 2 -&gt; 3   0.679</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>The blank</strong> is <code>a | b</code> — the Jaccard index is the size of the intersection (ties present at both waves) over the size of the union (ties present at either). Using the union in the denominator is what makes it a measure of <em>stability</em> rather than of density.</p>
-<p><strong>The interpretation.</strong> These Jaccard values are high — diplomatic ties are extremely stable, far more so than adolescent friendships. So the applicability check <em>passes</em>: this genuinely is an evolving network with enough overlap between waves for SAOM to have something to model. The turnover is not too fast.</p>
-<p>That is the useful diagnostic split. <strong>Healthy Jaccard plus a convergence failure points at the specification, not the data.</strong> The data are fine to model; the three-effect model just is not converging on them in one pass, and the fix is <code>prevAns</code> restarts (and, if those fail, a simpler or better-specified model) — not a different dataset and not a relaxed threshold. If the Jaccard had come back below 0.1 the diagnosis would be the opposite: the network turns over too fast to be treated as evolving, and no amount of restarting would save it.</p>
+<p><strong>The blank</strong> is <code>a | b</code>: the Jaccard index is the size of the intersection (ties present at both waves) over the size of the union (ties present at either). Using the union in the denominator is what makes it a measure of <em>stability</em> rather than of density.</p>
+<p><strong>The interpretation.</strong> These Jaccard values are high: diplomatic ties are extremely stable, far more so than adolescent friendships. So the applicability check <em>passes</em>: this genuinely is an evolving network with enough overlap between waves for SAOM to have something to model. The turnover is not too fast.</p>
+<p>That is the useful diagnostic split. <strong>Healthy Jaccard plus a convergence failure points at the specification, not the data.</strong> The data are fine to model; the three-effect model just is not converging on them in one pass, and the fix is <code>prevAns</code> restarts (and, if those fail, a simpler or better-specified model), not a different dataset and not a relaxed threshold. If the Jaccard had come back below 0.1 the diagnosis would be the opposite: the network turns over too fast to be treated as evolving, and no amount of restarting would save it.</p>
 </div>
 </div>
 </div>
@@ -2487,13 +2486,13 @@ vertical-align: -.125em;
 <section id="readings" class="level1">
 <h1>6. Readings</h1>
 <ul>
-<li><strong>Duque (2018)</strong>, “Recognizing international status: A relational approach,” <em>International Studies Quarterly</em> 62(3):577–592. The study. Assigned for the ERGM session as a <em>referee</em> exercise — read it and ask whether it reports the diagnostics this document is about.</li>
-<li><strong>Ripley, Snijders, Boda &amp; Vörös</strong>, <em>Manual for RSiena</em> (current edition). The convergence thresholds and the <code>prevAns</code> procedure are in the estimation section. The syllabus’s 2012 citation is badly stale — use the current one.</li>
+<li><strong>Duque (2018)</strong>, “Recognizing international status: A relational approach,” <em>International Studies Quarterly</em> 62(3):577–592. The study. Assigned for the ERGM session as a <em>referee</em> exercise: read it and ask whether it reports the diagnostics this document is about.</li>
+<li><strong>Ripley, Snijders, Boda &amp; Vörös</strong>, <em>Manual for RSiena</em> (current edition). The convergence thresholds and the <code>prevAns</code> procedure are in the estimation section. The syllabus’s 2012 citation is badly stale: use the current one.</li>
 <li><strong>Snijders (2017)</strong>, “Stochastic actor-oriented models for network dynamics,” <em>Annual Review of Statistics and Its Application</em> 4:343–363. The canonical modern overview, and the reading the syllabus is missing.</li>
 </ul>
 <div class="cell">
 <details class="code-fold">
-<summary>Versions — expand if your numbers differ from mine</summary>
+<summary>Versions: expand if your numbers differ from mine</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> <span class="fu">c</span>(<span class="st">&quot;RSiena&quot;</span>, <span class="st">&quot;networkdata&quot;</span>),</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">c</span>(<span class="fu">as.character</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;RSiena&quot;</span>)),</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;networkdata&quot;</span>))))</span>
@@ -2978,8 +2977,8 @@ vertical-align: -.125em;
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title=&quot;What this extends, and why it is here&quot;}</span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>**Extends:** the SAOM session (day 5, W3 Tue). The taught session runs on <span class="in">`s50`</span>, which is a well-behaved</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>dataset: it fits in seconds and converges cleanly. This document is the opposite experience on</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>purpose — a larger, directed, IR network that is **genuinely hard to fit**, and does not fully</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>dataset: it fits quickly and converges cleanly. This document is the opposite experience on</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>purpose: a larger, directed, IR network that is **genuinely hard to fit**, and does not fully</span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>converge in one pass.</span>
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>**Why that is worth your time.** Most of what you will meet in the wild looks like this, not like</span>
@@ -2989,299 +2988,295 @@ vertical-align: -.125em;
 <span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>like&quot; document.</span>
 <span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>**What you need:** <span class="in">`RSiena`</span>, <span class="in">`networkdata`</span> (carries the Duque data; no <span class="in">`install_github`</span> runs</span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>here). **Runtime:** the data prep is instant; the fit itself takes about **2.5 minutes**, so it</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>is precomputed and shipped — the code is shown and you can run it yourself with</span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="in">`options(session.refit = TRUE)`</span>.</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. The setting</span></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>Duque (2018) studies **status recognition** between states. A state &quot;recognises&quot; another by</span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>establishing a diplomatic mission — an embassy. The claim is that recognition is *social*: you</span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>get recognised because of your position in the network of recognition, not only because of your</span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>material attributes. That is a dynamic, endogenous story about who recognises whom over time,</span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>which is SAOM territory.</span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>The data: <span class="in">`dipl_ties`</span>, eight waves (1970–2005, every five years) of directed diplomatic ties</span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>among states, plus contiguity, alliances, and regime type. We will use the first three waves, to</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>keep the fit to a couple of minutes.</span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>Two features make this hard in ways <span class="in">`s50`</span> was not:</span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**The node set changes** — states enter and leave the international system across waves.</span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**It is directed and dense** — 158 states, thousands of ties, and the density plus the</span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>   directedness make the estimator work much harder than 50 sparse friendships did.</span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. Data preparation — where most of the danger lives</span></span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>This is the part that has to be right, and it is the part that is easy to get silently wrong. The</span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>original version of this construction was wrong in three independent ways, none of which threw an</span>
-<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>error. We will do it correctly and then, in the warning box, name exactly what the three errors</span>
-<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>were, because they are errors you are likely to make yourself.</span>
-<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: prep</span></span>
-<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
-<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(RSiena)</span>
-<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(networkdata)</span>
-<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(duqueData)</span>
-<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>W      <span class="ot">&lt;-</span> <span class="dv">3</span>L</span>
-<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>actors <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(dipl_ties[<span class="dv">1</span><span class="sc">:</span>W], names))))</span>
-<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>n      <span class="ot">&lt;-</span> <span class="fu">length</span>(actors)</span>
-<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>dipl <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">10</span>L, <span class="at">dim =</span> <span class="fu">c</span>(n, n, W), <span class="at">dimnames =</span> <span class="fu">list</span>(actors, actors, <span class="cn">NULL</span>))</span>
-<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>W) {</span>
-<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(dipl_ties[[t]])</span>
-<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>  d[d <span class="sc">==</span> <span class="st">&quot;.&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span>                       <span class="co"># &quot;.&quot; is this dataset&#39;s missing code</span></span>
-<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">storage.mode</span>(d) <span class="ot">&lt;-</span> <span class="st">&quot;integer&quot;</span></span>
-<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>  ids <span class="ot">&lt;-</span> <span class="fu">names</span>(dipl_ties[[t]])</span>
-<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dimnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">list</span>(ids, ids)</span>
-<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>  dipl[ids, ids, t] <span class="ot">&lt;-</span> d                  <span class="co"># NAME-based assignment into the pooled array</span></span>
-<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>W) <span class="fu">diag</span>(dipl[, , t]) <span class="ot">&lt;-</span> <span class="dv">10</span>L   <span class="co"># structural zeros on the diagonal</span></span>
-<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n_actors =</span> n, <span class="at">na_cells =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(dipl)))</span>
-<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dipl, <span class="at">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</span>
-<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live &lt;1s</span><span class="co">]</span>{.rt .rt-live}</span>
-<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>The <span class="in">`10`</span> code marks structural zeros: a state that is not in the system at a given wave has all</span>
-<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>its ties coded <span class="in">`10`</span>, which tells RSiena &quot;this actor is not available here&quot; rather than &quot;this</span>
-<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>actor chose to have no ties.&quot; The scattered <span class="in">`NA`</span>s (586 of them) are genuine missing data from the</span>
-<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="in">`&quot;.&quot;`</span> code.</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>here). The fit is slow, so it is precomputed and shipped. The code is shown, and you can run it yourself with</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="in">`options(session.refit = TRUE)`</span>.</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. The setting</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>Duque (2018) studies **status recognition** between states. A state &quot;recognises&quot; another by</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>establishing a diplomatic mission: an embassy. The claim is that recognition is *social*: you</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>get recognised because of your position in the network of recognition, not only because of your</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>material attributes. That is a dynamic, endogenous story about who recognises whom over time,</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>which is SAOM territory.</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>The data: <span class="in">`dipl_ties`</span>, eight waves (1970–2005, every five years) of directed diplomatic ties</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>among states, plus contiguity, alliances, and regime type. We will use the first three waves to</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>keep the fit manageable.</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>Two features make this hard in ways <span class="in">`s50`</span> was not:</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**The node set changes**: states enter and leave the international system across waves.</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**It is directed and dense**: 158 states, thousands of ties, and the density plus the</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>   directedness make the estimator work much harder than 50 sparse friendships did.</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. Data preparation: where most of the danger lives</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>This is the part that has to be right, and it is the part that is easy to get silently wrong. The</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>original version of this construction was wrong in three independent ways, none of which threw an</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>error. We will do it correctly and then, in the warning box, name exactly what the three errors</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>were, because they are errors you are likely to make yourself.</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: prep</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(RSiena)</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(networkdata)</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(duqueData)</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>W      <span class="ot">&lt;-</span> <span class="dv">3</span>L</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>actors <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(dipl_ties[<span class="dv">1</span><span class="sc">:</span>W], names))))</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>n      <span class="ot">&lt;-</span> <span class="fu">length</span>(actors)</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>dipl <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">10</span>L, <span class="at">dim =</span> <span class="fu">c</span>(n, n, W), <span class="at">dimnames =</span> <span class="fu">list</span>(actors, actors, <span class="cn">NULL</span>))</span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>W) {</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(dipl_ties[[t]])</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>  d[d <span class="sc">==</span> <span class="st">&quot;.&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span>                       <span class="co"># &quot;.&quot; is this dataset&#39;s missing code</span></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">storage.mode</span>(d) <span class="ot">&lt;-</span> <span class="st">&quot;integer&quot;</span></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>  ids <span class="ot">&lt;-</span> <span class="fu">names</span>(dipl_ties[[t]])</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dimnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">list</span>(ids, ids)</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>  dipl[ids, ids, t] <span class="ot">&lt;-</span> d                  <span class="co"># NAME-based assignment into the pooled array</span></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>W) <span class="fu">diag</span>(dipl[, , t]) <span class="ot">&lt;-</span> <span class="dv">10</span>L   <span class="co"># structural zeros on the diagonal</span></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n_actors =</span> n, <span class="at">na_cells =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(dipl)))</span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dipl, <span class="at">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>The <span class="in">`10`</span> code marks structural zeros: a state that is not in the system at a given wave has all</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>its ties coded <span class="in">`10`</span>, which tells RSiena &quot;this actor is not available here&quot; rather than &quot;this</span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>actor chose to have no ties.&quot; The scattered <span class="in">`NA`</span>s (586 of them) are genuine missing data from the</span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a><span class="in">`&quot;.&quot;`</span> code.</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>Confirm the network is still **directed** after all that reshaping: the single most important</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>check, because the substantive question is entirely about asymmetry:</span>
 <span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>Confirm the network is still **directed** after all that reshaping — the single most important</span>
-<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>check, because the substantive question is entirely about asymmetry:</span>
-<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: prep-check</span></span>
-<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>asym <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>W, <span class="cf">function</span>(t) {</span>
-<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> dipl[, , t]; m[m <span class="sc">==</span> <span class="dv">10</span> <span class="sc">|</span> <span class="fu">is.na</span>(m)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(m <span class="sc">!=</span> <span class="fu">t</span>(m), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">actors =</span> n, <span class="at">waves =</span> W, <span class="at">asymmetric_cells_per_wave =</span> asym)</span>
-<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>Thousands of asymmetric cells per wave. If that had come back near zero you would know you had</span>
-<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>accidentally symmetrised the network, which would silently destroy the &quot;who recognises whom&quot;</span>
-<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>question the whole study is about.</span>
-<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;The three bugs this construction replaces&quot;}</span>
-<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>The version that circulated in the original teaching materials was <span class="in">`eval = FALSE`</span>, so it never</span>
-<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>ran and never errored, and was handed to students as a template. It was wrong three ways:</span>
-<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Positional indexing into a name-dimensioned array.** It looped <span class="in">`for (i in 1:nrow(d))`</span> and</span>
-<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a>   wrote <span class="in">`dipl[i, j, t] &lt;- val`</span>, but <span class="in">`dipl`</span> was dimensioned by the *pooled* 158-actor list while</span>
-<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a>   <span class="in">`d`</span> had only that wave&#39;s actors (134 in wave 1). So from about the third actor onward, every</span>
-<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a>   value was written to the wrong cell. The fix is name-based assignment — <span class="in">`dipl[ids, ids, t] &lt;- d`</span></span>
-<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>   — which cannot misalign because R matches the names.</span>
-<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Silent symmetrisation.** It wrote both <span class="in">`dipl[i, j, t] &lt;- val`</span> and <span class="in">`dipl[j, i, t] &lt;- val`</span>,</span>
-<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a>   forcing symmetry on a directed network. That corrupts roughly a thousand cells per wave and</span>
-<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a>   erases the asymmetry the study depends on. We never write the transpose.</span>
-<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Coercion of the missing code without noticing.** <span class="in">`as.numeric(as.character(d))`</span> turned the</span>
-<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a>   <span class="in">`&quot;.&quot;`</span> missing code into <span class="in">`NA`</span> with a warning nobody read — 586 cells. We handle <span class="in">`&quot;.&quot;`</span></span>
-<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>   explicitly with <span class="in">`d[d == &quot;.&quot;] &lt;- NA`</span> so the missingness is deliberate and countable.</span>
-<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>The answer key that shipped alongside the slides actually had the **correct** name-based form.</span>
-<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>The slide was a degraded copy of working code. The lesson is the one from the ERGM applications</span>
-<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>document, restated: **index relational data by name, and check <span class="in">`dim()`</span>, <span class="in">`table()`</span>, and symmetry</span>
-<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>after every reshape.**</span>
-<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. The fit — and reading a convergence failure honestly</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: prep-check</span></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>asym <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>W, <span class="cf">function</span>(t) {</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> dipl[, , t]; m[m <span class="sc">==</span> <span class="dv">10</span> <span class="sc">|</span> <span class="fu">is.na</span>(m)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(m <span class="sc">!=</span> <span class="fu">t</span>(m), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">actors =</span> n, <span class="at">waves =</span> W, <span class="at">asymmetric_cells_per_wave =</span> asym)</span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>Thousands of asymmetric cells per wave. If that had come back near zero you would know you had</span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>accidentally symmetrised the network, which would silently destroy the &quot;who recognises whom&quot;</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>question the whole study is about.</span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;The three bugs this construction replaces&quot;}</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>The version that circulated in the original teaching materials was <span class="in">`eval = FALSE`</span>, so it never</span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>ran and never errored, and was handed to students as a template. It was wrong three ways:</span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Positional indexing into a name-dimensioned array.** It looped <span class="in">`for (i in 1:nrow(d))`</span> and</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>   wrote <span class="in">`dipl[i, j, t] &lt;- val`</span>, but <span class="in">`dipl`</span> was dimensioned by the *pooled* 158-actor list while</span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a>   <span class="in">`d`</span> had only that wave&#39;s actors (134 in wave 1). So from about the third actor onward, every</span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>   value was written to the wrong cell. The fix is name-based assignment: <span class="in">`dipl[ids, ids, t] &lt;- d`</span>,</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a>   which cannot misalign because R matches the names.</span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Silent symmetrisation.** It wrote both <span class="in">`dipl[i, j, t] &lt;- val`</span> and <span class="in">`dipl[j, i, t] &lt;- val`</span>,</span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>   forcing symmetry on a directed network. That corrupts roughly a thousand cells per wave and</span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a>   erases the asymmetry the study depends on. We never write the transpose.</span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Coercion of the missing code without noticing.** <span class="in">`as.numeric(as.character(d))`</span> turned the</span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a>   <span class="in">`&quot;.&quot;`</span> missing code into <span class="in">`NA`</span> with a warning nobody read: 586 cells. We handle <span class="in">`&quot;.&quot;`</span></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a>   explicitly with <span class="in">`d[d == &quot;.&quot;] &lt;- NA`</span> so the missingness is deliberate and countable.</span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a>The answer key that shipped alongside the slides actually had the **correct** name-based form.</span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>The slide was a degraded copy of working code. The lesson is the one from the ERGM applications</span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a>document, restated: **index relational data by name, and check <span class="in">`dim()`</span>, <span class="in">`table()`</span>, and symmetry</span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>after every reshape.**</span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. The fit, and reading a convergence failure honestly</span></span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a>Build the RSiena data object and a minimal three-effect specification: density, reciprocity, and</span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a>transitive ties.</span>
 <span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a>Build the RSiena data object and a minimal three-effect specification: density, reciprocity, and</span>
-<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a>transitive ties.</span>
-<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-setup</span></span>
-<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a>dv  <span class="ot">&lt;-</span> <span class="fu">sienaDependent</span>(dipl, <span class="at">allowOnly =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">sienaDataCreate</span>(dv)</span>
-<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">getEffects</span>(dat)</span>
-<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff, transTies)</span>
-<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-show</span></span>
-<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a><span class="co"># This runs for ~2.5 minutes. Precomputed below; run it yourself with</span></span>
-<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a><span class="co"># options(session.refit = TRUE).</span></span>
-<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>alg <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
-<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff,</span>
-<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a>               <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-load</span></span>
-<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;saom_duque&quot;</span>, {</span>
-<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a>  alg <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
-<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff, <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">precomputed ~2.5m</span><span class="co">]</span>{.rt .rt-precmp}</span>
-<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-result</span></span>
-<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">effect =</span> ans<span class="sc">$</span>effects<span class="sc">$</span>effectName,</span>
-<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a>           <span class="at">est =</span> <span class="fu">round</span>(ans<span class="sc">$</span>theta, <span class="dv">3</span>),</span>
-<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a>           <span class="at">se  =</span> <span class="fu">round</span>(<span class="fu">sqrt</span>(<span class="fu">diag</span>(ans<span class="sc">$</span>covtheta)), <span class="dv">3</span>))</span>
-<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a>Substantively this is what the theory predicts: strong reciprocity (recognition is returned) and</span>
-<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a>positive transitivity (states recognise the states their partners recognise). If you stopped</span>
-<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a>here you would report a clean-looking result. **Do not stop here.**</span>
-<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-conv</span></span>
-<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">as.numeric</span>(ans<span class="sc">$</span>tconv.max), <span class="dv">3</span>)</span>
-<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;This did not converge, and that is the point of the document&quot;}</span>
-<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a>The overall maximum convergence ratio is well **above** the 0.25 threshold the RSiena manual</span>
-<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a>sets for publishable results — and above even the loose 0.35 &quot;nearly converged&quot; bar. By the</span>
-<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a>manual&#39;s own standard, **you may not report these estimates.**</span>
-<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a>The honest description of what happened: a clean three-effect run on this data does not converge</span>
-<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a>in a single pass. The stored result that circulated with the original materials showed a</span>
-<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a><span class="in">`tconv.max`</span> around 0.10 — a converged fit — but reaching that took undocumented restarts with</span>
-<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a><span class="in">`prevAns`</span>, chaining one run&#39;s ending values into the next run&#39;s starting values, repeated until</span>
-<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a>the ratio came down. The single-pass number you see here is the truthful one.</span>
-<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a>This is not a defect in the data or the method. It is what a hard SAOM looks like, and the</span>
-<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a>skill this document is really teaching is the discipline to look at <span class="in">`tconv.max`</span> **before** you</span>
-<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a>believe the coefficients — and to keep restarting until it passes, rather than reporting the</span>
-<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a>first fit that ran without erroring.</span>
-<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. What you would actually do next</span></span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-setup</span></span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a>dv  <span class="ot">&lt;-</span> <span class="fu">sienaDependent</span>(dipl, <span class="at">allowOnly =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">sienaDataCreate</span>(dv)</span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">getEffects</span>(dat)</span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">includeEffects</span>(eff, transTies)</span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-show</span></span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a slow fit. A precomputed result appears below; run it yourself with</span></span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a><span class="co"># options(session.refit = TRUE).</span></span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a>alg <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff,</span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a>               <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-load</span></span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;saom_duque&quot;</span>, {</span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a>  alg <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff, <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a>The result below is precomputed from the code above.</span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-result</span></span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">effect =</span> ans<span class="sc">$</span>effects<span class="sc">$</span>effectName,</span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a>           <span class="at">est =</span> <span class="fu">round</span>(ans<span class="sc">$</span>theta, <span class="dv">3</span>),</span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a>           <span class="at">se  =</span> <span class="fu">round</span>(<span class="fu">sqrt</span>(<span class="fu">diag</span>(ans<span class="sc">$</span>covtheta)), <span class="dv">3</span>))</span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a>Substantively this is what the theory predicts: strong reciprocity (recognition is returned) and</span>
+<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a>positive transitivity (states recognise the states their partners recognise). If you stopped</span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a>here you would report a clean-looking result. **Do not stop here.**</span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-conv</span></span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">as.numeric</span>(ans<span class="sc">$</span>tconv.max), <span class="dv">3</span>)</span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;This did not converge, and that is the point of the document&quot;}</span>
+<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a>The overall maximum convergence ratio is well **above** the 0.25 threshold the RSiena manual</span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a>sets for publishable results, and above even the loose 0.35 &quot;nearly converged&quot; bar. By the</span>
+<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a>manual&#39;s own standard, **you may not report these estimates.**</span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a>The honest description of what happened: a clean three-effect run on this data does not converge</span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a>in a single pass. The stored result that circulated with the original materials showed a</span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a><span class="in">`tconv.max`</span> around 0.10: a converged fit, but reaching that took undocumented restarts with</span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a><span class="in">`prevAns`</span>, chaining one run&#39;s ending values into the next run&#39;s starting values, repeated until</span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a>the ratio came down. The single-pass number you see here is the truthful one.</span>
+<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a>This is not a defect in the data or the method. It is what a hard SAOM looks like, and the</span>
+<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a>skill this document is really teaching is the discipline to look at <span class="in">`tconv.max`</span> **before** you</span>
+<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a>believe the coefficients, and to keep restarting until it passes, rather than reporting the</span>
+<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a>first fit that ran without erroring.</span>
+<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. What you would actually do next</span></span>
+<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a>Not report the table above. Instead, the standard repair loop from the taught session, made</span>
+<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a>concrete:</span>
 <span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a>Not report the table above. Instead, the standard repair loop from the taught session, made</span>
-<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a>concrete:</span>
-<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: repair-show</span></span>
-<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a><span class="co"># feed the previous run&#39;s estimates in as starting values, and refit.</span></span>
-<span id="cb11-227"><a href="#cb11-227" aria-hidden="true" tabindex="-1"></a><span class="co"># repeat until tconv.max &lt; 0.25. each restart is faster than the first</span></span>
-<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a><span class="co"># because you begin much closer to the solution.</span></span>
-<span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a>alg  <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
-<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a>ans2 <span class="ot">&lt;-</span> <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff, <span class="at">prevAns =</span> ans,</span>
-<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a>                <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a>ans2<span class="sc">$</span>tconv.max                        <span class="co"># check; if still &gt; 0.25, do it again with prevAns = ans2</span></span>
-<span id="cb11-233"><a href="#cb11-233" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: repair-show</span></span>
+<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a><span class="co"># Feed the previous run&#39;s estimates in as starting values, and refit.</span></span>
+<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat until tconv.max &lt; 0.25. Each restart is faster than the first</span></span>
+<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a><span class="co"># because you begin much closer to the solution.</span></span>
+<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a>alg  <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
+<span id="cb11-227"><a href="#cb11-227" aria-hidden="true" tabindex="-1"></a>ans2 <span class="ot">&lt;-</span> <span class="fu">siena07</span>(alg, <span class="at">data =</span> dat, <span class="at">effects =</span> eff, <span class="at">prevAns =</span> ans,</span>
+<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a>                <span class="at">batch =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a>ans2<span class="sc">$</span>tconv.max                        <span class="co"># check; if still &gt; 0.25, do it again with prevAns = ans2</span></span>
+<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a>Three things are worth saying about this loop, because they are the practical knowledge the</span>
+<span id="cb11-233"><a href="#cb11-233" aria-hidden="true" tabindex="-1"></a>original materials hid:</span>
 <span id="cb11-234"><a href="#cb11-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-235"><a href="#cb11-235" aria-hidden="true" tabindex="-1"></a>Three things are worth saying about this loop, because they are the practical knowledge the</span>
-<span id="cb11-236"><a href="#cb11-236" aria-hidden="true" tabindex="-1"></a>original materials hid:</span>
-<span id="cb11-237"><a href="#cb11-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-238"><a href="#cb11-238" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**`prevAns` is the whole trick.** Each restart begins from the last run&#39;s estimates, so it</span>
-<span id="cb11-239"><a href="#cb11-239" aria-hidden="true" tabindex="-1"></a>   starts near the solution and both converges faster and pushes <span class="in">`tconv.max`</span> down. Re-running</span>
-<span id="cb11-240"><a href="#cb11-240" aria-hidden="true" tabindex="-1"></a>   from scratch, or giving up, are the two things people do instead, and both are wrong.</span>
-<span id="cb11-241"><a href="#cb11-241" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**It can take several passes** on data this hard. That is normal. Budget for it.</span>
-<span id="cb11-242"><a href="#cb11-242" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**If it will not come down after several restarts**, the message is about your *model*, not</span>
-<span id="cb11-243"><a href="#cb11-243" aria-hidden="true" tabindex="-1"></a>   your patience. A specification the data cannot support will not converge no matter how many</span>
-<span id="cb11-244"><a href="#cb11-244" aria-hidden="true" tabindex="-1"></a>   times you restart it — at which point you simplify the model, not the threshold.</span>
+<span id="cb11-235"><a href="#cb11-235" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**`prevAns` is the whole trick.** Each restart begins from the last run&#39;s estimates, so it</span>
+<span id="cb11-236"><a href="#cb11-236" aria-hidden="true" tabindex="-1"></a>   starts near the solution and both converges faster and pushes <span class="in">`tconv.max`</span> down. Re-running</span>
+<span id="cb11-237"><a href="#cb11-237" aria-hidden="true" tabindex="-1"></a>   from scratch, or giving up, are the two things people do instead, and both are wrong.</span>
+<span id="cb11-238"><a href="#cb11-238" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**It can take several passes** on data this hard. That is normal. Budget for it.</span>
+<span id="cb11-239"><a href="#cb11-239" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**If it will not come down after several restarts**, the message is about your *model*, not</span>
+<span id="cb11-240"><a href="#cb11-240" aria-hidden="true" tabindex="-1"></a>   your patience. A specification the data cannot support will not converge no matter how many</span>
+<span id="cb11-241"><a href="#cb11-241" aria-hidden="true" tabindex="-1"></a>   times you restart it: at which point you simplify the model, not the threshold.</span>
+<span id="cb11-242"><a href="#cb11-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-243"><a href="#cb11-243" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: why this network is so much harder than s50&quot;}</span>
+<span id="cb11-244"><a href="#cb11-244" aria-hidden="true" tabindex="-1"></a>Two reasons, both structural.</span>
 <span id="cb11-245"><a href="#cb11-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-246"><a href="#cb11-246" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth — why this network is so much harder than s50&quot;}</span>
-<span id="cb11-247"><a href="#cb11-247" aria-hidden="true" tabindex="-1"></a>Two reasons, both structural.</span>
-<span id="cb11-248"><a href="#cb11-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-249"><a href="#cb11-249" aria-hidden="true" tabindex="-1"></a>**Density and direction.** <span class="in">`s50`</span> is 50 nodes at about 5% density, undirected in effect for the</span>
-<span id="cb11-250"><a href="#cb11-250" aria-hidden="true" tabindex="-1"></a>structural terms that matter. Duque is 158 nodes at far higher density, fully directed. The</span>
-<span id="cb11-251"><a href="#cb11-251" aria-hidden="true" tabindex="-1"></a>simulation the method of moments relies on has to explore a vastly larger and more constrained</span>
-<span id="cb11-252"><a href="#cb11-252" aria-hidden="true" tabindex="-1"></a>space, and the targets it is matching are correspondingly noisier.</span>
-<span id="cb11-253"><a href="#cb11-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-254"><a href="#cb11-254" aria-hidden="true" tabindex="-1"></a>**Composition change via structural zeros.** Using <span class="in">`10`</span>-coded structural zeros for states that</span>
-<span id="cb11-255"><a href="#cb11-255" aria-hidden="true" tabindex="-1"></a>enter and leave (rather than <span class="in">`sienaCompositionChange()`</span>) is the older approach the current manual</span>
-<span id="cb11-256"><a href="#cb11-256" aria-hidden="true" tabindex="-1"></a>discourages — see the <span class="co">[</span><span class="ot">composition-change document</span><span class="co">](saom_composition.html)</span>. It works, but it makes</span>
-<span id="cb11-257"><a href="#cb11-257" aria-hidden="true" tabindex="-1"></a>the estimation problem harder, because a large block of the array is fixed and the estimator has</span>
-<span id="cb11-258"><a href="#cb11-258" aria-hidden="true" tabindex="-1"></a>to respect that while still matching the moving targets. A cleaner run would model composition</span>
-<span id="cb11-259"><a href="#cb11-259" aria-hidden="true" tabindex="-1"></a>change properly. This document keeps the structural-zero approach precisely because it is what</span>
-<span id="cb11-260"><a href="#cb11-260" aria-hidden="true" tabindex="-1"></a>you will find in the published replication files, and recognising it is part of reading that</span>
-<span id="cb11-261"><a href="#cb11-261" aria-hidden="true" tabindex="-1"></a>literature.</span>
-<span id="cb11-262"><a href="#cb11-262" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-246"><a href="#cb11-246" aria-hidden="true" tabindex="-1"></a>**Density and direction.** <span class="in">`s50`</span> is 50 nodes at about 5% density, undirected in effect for the</span>
+<span id="cb11-247"><a href="#cb11-247" aria-hidden="true" tabindex="-1"></a>structural terms that matter. Duque is 158 nodes at far higher density, fully directed. The</span>
+<span id="cb11-248"><a href="#cb11-248" aria-hidden="true" tabindex="-1"></a>simulation the method of moments relies on has to explore a vastly larger and more constrained</span>
+<span id="cb11-249"><a href="#cb11-249" aria-hidden="true" tabindex="-1"></a>space, and the targets it is matching are correspondingly noisier.</span>
+<span id="cb11-250"><a href="#cb11-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-251"><a href="#cb11-251" aria-hidden="true" tabindex="-1"></a>**Composition change via structural zeros.** The <span class="in">`10`</span> coding used for states that enter and</span>
+<span id="cb11-252"><a href="#cb11-252" aria-hidden="true" tabindex="-1"></a>leave is one supported method-of-moments representation, not an obsolete error. A</span>
+<span id="cb11-253"><a href="#cb11-253" aria-hidden="true" tabindex="-1"></a><span class="in">`sienaCompositionChange()`</span> object can use known entry and exit times more directly and is needed</span>
+<span id="cb11-254"><a href="#cb11-254" aria-hidden="true" tabindex="-1"></a>when creation or endowment effects are part of the model. See the</span>
+<span id="cb11-255"><a href="#cb11-255" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">composition-change document</span><span class="co">](saom_composition.html)</span> for the tradeoffs. This document preserves</span>
+<span id="cb11-256"><a href="#cb11-256" aria-hidden="true" tabindex="-1"></a>the structural-zero approach because it is what the published replication files use, and</span>
+<span id="cb11-257"><a href="#cb11-257" aria-hidden="true" tabindex="-1"></a>recognizing that coding is part of reading the literature.</span>
+<span id="cb11-258"><a href="#cb11-258" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-259"><a href="#cb11-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-260"><a href="#cb11-260" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Exercise</span></span>
+<span id="cb11-261"><a href="#cb11-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-262"><a href="#cb11-262" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
 <span id="cb11-263"><a href="#cb11-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-264"><a href="#cb11-264" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Exercise</span></span>
+<span id="cb11-264"><a href="#cb11-264" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
 <span id="cb11-265"><a href="#cb11-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-266"><a href="#cb11-266" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
-<span id="cb11-267"><a href="#cb11-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-268"><a href="#cb11-268" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
-<span id="cb11-269"><a href="#cb11-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-270"><a href="#cb11-270" aria-hidden="true" tabindex="-1"></a>Before touching <span class="in">`prevAns`</span>, ask whether this data should be modelled as an evolving network at</span>
-<span id="cb11-271"><a href="#cb11-271" aria-hidden="true" tabindex="-1"></a>all. Compute the **Jaccard index** between consecutive waves — the pre-flight check from the</span>
-<span id="cb11-272"><a href="#cb11-272" aria-hidden="true" tabindex="-1"></a>taught session — and compare against the manual&#39;s thresholds (≥ 0.3 good, &lt; 0.2 trouble,</span>
-<span id="cb11-273"><a href="#cb11-273" aria-hidden="true" tabindex="-1"></a>&lt; 0.1 quite low).</span>
-<span id="cb11-274"><a href="#cb11-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-277"><a href="#cb11-277" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-278"><a href="#cb11-278" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb11-279"><a href="#cb11-279" aria-hidden="true" tabindex="-1"></a>jac <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
-<span id="cb11-280"><a href="#cb11-280" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> a <span class="sc">==</span> <span class="dv">1</span>; b <span class="ot">&lt;-</span> b <span class="sc">==</span> <span class="dv">1</span>                       <span class="co"># ties only; ignore NA / structural zeros</span></span>
-<span id="cb11-281"><a href="#cb11-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(a <span class="sc">&amp;</span> b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">sum</span>(______, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-282"><a href="#cb11-282" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-283"><a href="#cb11-283" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-284"><a href="#cb11-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-285"><a href="#cb11-285" aria-hidden="true" tabindex="-1"></a>Then answer: if the Jaccard indices are healthy but the model still will not converge, what does</span>
-<span id="cb11-286"><a href="#cb11-286" aria-hidden="true" tabindex="-1"></a>that tell you about *where* the problem is — the data, or the specification?</span>
-<span id="cb11-287"><a href="#cb11-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-288"><a href="#cb11-288" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
-<span id="cb11-289"><a href="#cb11-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-292"><a href="#cb11-292" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-293"><a href="#cb11-293" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-jaccard</span></span>
-<span id="cb11-294"><a href="#cb11-294" aria-hidden="true" tabindex="-1"></a>jac <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
-<span id="cb11-295"><a href="#cb11-295" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> (a <span class="sc">==</span> <span class="dv">1</span>); b <span class="ot">&lt;-</span> (b <span class="sc">==</span> <span class="dv">1</span>)                    <span class="co"># TRUE where a tie exists</span></span>
-<span id="cb11-296"><a href="#cb11-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(a <span class="sc">&amp;</span> b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">sum</span>(a <span class="sc">|</span> b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-297"><a href="#cb11-297" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-298"><a href="#cb11-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-299"><a href="#cb11-299" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb11-300"><a href="#cb11-300" aria-hidden="true" tabindex="-1"></a>  <span class="at">transition =</span> <span class="fu">c</span>(<span class="st">&quot;wave 1 -&gt; 2&quot;</span>, <span class="st">&quot;wave 2 -&gt; 3&quot;</span>),</span>
-<span id="cb11-301"><a href="#cb11-301" aria-hidden="true" tabindex="-1"></a>  <span class="at">jaccard    =</span> <span class="fu">round</span>(<span class="fu">c</span>(<span class="fu">jac</span>(dipl[, , <span class="dv">1</span>], dipl[, , <span class="dv">2</span>]),</span>
-<span id="cb11-302"><a href="#cb11-302" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">jac</span>(dipl[, , <span class="dv">2</span>], dipl[, , <span class="dv">3</span>])), <span class="dv">3</span>))</span>
-<span id="cb11-303"><a href="#cb11-303" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-266"><a href="#cb11-266" aria-hidden="true" tabindex="-1"></a>Before touching <span class="in">`prevAns`</span>, ask whether this data should be modelled as an evolving network at</span>
+<span id="cb11-267"><a href="#cb11-267" aria-hidden="true" tabindex="-1"></a>all. Compute the **Jaccard index** between consecutive waves: the pre-flight check from the</span>
+<span id="cb11-268"><a href="#cb11-268" aria-hidden="true" tabindex="-1"></a>taught session, and compare against the manual&#39;s thresholds (≥ 0.3 good, &lt; 0.2 trouble,</span>
+<span id="cb11-269"><a href="#cb11-269" aria-hidden="true" tabindex="-1"></a>&lt; 0.1 quite low).</span>
+<span id="cb11-270"><a href="#cb11-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-273"><a href="#cb11-273" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-274"><a href="#cb11-274" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb11-275"><a href="#cb11-275" aria-hidden="true" tabindex="-1"></a>jac <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb11-276"><a href="#cb11-276" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> a <span class="sc">==</span> <span class="dv">1</span>; b <span class="ot">&lt;-</span> b <span class="sc">==</span> <span class="dv">1</span>                       <span class="co"># ties only; ignore NA / structural zeros</span></span>
+<span id="cb11-277"><a href="#cb11-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(a <span class="sc">&amp;</span> b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">sum</span>(______, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-278"><a href="#cb11-278" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-279"><a href="#cb11-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-280"><a href="#cb11-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-281"><a href="#cb11-281" aria-hidden="true" tabindex="-1"></a>Then answer: if the Jaccard indices are healthy but the model still will not converge, what does</span>
+<span id="cb11-282"><a href="#cb11-282" aria-hidden="true" tabindex="-1"></a>that tell you about *where* the problem is: the data, or the specification?</span>
+<span id="cb11-283"><a href="#cb11-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-284"><a href="#cb11-284" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
+<span id="cb11-285"><a href="#cb11-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-288"><a href="#cb11-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-289"><a href="#cb11-289" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-jaccard</span></span>
+<span id="cb11-290"><a href="#cb11-290" aria-hidden="true" tabindex="-1"></a>jac <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb11-291"><a href="#cb11-291" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> (a <span class="sc">==</span> <span class="dv">1</span>); b <span class="ot">&lt;-</span> (b <span class="sc">==</span> <span class="dv">1</span>)                    <span class="co"># TRUE where a tie exists</span></span>
+<span id="cb11-292"><a href="#cb11-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(a <span class="sc">&amp;</span> b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">sum</span>(a <span class="sc">|</span> b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-293"><a href="#cb11-293" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-294"><a href="#cb11-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-295"><a href="#cb11-295" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb11-296"><a href="#cb11-296" aria-hidden="true" tabindex="-1"></a>  <span class="at">transition =</span> <span class="fu">c</span>(<span class="st">&quot;wave 1 -&gt; 2&quot;</span>, <span class="st">&quot;wave 2 -&gt; 3&quot;</span>),</span>
+<span id="cb11-297"><a href="#cb11-297" aria-hidden="true" tabindex="-1"></a>  <span class="at">jaccard    =</span> <span class="fu">round</span>(<span class="fu">c</span>(<span class="fu">jac</span>(dipl[, , <span class="dv">1</span>], dipl[, , <span class="dv">2</span>]),</span>
+<span id="cb11-298"><a href="#cb11-298" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">jac</span>(dipl[, , <span class="dv">2</span>], dipl[, , <span class="dv">3</span>])), <span class="dv">3</span>))</span>
+<span id="cb11-299"><a href="#cb11-299" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-300"><a href="#cb11-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-301"><a href="#cb11-301" aria-hidden="true" tabindex="-1"></a>**The blank** is <span class="in">`a | b`</span>: the Jaccard index is the size of the intersection (ties present at</span>
+<span id="cb11-302"><a href="#cb11-302" aria-hidden="true" tabindex="-1"></a>both waves) over the size of the union (ties present at either). Using the union in the</span>
+<span id="cb11-303"><a href="#cb11-303" aria-hidden="true" tabindex="-1"></a>denominator is what makes it a measure of *stability* rather than of density.</span>
 <span id="cb11-304"><a href="#cb11-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-305"><a href="#cb11-305" aria-hidden="true" tabindex="-1"></a>**The blank** is <span class="in">`a | b`</span> — the Jaccard index is the size of the intersection (ties present at</span>
-<span id="cb11-306"><a href="#cb11-306" aria-hidden="true" tabindex="-1"></a>both waves) over the size of the union (ties present at either). Using the union in the</span>
-<span id="cb11-307"><a href="#cb11-307" aria-hidden="true" tabindex="-1"></a>denominator is what makes it a measure of *stability* rather than of density.</span>
-<span id="cb11-308"><a href="#cb11-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-309"><a href="#cb11-309" aria-hidden="true" tabindex="-1"></a>**The interpretation.** These Jaccard values are high — diplomatic ties are extremely stable,</span>
-<span id="cb11-310"><a href="#cb11-310" aria-hidden="true" tabindex="-1"></a>far more so than adolescent friendships. So the applicability check *passes*: this genuinely is</span>
-<span id="cb11-311"><a href="#cb11-311" aria-hidden="true" tabindex="-1"></a>an evolving network with enough overlap between waves for SAOM to have something to model. The</span>
-<span id="cb11-312"><a href="#cb11-312" aria-hidden="true" tabindex="-1"></a>turnover is not too fast.</span>
-<span id="cb11-313"><a href="#cb11-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-314"><a href="#cb11-314" aria-hidden="true" tabindex="-1"></a>That is the useful diagnostic split. **Healthy Jaccard plus a convergence failure points at the</span>
-<span id="cb11-315"><a href="#cb11-315" aria-hidden="true" tabindex="-1"></a>specification, not the data.** The data are fine to model; the three-effect model just is not</span>
-<span id="cb11-316"><a href="#cb11-316" aria-hidden="true" tabindex="-1"></a>converging on them in one pass, and the fix is <span class="in">`prevAns`</span> restarts (and, if those fail, a simpler</span>
-<span id="cb11-317"><a href="#cb11-317" aria-hidden="true" tabindex="-1"></a>or better-specified model) — not a different dataset and not a relaxed threshold. If the Jaccard</span>
-<span id="cb11-318"><a href="#cb11-318" aria-hidden="true" tabindex="-1"></a>had come back below 0.1 the diagnosis would be the opposite: the network turns over too fast to</span>
-<span id="cb11-319"><a href="#cb11-319" aria-hidden="true" tabindex="-1"></a>be treated as evolving, and no amount of restarting would save it.</span>
-<span id="cb11-320"><a href="#cb11-320" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb11-321"><a href="#cb11-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-322"><a href="#cb11-322" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Readings</span></span>
-<span id="cb11-323"><a href="#cb11-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-324"><a href="#cb11-324" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Duque (2018)**, &quot;Recognizing international status: A relational approach,&quot; *International</span>
-<span id="cb11-325"><a href="#cb11-325" aria-hidden="true" tabindex="-1"></a>  Studies Quarterly* 62(3):577–592. The study. Assigned for the ERGM session as a *referee*</span>
-<span id="cb11-326"><a href="#cb11-326" aria-hidden="true" tabindex="-1"></a>  exercise — read it and ask whether it reports the diagnostics this document is about.</span>
-<span id="cb11-327"><a href="#cb11-327" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Ripley, Snijders, Boda &amp; Vörös**, *Manual for RSiena* (current edition). The convergence</span>
-<span id="cb11-328"><a href="#cb11-328" aria-hidden="true" tabindex="-1"></a>  thresholds and the <span class="in">`prevAns`</span> procedure are in the estimation section. The syllabus&#39;s 2012</span>
-<span id="cb11-329"><a href="#cb11-329" aria-hidden="true" tabindex="-1"></a>  citation is badly stale — use the current one.</span>
-<span id="cb11-330"><a href="#cb11-330" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Snijders (2017)**, &quot;Stochastic actor-oriented models for network dynamics,&quot; *Annual Review</span>
-<span id="cb11-331"><a href="#cb11-331" aria-hidden="true" tabindex="-1"></a>  of Statistics and Its Application* 4:343–363. The canonical modern overview, and the reading</span>
-<span id="cb11-332"><a href="#cb11-332" aria-hidden="true" tabindex="-1"></a>  the syllabus is missing.</span>
-<span id="cb11-333"><a href="#cb11-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-336"><a href="#cb11-336" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-337"><a href="#cb11-337" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
-<span id="cb11-338"><a href="#cb11-338" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb11-339"><a href="#cb11-339" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb11-340"><a href="#cb11-340" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions — expand if your numbers differ from mine&quot;</span></span>
-<span id="cb11-341"><a href="#cb11-341" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> <span class="fu">c</span>(<span class="st">&quot;RSiena&quot;</span>, <span class="st">&quot;networkdata&quot;</span>),</span>
-<span id="cb11-342"><a href="#cb11-342" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">c</span>(<span class="fu">as.character</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;RSiena&quot;</span>)),</span>
-<span id="cb11-343"><a href="#cb11-343" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;networkdata&quot;</span>))))</span>
-<span id="cb11-344"><a href="#cb11-344" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb11-345"><a href="#cb11-345" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-305"><a href="#cb11-305" aria-hidden="true" tabindex="-1"></a>**The interpretation.** These Jaccard values are high: diplomatic ties are extremely stable,</span>
+<span id="cb11-306"><a href="#cb11-306" aria-hidden="true" tabindex="-1"></a>far more so than adolescent friendships. So the applicability check *passes*: this genuinely is</span>
+<span id="cb11-307"><a href="#cb11-307" aria-hidden="true" tabindex="-1"></a>an evolving network with enough overlap between waves for SAOM to have something to model. The</span>
+<span id="cb11-308"><a href="#cb11-308" aria-hidden="true" tabindex="-1"></a>turnover is not too fast.</span>
+<span id="cb11-309"><a href="#cb11-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-310"><a href="#cb11-310" aria-hidden="true" tabindex="-1"></a>That is the useful diagnostic split. **Healthy Jaccard plus a convergence failure points at the</span>
+<span id="cb11-311"><a href="#cb11-311" aria-hidden="true" tabindex="-1"></a>specification, not the data.** The data are fine to model; the three-effect model just is not</span>
+<span id="cb11-312"><a href="#cb11-312" aria-hidden="true" tabindex="-1"></a>converging on them in one pass, and the fix is <span class="in">`prevAns`</span> restarts (and, if those fail, a simpler</span>
+<span id="cb11-313"><a href="#cb11-313" aria-hidden="true" tabindex="-1"></a>or better-specified model), not a different dataset and not a relaxed threshold. If the Jaccard</span>
+<span id="cb11-314"><a href="#cb11-314" aria-hidden="true" tabindex="-1"></a>had come back below 0.1 the diagnosis would be the opposite: the network turns over too fast to</span>
+<span id="cb11-315"><a href="#cb11-315" aria-hidden="true" tabindex="-1"></a>be treated as evolving, and no amount of restarting would save it.</span>
+<span id="cb11-316"><a href="#cb11-316" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-317"><a href="#cb11-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-318"><a href="#cb11-318" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Readings</span></span>
+<span id="cb11-319"><a href="#cb11-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-320"><a href="#cb11-320" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Duque (2018)**, &quot;Recognizing international status: A relational approach,&quot; *International</span>
+<span id="cb11-321"><a href="#cb11-321" aria-hidden="true" tabindex="-1"></a>  Studies Quarterly* 62(3):577–592. The study. Assigned for the ERGM session as a *referee*</span>
+<span id="cb11-322"><a href="#cb11-322" aria-hidden="true" tabindex="-1"></a>  exercise: read it and ask whether it reports the diagnostics this document is about.</span>
+<span id="cb11-323"><a href="#cb11-323" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Ripley, Snijders, Boda &amp; Vörös**, *Manual for RSiena* (current edition). The convergence</span>
+<span id="cb11-324"><a href="#cb11-324" aria-hidden="true" tabindex="-1"></a>  thresholds and the <span class="in">`prevAns`</span> procedure are in the estimation section. The syllabus&#39;s 2012</span>
+<span id="cb11-325"><a href="#cb11-325" aria-hidden="true" tabindex="-1"></a>  citation is badly stale: use the current one.</span>
+<span id="cb11-326"><a href="#cb11-326" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Snijders (2017)**, &quot;Stochastic actor-oriented models for network dynamics,&quot; *Annual Review</span>
+<span id="cb11-327"><a href="#cb11-327" aria-hidden="true" tabindex="-1"></a>  of Statistics and Its Application* 4:343–363. The canonical modern overview, and the reading</span>
+<span id="cb11-328"><a href="#cb11-328" aria-hidden="true" tabindex="-1"></a>  the syllabus is missing.</span>
+<span id="cb11-329"><a href="#cb11-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-332"><a href="#cb11-332" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-333"><a href="#cb11-333" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
+<span id="cb11-334"><a href="#cb11-334" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
+<span id="cb11-335"><a href="#cb11-335" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb11-336"><a href="#cb11-336" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions: expand if your numbers differ from mine&quot;</span></span>
+<span id="cb11-337"><a href="#cb11-337" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> <span class="fu">c</span>(<span class="st">&quot;RSiena&quot;</span>, <span class="st">&quot;networkdata&quot;</span>),</span>
+<span id="cb11-338"><a href="#cb11-338" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">c</span>(<span class="fu">as.character</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;RSiena&quot;</span>)),</span>
+<span id="cb11-339"><a href="#cb11-339" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;networkdata&quot;</span>))))</span>
+<span id="cb11-340"><a href="#cb11-340" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb11-341"><a href="#cb11-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

@@ -2356,7 +2356,7 @@ window.Quarto = {
   <li><a href="#side-by-side" id="toc-side-by-side" class="nav-link" data-scroll-target="#side-by-side">2.3 Side by side</a></li>
   </ul></li>
   <li><a href="#one-draw-is-not-a-null-distribution" id="toc-one-draw-is-not-a-null-distribution" class="nav-link" data-scroll-target="#one-draw-is-not-a-null-distribution">3. One draw is not a null distribution</a></li>
-  <li><a href="#where-this-stops-being-enough-and-the-point-of-the-whole-exercise" id="toc-where-this-stops-being-enough-and-the-point-of-the-whole-exercise" class="nav-link" data-scroll-target="#where-this-stops-being-enough-and-the-point-of-the-whole-exercise">4. Where this stops being enough — and the point of the whole exercise</a></li>
+  <li><a href="#where-this-stops-being-enough-and-the-point-of-the-whole-exercise" id="toc-where-this-stops-being-enough-and-the-point-of-the-whole-exercise" class="nav-link" data-scroll-target="#where-this-stops-being-enough-and-the-point-of-the-whole-exercise">4. Where this stops being enough, and the point of the whole exercise</a></li>
   <li><a href="#which-is-why-you-need-ergms" id="toc-which-is-why-you-need-ergms" class="nav-link" data-scroll-target="#which-is-why-you-need-ergms">5. Which is why you need ERGMs</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">6. Exercises</a></li>
   <li><a href="#readings" id="toc-readings" class="nav-link" data-scroll-target="#readings">7. Readings</a></li>
@@ -2399,19 +2399,19 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-important callout-titled" title="Optional — not covered in the 2026 course">
+<div class="callout callout-style-default callout-important callout-titled" title="Optional: not covered in the 2026 course">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Optional — not covered in the 2026 course
+<span class="screen-reader-only">Important</span>Optional: not covered in the 2026 course
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>This document is <strong>not</strong> part of any taught session. Nobody is going to lecture it at you, nobody is going to grade you on it, and you can ignore it completely without falling behind.</p>
-<p>It exists because it is a thing you will plausibly need next, and because it is easier to hand you something that works than to hand you a citation and wish you luck. Everything here runs end to end on the same machine setup you used in class. Every number and every figure on this page was produced by a chunk in this file — there are no screenshots of R output anywhere in the ancillary package.</p>
-<p><strong>How to work through it alone.</strong> Get the source (click the <code>&lt;/&gt;</code> <strong>Code</strong> button at the top right, then <strong>View Source</strong>, and copy it into a <code>.qmd</code> file — or open the <code>.qmd</code> you were given directly), run the chunks in order, and read the prose between them — the prose is where the argument lives. Runtime badges tell you what to expect before you press Enter: <span class="rt rt-live">live ~8s</span> runs now · <span class="rt rt-slow">slow ~90s</span> runs, but go make coffee · <span class="rt rt-precmp">precomputed</span> loads a shipped result and shows you the code that made it. Folded <strong>Depth</strong> boxes are optional extras; folded <strong>Stuck?</strong> boxes are hints. Open whichever you need and ignore the other. Exercises have a <strong>Solution</strong> tab — you are working alone, so use it.</p>
+<p>It exists because it is a thing you will plausibly need next, and because it is easier to hand you something that works than to hand you a citation and wish you luck. Everything here runs end to end on the same machine setup you used in class. Every number and every figure on this page was produced by a chunk in this file: there are no screenshots of R output anywhere in the ancillary package.</p>
+<p><strong>How to work through it alone.</strong> Get the source (click the <code>&lt;/&gt;</code> <strong>Code</strong> button at the top right, then <strong>View Source</strong>, and copy it into a <code>.qmd</code> file: or open the <code>.qmd</code> you were given directly), run the chunks in order, and read the prose between them: the prose is where the argument lives. Slow fits are identified in the prose, and precomputed fits load a shipped result while still showing you the code that produced it. Folded <strong>Depth</strong> boxes are optional extras; folded <strong>Stuck?</strong> boxes are hints. Open whichever you need and ignore the other. Exercises have a <strong>Solution</strong> tab: you are working alone, so use it.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled" title="What this extends, and why it is here">
@@ -2425,18 +2425,17 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Extends:</strong> the ERGM session (day 4, W3 Mon), and it is the natural thing to read <em>before</em> it if you want a running start.</p>
-<p><strong>The question it answers:</strong> the ERGM session opens by saying that the whole enterprise is about building a better null model. This document is the slow version of that sentence. It builds the simplest possible null — the Erdős–Rényi random graph — by hand, compares it against real data, watches it fail, and shows why the failure is what motivates everything that comes after.</p>
+<p><strong>The question it answers:</strong> the ERGM session opens by saying that the whole enterprise is about building a better null model. This document is the slow version of that sentence. It builds the simplest possible null: the Erdős–Rényi random graph: by hand, compares it against real data, watches it fail, and shows why the failure is what motivates everything that comes after.</p>
 <p><strong>Why it is optional in 2026:</strong> Olga covers random graphs and the basic descriptives in week 1, so for most of you this is revision. It is here for people who want to build the null by hand once, and for anyone who joined the course with less background than the prerequisites assume.</p>
 <p><strong>What you need:</strong> <code>igraph</code>, <code>sna</code>, <code>ergm</code>, <code>network</code>. No data files.</p>
-<p><strong>Total runtime, cold:</strong> under <strong>15 seconds</strong>.</p>
 </div>
 </div>
 <section id="the-question-underneath-every-network-paper" class="level1">
 <h1>1. The question underneath every network paper</h1>
-<p>You have a network. You compute something about it — 51% of its ties are reciprocated, say, or it has 460 triangles. And then you want to say that number is <em>interesting</em>.</p>
+<p>You have a network. You compute something about it: 51% of its ties are reciprocated, say, or it has 460 triangles. And then you want to say that number is <em>interesting</em>.</p>
 <p>Interesting compared to what?</p>
 <p>That is the entire problem, and it is not rhetorical. “51% reciprocity” is not a finding until you can say what reciprocity you would have expected if nothing were going on. A network with lots of ties will have lots of reciprocated pairs by sheer arithmetic. So the number on its own tells you nothing; the number <em>relative to a baseline</em> might tell you a great deal.</p>
-<p>The baseline is called a <strong>null model</strong>, and choosing one is the substantive act. Get in the habit of asking, of any claim that a network is “more clustered than chance” or “more reciprocal than expected” — <strong>expected under what?</strong> In a surprisingly large number of published papers the answer is either unstated or indefensible.</p>
+<p>The baseline is called a <strong>null model</strong>, and choosing one is the substantive act. Get in the habit of asking, of any claim that a network is “more clustered than chance” or “more reciprocal than expected”: <strong>expected under what?</strong> In a surprisingly large number of published papers the answer is either unstated or indefensible.</p>
 </section>
 <section id="the-simplest-null-erdősrényi" class="level1">
 <h1>2. The simplest null: Erdős–Rényi</h1>
@@ -2462,10 +2461,9 @@ window.Quarto = {
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       nodes       edges     density reciprocity </span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     73.0000    243.0000      0.0462      0.5103</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-live">live &lt;1s</span></p>
 <p>Before modelling anything, three plain questions, which is the habit worth taking away from this whole document:</p>
 <ol type="1">
-<li><strong>How big is it and how dense?</strong> 73 boys, 243 nominations, density about 0.046. Sparse, which is normal — people have a bounded number of friends regardless of how many classmates exist.</li>
+<li><strong>How big is it and how dense?</strong> 73 boys, 243 nominations, density about 0.046. Sparse, which is normal: people have a bounded number of friends regardless of how many classmates exist.</li>
 <li><strong>Is it reciprocated?</strong> About 51% of nominations are returned. Is that a lot?</li>
 <li><strong>Is it clustered?</strong> Do friends of friends tend to be friends?</li>
 </ol>
@@ -2502,14 +2500,13 @@ window.Quarto = {
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    edges  density </span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 255.0000   0.0485</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-live">live &lt;1s</span></p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Stuck? — why `rbinom` rather than a double loop">
+<div class="callout callout-style-default callout-tip callout-titled" title="Stuck? Why `rbinom` rather than a double loop">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Stuck? — why <code>rbinom</code> rather than a double loop
+<span class="screen-reader-only">Tip</span>Stuck? Why <code>rbinom</code> rather than a double loop
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -2556,13 +2553,12 @@ window.Quarto = {
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; observed   243     62      460    542    383        5</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; random     255      4       60    495    421        7</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-live">live ~1s</span></p>
 <p>Roughly matched on <code>edges</code>, because we built it that way. Everything else is wildly off. Real friendships are reciprocated and clustered; random ones are not.</p>
 </section>
 </section>
 <section id="one-draw-is-not-a-null-distribution" class="level1">
 <h1>3. One draw is not a null distribution</h1>
-<p>Everything above compares the data against <strong>one</strong> random graph. That is a demonstration, not a test — a single draw could be unusual. The real procedure is to simulate many, build the sampling distribution of your statistic, and see where the observed value falls.</p>
+<p>Everything above compares the data against <strong>one</strong> random graph. That is a demonstration, not a test: a single draw could be unusual. The real procedure is to simulate many, build the sampling distribution of your statistic, and see where the observed value falls.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
@@ -2591,7 +2587,6 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p><span class="rt rt-live">live ~10s</span></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="fu">names</span>(obs_stats),</span>
@@ -2605,7 +2600,7 @@ window.Quarto = {
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  triangle      460      49.2       97  9.36</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    istar2      542     398.0      624  1.36</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The red line is not merely in the tail. <strong>It is off the chart</strong> — in a thousand draws the null never comes close. The observed reciprocity and triangle counts are multiples of what independence produces.</p>
+<p>The red line is not merely in the tail. <strong>It is off the chart.</strong> In a thousand draws the null never comes close. The observed reciprocity and triangle counts are multiples of what independence produces.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">mutual_obs   =</span> obs_stats[[<span class="st">&quot;mutual&quot;</span>]],</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">mutual_null  =</span> <span class="fu">round</span>(<span class="fu">mean</span>(sim_stats[, <span class="st">&quot;mutual&quot;</span>]), <span class="dv">1</span>),</span>
@@ -2618,47 +2613,48 @@ window.Quarto = {
 <p>So we can say something definite: <strong>friendship nominations in this school are not independent.</strong> Whatever is generating this network, it is not coin flips.</p>
 </section>
 <section id="where-this-stops-being-enough-and-the-point-of-the-whole-exercise" class="level1">
-<h1>4. Where this stops being enough — and the point of the whole exercise</h1>
+<h1>4. Where this stops being enough, and the point of the whole exercise</h1>
 <p>Here is the part that matters, and it is the reason this document exists rather than just the histogram above.</p>
 <p>We have shown the data are not Erdős–Rényi. Now try to say something more specific, and watch the problem appear.</p>
-<p><strong>Claim:</strong> “this network exhibits triadic closure — friends of friends become friends.”</p>
+<p><strong>Claim:</strong> “this network exhibits triadic closure: friends of friends become friends.”</p>
 <p>The evidence offered: 460 triangles observed against about 49 expected under the ER null. A factor of nine. Sounds convincing.</p>
 <p><strong>The objection:</strong> the ER null holds <em>nothing</em> fixed except density. In particular it does not preserve the degree distribution, and the real network has some very popular boys. A node with many incoming nominations mechanically generates a large number of two-paths, and two-paths close into triangles at some rate for purely combinatorial reasons. So some of that gap may not be closure at all. It may be popularity.</p>
-<p>Notice that this is a <strong>hypothesis</strong>, not a conclusion. People state it as though stating it settles it. It does not — you have to check. Swap the null for one that <strong>preserves each node’s in- and out-degree</strong> (very nearly — see the note below) and randomises only who is connected to whom.</p>
+<p>Notice that this is a <strong>hypothesis</strong>, not a conclusion. People state it as though stating it settles it. It does not: you have to check. Swap the null for one that <strong>preserves each node’s in- and out-degree exactly</strong> and randomises only who is connected to whom.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>B2 <span class="ot">&lt;-</span> <span class="dv">500</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Preserve every node&#39;s in- and out-degree as observed; randomise only which</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># specific pairs are connected. </span><span class="al">NOTE</span><span class="co">: the configuration model can generate</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># multi-edges and self-loops, which simplify() then removes, so the realised</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># degrees sit a hair BELOW the observed ones. At this density the gap is</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># negligible, but it means the null is very-nearly, not exactly, degree-preserving.</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>rewired <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">replicate</span>(B2, {</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  gg <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">sample_degseq</span>(<span class="at">out.deg =</span> igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;out&quot;</span>),</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                              <span class="at">in.deg  =</span> igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;in&quot;</span>),</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                              <span class="at">method  =</span> <span class="st">&quot;configuration&quot;</span>)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  gg <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">simplify</span>(gg)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  nn <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="fu">as.matrix</span>(igraph<span class="sc">::</span><span class="fu">as_adjacency_matrix</span>(gg)), <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(nn <span class="sc">~</span> mutual <span class="sc">+</span> triangle)</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic     =</span> <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed      =</span> <span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]),</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">ER_null       =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="dv">1</span>),</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio_vs_ER   =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="dv">2</span>),</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">degree_null   =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(rewired), <span class="dv">1</span>),</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio_vs_deg  =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">colMeans</span>(rewired), <span class="dv">2</span>),</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names     =</span> <span class="cn">NULL</span>)</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   statistic observed ER_null ratio_vs_ER degree_null ratio_vs_deg</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    mutual       62     5.6       11.02         6.8          9.1</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  triangle      460    49.2        9.36        62.2          7.4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Rewire the observed simple graph directly. Every draw preserves each node&#39;s</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># in- and out-degree exactly, does not introduce loops, and remains a simple graph.</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>din  <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;in&quot;</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>dout <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;out&quot;</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>rewired <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">replicate</span>(B2, {</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  gg <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">rewire</span>(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    g,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">with =</span> igraph<span class="sc">::</span><span class="fu">keeping_degseq</span>(<span class="at">loops =</span> <span class="cn">FALSE</span>, <span class="at">niter =</span> <span class="dv">20</span> <span class="sc">*</span> igraph<span class="sc">::</span><span class="fu">ecount</span>(g))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">identical</span>(igraph<span class="sc">::</span><span class="fu">degree</span>(gg, <span class="at">mode =</span> <span class="st">&quot;in&quot;</span>), din),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">identical</span>(igraph<span class="sc">::</span><span class="fu">degree</span>(gg, <span class="at">mode =</span> <span class="st">&quot;out&quot;</span>), dout))</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  nn <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="fu">as.matrix</span>(igraph<span class="sc">::</span><span class="fu">as_adjacency_matrix</span>(gg, <span class="at">sparse =</span> <span class="cn">FALSE</span>)),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(nn <span class="sc">~</span> mutual <span class="sc">+</span> triangle)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic     =</span> <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed      =</span> <span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">ER_null       =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="dv">1</span>),</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio_vs_ER   =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="dv">2</span>),</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">degree_null   =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(rewired), <span class="dv">1</span>),</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio_vs_deg  =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">colMeans</span>(rewired), <span class="dv">2</span>),</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names     =</span> <span class="cn">NULL</span>)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   statistic observed ER_null ratio_vs_ER degree_null ratio_vs_deg</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    mutual       62     5.6       11.02         7.2         8.64</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  triangle      460    49.2        9.36        73.4         6.27</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-live">live ~5s</span></p>
-<p>Now look at the two ratio columns for <code>triangle</code>, and notice that <strong>the answer is not the dramatic one.</strong> The excess-over-random does fall when you hold degree fixed — the direction is exactly as the objection predicted — but it falls by something like a fifth, not by an order of magnitude. Coleman’s boys really are clustering, and the degree distribution explains only a modest part of it.</p>
+<p>Now look at the two ratio columns for <code>triangle</code>, and notice that <strong>the answer is not the dramatic one.</strong> The excess-over-random does fall when you hold degree fixed: the direction is exactly as the objection predicted, but it falls by about one third, not by an order of magnitude. Coleman’s boys really are clustering, and the degree distribution explains only a modest part of it.</p>
 <p>That is a genuinely useful outcome, and I want to be clear that I did not arrange it. The objection in the previous paragraph is a good objection and it is often decisive. Here it turns out not to be, because this network’s degree distribution is not skewed enough for the combinatorial mechanism to do much work.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
@@ -2674,7 +2670,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Out-degree is nearly fixed by the survey instrument — boys were asked for a bounded number of friends — and in-degree, while it has a tail, has no hubs of the kind that would generate triangles wholesale. On a network with a genuinely heavy-tailed degree distribution, a citation network or a follower graph, the same comparison routinely wipes out most of the apparent clustering.</p>
+<p>Out-degree is nearly fixed by the survey instrument: boys were asked for a bounded number of friends, and in-degree, while it has a tail, has no hubs of the kind that would generate triangles wholesale. On a network with a genuinely heavy-tailed degree distribution, a citation network or a follower graph, the same comparison routinely wipes out most of the apparent clustering.</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="A caveat on the `mutual` row">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2685,7 +2681,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The <code>mutual</code> comparison in that table is <strong>not</strong> a fair test and you should not read it as one. The configuration model does not preserve reciprocity, so a degree-preserving null still expects almost no mutual dyads — the ratio stays high for a mechanical reason, not a substantive one.</p>
+<p>The <code>mutual</code> comparison in that table is <strong>not</strong> a fair test and you should not read it as one. The configuration model does not preserve reciprocity, so a degree-preserving null still expects almost no mutual dyads: the ratio stays high for a mechanical reason, not a substantive one.</p>
 <p>If you actually wanted to test reciprocity against a null that holds degree fixed, you would need a null that also fixes the number of mutual dyads, which is <code>sna::rguman()</code> territory, or you would fit an ERGM with <code>mutual</code> in it and look at the other terms. Included here because running an inappropriate comparison and then noticing is more instructive than quietly omitting it.</p>
 </div>
 </div>
@@ -2700,18 +2696,18 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <p>The choice of null model does the real work in any “more X than chance” claim.</p>
-<p>Two researchers can look at the same network, compute the same statistic, and reach different conclusions purely by choosing different baselines — and neither has necessarily done anything wrong. What they have done is answer different questions while writing the same sentence.</p>
-<p>So whenever you read or write such a claim, the question to ask is not “is the number big?” but <strong>“what was held fixed?”</strong> — and then, because the answer is not always the one you expect, actually run the alternative.</p>
+<p>Two researchers can look at the same network, compute the same statistic, and reach different conclusions purely by choosing different baselines, and neither has necessarily done anything wrong. What they have done is answer different questions while writing the same sentence.</p>
+<p>So whenever you read or write such a claim, the question to ask is not “is the number big?” but <strong>“what was held fixed?”</strong>, and then, because the answer is not always the one you expect, actually run the alternative.</p>
 </div>
 </div>
 </section>
 <section id="which-is-why-you-need-ergms" class="level1">
 <h1>5. Which is why you need ERGMs</h1>
-<p>You could keep going like this — build an ever more elaborate null by hand, preserving degree, then preserving degree and attribute mixing, then those plus something else. People did exactly that for years.</p>
-<p>The problem is that it does not scale and it does not let you ask the question you actually care about. You do not want to know whether triangles are in excess of <em>some</em> baseline. You want to know <strong>how much of the clustering is triadic closure once you have accounted for homophily, popularity, and reciprocity simultaneously</strong> — and, ideally, with a standard error attached.</p>
+<p>You could keep going like this: build an ever more elaborate null by hand, preserving degree, then preserving degree and attribute mixing, then those plus something else. People did exactly that for years.</p>
+<p>The problem is that it does not scale and it does not let you ask the question you actually care about. You do not want to know whether triangles are in excess of <em>some</em> baseline. You want to know <strong>how much of the clustering is triadic closure once you have accounted for homophily, popularity, and reciprocity simultaneously</strong>, and, ideally, with a standard error attached.</p>
 <p>That is a regression question. And it is exactly the question the ERGM answers, by making the null a <strong>fitted model</strong> with parameters rather than a fixed baseline you chose in advance:</p>
 <p><span class="math display">\[\Pr(Y = y) = \frac{\exp\{\theta^{\top}g(y)\}}{\kappa(\theta)}.\]</span></p>
-<p>Every hand-built null above is a special case. Erdős–Rényi is <code>~ edges</code> — one parameter, and the maximum-likelihood fit reproduces the observed density, which is precisely how we chose <span class="math inline">\(p\)</span> in §2.2. Adding <code>mutual</code> gives a null that also preserves reciprocity. Adding <code>gwesp</code> lets closure be a parameter you <em>estimate</em> rather than a baseline you assume.</p>
+<p>Every hand-built null above is a special case. Erdős–Rényi is <code>~ edges</code>: one parameter, and the maximum-likelihood fit reproduces the observed density, which is precisely how we chose <span class="math inline">\(p\)</span> in §2.2. Adding <code>mutual</code> gives a null that also preserves reciprocity. Adding <code>gwesp</code> lets closure be a parameter you <em>estimate</em> rather than a baseline you assume.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m_er <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;rg_er&quot;</span>,</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(obs_net <span class="sc">~</span> edges, <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2723,7 +2719,6 @@ window.Quarto = {
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      coef implied_p    hand_p </span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   -3.0267    0.0462    0.0462</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><span class="rt rt-live">live &lt;1s</span></p>
 <p>The one-parameter ERGM recovers the <span class="math inline">\(p\)</span> we computed by hand in §2.2, to four decimals. That is not a coincidence and it is worth sitting with: <strong>the Erdős–Rényi model is an ERGM with one term.</strong> Everything the ERGM session does from there is adding terms to this.</p>
 </section>
 <section id="exercises" class="level1">
@@ -2778,11 +2773,11 @@ window.Quarto = {
 </div>
 <p><strong>Core, the blank:</strong> <code>n_s - 1</code>. There are <span class="math inline">\(n(n-1)\)</span> ordered pairs of distinct nodes in a directed network. Using <span class="math inline">\(n(n-1)/2\)</span> is the undirected count and would double your <span class="math inline">\(p\)</span>; using <span class="math inline">\(n^2\)</span> counts self-loops that cannot exist. Both mistakes are common and both are silent.</p>
 <p><strong>Core, the prediction.</strong> The triangle ratio is <strong>much smaller</strong> for Sampson, and the reason is worth understanding because it generalises.</p>
-<p>Under an ER null the expected number of triangles scales roughly like <span class="math inline">\(n^3 p^3\)</span>. Sampson’s density is about six times Coleman’s, so its <em>expected</em> triangle count is enormous — cubing a much larger <span class="math inline">\(p\)</span> dominates the smaller <span class="math inline">\(n\)</span>. The null is already producing lots of triangles by chance, so there is far less room for the observed count to exceed it.</p>
+<p>Under an ER null the expected number of triangles scales roughly like <span class="math inline">\(n^3 p^3\)</span>. Sampson’s density is about six times Coleman’s, so its <em>expected</em> triangle count is enormous: cubing a much larger <span class="math inline">\(p\)</span> dominates the smaller <span class="math inline">\(n\)</span>. The null is already producing lots of triangles by chance, so there is far less room for the observed count to exceed it.</p>
 <p>Coleman’s ratio is astronomical mainly because the denominator is nearly zero: at density 0.046, random graphs on 73 nodes almost never make triangles, so <em>any</em> clustering looks miraculous.</p>
-<p><strong>The general lesson, and it is a warning:</strong> excess-over-random ratios are not comparable across networks of different density. A paper reporting “40× more clustered than random” for a sparse network and one reporting “2× more clustered than random” for a dense one may be describing identical amounts of social closure. If you need a comparable quantity, fit a model with a density term in it and compare the <em>closure parameter</em> — which is, once again, the argument for ERGMs.</p>
-<p><strong>Stretch.</strong> The honest sketch: you would need a null that preserves whatever you are willing to treat as fixed across waves — node set, and probably each wave’s density — while randomising the <em>association between</em> waves. A permutation approach gets you started: repeatedly relabel nodes in wave 2, recompute the change in your statistic, and build a null distribution for “change under no wave-to-wave dependence.”</p>
-<p>That answers a narrow version of the question. It does not touch the interesting one, which is whether the <em>process</em> generating change is reciprocity-driven or closure-driven, because a permutation null has no process in it at all. For that you need a model of the transition itself — which is a TERGM or a SAOM, and is exactly why those exist.</p>
+<p><strong>The general lesson, and it is a warning:</strong> excess-over-random ratios are not comparable across networks of different density. A paper reporting “40× more clustered than random” for a sparse network and one reporting “2× more clustered than random” for a dense one may be describing identical amounts of social closure. If you need a comparable quantity, fit a model with a density term in it and compare the <em>closure parameter</em>. This is, once again, the argument for ERGMs.</p>
+<p><strong>Stretch.</strong> The honest sketch: you would need a null that preserves whatever you are willing to treat as fixed across waves: node set, and probably each wave’s density, while randomising the <em>association between</em> waves. A permutation approach gets you started: repeatedly relabel nodes in wave 2, recompute the change in your statistic, and build a null distribution for “change under no wave-to-wave dependence.”</p>
+<p>That answers a narrow version of the question. It does not touch the interesting one, which is whether the <em>process</em> generating change is reciprocity-driven or closure-driven, because a permutation null has no process in it at all. For that you need a model of the transition itself, which is a TERGM or a SAOM. That is exactly why those models exist.</p>
 </div>
 </div>
 </div>
@@ -2796,7 +2791,7 @@ window.Quarto = {
 </ul>
 <div class="cell">
 <details class="code-fold">
-<summary>Versions — expand if your numbers differ from mine</summary>
+<summary>Versions: expand if your numbers differ from mine</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;sna&quot;</span>, <span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;network&quot;</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> pk,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">sapply</span>(pk, <span class="cf">function</span>(p) <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(p))),</span>
@@ -3288,7 +3283,7 @@ window.Quarto = {
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>**The question it answers:** the ERGM session opens by saying that the whole enterprise is about</span>
 <span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>building a better null model. This document is the slow version of that sentence. It builds the</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>simplest possible null — the Erdős–Rényi random graph — by hand, compares it against real data,</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>simplest possible null: the Erdős–Rényi random graph: by hand, compares it against real data,</span>
 <span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>watches it fail, and shows why the failure is what motivates everything that comes after.</span>
 <span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>**Why it is optional in 2026:** Olga covers random graphs and the basic descriptives in week 1,</span>
@@ -3297,479 +3292,468 @@ window.Quarto = {
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>**What you need:** <span class="in">`igraph`</span>, <span class="in">`sna`</span>, <span class="in">`ergm`</span>, <span class="in">`network`</span>. No data files.</span>
 <span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>**Total runtime, cold:** under **15 seconds**.</span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. The question underneath every network paper</span></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>You have a network. You compute something about it — 51% of its ties are reciprocated, say, or</span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>it has 460 triangles. And then you want to say that number is *interesting*.</span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>Interesting compared to what?</span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>That is the entire problem, and it is not rhetorical. &quot;51% reciprocity&quot; is not a finding until</span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>you can say what reciprocity you would have expected if nothing were going on. A network with</span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>lots of ties will have lots of reciprocated pairs by sheer arithmetic. So the number on its own</span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>tells you nothing; the number *relative to a baseline* might tell you a great deal.</span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>The baseline is called a **null model**, and choosing one is the substantive act. Get in the</span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>habit of asking, of any claim that a network is &quot;more clustered than chance&quot; or &quot;more</span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>reciprocal than expected&quot; — **expected under what?** In a surprisingly large number of published</span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>papers the answer is either unstated or indefensible.</span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. The simplest null: Erdős–Rényi</span></span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>In an Erdős–Rényi random graph, every possible edge is present with the same probability $p$,</span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>independently of every other edge. That independence is the whole content of the model, and it</span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>is exactly the assumption you have spent this course learning to distrust.</span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>Which is the point. **It is useful precisely because it is wrong in a known way.** If your data</span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>look like an ER graph on some feature, that feature needs no explanation. If they do not, the</span>
-<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>gap is what you have to explain.</span>
-<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.1 The data</span></span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>Coleman&#39;s high-school friendship network: 73 boys, directed nominations. It ships with <span class="in">`sna`</span>.</span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data</span></span>
-<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
-<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(igraph)</span>
-<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(sna)</span>
-<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(coleman, <span class="at">package =</span> <span class="st">&quot;sna&quot;</span>)</span>
-<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>cm <span class="ot">&lt;-</span> coleman[<span class="dv">1</span>, , ]                          <span class="co"># wave 1</span></span>
-<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>g  <span class="ot">&lt;-</span> <span class="fu">graph_from_adjacency_matrix</span>(cm, <span class="at">mode =</span> <span class="st">&quot;directed&quot;</span>, <span class="at">diag =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">nodes      =</span> <span class="fu">vcount</span>(g),</span>
-<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>  <span class="at">edges      =</span> <span class="fu">ecount</span>(g),</span>
-<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>  <span class="at">density    =</span> <span class="fu">round</span>(<span class="fu">edge_density</span>(g), <span class="dv">4</span>),</span>
-<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">reciprocity =</span> <span class="fu">round</span>(<span class="fu">reciprocity</span>(g), <span class="dv">4</span>))</span>
-<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live &lt;1s</span><span class="co">]</span>{.rt .rt-live}</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. The question underneath every network paper</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>You have a network. You compute something about it: 51% of its ties are reciprocated, say, or</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>it has 460 triangles. And then you want to say that number is *interesting*.</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>Interesting compared to what?</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>That is the entire problem, and it is not rhetorical. &quot;51% reciprocity&quot; is not a finding until</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>you can say what reciprocity you would have expected if nothing were going on. A network with</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>lots of ties will have lots of reciprocated pairs by sheer arithmetic. So the number on its own</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>tells you nothing; the number *relative to a baseline* might tell you a great deal.</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>The baseline is called a **null model**, and choosing one is the substantive act. Get in the</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>habit of asking, of any claim that a network is &quot;more clustered than chance&quot; or &quot;more</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>reciprocal than expected&quot;: **expected under what?** In a surprisingly large number of published</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>papers the answer is either unstated or indefensible.</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. The simplest null: Erdős–Rényi</span></span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>In an Erdős–Rényi random graph, every possible edge is present with the same probability $p$,</span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>independently of every other edge. That independence is the whole content of the model, and it</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>is exactly the assumption you have spent this course learning to distrust.</span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>Which is the point. **It is useful precisely because it is wrong in a known way.** If your data</span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>look like an ER graph on some feature, that feature needs no explanation. If they do not, the</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>gap is what you have to explain.</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.1 The data</span></span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>Coleman&#39;s high-school friendship network: 73 boys, directed nominations. It ships with <span class="in">`sna`</span>.</span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data</span></span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(igraph)</span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(sna)</span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(coleman, <span class="at">package =</span> <span class="st">&quot;sna&quot;</span>)</span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>cm <span class="ot">&lt;-</span> coleman[<span class="dv">1</span>, , ]                          <span class="co"># wave 1</span></span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>g  <span class="ot">&lt;-</span> <span class="fu">graph_from_adjacency_matrix</span>(cm, <span class="at">mode =</span> <span class="st">&quot;directed&quot;</span>, <span class="at">diag =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">nodes      =</span> <span class="fu">vcount</span>(g),</span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>  <span class="at">edges      =</span> <span class="fu">ecount</span>(g),</span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>  <span class="at">density    =</span> <span class="fu">round</span>(<span class="fu">edge_density</span>(g), <span class="dv">4</span>),</span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>  <span class="at">reciprocity =</span> <span class="fu">round</span>(<span class="fu">reciprocity</span>(g), <span class="dv">4</span>))</span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>Before modelling anything, three plain questions, which is the habit worth taking away from this</span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>whole document:</span>
 <span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>Before modelling anything, three plain questions, which is the habit worth taking away from this</span>
-<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>whole document:</span>
-<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**How big is it and how dense?** 73 boys, 243 nominations, density about 0.046. Sparse, which</span>
-<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>   is normal — people have a bounded number of friends regardless of how many classmates exist.</span>
-<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Is it reciprocated?** About 51% of nominations are returned. Is that a lot?</span>
-<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Is it clustered?** Do friends of friends tend to be friends?</span>
-<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>Questions 2 and 3 are the ones that need a null.</span>
-<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: plot</span></span>
-<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
-<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
-<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g, <span class="at">vertex.label =</span> <span class="cn">NA</span>, <span class="at">vertex.color =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">vertex.size =</span> <span class="dv">5</span>,</span>
-<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.arrow.size =</span> <span class="fl">0.2</span>, <span class="at">main =</span> <span class="st">&quot;Coleman friendship, wave 1&quot;</span>)</span>
-<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.2 Building the null by hand</span></span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**How big is it and how dense?** 73 boys, 243 nominations, density about 0.046. Sparse, which</span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>   is normal: people have a bounded number of friends regardless of how many classmates exist.</span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Is it reciprocated?** About 51% of nominations are returned. Is that a lot?</span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Is it clustered?** Do friends of friends tend to be friends?</span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a>Questions 2 and 3 are the ones that need a null.</span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: plot</span></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g, <span class="at">vertex.label =</span> <span class="cn">NA</span>, <span class="at">vertex.color =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">vertex.size =</span> <span class="dv">5</span>,</span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.arrow.size =</span> <span class="fl">0.2</span>, <span class="at">main =</span> <span class="st">&quot;Coleman friendship, wave 1&quot;</span>)</span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.2 Building the null by hand</span></span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a><span class="in">`igraph`</span> has <span class="in">`sample_gnp()`</span> and you should use it in real work. Build one by hand first, once,</span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>because the mechanics are the argument.</span>
 <span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a><span class="in">`igraph`</span> has <span class="in">`sample_gnp()`</span> and you should use it in real work. Build one by hand first, once,</span>
-<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a>because the mechanics are the argument.</span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a>$p$ is the observed number of edges over the number of possible edges. With 73 nodes and a</span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a>directed graph and no self-loops, that is $73 \times 72 = 5256$ possible edges.</span>
 <span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a>$p$ is the observed number of edges over the number of possible edges. With 73 nodes and a</span>
-<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a>directed graph and no self-loops, that is $73 \times 72 = 5256$ possible edges.</span>
-<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: build-null</span></span>
-<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">vcount</span>(g)</span>
-<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ecount</span>(g) <span class="sc">/</span> (n <span class="sc">*</span> (n <span class="sc">-</span> <span class="dv">1</span>))</span>
-<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(p, <span class="dv">4</span>)</span>
-<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a>rnet <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rbinom</span>(n <span class="sc">*</span> n, <span class="dv">1</span>, p), <span class="at">nrow =</span> n, <span class="at">ncol =</span> n)</span>
-<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(rnet) <span class="ot">&lt;-</span> <span class="dv">0</span>                                <span class="co"># no self-loops</span></span>
-<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a>rg <span class="ot">&lt;-</span> <span class="fu">graph_from_adjacency_matrix</span>(rnet, <span class="at">mode =</span> <span class="st">&quot;directed&quot;</span>, <span class="at">diag =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">edges =</span> <span class="fu">ecount</span>(rg), <span class="at">density =</span> <span class="fu">round</span>(<span class="fu">edge_density</span>(rg), <span class="dv">4</span>))</span>
-<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live &lt;1s</span><span class="co">]</span>{.rt .rt-live}</span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: build-null</span></span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">vcount</span>(g)</span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ecount</span>(g) <span class="sc">/</span> (n <span class="sc">*</span> (n <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(p, <span class="dv">4</span>)</span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a>rnet <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rbinom</span>(n <span class="sc">*</span> n, <span class="dv">1</span>, p), <span class="at">nrow =</span> n, <span class="at">ncol =</span> n)</span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(rnet) <span class="ot">&lt;-</span> <span class="dv">0</span>                                <span class="co"># no self-loops</span></span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a>rg <span class="ot">&lt;-</span> <span class="fu">graph_from_adjacency_matrix</span>(rnet, <span class="at">mode =</span> <span class="st">&quot;directed&quot;</span>, <span class="at">diag =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">edges =</span> <span class="fu">ecount</span>(rg), <span class="at">density =</span> <span class="fu">round</span>(<span class="fu">edge_density</span>(rg), <span class="dv">4</span>))</span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? Why <span class="in">`rbinom`</span> rather than a double loop&quot;}</span>
+<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a>The classic way to write this is nested <span class="in">`for`</span> loops with <span class="in">`runif(1) &lt; p`</span> inside. It works and it</span>
+<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a>is transparent, and it is also about a thousand times slower, which stops being funny at 500</span>
+<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a>nodes.</span>
 <span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? — why <span class="in">`rbinom`</span> rather than a double loop&quot;}</span>
-<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a>The classic way to write this is nested <span class="in">`for`</span> loops with <span class="in">`runif(1) &lt; p`</span> inside. It works and it</span>
-<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a>is transparent, and it is also about a thousand times slower, which stops being funny at 500</span>
-<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a>nodes.</span>
-<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a><span class="in">`rbinom(n*n, 1, p)`</span> draws all $n^2$ coin flips in one vectorised call and <span class="in">`matrix()`</span> reshapes</span>
-<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a>them. Same model, same distribution, no loops. This is the single most useful vectorisation</span>
-<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a>habit in R.</span>
+<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a><span class="in">`rbinom(n*n, 1, p)`</span> draws all $n^2$ coin flips in one vectorised call and <span class="in">`matrix()`</span> reshapes</span>
+<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a>them. Same model, same distribution, no loops. This is the single most useful vectorisation</span>
+<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a>habit in R.</span>
+<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>One subtlety worth noticing: <span class="in">`diag(rnet) &lt;- 0`</span> sets $n$ cells to zero *after* drawing them, so</span>
+<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a>the realised density comes out very slightly below $p$. With $n = 73$ that is a rounding-level</span>
+<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a>difference. If it ever matters, draw only the off-diagonal cells.</span>
+<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a>One subtlety worth noticing: <span class="in">`diag(rnet) &lt;- 0`</span> sets $n$ cells to zero *after* drawing them, so</span>
-<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a>the realised density comes out very slightly below $p$. With $n = 73$ that is a rounding-level</span>
-<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a>difference. If it ever matters, draw only the off-diagonal cells.</span>
-<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.3 Side by side</span></span>
-<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: compare-plot</span></span>
-<span id="cb16-155"><a href="#cb16-155" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
-<span id="cb16-156"><a href="#cb16-156" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4.5</span></span>
-<span id="cb16-157"><a href="#cb16-157" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
-<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g,  <span class="at">vertex.label =</span> <span class="cn">NA</span>, <span class="at">vertex.color =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">vertex.size =</span> <span class="dv">4</span>,</span>
-<span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.arrow.size =</span> <span class="fl">0.15</span>, <span class="at">main =</span> <span class="st">&quot;observed&quot;</span>)</span>
-<span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rg, <span class="at">vertex.label =</span> <span class="cn">NA</span>, <span class="at">vertex.color =</span> <span class="st">&quot;grey60&quot;</span>,  <span class="at">vertex.size =</span> <span class="dv">4</span>,</span>
-<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.arrow.size =</span> <span class="fl">0.15</span>, <span class="at">main =</span> <span class="st">&quot;Erdős–Rényi, same density&quot;</span>)</span>
-<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.3 Side by side</span></span>
+<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: compare-plot</span></span>
+<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
+<span id="cb16-151"><a href="#cb16-151" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4.5</span></span>
+<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g,  <span class="at">vertex.label =</span> <span class="cn">NA</span>, <span class="at">vertex.color =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">vertex.size =</span> <span class="dv">4</span>,</span>
+<span id="cb16-155"><a href="#cb16-155" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.arrow.size =</span> <span class="fl">0.15</span>, <span class="at">main =</span> <span class="st">&quot;observed&quot;</span>)</span>
+<span id="cb16-156"><a href="#cb16-156" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rg, <span class="at">vertex.label =</span> <span class="cn">NA</span>, <span class="at">vertex.color =</span> <span class="st">&quot;grey60&quot;</span>,  <span class="at">vertex.size =</span> <span class="dv">4</span>,</span>
+<span id="cb16-157"><a href="#cb16-157" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.arrow.size =</span> <span class="fl">0.15</span>, <span class="at">main =</span> <span class="st">&quot;Erdős–Rényi, same density&quot;</span>)</span>
+<span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a>Same number of nodes, essentially the same number of edges. They do not look alike. The real</span>
+<span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a>network has visible clumps and a scattering of near-isolates; the random one is uniform mush.</span>
+<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a>Eyeballing is not evidence, though, so put numbers on it.</span>
 <span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a>Same number of nodes, essentially the same number of edges. They do not look alike. The real</span>
-<span id="cb16-166"><a href="#cb16-166" aria-hidden="true" tabindex="-1"></a>network has visible clumps and a scattering of near-isolates; the random one is uniform mush.</span>
-<span id="cb16-167"><a href="#cb16-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-168"><a href="#cb16-168" aria-hidden="true" tabindex="-1"></a>Eyeballing is not evidence, though, so put numbers on it.</span>
-<span id="cb16-169"><a href="#cb16-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: compare-stats</span></span>
-<span id="cb16-174"><a href="#cb16-174" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
-<span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm)</span>
-<span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(network)</span>
-<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb16-178"><a href="#cb16-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-179"><a href="#cb16-179" aria-hidden="true" tabindex="-1"></a>obs_net <span class="ot">&lt;-</span> <span class="fu">network</span>(cm,   <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-180"><a href="#cb16-180" aria-hidden="true" tabindex="-1"></a>rnd_net <span class="ot">&lt;-</span> <span class="fu">network</span>(rnet, <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-181"><a href="#cb16-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-182"><a href="#cb16-182" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">observed =</span> <span class="fu">summary</span>(obs_net <span class="sc">~</span> edges <span class="sc">+</span> mutual <span class="sc">+</span> triangle <span class="sc">+</span> <span class="fu">istar</span>(<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">ostar</span>(<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">idegree</span>(<span class="dv">6</span>)),</span>
-<span id="cb16-183"><a href="#cb16-183" aria-hidden="true" tabindex="-1"></a>      <span class="at">random   =</span> <span class="fu">summary</span>(rnd_net <span class="sc">~</span> edges <span class="sc">+</span> mutual <span class="sc">+</span> triangle <span class="sc">+</span> <span class="fu">istar</span>(<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">ostar</span>(<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">idegree</span>(<span class="dv">6</span>)))</span>
-<span id="cb16-184"><a href="#cb16-184" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-167"><a href="#cb16-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-168"><a href="#cb16-168" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: compare-stats</span></span>
+<span id="cb16-169"><a href="#cb16-169" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
+<span id="cb16-170"><a href="#cb16-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm)</span>
+<span id="cb16-171"><a href="#cb16-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(network)</span>
+<span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-174"><a href="#cb16-174" aria-hidden="true" tabindex="-1"></a>obs_net <span class="ot">&lt;-</span> <span class="fu">network</span>(cm,   <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a>rnd_net <span class="ot">&lt;-</span> <span class="fu">network</span>(rnet, <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">observed =</span> <span class="fu">summary</span>(obs_net <span class="sc">~</span> edges <span class="sc">+</span> mutual <span class="sc">+</span> triangle <span class="sc">+</span> <span class="fu">istar</span>(<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">ostar</span>(<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">idegree</span>(<span class="dv">6</span>)),</span>
+<span id="cb16-178"><a href="#cb16-178" aria-hidden="true" tabindex="-1"></a>      <span class="at">random   =</span> <span class="fu">summary</span>(rnd_net <span class="sc">~</span> edges <span class="sc">+</span> mutual <span class="sc">+</span> triangle <span class="sc">+</span> <span class="fu">istar</span>(<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">ostar</span>(<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">idegree</span>(<span class="dv">6</span>)))</span>
+<span id="cb16-179"><a href="#cb16-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-180"><a href="#cb16-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-181"><a href="#cb16-181" aria-hidden="true" tabindex="-1"></a>Roughly matched on <span class="in">`edges`</span>, because we built it that way. Everything else is wildly off. Real</span>
+<span id="cb16-182"><a href="#cb16-182" aria-hidden="true" tabindex="-1"></a>friendships are reciprocated and clustered; random ones are not.</span>
+<span id="cb16-183"><a href="#cb16-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-184"><a href="#cb16-184" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. One draw is not a null distribution</span></span>
 <span id="cb16-185"><a href="#cb16-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-186"><a href="#cb16-186" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live ~1s</span><span class="co">]</span>{.rt .rt-live}</span>
-<span id="cb16-187"><a href="#cb16-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-188"><a href="#cb16-188" aria-hidden="true" tabindex="-1"></a>Roughly matched on <span class="in">`edges`</span>, because we built it that way. Everything else is wildly off. Real</span>
-<span id="cb16-189"><a href="#cb16-189" aria-hidden="true" tabindex="-1"></a>friendships are reciprocated and clustered; random ones are not.</span>
-<span id="cb16-190"><a href="#cb16-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-191"><a href="#cb16-191" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. One draw is not a null distribution</span></span>
-<span id="cb16-192"><a href="#cb16-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-193"><a href="#cb16-193" aria-hidden="true" tabindex="-1"></a>Everything above compares the data against **one** random graph. That is a demonstration, not a</span>
-<span id="cb16-194"><a href="#cb16-194" aria-hidden="true" tabindex="-1"></a>test — a single draw could be unusual. The real procedure is to simulate many, build the</span>
-<span id="cb16-195"><a href="#cb16-195" aria-hidden="true" tabindex="-1"></a>sampling distribution of your statistic, and see where the observed value falls.</span>
-<span id="cb16-196"><a href="#cb16-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-199"><a href="#cb16-199" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-200"><a href="#cb16-200" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: simulate</span></span>
-<span id="cb16-201"><a href="#cb16-201" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
-<span id="cb16-202"><a href="#cb16-202" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3.4</span></span>
-<span id="cb16-203"><a href="#cb16-203" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb16-204"><a href="#cb16-204" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb16-186"><a href="#cb16-186" aria-hidden="true" tabindex="-1"></a>Everything above compares the data against **one** random graph. That is a demonstration, not a</span>
+<span id="cb16-187"><a href="#cb16-187" aria-hidden="true" tabindex="-1"></a>test: a single draw could be unusual. The real procedure is to simulate many, build the</span>
+<span id="cb16-188"><a href="#cb16-188" aria-hidden="true" tabindex="-1"></a>sampling distribution of your statistic, and see where the observed value falls.</span>
+<span id="cb16-189"><a href="#cb16-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-192"><a href="#cb16-192" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-193"><a href="#cb16-193" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: simulate</span></span>
+<span id="cb16-194"><a href="#cb16-194" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb16-195"><a href="#cb16-195" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3.4</span></span>
+<span id="cb16-196"><a href="#cb16-196" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb16-197"><a href="#cb16-197" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb16-198"><a href="#cb16-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-199"><a href="#cb16-199" aria-hidden="true" tabindex="-1"></a>sim_stats <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">replicate</span>(B, {</span>
+<span id="cb16-200"><a href="#cb16-200" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rbinom</span>(n <span class="sc">*</span> n, <span class="dv">1</span>, p), n, n)</span>
+<span id="cb16-201"><a href="#cb16-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(r) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb16-202"><a href="#cb16-202" aria-hidden="true" tabindex="-1"></a>  rn <span class="ot">&lt;-</span> <span class="fu">network</span>(r, <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-203"><a href="#cb16-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(rn <span class="sc">~</span> mutual <span class="sc">+</span> triangle <span class="sc">+</span> <span class="fu">istar</span>(<span class="dv">2</span>))</span>
+<span id="cb16-204"><a href="#cb16-204" aria-hidden="true" tabindex="-1"></a>}))</span>
 <span id="cb16-205"><a href="#cb16-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-206"><a href="#cb16-206" aria-hidden="true" tabindex="-1"></a>sim_stats <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">replicate</span>(B, {</span>
-<span id="cb16-207"><a href="#cb16-207" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rbinom</span>(n <span class="sc">*</span> n, <span class="dv">1</span>, p), n, n)</span>
-<span id="cb16-208"><a href="#cb16-208" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(r) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb16-209"><a href="#cb16-209" aria-hidden="true" tabindex="-1"></a>  rn <span class="ot">&lt;-</span> <span class="fu">network</span>(r, <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-210"><a href="#cb16-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(rn <span class="sc">~</span> mutual <span class="sc">+</span> triangle <span class="sc">+</span> <span class="fu">istar</span>(<span class="dv">2</span>))</span>
-<span id="cb16-211"><a href="#cb16-211" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb16-212"><a href="#cb16-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-213"><a href="#cb16-213" aria-hidden="true" tabindex="-1"></a>obs_stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(obs_net <span class="sc">~</span> mutual <span class="sc">+</span> triangle <span class="sc">+</span> <span class="fu">istar</span>(<span class="dv">2</span>))</span>
-<span id="cb16-214"><a href="#cb16-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-215"><a href="#cb16-215" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
-<span id="cb16-216"><a href="#cb16-216" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) {</span>
-<span id="cb16-217"><a href="#cb16-217" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(sim_stats[, j], <span class="at">breaks =</span> <span class="dv">30</span>, <span class="at">col =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>,</span>
-<span id="cb16-218"><a href="#cb16-218" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlim =</span> <span class="fu">range</span>(<span class="fu">c</span>(sim_stats[, j], obs_stats[j])),</span>
-<span id="cb16-219"><a href="#cb16-219" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">colnames</span>(sim_stats)[j], <span class="at">xlab =</span> <span class="st">&quot;value under ER null&quot;</span>)</span>
-<span id="cb16-220"><a href="#cb16-220" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">v =</span> obs_stats[j], <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
-<span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live ~10s</span><span class="co">]</span>{.rt .rt-live}</span>
-<span id="cb16-225"><a href="#cb16-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-228"><a href="#cb16-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-229"><a href="#cb16-229" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sim-table</span></span>
-<span id="cb16-230"><a href="#cb16-230" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb16-231"><a href="#cb16-231" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="fu">names</span>(obs_stats),</span>
-<span id="cb16-232"><a href="#cb16-232" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed  =</span> <span class="fu">as.numeric</span>(obs_stats),</span>
-<span id="cb16-233"><a href="#cb16-233" aria-hidden="true" tabindex="-1"></a>  <span class="at">null_mean =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(sim_stats), <span class="dv">1</span>),</span>
-<span id="cb16-234"><a href="#cb16-234" aria-hidden="true" tabindex="-1"></a>  <span class="at">null_max  =</span> <span class="fu">apply</span>(sim_stats, <span class="dv">2</span>, max),</span>
-<span id="cb16-235"><a href="#cb16-235" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio     =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats) <span class="sc">/</span> <span class="fu">colMeans</span>(sim_stats), <span class="dv">2</span>),</span>
-<span id="cb16-236"><a href="#cb16-236" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
-<span id="cb16-237"><a href="#cb16-237" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-238"><a href="#cb16-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-239"><a href="#cb16-239" aria-hidden="true" tabindex="-1"></a>The red line is not merely in the tail. **It is off the chart** — in a thousand draws the null</span>
-<span id="cb16-240"><a href="#cb16-240" aria-hidden="true" tabindex="-1"></a>never comes close. The observed reciprocity and triangle counts are multiples of what</span>
-<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a>independence produces.</span>
-<span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: checkpoint</span></span>
-<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">mutual_obs   =</span> obs_stats[[<span class="st">&quot;mutual&quot;</span>]],</span>
-<span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a>           <span class="at">mutual_null  =</span> <span class="fu">round</span>(<span class="fu">mean</span>(sim_stats[, <span class="st">&quot;mutual&quot;</span>]), <span class="dv">1</span>),</span>
-<span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a>           <span class="at">triangle_obs =</span> obs_stats[[<span class="st">&quot;triangle&quot;</span>]],</span>
-<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a>           <span class="at">triangle_null =</span> <span class="fu">round</span>(<span class="fu">mean</span>(sim_stats[, <span class="st">&quot;triangle&quot;</span>]), <span class="dv">1</span>))</span>
-<span id="cb16-251"><a href="#cb16-251" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-252"><a href="#cb16-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-253"><a href="#cb16-253" aria-hidden="true" tabindex="-1"></a>So we can say something definite: **friendship nominations in this school are not independent.**</span>
-<span id="cb16-254"><a href="#cb16-254" aria-hidden="true" tabindex="-1"></a>Whatever is generating this network, it is not coin flips.</span>
-<span id="cb16-255"><a href="#cb16-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Where this stops being enough — and the point of the whole exercise</span></span>
-<span id="cb16-257"><a href="#cb16-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-258"><a href="#cb16-258" aria-hidden="true" tabindex="-1"></a>Here is the part that matters, and it is the reason this document exists rather than just the</span>
-<span id="cb16-259"><a href="#cb16-259" aria-hidden="true" tabindex="-1"></a>histogram above.</span>
-<span id="cb16-260"><a href="#cb16-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-261"><a href="#cb16-261" aria-hidden="true" tabindex="-1"></a>We have shown the data are not Erdős–Rényi. Now try to say something more specific, and watch</span>
-<span id="cb16-262"><a href="#cb16-262" aria-hidden="true" tabindex="-1"></a>the problem appear.</span>
-<span id="cb16-263"><a href="#cb16-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-264"><a href="#cb16-264" aria-hidden="true" tabindex="-1"></a>**Claim:** &quot;this network exhibits triadic closure — friends of friends become friends.&quot;</span>
+<span id="cb16-206"><a href="#cb16-206" aria-hidden="true" tabindex="-1"></a>obs_stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(obs_net <span class="sc">~</span> mutual <span class="sc">+</span> triangle <span class="sc">+</span> <span class="fu">istar</span>(<span class="dv">2</span>))</span>
+<span id="cb16-207"><a href="#cb16-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-208"><a href="#cb16-208" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb16-209"><a href="#cb16-209" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) {</span>
+<span id="cb16-210"><a href="#cb16-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(sim_stats[, j], <span class="at">breaks =</span> <span class="dv">30</span>, <span class="at">col =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb16-211"><a href="#cb16-211" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlim =</span> <span class="fu">range</span>(<span class="fu">c</span>(sim_stats[, j], obs_stats[j])),</span>
+<span id="cb16-212"><a href="#cb16-212" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">colnames</span>(sim_stats)[j], <span class="at">xlab =</span> <span class="st">&quot;value under ER null&quot;</span>)</span>
+<span id="cb16-213"><a href="#cb16-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">v =</span> obs_stats[j], <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb16-214"><a href="#cb16-214" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-215"><a href="#cb16-215" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-216"><a href="#cb16-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-219"><a href="#cb16-219" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-220"><a href="#cb16-220" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sim-table</span></span>
+<span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="fu">names</span>(obs_stats),</span>
+<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed  =</span> <span class="fu">as.numeric</span>(obs_stats),</span>
+<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a>  <span class="at">null_mean =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(sim_stats), <span class="dv">1</span>),</span>
+<span id="cb16-225"><a href="#cb16-225" aria-hidden="true" tabindex="-1"></a>  <span class="at">null_max  =</span> <span class="fu">apply</span>(sim_stats, <span class="dv">2</span>, max),</span>
+<span id="cb16-226"><a href="#cb16-226" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio     =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats) <span class="sc">/</span> <span class="fu">colMeans</span>(sim_stats), <span class="dv">2</span>),</span>
+<span id="cb16-227"><a href="#cb16-227" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb16-228"><a href="#cb16-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-229"><a href="#cb16-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-230"><a href="#cb16-230" aria-hidden="true" tabindex="-1"></a>The red line is not merely in the tail. **It is off the chart.** In a thousand draws the null</span>
+<span id="cb16-231"><a href="#cb16-231" aria-hidden="true" tabindex="-1"></a>never comes close. The observed reciprocity and triangle counts are multiples of what</span>
+<span id="cb16-232"><a href="#cb16-232" aria-hidden="true" tabindex="-1"></a>independence produces.</span>
+<span id="cb16-233"><a href="#cb16-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-236"><a href="#cb16-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-237"><a href="#cb16-237" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: checkpoint</span></span>
+<span id="cb16-238"><a href="#cb16-238" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">mutual_obs   =</span> obs_stats[[<span class="st">&quot;mutual&quot;</span>]],</span>
+<span id="cb16-239"><a href="#cb16-239" aria-hidden="true" tabindex="-1"></a>           <span class="at">mutual_null  =</span> <span class="fu">round</span>(<span class="fu">mean</span>(sim_stats[, <span class="st">&quot;mutual&quot;</span>]), <span class="dv">1</span>),</span>
+<span id="cb16-240"><a href="#cb16-240" aria-hidden="true" tabindex="-1"></a>           <span class="at">triangle_obs =</span> obs_stats[[<span class="st">&quot;triangle&quot;</span>]],</span>
+<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a>           <span class="at">triangle_null =</span> <span class="fu">round</span>(<span class="fu">mean</span>(sim_stats[, <span class="st">&quot;triangle&quot;</span>]), <span class="dv">1</span>))</span>
+<span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a>So we can say something definite: **friendship nominations in this school are not independent.**</span>
+<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a>Whatever is generating this network, it is not coin flips.</span>
+<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Where this stops being enough, and the point of the whole exercise</span></span>
+<span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a>Here is the part that matters, and it is the reason this document exists rather than just the</span>
+<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a>histogram above.</span>
+<span id="cb16-251"><a href="#cb16-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-252"><a href="#cb16-252" aria-hidden="true" tabindex="-1"></a>We have shown the data are not Erdős–Rényi. Now try to say something more specific, and watch</span>
+<span id="cb16-253"><a href="#cb16-253" aria-hidden="true" tabindex="-1"></a>the problem appear.</span>
+<span id="cb16-254"><a href="#cb16-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-255"><a href="#cb16-255" aria-hidden="true" tabindex="-1"></a>**Claim:** &quot;this network exhibits triadic closure: friends of friends become friends.&quot;</span>
+<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-257"><a href="#cb16-257" aria-hidden="true" tabindex="-1"></a>The evidence offered: 460 triangles observed against about 49 expected under the ER null. A</span>
+<span id="cb16-258"><a href="#cb16-258" aria-hidden="true" tabindex="-1"></a>factor of nine. Sounds convincing.</span>
+<span id="cb16-259"><a href="#cb16-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-260"><a href="#cb16-260" aria-hidden="true" tabindex="-1"></a>**The objection:** the ER null holds *nothing* fixed except density. In particular it does not</span>
+<span id="cb16-261"><a href="#cb16-261" aria-hidden="true" tabindex="-1"></a>preserve the degree distribution, and the real network has some very popular boys. A node with</span>
+<span id="cb16-262"><a href="#cb16-262" aria-hidden="true" tabindex="-1"></a>many incoming nominations mechanically generates a large number of two-paths, and two-paths</span>
+<span id="cb16-263"><a href="#cb16-263" aria-hidden="true" tabindex="-1"></a>close into triangles at some rate for purely combinatorial reasons. So some of that gap may not</span>
+<span id="cb16-264"><a href="#cb16-264" aria-hidden="true" tabindex="-1"></a>be closure at all. It may be popularity.</span>
 <span id="cb16-265"><a href="#cb16-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a>The evidence offered: 460 triangles observed against about 49 expected under the ER null. A</span>
-<span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a>factor of nine. Sounds convincing.</span>
-<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a>**The objection:** the ER null holds *nothing* fixed except density. In particular it does not</span>
-<span id="cb16-270"><a href="#cb16-270" aria-hidden="true" tabindex="-1"></a>preserve the degree distribution, and the real network has some very popular boys. A node with</span>
-<span id="cb16-271"><a href="#cb16-271" aria-hidden="true" tabindex="-1"></a>many incoming nominations mechanically generates a large number of two-paths, and two-paths</span>
-<span id="cb16-272"><a href="#cb16-272" aria-hidden="true" tabindex="-1"></a>close into triangles at some rate for purely combinatorial reasons. So some of that gap may not</span>
-<span id="cb16-273"><a href="#cb16-273" aria-hidden="true" tabindex="-1"></a>be closure at all. It may be popularity.</span>
-<span id="cb16-274"><a href="#cb16-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-275"><a href="#cb16-275" aria-hidden="true" tabindex="-1"></a>Notice that this is a **hypothesis**, not a conclusion. People state it as though stating it</span>
-<span id="cb16-276"><a href="#cb16-276" aria-hidden="true" tabindex="-1"></a>settles it. It does not — you have to check. Swap the null for one that **preserves each node&#39;s</span>
-<span id="cb16-277"><a href="#cb16-277" aria-hidden="true" tabindex="-1"></a>in- and out-degree** (very nearly — see the note below) and randomises only who is connected to</span>
-<span id="cb16-278"><a href="#cb16-278" aria-hidden="true" tabindex="-1"></a>whom.</span>
-<span id="cb16-279"><a href="#cb16-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-282"><a href="#cb16-282" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-283"><a href="#cb16-283" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rewire</span></span>
-<span id="cb16-284"><a href="#cb16-284" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb16-285"><a href="#cb16-285" aria-hidden="true" tabindex="-1"></a>B2 <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb16-286"><a href="#cb16-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-287"><a href="#cb16-287" aria-hidden="true" tabindex="-1"></a><span class="co"># Preserve every node&#39;s in- and out-degree as observed; randomise only which</span></span>
-<span id="cb16-288"><a href="#cb16-288" aria-hidden="true" tabindex="-1"></a><span class="co"># specific pairs are connected. </span><span class="al">NOTE</span><span class="co">: the configuration model can generate</span></span>
-<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a><span class="co"># multi-edges and self-loops, which simplify() then removes, so the realised</span></span>
-<span id="cb16-290"><a href="#cb16-290" aria-hidden="true" tabindex="-1"></a><span class="co"># degrees sit a hair BELOW the observed ones. At this density the gap is</span></span>
-<span id="cb16-291"><a href="#cb16-291" aria-hidden="true" tabindex="-1"></a><span class="co"># negligible, but it means the null is very-nearly, not exactly, degree-preserving.</span></span>
-<span id="cb16-292"><a href="#cb16-292" aria-hidden="true" tabindex="-1"></a>rewired <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">replicate</span>(B2, {</span>
-<span id="cb16-293"><a href="#cb16-293" aria-hidden="true" tabindex="-1"></a>  gg <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">sample_degseq</span>(<span class="at">out.deg =</span> igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;out&quot;</span>),</span>
-<span id="cb16-294"><a href="#cb16-294" aria-hidden="true" tabindex="-1"></a>                              <span class="at">in.deg  =</span> igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;in&quot;</span>),</span>
-<span id="cb16-295"><a href="#cb16-295" aria-hidden="true" tabindex="-1"></a>                              <span class="at">method  =</span> <span class="st">&quot;configuration&quot;</span>)</span>
-<span id="cb16-296"><a href="#cb16-296" aria-hidden="true" tabindex="-1"></a>  gg <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">simplify</span>(gg)</span>
-<span id="cb16-297"><a href="#cb16-297" aria-hidden="true" tabindex="-1"></a>  nn <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="fu">as.matrix</span>(igraph<span class="sc">::</span><span class="fu">as_adjacency_matrix</span>(gg)), <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-298"><a href="#cb16-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(nn <span class="sc">~</span> mutual <span class="sc">+</span> triangle)</span>
-<span id="cb16-299"><a href="#cb16-299" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb16-300"><a href="#cb16-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-301"><a href="#cb16-301" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb16-302"><a href="#cb16-302" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic     =</span> <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
-<span id="cb16-303"><a href="#cb16-303" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed      =</span> <span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]),</span>
-<span id="cb16-304"><a href="#cb16-304" aria-hidden="true" tabindex="-1"></a>  <span class="at">ER_null       =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="dv">1</span>),</span>
-<span id="cb16-305"><a href="#cb16-305" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio_vs_ER   =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
-<span id="cb16-306"><a href="#cb16-306" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="dv">2</span>),</span>
-<span id="cb16-307"><a href="#cb16-307" aria-hidden="true" tabindex="-1"></a>  <span class="at">degree_null   =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(rewired), <span class="dv">1</span>),</span>
-<span id="cb16-308"><a href="#cb16-308" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio_vs_deg  =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
-<span id="cb16-309"><a href="#cb16-309" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">colMeans</span>(rewired), <span class="dv">2</span>),</span>
-<span id="cb16-310"><a href="#cb16-310" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names     =</span> <span class="cn">NULL</span>)</span>
-<span id="cb16-311"><a href="#cb16-311" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-312"><a href="#cb16-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-313"><a href="#cb16-313" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live ~5s</span><span class="co">]</span>{.rt .rt-live}</span>
-<span id="cb16-314"><a href="#cb16-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-315"><a href="#cb16-315" aria-hidden="true" tabindex="-1"></a>Now look at the two ratio columns for <span class="in">`triangle`</span>, and notice that **the answer is not the</span>
-<span id="cb16-316"><a href="#cb16-316" aria-hidden="true" tabindex="-1"></a>dramatic one.** The excess-over-random does fall when you hold degree fixed — the direction is</span>
-<span id="cb16-317"><a href="#cb16-317" aria-hidden="true" tabindex="-1"></a>exactly as the objection predicted — but it falls by something like a fifth, not by an order of</span>
-<span id="cb16-318"><a href="#cb16-318" aria-hidden="true" tabindex="-1"></a>magnitude. Coleman&#39;s boys really are clustering, and the degree distribution explains only a</span>
-<span id="cb16-319"><a href="#cb16-319" aria-hidden="true" tabindex="-1"></a>modest part of it.</span>
-<span id="cb16-320"><a href="#cb16-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-321"><a href="#cb16-321" aria-hidden="true" tabindex="-1"></a>That is a genuinely useful outcome, and I want to be clear that I did not arrange it. The</span>
-<span id="cb16-322"><a href="#cb16-322" aria-hidden="true" tabindex="-1"></a>objection in the previous paragraph is a good objection and it is often decisive. Here it turns</span>
-<span id="cb16-323"><a href="#cb16-323" aria-hidden="true" tabindex="-1"></a>out not to be, because this network&#39;s degree distribution is not skewed enough for the</span>
-<span id="cb16-324"><a href="#cb16-324" aria-hidden="true" tabindex="-1"></a>combinatorial mechanism to do much work.</span>
-<span id="cb16-325"><a href="#cb16-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-328"><a href="#cb16-328" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-329"><a href="#cb16-329" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: degdist</span></span>
-<span id="cb16-330"><a href="#cb16-330" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 7</span></span>
-<span id="cb16-331"><a href="#cb16-331" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3.2</span></span>
-<span id="cb16-332"><a href="#cb16-332" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
-<span id="cb16-333"><a href="#cb16-333" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;in&quot;</span>),  <span class="at">breaks =</span> <span class="dv">12</span>, <span class="at">col =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>,</span>
-<span id="cb16-334"><a href="#cb16-334" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;in-degree&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;nominations received&quot;</span>)</span>
-<span id="cb16-335"><a href="#cb16-335" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;out&quot;</span>), <span class="at">breaks =</span> <span class="dv">12</span>, <span class="at">col =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>,</span>
-<span id="cb16-336"><a href="#cb16-336" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;out-degree&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;nominations made&quot;</span>)</span>
-<span id="cb16-337"><a href="#cb16-337" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-338"><a href="#cb16-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-339"><a href="#cb16-339" aria-hidden="true" tabindex="-1"></a>Out-degree is nearly fixed by the survey instrument — boys were asked for a bounded number of</span>
-<span id="cb16-340"><a href="#cb16-340" aria-hidden="true" tabindex="-1"></a>friends — and in-degree, while it has a tail, has no hubs of the kind that would generate</span>
-<span id="cb16-341"><a href="#cb16-341" aria-hidden="true" tabindex="-1"></a>triangles wholesale. On a network with a genuinely heavy-tailed degree distribution, a citation</span>
-<span id="cb16-342"><a href="#cb16-342" aria-hidden="true" tabindex="-1"></a>network or a follower graph, the same comparison routinely wipes out most of the apparent</span>
-<span id="cb16-343"><a href="#cb16-343" aria-hidden="true" tabindex="-1"></a>clustering.</span>
-<span id="cb16-344"><a href="#cb16-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-345"><a href="#cb16-345" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;A caveat on the <span class="in">`mutual`</span> row&quot;}</span>
-<span id="cb16-346"><a href="#cb16-346" aria-hidden="true" tabindex="-1"></a>The <span class="in">`mutual`</span> comparison in that table is **not** a fair test and you should not read it as one.</span>
-<span id="cb16-347"><a href="#cb16-347" aria-hidden="true" tabindex="-1"></a>The configuration model does not preserve reciprocity, so a degree-preserving null still expects</span>
-<span id="cb16-348"><a href="#cb16-348" aria-hidden="true" tabindex="-1"></a>almost no mutual dyads — the ratio stays high for a mechanical reason, not a substantive one.</span>
-<span id="cb16-349"><a href="#cb16-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-350"><a href="#cb16-350" aria-hidden="true" tabindex="-1"></a>If you actually wanted to test reciprocity against a null that holds degree fixed, you would</span>
-<span id="cb16-351"><a href="#cb16-351" aria-hidden="true" tabindex="-1"></a>need a null that also fixes the number of mutual dyads, which is <span class="in">`sna::rguman()`</span> territory, or</span>
-<span id="cb16-352"><a href="#cb16-352" aria-hidden="true" tabindex="-1"></a>you would fit an ERGM with <span class="in">`mutual`</span> in it and look at the other terms. Included here because</span>
-<span id="cb16-353"><a href="#cb16-353" aria-hidden="true" tabindex="-1"></a>running an inappropriate comparison and then noticing is more instructive than quietly omitting</span>
-<span id="cb16-354"><a href="#cb16-354" aria-hidden="true" tabindex="-1"></a>it.</span>
-<span id="cb16-355"><a href="#cb16-355" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb16-356"><a href="#cb16-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-357"><a href="#cb16-357" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;The takeaway, which is the whole document in three sentences&quot;}</span>
-<span id="cb16-358"><a href="#cb16-358" aria-hidden="true" tabindex="-1"></a>The choice of null model does the real work in any &quot;more X than chance&quot; claim.</span>
+<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a>Notice that this is a **hypothesis**, not a conclusion. People state it as though stating it</span>
+<span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a>settles it. It does not: you have to check. Swap the null for one that **preserves each node&#39;s</span>
+<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a>in- and out-degree exactly** and randomises only who is connected to</span>
+<span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a>whom.</span>
+<span id="cb16-270"><a href="#cb16-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-273"><a href="#cb16-273" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-274"><a href="#cb16-274" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rewire</span></span>
+<span id="cb16-275"><a href="#cb16-275" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb16-276"><a href="#cb16-276" aria-hidden="true" tabindex="-1"></a>B2 <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb16-277"><a href="#cb16-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-278"><a href="#cb16-278" aria-hidden="true" tabindex="-1"></a><span class="co"># Rewire the observed simple graph directly. Every draw preserves each node&#39;s</span></span>
+<span id="cb16-279"><a href="#cb16-279" aria-hidden="true" tabindex="-1"></a><span class="co"># in- and out-degree exactly, does not introduce loops, and remains a simple graph.</span></span>
+<span id="cb16-280"><a href="#cb16-280" aria-hidden="true" tabindex="-1"></a>din  <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;in&quot;</span>)</span>
+<span id="cb16-281"><a href="#cb16-281" aria-hidden="true" tabindex="-1"></a>dout <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;out&quot;</span>)</span>
+<span id="cb16-282"><a href="#cb16-282" aria-hidden="true" tabindex="-1"></a>rewired <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">replicate</span>(B2, {</span>
+<span id="cb16-283"><a href="#cb16-283" aria-hidden="true" tabindex="-1"></a>  gg <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">rewire</span>(</span>
+<span id="cb16-284"><a href="#cb16-284" aria-hidden="true" tabindex="-1"></a>    g,</span>
+<span id="cb16-285"><a href="#cb16-285" aria-hidden="true" tabindex="-1"></a>    <span class="at">with =</span> igraph<span class="sc">::</span><span class="fu">keeping_degseq</span>(<span class="at">loops =</span> <span class="cn">FALSE</span>, <span class="at">niter =</span> <span class="dv">20</span> <span class="sc">*</span> igraph<span class="sc">::</span><span class="fu">ecount</span>(g))</span>
+<span id="cb16-286"><a href="#cb16-286" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-287"><a href="#cb16-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">identical</span>(igraph<span class="sc">::</span><span class="fu">degree</span>(gg, <span class="at">mode =</span> <span class="st">&quot;in&quot;</span>), din),</span>
+<span id="cb16-288"><a href="#cb16-288" aria-hidden="true" tabindex="-1"></a>            <span class="fu">identical</span>(igraph<span class="sc">::</span><span class="fu">degree</span>(gg, <span class="at">mode =</span> <span class="st">&quot;out&quot;</span>), dout))</span>
+<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a>  nn <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="fu">as.matrix</span>(igraph<span class="sc">::</span><span class="fu">as_adjacency_matrix</span>(gg, <span class="at">sparse =</span> <span class="cn">FALSE</span>)),</span>
+<span id="cb16-290"><a href="#cb16-290" aria-hidden="true" tabindex="-1"></a>                <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-291"><a href="#cb16-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(nn <span class="sc">~</span> mutual <span class="sc">+</span> triangle)</span>
+<span id="cb16-292"><a href="#cb16-292" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb16-293"><a href="#cb16-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-294"><a href="#cb16-294" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb16-295"><a href="#cb16-295" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic     =</span> <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>),</span>
+<span id="cb16-296"><a href="#cb16-296" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed      =</span> <span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]),</span>
+<span id="cb16-297"><a href="#cb16-297" aria-hidden="true" tabindex="-1"></a>  <span class="at">ER_null       =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="dv">1</span>),</span>
+<span id="cb16-298"><a href="#cb16-298" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio_vs_ER   =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
+<span id="cb16-299"><a href="#cb16-299" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="dv">2</span>),</span>
+<span id="cb16-300"><a href="#cb16-300" aria-hidden="true" tabindex="-1"></a>  <span class="at">degree_null   =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(rewired), <span class="dv">1</span>),</span>
+<span id="cb16-301"><a href="#cb16-301" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio_vs_deg  =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
+<span id="cb16-302"><a href="#cb16-302" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">colMeans</span>(rewired), <span class="dv">2</span>),</span>
+<span id="cb16-303"><a href="#cb16-303" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names     =</span> <span class="cn">NULL</span>)</span>
+<span id="cb16-304"><a href="#cb16-304" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-305"><a href="#cb16-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-306"><a href="#cb16-306" aria-hidden="true" tabindex="-1"></a>Now look at the two ratio columns for <span class="in">`triangle`</span>, and notice that **the answer is not the</span>
+<span id="cb16-307"><a href="#cb16-307" aria-hidden="true" tabindex="-1"></a>dramatic one.** The excess-over-random does fall when you hold degree fixed: the direction is</span>
+<span id="cb16-308"><a href="#cb16-308" aria-hidden="true" tabindex="-1"></a>exactly as the objection predicted, but it falls by about one third, not by an order of</span>
+<span id="cb16-309"><a href="#cb16-309" aria-hidden="true" tabindex="-1"></a>magnitude. Coleman&#39;s boys really are clustering, and the degree distribution explains only a</span>
+<span id="cb16-310"><a href="#cb16-310" aria-hidden="true" tabindex="-1"></a>modest part of it.</span>
+<span id="cb16-311"><a href="#cb16-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-312"><a href="#cb16-312" aria-hidden="true" tabindex="-1"></a>That is a genuinely useful outcome, and I want to be clear that I did not arrange it. The</span>
+<span id="cb16-313"><a href="#cb16-313" aria-hidden="true" tabindex="-1"></a>objection in the previous paragraph is a good objection and it is often decisive. Here it turns</span>
+<span id="cb16-314"><a href="#cb16-314" aria-hidden="true" tabindex="-1"></a>out not to be, because this network&#39;s degree distribution is not skewed enough for the</span>
+<span id="cb16-315"><a href="#cb16-315" aria-hidden="true" tabindex="-1"></a>combinatorial mechanism to do much work.</span>
+<span id="cb16-316"><a href="#cb16-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-319"><a href="#cb16-319" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-320"><a href="#cb16-320" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: degdist</span></span>
+<span id="cb16-321"><a href="#cb16-321" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 7</span></span>
+<span id="cb16-322"><a href="#cb16-322" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3.2</span></span>
+<span id="cb16-323"><a href="#cb16-323" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb16-324"><a href="#cb16-324" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;in&quot;</span>),  <span class="at">breaks =</span> <span class="dv">12</span>, <span class="at">col =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb16-325"><a href="#cb16-325" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;in-degree&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;nominations received&quot;</span>)</span>
+<span id="cb16-326"><a href="#cb16-326" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(igraph<span class="sc">::</span><span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;out&quot;</span>), <span class="at">breaks =</span> <span class="dv">12</span>, <span class="at">col =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb16-327"><a href="#cb16-327" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;out-degree&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;nominations made&quot;</span>)</span>
+<span id="cb16-328"><a href="#cb16-328" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-329"><a href="#cb16-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-330"><a href="#cb16-330" aria-hidden="true" tabindex="-1"></a>Out-degree is nearly fixed by the survey instrument: boys were asked for a bounded number of</span>
+<span id="cb16-331"><a href="#cb16-331" aria-hidden="true" tabindex="-1"></a>friends, and in-degree, while it has a tail, has no hubs of the kind that would generate</span>
+<span id="cb16-332"><a href="#cb16-332" aria-hidden="true" tabindex="-1"></a>triangles wholesale. On a network with a genuinely heavy-tailed degree distribution, a citation</span>
+<span id="cb16-333"><a href="#cb16-333" aria-hidden="true" tabindex="-1"></a>network or a follower graph, the same comparison routinely wipes out most of the apparent</span>
+<span id="cb16-334"><a href="#cb16-334" aria-hidden="true" tabindex="-1"></a>clustering.</span>
+<span id="cb16-335"><a href="#cb16-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-336"><a href="#cb16-336" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;A caveat on the <span class="in">`mutual`</span> row&quot;}</span>
+<span id="cb16-337"><a href="#cb16-337" aria-hidden="true" tabindex="-1"></a>The <span class="in">`mutual`</span> comparison in that table is **not** a fair test and you should not read it as one.</span>
+<span id="cb16-338"><a href="#cb16-338" aria-hidden="true" tabindex="-1"></a>The configuration model does not preserve reciprocity, so a degree-preserving null still expects</span>
+<span id="cb16-339"><a href="#cb16-339" aria-hidden="true" tabindex="-1"></a>almost no mutual dyads: the ratio stays high for a mechanical reason, not a substantive one.</span>
+<span id="cb16-340"><a href="#cb16-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-341"><a href="#cb16-341" aria-hidden="true" tabindex="-1"></a>If you actually wanted to test reciprocity against a null that holds degree fixed, you would</span>
+<span id="cb16-342"><a href="#cb16-342" aria-hidden="true" tabindex="-1"></a>need a null that also fixes the number of mutual dyads, which is <span class="in">`sna::rguman()`</span> territory, or</span>
+<span id="cb16-343"><a href="#cb16-343" aria-hidden="true" tabindex="-1"></a>you would fit an ERGM with <span class="in">`mutual`</span> in it and look at the other terms. Included here because</span>
+<span id="cb16-344"><a href="#cb16-344" aria-hidden="true" tabindex="-1"></a>running an inappropriate comparison and then noticing is more instructive than quietly omitting</span>
+<span id="cb16-345"><a href="#cb16-345" aria-hidden="true" tabindex="-1"></a>it.</span>
+<span id="cb16-346"><a href="#cb16-346" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-347"><a href="#cb16-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-348"><a href="#cb16-348" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;The takeaway, which is the whole document in three sentences&quot;}</span>
+<span id="cb16-349"><a href="#cb16-349" aria-hidden="true" tabindex="-1"></a>The choice of null model does the real work in any &quot;more X than chance&quot; claim.</span>
+<span id="cb16-350"><a href="#cb16-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-351"><a href="#cb16-351" aria-hidden="true" tabindex="-1"></a>Two researchers can look at the same network, compute the same statistic, and reach different</span>
+<span id="cb16-352"><a href="#cb16-352" aria-hidden="true" tabindex="-1"></a>conclusions purely by choosing different baselines, and neither has necessarily done anything</span>
+<span id="cb16-353"><a href="#cb16-353" aria-hidden="true" tabindex="-1"></a>wrong. What they have done is answer different questions while writing the same sentence.</span>
+<span id="cb16-354"><a href="#cb16-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-355"><a href="#cb16-355" aria-hidden="true" tabindex="-1"></a>So whenever you read or write such a claim, the question to ask is not &quot;is the number big?&quot; but</span>
+<span id="cb16-356"><a href="#cb16-356" aria-hidden="true" tabindex="-1"></a>**&quot;what was held fixed?&quot;**, and then, because the answer is not always the one you expect,</span>
+<span id="cb16-357"><a href="#cb16-357" aria-hidden="true" tabindex="-1"></a>actually run the alternative.</span>
+<span id="cb16-358"><a href="#cb16-358" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb16-359"><a href="#cb16-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-360"><a href="#cb16-360" aria-hidden="true" tabindex="-1"></a>Two researchers can look at the same network, compute the same statistic, and reach different</span>
-<span id="cb16-361"><a href="#cb16-361" aria-hidden="true" tabindex="-1"></a>conclusions purely by choosing different baselines — and neither has necessarily done anything</span>
-<span id="cb16-362"><a href="#cb16-362" aria-hidden="true" tabindex="-1"></a>wrong. What they have done is answer different questions while writing the same sentence.</span>
-<span id="cb16-363"><a href="#cb16-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-364"><a href="#cb16-364" aria-hidden="true" tabindex="-1"></a>So whenever you read or write such a claim, the question to ask is not &quot;is the number big?&quot; but</span>
-<span id="cb16-365"><a href="#cb16-365" aria-hidden="true" tabindex="-1"></a>**&quot;what was held fixed?&quot;** — and then, because the answer is not always the one you expect,</span>
-<span id="cb16-366"><a href="#cb16-366" aria-hidden="true" tabindex="-1"></a>actually run the alternative.</span>
-<span id="cb16-367"><a href="#cb16-367" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb16-368"><a href="#cb16-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-369"><a href="#cb16-369" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Which is why you need ERGMs</span></span>
+<span id="cb16-360"><a href="#cb16-360" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Which is why you need ERGMs</span></span>
+<span id="cb16-361"><a href="#cb16-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-362"><a href="#cb16-362" aria-hidden="true" tabindex="-1"></a>You could keep going like this: build an ever more elaborate null by hand, preserving degree,</span>
+<span id="cb16-363"><a href="#cb16-363" aria-hidden="true" tabindex="-1"></a>then preserving degree and attribute mixing, then those plus something else. People did exactly</span>
+<span id="cb16-364"><a href="#cb16-364" aria-hidden="true" tabindex="-1"></a>that for years.</span>
+<span id="cb16-365"><a href="#cb16-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-366"><a href="#cb16-366" aria-hidden="true" tabindex="-1"></a>The problem is that it does not scale and it does not let you ask the question you actually</span>
+<span id="cb16-367"><a href="#cb16-367" aria-hidden="true" tabindex="-1"></a>care about. You do not want to know whether triangles are in excess of *some* baseline. You want</span>
+<span id="cb16-368"><a href="#cb16-368" aria-hidden="true" tabindex="-1"></a>to know **how much of the clustering is triadic closure once you have accounted for homophily,</span>
+<span id="cb16-369"><a href="#cb16-369" aria-hidden="true" tabindex="-1"></a>popularity, and reciprocity simultaneously**, and, ideally, with a standard error attached.</span>
 <span id="cb16-370"><a href="#cb16-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-371"><a href="#cb16-371" aria-hidden="true" tabindex="-1"></a>You could keep going like this — build an ever more elaborate null by hand, preserving degree,</span>
-<span id="cb16-372"><a href="#cb16-372" aria-hidden="true" tabindex="-1"></a>then preserving degree and attribute mixing, then those plus something else. People did exactly</span>
-<span id="cb16-373"><a href="#cb16-373" aria-hidden="true" tabindex="-1"></a>that for years.</span>
-<span id="cb16-374"><a href="#cb16-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-375"><a href="#cb16-375" aria-hidden="true" tabindex="-1"></a>The problem is that it does not scale and it does not let you ask the question you actually</span>
-<span id="cb16-376"><a href="#cb16-376" aria-hidden="true" tabindex="-1"></a>care about. You do not want to know whether triangles are in excess of *some* baseline. You want</span>
-<span id="cb16-377"><a href="#cb16-377" aria-hidden="true" tabindex="-1"></a>to know **how much of the clustering is triadic closure once you have accounted for homophily,</span>
-<span id="cb16-378"><a href="#cb16-378" aria-hidden="true" tabindex="-1"></a>popularity, and reciprocity simultaneously** — and, ideally, with a standard error attached.</span>
-<span id="cb16-379"><a href="#cb16-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-380"><a href="#cb16-380" aria-hidden="true" tabindex="-1"></a>That is a regression question. And it is exactly the question the ERGM answers, by making the</span>
-<span id="cb16-381"><a href="#cb16-381" aria-hidden="true" tabindex="-1"></a>null a **fitted model** with parameters rather than a fixed baseline you chose in advance:</span>
-<span id="cb16-382"><a href="#cb16-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-383"><a href="#cb16-383" aria-hidden="true" tabindex="-1"></a>$$\Pr(Y = y) = \frac{\exp<span class="sc">\{</span>\theta^{\top}g(y)<span class="sc">\}</span>}{\kappa(\theta)}.$$</span>
-<span id="cb16-384"><a href="#cb16-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-385"><a href="#cb16-385" aria-hidden="true" tabindex="-1"></a>Every hand-built null above is a special case. Erdős–Rényi is <span class="in">`~ edges`</span> — one parameter, and the</span>
-<span id="cb16-386"><a href="#cb16-386" aria-hidden="true" tabindex="-1"></a>maximum-likelihood fit reproduces the observed density, which is precisely how we chose $p$ in</span>
-<span id="cb16-387"><a href="#cb16-387" aria-hidden="true" tabindex="-1"></a>§2.2. Adding <span class="in">`mutual`</span> gives a null that also preserves reciprocity. Adding <span class="in">`gwesp`</span> lets closure</span>
-<span id="cb16-388"><a href="#cb16-388" aria-hidden="true" tabindex="-1"></a>be a parameter you *estimate* rather than a baseline you assume.</span>
+<span id="cb16-371"><a href="#cb16-371" aria-hidden="true" tabindex="-1"></a>That is a regression question. And it is exactly the question the ERGM answers, by making the</span>
+<span id="cb16-372"><a href="#cb16-372" aria-hidden="true" tabindex="-1"></a>null a **fitted model** with parameters rather than a fixed baseline you chose in advance:</span>
+<span id="cb16-373"><a href="#cb16-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-374"><a href="#cb16-374" aria-hidden="true" tabindex="-1"></a>$$\Pr(Y = y) = \frac{\exp<span class="sc">\{</span>\theta^{\top}g(y)<span class="sc">\}</span>}{\kappa(\theta)}.$$</span>
+<span id="cb16-375"><a href="#cb16-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-376"><a href="#cb16-376" aria-hidden="true" tabindex="-1"></a>Every hand-built null above is a special case. Erdős–Rényi is <span class="in">`~ edges`</span>: one parameter, and the</span>
+<span id="cb16-377"><a href="#cb16-377" aria-hidden="true" tabindex="-1"></a>maximum-likelihood fit reproduces the observed density, which is precisely how we chose $p$ in</span>
+<span id="cb16-378"><a href="#cb16-378" aria-hidden="true" tabindex="-1"></a>§2.2. Adding <span class="in">`mutual`</span> gives a null that also preserves reciprocity. Adding <span class="in">`gwesp`</span> lets closure</span>
+<span id="cb16-379"><a href="#cb16-379" aria-hidden="true" tabindex="-1"></a>be a parameter you *estimate* rather than a baseline you assume.</span>
+<span id="cb16-380"><a href="#cb16-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-383"><a href="#cb16-383" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-384"><a href="#cb16-384" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ergm-er</span></span>
+<span id="cb16-385"><a href="#cb16-385" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb16-386"><a href="#cb16-386" aria-hidden="true" tabindex="-1"></a>m_er <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;rg_er&quot;</span>,</span>
+<span id="cb16-387"><a href="#cb16-387" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(obs_net <span class="sc">~</span> edges, <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb16-388"><a href="#cb16-388" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb16-389"><a href="#cb16-389" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-392"><a href="#cb16-392" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-393"><a href="#cb16-393" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ergm-er</span></span>
-<span id="cb16-394"><a href="#cb16-394" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb16-395"><a href="#cb16-395" aria-hidden="true" tabindex="-1"></a>m_er <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;rg_er&quot;</span>,</span>
-<span id="cb16-396"><a href="#cb16-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(obs_net <span class="sc">~</span> edges, <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb16-393"><a href="#cb16-393" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ergm-er-show</span></span>
+<span id="cb16-394"><a href="#cb16-394" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">coef =</span> <span class="fu">round</span>(<span class="fu">coef</span>(m_er)[[<span class="st">&quot;edges&quot;</span>]], <span class="dv">4</span>),</span>
+<span id="cb16-395"><a href="#cb16-395" aria-hidden="true" tabindex="-1"></a>  <span class="at">implied_p =</span> <span class="fu">round</span>(<span class="fu">plogis</span>(<span class="fu">coef</span>(m_er)[[<span class="st">&quot;edges&quot;</span>]]), <span class="dv">4</span>),</span>
+<span id="cb16-396"><a href="#cb16-396" aria-hidden="true" tabindex="-1"></a>  <span class="at">hand_p =</span> <span class="fu">round</span>(p, <span class="dv">4</span>))</span>
 <span id="cb16-397"><a href="#cb16-397" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb16-398"><a href="#cb16-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-401"><a href="#cb16-401" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-402"><a href="#cb16-402" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ergm-er-show</span></span>
-<span id="cb16-403"><a href="#cb16-403" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">coef =</span> <span class="fu">round</span>(<span class="fu">coef</span>(m_er)[[<span class="st">&quot;edges&quot;</span>]], <span class="dv">4</span>),</span>
-<span id="cb16-404"><a href="#cb16-404" aria-hidden="true" tabindex="-1"></a>  <span class="at">implied_p =</span> <span class="fu">round</span>(<span class="fu">plogis</span>(<span class="fu">coef</span>(m_er)[[<span class="st">&quot;edges&quot;</span>]]), <span class="dv">4</span>),</span>
-<span id="cb16-405"><a href="#cb16-405" aria-hidden="true" tabindex="-1"></a>  <span class="at">hand_p =</span> <span class="fu">round</span>(p, <span class="dv">4</span>))</span>
-<span id="cb16-406"><a href="#cb16-406" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-407"><a href="#cb16-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-408"><a href="#cb16-408" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">live &lt;1s</span><span class="co">]</span>{.rt .rt-live}</span>
-<span id="cb16-409"><a href="#cb16-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-410"><a href="#cb16-410" aria-hidden="true" tabindex="-1"></a>The one-parameter ERGM recovers the $p$ we computed by hand in §2.2, to four decimals. That is</span>
-<span id="cb16-411"><a href="#cb16-411" aria-hidden="true" tabindex="-1"></a>not a coincidence and it is worth sitting with: **the Erdős–Rényi model is an ERGM with one</span>
-<span id="cb16-412"><a href="#cb16-412" aria-hidden="true" tabindex="-1"></a>term.** Everything the ERGM session does from there is adding terms to this.</span>
-<span id="cb16-413"><a href="#cb16-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-414"><a href="#cb16-414" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Exercises</span></span>
-<span id="cb16-415"><a href="#cb16-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-416"><a href="#cb16-416" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
-<span id="cb16-417"><a href="#cb16-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-418"><a href="#cb16-418" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
-<span id="cb16-419"><a href="#cb16-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-420"><a href="#cb16-420" aria-hidden="true" tabindex="-1"></a>Run the whole §2–3 pipeline on the **Sampson** monastery data instead of Coleman: build an ER</span>
-<span id="cb16-421"><a href="#cb16-421" aria-hidden="true" tabindex="-1"></a>null at matched density, simulate 1000 draws, and compare <span class="in">`mutual`</span> and <span class="in">`triangle`</span>.</span>
-<span id="cb16-422"><a href="#cb16-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-425"><a href="#cb16-425" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-426"><a href="#cb16-426" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb16-427"><a href="#cb16-427" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sampson, <span class="at">package =</span> <span class="st">&quot;ergm&quot;</span>)</span>
-<span id="cb16-428"><a href="#cb16-428" aria-hidden="true" tabindex="-1"></a>sm <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(samplike)</span>
-<span id="cb16-429"><a href="#cb16-429" aria-hidden="true" tabindex="-1"></a>n_s <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sm)</span>
-<span id="cb16-430"><a href="#cb16-430" aria-hidden="true" tabindex="-1"></a>p_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(sm) <span class="sc">/</span> (n_s <span class="sc">*</span> (n_s <span class="sc">-</span> ___))          <span class="co"># careful with this</span></span>
-<span id="cb16-431"><a href="#cb16-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-432"><a href="#cb16-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-433"><a href="#cb16-433" aria-hidden="true" tabindex="-1"></a>Then: Sampson&#39;s density is about 0.29, roughly six times Coleman&#39;s. Before you run it, predict</span>
-<span id="cb16-434"><a href="#cb16-434" aria-hidden="true" tabindex="-1"></a>whether the observed-to-null **ratio** for triangles will be larger or smaller than Coleman&#39;s,</span>
-<span id="cb16-435"><a href="#cb16-435" aria-hidden="true" tabindex="-1"></a>and say why. Then check.</span>
-<span id="cb16-436"><a href="#cb16-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-437"><a href="#cb16-437" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stretch</span></span>
-<span id="cb16-438"><a href="#cb16-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-439"><a href="#cb16-439" aria-hidden="true" tabindex="-1"></a>Coleman ships with **two** waves (<span class="in">`coleman[1,,]`</span> and <span class="in">`coleman[2,,]`</span>). Compute the reciprocity</span>
-<span id="cb16-440"><a href="#cb16-440" aria-hidden="true" tabindex="-1"></a>and triangle excess-over-ER for both, and then ask a question the ER null cannot answer: is the</span>
-<span id="cb16-441"><a href="#cb16-441" aria-hidden="true" tabindex="-1"></a>change between waves larger than you would expect from sampling variability alone?</span>
-<span id="cb16-442"><a href="#cb16-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-443"><a href="#cb16-443" aria-hidden="true" tabindex="-1"></a>Sketch how you would build a null for *that* question. This is genuinely harder than anything</span>
-<span id="cb16-444"><a href="#cb16-444" aria-hidden="true" tabindex="-1"></a>above, and it is the question the <span class="co">[</span><span class="ot">Temporal ERGMs</span><span class="co">](tergm.html)</span> document exists to answer</span>
-<span id="cb16-445"><a href="#cb16-445" aria-hidden="true" tabindex="-1"></a>properly.</span>
+<span id="cb16-399"><a href="#cb16-399" aria-hidden="true" tabindex="-1"></a>The one-parameter ERGM recovers the $p$ we computed by hand in §2.2, to four decimals. That is</span>
+<span id="cb16-400"><a href="#cb16-400" aria-hidden="true" tabindex="-1"></a>not a coincidence and it is worth sitting with: **the Erdős–Rényi model is an ERGM with one</span>
+<span id="cb16-401"><a href="#cb16-401" aria-hidden="true" tabindex="-1"></a>term.** Everything the ERGM session does from there is adding terms to this.</span>
+<span id="cb16-402"><a href="#cb16-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-403"><a href="#cb16-403" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Exercises</span></span>
+<span id="cb16-404"><a href="#cb16-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-405"><a href="#cb16-405" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb16-406"><a href="#cb16-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-407"><a href="#cb16-407" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
+<span id="cb16-408"><a href="#cb16-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-409"><a href="#cb16-409" aria-hidden="true" tabindex="-1"></a>Run the whole §2–3 pipeline on the **Sampson** monastery data instead of Coleman: build an ER</span>
+<span id="cb16-410"><a href="#cb16-410" aria-hidden="true" tabindex="-1"></a>null at matched density, simulate 1000 draws, and compare <span class="in">`mutual`</span> and <span class="in">`triangle`</span>.</span>
+<span id="cb16-411"><a href="#cb16-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-414"><a href="#cb16-414" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-415"><a href="#cb16-415" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb16-416"><a href="#cb16-416" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sampson, <span class="at">package =</span> <span class="st">&quot;ergm&quot;</span>)</span>
+<span id="cb16-417"><a href="#cb16-417" aria-hidden="true" tabindex="-1"></a>sm <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(samplike)</span>
+<span id="cb16-418"><a href="#cb16-418" aria-hidden="true" tabindex="-1"></a>n_s <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sm)</span>
+<span id="cb16-419"><a href="#cb16-419" aria-hidden="true" tabindex="-1"></a>p_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(sm) <span class="sc">/</span> (n_s <span class="sc">*</span> (n_s <span class="sc">-</span> ___))          <span class="co"># careful with this</span></span>
+<span id="cb16-420"><a href="#cb16-420" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-421"><a href="#cb16-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-422"><a href="#cb16-422" aria-hidden="true" tabindex="-1"></a>Then: Sampson&#39;s density is about 0.29, roughly six times Coleman&#39;s. Before you run it, predict</span>
+<span id="cb16-423"><a href="#cb16-423" aria-hidden="true" tabindex="-1"></a>whether the observed-to-null **ratio** for triangles will be larger or smaller than Coleman&#39;s,</span>
+<span id="cb16-424"><a href="#cb16-424" aria-hidden="true" tabindex="-1"></a>and say why. Then check.</span>
+<span id="cb16-425"><a href="#cb16-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-426"><a href="#cb16-426" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stretch</span></span>
+<span id="cb16-427"><a href="#cb16-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-428"><a href="#cb16-428" aria-hidden="true" tabindex="-1"></a>Coleman ships with **two** waves (<span class="in">`coleman[1,,]`</span> and <span class="in">`coleman[2,,]`</span>). Compute the reciprocity</span>
+<span id="cb16-429"><a href="#cb16-429" aria-hidden="true" tabindex="-1"></a>and triangle excess-over-ER for both, and then ask a question the ER null cannot answer: is the</span>
+<span id="cb16-430"><a href="#cb16-430" aria-hidden="true" tabindex="-1"></a>change between waves larger than you would expect from sampling variability alone?</span>
+<span id="cb16-431"><a href="#cb16-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-432"><a href="#cb16-432" aria-hidden="true" tabindex="-1"></a>Sketch how you would build a null for *that* question. This is genuinely harder than anything</span>
+<span id="cb16-433"><a href="#cb16-433" aria-hidden="true" tabindex="-1"></a>above, and it is the question the <span class="co">[</span><span class="ot">Temporal ERGMs</span><span class="co">](tergm.html)</span> document exists to answer</span>
+<span id="cb16-434"><a href="#cb16-434" aria-hidden="true" tabindex="-1"></a>properly.</span>
+<span id="cb16-435"><a href="#cb16-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-436"><a href="#cb16-436" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
+<span id="cb16-437"><a href="#cb16-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-440"><a href="#cb16-440" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-441"><a href="#cb16-441" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-sampson</span></span>
+<span id="cb16-442"><a href="#cb16-442" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sampson, <span class="at">package =</span> <span class="st">&quot;ergm&quot;</span>)</span>
+<span id="cb16-443"><a href="#cb16-443" aria-hidden="true" tabindex="-1"></a>sm  <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(samplike)</span>
+<span id="cb16-444"><a href="#cb16-444" aria-hidden="true" tabindex="-1"></a>n_s <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sm)</span>
+<span id="cb16-445"><a href="#cb16-445" aria-hidden="true" tabindex="-1"></a>p_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(sm) <span class="sc">/</span> (n_s <span class="sc">*</span> (n_s <span class="sc">-</span> <span class="dv">1</span>))            <span class="co"># n(n-1) ordered pairs, no self-loops</span></span>
 <span id="cb16-446"><a href="#cb16-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-447"><a href="#cb16-447" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
-<span id="cb16-448"><a href="#cb16-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-451"><a href="#cb16-451" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-452"><a href="#cb16-452" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-sampson</span></span>
-<span id="cb16-453"><a href="#cb16-453" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sampson, <span class="at">package =</span> <span class="st">&quot;ergm&quot;</span>)</span>
-<span id="cb16-454"><a href="#cb16-454" aria-hidden="true" tabindex="-1"></a>sm  <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(samplike)</span>
-<span id="cb16-455"><a href="#cb16-455" aria-hidden="true" tabindex="-1"></a>n_s <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sm)</span>
-<span id="cb16-456"><a href="#cb16-456" aria-hidden="true" tabindex="-1"></a>p_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(sm) <span class="sc">/</span> (n_s <span class="sc">*</span> (n_s <span class="sc">-</span> <span class="dv">1</span>))            <span class="co"># n(n-1) ordered pairs, no self-loops</span></span>
-<span id="cb16-457"><a href="#cb16-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-458"><a href="#cb16-458" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb16-459"><a href="#cb16-459" aria-hidden="true" tabindex="-1"></a>sim_s <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">replicate</span>(<span class="dv">1000</span>, {</span>
-<span id="cb16-460"><a href="#cb16-460" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rbinom</span>(n_s <span class="sc">*</span> n_s, <span class="dv">1</span>, p_s), n_s, n_s)</span>
-<span id="cb16-461"><a href="#cb16-461" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(r) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb16-462"><a href="#cb16-462" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">network</span>(r, <span class="at">directed =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> mutual <span class="sc">+</span> triangle)</span>
-<span id="cb16-463"><a href="#cb16-463" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb16-464"><a href="#cb16-464" aria-hidden="true" tabindex="-1"></a>obs_s <span class="ot">&lt;-</span> <span class="fu">summary</span>(samplike <span class="sc">~</span> mutual <span class="sc">+</span> triangle)</span>
-<span id="cb16-465"><a href="#cb16-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-466"><a href="#cb16-466" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb16-467"><a href="#cb16-467" aria-hidden="true" tabindex="-1"></a>  <span class="at">network   =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;Coleman&quot;</span>, <span class="st">&quot;Sampson&quot;</span>), <span class="at">each =</span> <span class="dv">2</span>),</span>
-<span id="cb16-468"><a href="#cb16-468" aria-hidden="true" tabindex="-1"></a>  <span class="at">density   =</span> <span class="fu">round</span>(<span class="fu">rep</span>(<span class="fu">c</span>(p, p_s), <span class="at">each =</span> <span class="dv">2</span>), <span class="dv">3</span>),</span>
-<span id="cb16-469"><a href="#cb16-469" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>), <span class="dv">2</span>),</span>
-<span id="cb16-470"><a href="#cb16-470" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed  =</span> <span class="fu">c</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="fu">as.numeric</span>(obs_s)),</span>
-<span id="cb16-471"><a href="#cb16-471" aria-hidden="true" tabindex="-1"></a>  <span class="at">null_mean =</span> <span class="fu">round</span>(<span class="fu">c</span>(<span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="fu">colMeans</span>(sim_s)), <span class="dv">1</span>),</span>
-<span id="cb16-472"><a href="#cb16-472" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio     =</span> <span class="fu">round</span>(<span class="fu">c</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
-<span id="cb16-473"><a href="#cb16-473" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]),</span>
-<span id="cb16-474"><a href="#cb16-474" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">as.numeric</span>(obs_s) <span class="sc">/</span> <span class="fu">colMeans</span>(sim_s)), <span class="dv">2</span>),</span>
-<span id="cb16-475"><a href="#cb16-475" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
-<span id="cb16-476"><a href="#cb16-476" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-477"><a href="#cb16-477" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-478"><a href="#cb16-478" aria-hidden="true" tabindex="-1"></a>**Core, the blank:** <span class="in">`n_s - 1`</span>. There are $n(n-1)$ ordered pairs of distinct nodes in a directed</span>
-<span id="cb16-479"><a href="#cb16-479" aria-hidden="true" tabindex="-1"></a>network. Using $n(n-1)/2$ is the undirected count and would double your $p$; using $n^2$ counts</span>
-<span id="cb16-480"><a href="#cb16-480" aria-hidden="true" tabindex="-1"></a>self-loops that cannot exist. Both mistakes are common and both are silent.</span>
+<span id="cb16-447"><a href="#cb16-447" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb16-448"><a href="#cb16-448" aria-hidden="true" tabindex="-1"></a>sim_s <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">replicate</span>(<span class="dv">1000</span>, {</span>
+<span id="cb16-449"><a href="#cb16-449" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rbinom</span>(n_s <span class="sc">*</span> n_s, <span class="dv">1</span>, p_s), n_s, n_s)</span>
+<span id="cb16-450"><a href="#cb16-450" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(r) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb16-451"><a href="#cb16-451" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">network</span>(r, <span class="at">directed =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> mutual <span class="sc">+</span> triangle)</span>
+<span id="cb16-452"><a href="#cb16-452" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb16-453"><a href="#cb16-453" aria-hidden="true" tabindex="-1"></a>obs_s <span class="ot">&lt;-</span> <span class="fu">summary</span>(samplike <span class="sc">~</span> mutual <span class="sc">+</span> triangle)</span>
+<span id="cb16-454"><a href="#cb16-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-455"><a href="#cb16-455" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb16-456"><a href="#cb16-456" aria-hidden="true" tabindex="-1"></a>  <span class="at">network   =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;Coleman&quot;</span>, <span class="st">&quot;Sampson&quot;</span>), <span class="at">each =</span> <span class="dv">2</span>),</span>
+<span id="cb16-457"><a href="#cb16-457" aria-hidden="true" tabindex="-1"></a>  <span class="at">density   =</span> <span class="fu">round</span>(<span class="fu">rep</span>(<span class="fu">c</span>(p, p_s), <span class="at">each =</span> <span class="dv">2</span>), <span class="dv">3</span>),</span>
+<span id="cb16-458"><a href="#cb16-458" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>), <span class="dv">2</span>),</span>
+<span id="cb16-459"><a href="#cb16-459" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed  =</span> <span class="fu">c</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="fu">as.numeric</span>(obs_s)),</span>
+<span id="cb16-460"><a href="#cb16-460" aria-hidden="true" tabindex="-1"></a>  <span class="at">null_mean =</span> <span class="fu">round</span>(<span class="fu">c</span>(<span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]), <span class="fu">colMeans</span>(sim_s)), <span class="dv">1</span>),</span>
+<span id="cb16-461"><a href="#cb16-461" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio     =</span> <span class="fu">round</span>(<span class="fu">c</span>(<span class="fu">as.numeric</span>(obs_stats[<span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]) <span class="sc">/</span></span>
+<span id="cb16-462"><a href="#cb16-462" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">colMeans</span>(sim_stats[, <span class="fu">c</span>(<span class="st">&quot;mutual&quot;</span>, <span class="st">&quot;triangle&quot;</span>)]),</span>
+<span id="cb16-463"><a href="#cb16-463" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">as.numeric</span>(obs_s) <span class="sc">/</span> <span class="fu">colMeans</span>(sim_s)), <span class="dv">2</span>),</span>
+<span id="cb16-464"><a href="#cb16-464" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb16-465"><a href="#cb16-465" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-466"><a href="#cb16-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-467"><a href="#cb16-467" aria-hidden="true" tabindex="-1"></a>**Core, the blank:** <span class="in">`n_s - 1`</span>. There are $n(n-1)$ ordered pairs of distinct nodes in a directed</span>
+<span id="cb16-468"><a href="#cb16-468" aria-hidden="true" tabindex="-1"></a>network. Using $n(n-1)/2$ is the undirected count and would double your $p$; using $n^2$ counts</span>
+<span id="cb16-469"><a href="#cb16-469" aria-hidden="true" tabindex="-1"></a>self-loops that cannot exist. Both mistakes are common and both are silent.</span>
+<span id="cb16-470"><a href="#cb16-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-471"><a href="#cb16-471" aria-hidden="true" tabindex="-1"></a>**Core, the prediction.** The triangle ratio is **much smaller** for Sampson, and the reason is</span>
+<span id="cb16-472"><a href="#cb16-472" aria-hidden="true" tabindex="-1"></a>worth understanding because it generalises.</span>
+<span id="cb16-473"><a href="#cb16-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-474"><a href="#cb16-474" aria-hidden="true" tabindex="-1"></a>Under an ER null the expected number of triangles scales roughly like $n^3 p^3$. Sampson&#39;s</span>
+<span id="cb16-475"><a href="#cb16-475" aria-hidden="true" tabindex="-1"></a>density is about six times Coleman&#39;s, so its *expected* triangle count is enormous: cubing a</span>
+<span id="cb16-476"><a href="#cb16-476" aria-hidden="true" tabindex="-1"></a>much larger $p$ dominates the smaller $n$. The null is already producing lots of triangles by</span>
+<span id="cb16-477"><a href="#cb16-477" aria-hidden="true" tabindex="-1"></a>chance, so there is far less room for the observed count to exceed it.</span>
+<span id="cb16-478"><a href="#cb16-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-479"><a href="#cb16-479" aria-hidden="true" tabindex="-1"></a>Coleman&#39;s ratio is astronomical mainly because the denominator is nearly zero: at density 0.046,</span>
+<span id="cb16-480"><a href="#cb16-480" aria-hidden="true" tabindex="-1"></a>random graphs on 73 nodes almost never make triangles, so *any* clustering looks miraculous.</span>
 <span id="cb16-481"><a href="#cb16-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-482"><a href="#cb16-482" aria-hidden="true" tabindex="-1"></a>**Core, the prediction.** The triangle ratio is **much smaller** for Sampson, and the reason is</span>
-<span id="cb16-483"><a href="#cb16-483" aria-hidden="true" tabindex="-1"></a>worth understanding because it generalises.</span>
-<span id="cb16-484"><a href="#cb16-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-485"><a href="#cb16-485" aria-hidden="true" tabindex="-1"></a>Under an ER null the expected number of triangles scales roughly like $n^3 p^3$. Sampson&#39;s</span>
-<span id="cb16-486"><a href="#cb16-486" aria-hidden="true" tabindex="-1"></a>density is about six times Coleman&#39;s, so its *expected* triangle count is enormous — cubing a</span>
-<span id="cb16-487"><a href="#cb16-487" aria-hidden="true" tabindex="-1"></a>much larger $p$ dominates the smaller $n$. The null is already producing lots of triangles by</span>
-<span id="cb16-488"><a href="#cb16-488" aria-hidden="true" tabindex="-1"></a>chance, so there is far less room for the observed count to exceed it.</span>
-<span id="cb16-489"><a href="#cb16-489" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-490"><a href="#cb16-490" aria-hidden="true" tabindex="-1"></a>Coleman&#39;s ratio is astronomical mainly because the denominator is nearly zero: at density 0.046,</span>
-<span id="cb16-491"><a href="#cb16-491" aria-hidden="true" tabindex="-1"></a>random graphs on 73 nodes almost never make triangles, so *any* clustering looks miraculous.</span>
-<span id="cb16-492"><a href="#cb16-492" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-493"><a href="#cb16-493" aria-hidden="true" tabindex="-1"></a>**The general lesson, and it is a warning:** excess-over-random ratios are not comparable across</span>
-<span id="cb16-494"><a href="#cb16-494" aria-hidden="true" tabindex="-1"></a>networks of different density. A paper reporting &quot;40× more clustered than random&quot; for a sparse</span>
-<span id="cb16-495"><a href="#cb16-495" aria-hidden="true" tabindex="-1"></a>network and one reporting &quot;2× more clustered than random&quot; for a dense one may be describing</span>
-<span id="cb16-496"><a href="#cb16-496" aria-hidden="true" tabindex="-1"></a>identical amounts of social closure. If you need a comparable quantity, fit a model with a</span>
-<span id="cb16-497"><a href="#cb16-497" aria-hidden="true" tabindex="-1"></a>density term in it and compare the *closure parameter* — which is, once again, the argument for</span>
-<span id="cb16-498"><a href="#cb16-498" aria-hidden="true" tabindex="-1"></a>ERGMs.</span>
-<span id="cb16-499"><a href="#cb16-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-500"><a href="#cb16-500" aria-hidden="true" tabindex="-1"></a>**Stretch.** The honest sketch: you would need a null that preserves whatever you are willing to</span>
-<span id="cb16-501"><a href="#cb16-501" aria-hidden="true" tabindex="-1"></a>treat as fixed across waves — node set, and probably each wave&#39;s density — while randomising the</span>
-<span id="cb16-502"><a href="#cb16-502" aria-hidden="true" tabindex="-1"></a>*association between* waves. A permutation approach gets you started: repeatedly relabel nodes</span>
-<span id="cb16-503"><a href="#cb16-503" aria-hidden="true" tabindex="-1"></a>in wave 2, recompute the change in your statistic, and build a null distribution for &quot;change</span>
-<span id="cb16-504"><a href="#cb16-504" aria-hidden="true" tabindex="-1"></a>under no wave-to-wave dependence.&quot;</span>
-<span id="cb16-505"><a href="#cb16-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-506"><a href="#cb16-506" aria-hidden="true" tabindex="-1"></a>That answers a narrow version of the question. It does not touch the interesting one, which is</span>
-<span id="cb16-507"><a href="#cb16-507" aria-hidden="true" tabindex="-1"></a>whether the *process* generating change is reciprocity-driven or closure-driven, because a</span>
-<span id="cb16-508"><a href="#cb16-508" aria-hidden="true" tabindex="-1"></a>permutation null has no process in it at all. For that you need a model of the transition itself</span>
-<span id="cb16-509"><a href="#cb16-509" aria-hidden="true" tabindex="-1"></a>— which is a TERGM or a SAOM, and is exactly why those exist.</span>
-<span id="cb16-510"><a href="#cb16-510" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-482"><a href="#cb16-482" aria-hidden="true" tabindex="-1"></a>**The general lesson, and it is a warning:** excess-over-random ratios are not comparable across</span>
+<span id="cb16-483"><a href="#cb16-483" aria-hidden="true" tabindex="-1"></a>networks of different density. A paper reporting &quot;40× more clustered than random&quot; for a sparse</span>
+<span id="cb16-484"><a href="#cb16-484" aria-hidden="true" tabindex="-1"></a>network and one reporting &quot;2× more clustered than random&quot; for a dense one may be describing</span>
+<span id="cb16-485"><a href="#cb16-485" aria-hidden="true" tabindex="-1"></a>identical amounts of social closure. If you need a comparable quantity, fit a model with a</span>
+<span id="cb16-486"><a href="#cb16-486" aria-hidden="true" tabindex="-1"></a>density term in it and compare the *closure parameter*. This is, once again, the argument for</span>
+<span id="cb16-487"><a href="#cb16-487" aria-hidden="true" tabindex="-1"></a>ERGMs.</span>
+<span id="cb16-488"><a href="#cb16-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-489"><a href="#cb16-489" aria-hidden="true" tabindex="-1"></a>**Stretch.** The honest sketch: you would need a null that preserves whatever you are willing to</span>
+<span id="cb16-490"><a href="#cb16-490" aria-hidden="true" tabindex="-1"></a>treat as fixed across waves: node set, and probably each wave&#39;s density, while randomising the</span>
+<span id="cb16-491"><a href="#cb16-491" aria-hidden="true" tabindex="-1"></a>*association between* waves. A permutation approach gets you started: repeatedly relabel nodes</span>
+<span id="cb16-492"><a href="#cb16-492" aria-hidden="true" tabindex="-1"></a>in wave 2, recompute the change in your statistic, and build a null distribution for &quot;change</span>
+<span id="cb16-493"><a href="#cb16-493" aria-hidden="true" tabindex="-1"></a>under no wave-to-wave dependence.&quot;</span>
+<span id="cb16-494"><a href="#cb16-494" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-495"><a href="#cb16-495" aria-hidden="true" tabindex="-1"></a>That answers a narrow version of the question. It does not touch the interesting one, which is</span>
+<span id="cb16-496"><a href="#cb16-496" aria-hidden="true" tabindex="-1"></a>whether the *process* generating change is reciprocity-driven or closure-driven, because a</span>
+<span id="cb16-497"><a href="#cb16-497" aria-hidden="true" tabindex="-1"></a>permutation null has no process in it at all. For that you need a model of the transition itself,</span>
+<span id="cb16-498"><a href="#cb16-498" aria-hidden="true" tabindex="-1"></a>which is a TERGM or a SAOM. That is exactly why those models exist.</span>
+<span id="cb16-499"><a href="#cb16-499" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-500"><a href="#cb16-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-501"><a href="#cb16-501" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7. Readings</span></span>
+<span id="cb16-502"><a href="#cb16-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-503"><a href="#cb16-503" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Erdős &amp; Rényi (1959)**, &quot;On random graphs I,&quot; *Publicationes Mathematicae* 6:290–297. The</span>
+<span id="cb16-504"><a href="#cb16-504" aria-hidden="true" tabindex="-1"></a>  original. Short, and more readable than you would expect.</span>
+<span id="cb16-505"><a href="#cb16-505" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cranmer &amp; Desmarais (2011)**, &quot;Inferential network analysis with exponential random graph</span>
+<span id="cb16-506"><a href="#cb16-506" aria-hidden="true" tabindex="-1"></a>  models,&quot; *Political Analysis* 19(1):66–86. Assigned for the ERGM session. Section 2 is the</span>
+<span id="cb16-507"><a href="#cb16-507" aria-hidden="true" tabindex="-1"></a>  argument of §5 above, made properly.</span>
+<span id="cb16-508"><a href="#cb16-508" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Milo et al. (2002)**, &quot;Network motifs: simple building blocks of complex networks,&quot;</span>
+<span id="cb16-509"><a href="#cb16-509" aria-hidden="true" tabindex="-1"></a>  *Science* 298:824–827. The canonical demonstration that degree-preserving nulls and ER nulls</span>
+<span id="cb16-510"><a href="#cb16-510" aria-hidden="true" tabindex="-1"></a>  give different answers, and that the difference is the finding.</span>
 <span id="cb16-511"><a href="#cb16-511" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-512"><a href="#cb16-512" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7. Readings</span></span>
-<span id="cb16-513"><a href="#cb16-513" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-514"><a href="#cb16-514" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Erdős &amp; Rényi (1959)**, &quot;On random graphs I,&quot; *Publicationes Mathematicae* 6:290–297. The</span>
-<span id="cb16-515"><a href="#cb16-515" aria-hidden="true" tabindex="-1"></a>  original. Short, and more readable than you would expect.</span>
-<span id="cb16-516"><a href="#cb16-516" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cranmer &amp; Desmarais (2011)**, &quot;Inferential network analysis with exponential random graph</span>
-<span id="cb16-517"><a href="#cb16-517" aria-hidden="true" tabindex="-1"></a>  models,&quot; *Political Analysis* 19(1):66–86. Assigned for the ERGM session. Section 2 is the</span>
-<span id="cb16-518"><a href="#cb16-518" aria-hidden="true" tabindex="-1"></a>  argument of §5 above, made properly.</span>
-<span id="cb16-519"><a href="#cb16-519" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Milo et al. (2002)**, &quot;Network motifs: simple building blocks of complex networks,&quot;</span>
-<span id="cb16-520"><a href="#cb16-520" aria-hidden="true" tabindex="-1"></a>  *Science* 298:824–827. The canonical demonstration that degree-preserving nulls and ER nulls</span>
-<span id="cb16-521"><a href="#cb16-521" aria-hidden="true" tabindex="-1"></a>  give different answers, and that the difference is the finding.</span>
-<span id="cb16-522"><a href="#cb16-522" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-525"><a href="#cb16-525" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-526"><a href="#cb16-526" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
-<span id="cb16-527"><a href="#cb16-527" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb16-528"><a href="#cb16-528" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb16-529"><a href="#cb16-529" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions — expand if your numbers differ from mine&quot;</span></span>
-<span id="cb16-530"><a href="#cb16-530" aria-hidden="true" tabindex="-1"></a>pk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;sna&quot;</span>, <span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;network&quot;</span>)</span>
-<span id="cb16-531"><a href="#cb16-531" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> pk,</span>
-<span id="cb16-532"><a href="#cb16-532" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">sapply</span>(pk, <span class="cf">function</span>(p) <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(p))),</span>
-<span id="cb16-533"><a href="#cb16-533" aria-hidden="true" tabindex="-1"></a>           <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
-<span id="cb16-534"><a href="#cb16-534" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb16-535"><a href="#cb16-535" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-514"><a href="#cb16-514" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-515"><a href="#cb16-515" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
+<span id="cb16-516"><a href="#cb16-516" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
+<span id="cb16-517"><a href="#cb16-517" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb16-518"><a href="#cb16-518" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions: expand if your numbers differ from mine&quot;</span></span>
+<span id="cb16-519"><a href="#cb16-519" aria-hidden="true" tabindex="-1"></a>pk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;sna&quot;</span>, <span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;network&quot;</span>)</span>
+<span id="cb16-520"><a href="#cb16-520" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> pk,</span>
+<span id="cb16-521"><a href="#cb16-521" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">sapply</span>(pk, <span class="cf">function</span>(p) <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(p))),</span>
+<span id="cb16-522"><a href="#cb16-522" aria-hidden="true" tabindex="-1"></a>           <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb16-523"><a href="#cb16-523" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb16-524"><a href="#cb16-524" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
