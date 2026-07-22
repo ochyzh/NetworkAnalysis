@@ -2416,7 +2416,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Teaching alongside the deck?</strong> <a href="6_causal_teaching_deck.html" target="_blank">Open the Day 6 teaching deck</a>. Each deck button opens the exact section of this walkthrough in a separate tab, so keep both tabs open and switch between them during class.</p>
+<p><a href="6_causal_teaching_deck.html" target="_blank">Open the Day 6 teaching deck</a>.</p>
 <p>Everything in here runs. There is no separate script; this <em>is</em> the script, with the reasoning left in. Read it top to bottom in class; re-run it top to bottom afterwards and you will get the same numbers: the fits are seeded at <code>6886</code> or cached, and the quick simulation chunks draw from the seeded stream <em>in document order</em> (so a lone simulation chunk re-run out of order can wobble; the document as a whole cannot).</p>
 <p>The three cached fits comprise two <code>ame</code> MCMC runs (the <span class="math inline">\(R=2\)</span> main fit and the <span class="math inline">\(R=0\)</span> comparison, a few minutes each on a laptop) and one <code>dcr</code> decomposition (~1s, cached only so the document reproduces byte-for-byte). They are wrapped in <code>cache_fit()</code>, which stores them in <code>cache/</code>. The first person to run a chunk pays for the fit, everyone after loads it in milliseconds. Delete <code>cache/</code> to force honest refits, knowing that a cold rebuild costs a few minutes, almost all of it the two <code>ame</code> chains. Everything else today runs live in seconds.</p>
 <p>Two of today’s packages come from GitHub, the rest from CRAN:</p>
@@ -2758,7 +2758,7 @@ window.Quarto = {
 </div>
 </div>
 <p>Under unit randomization, 13% of units sit in a pure all-treated or all-control neighborhood; under cluster randomization it is 45% in this draw. That is the trade the design makes: much less interference bias, at the price of fewer effective units (you randomized 6 clusters, not 60 people). And that price is not rhetorical: with only 6 clusters we drew a <em>balanced</em> assignment above, because a fair coin per cluster puts every cluster in the same arm with probability <span class="math inline">\(2 \times 0.5^{6} = 3.1\%\)</span>, which would leave an experiment with no contrast at all. Notice the pleasant echo: the community-detection machinery from Day 2 just became a <em>causal design tool</em>. This is what Facebook-scale experiments actually do, and Eckles et al. (2017) show the bias reduction is large even when the clustering is imperfect.</p>
-<p>If you remember one sentence from this segment: <strong>randomization plus design choices can handle interference; nothing on this slide is available to a purely observational study.</strong> That is where most of you live, so the observational frontier comes next.</p>
+<p>If you remember one sentence from this segment: <strong>randomization plus design choices can handle interference; none of these protections is available to a purely observational study.</strong> That is where most of you live, so the observational frontier comes next.</p>
 </section>
 <section id="sec-observational" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> The observational frontier: the honest sentence</h1>
@@ -4311,7 +4311,7 @@ window.Quarto = {
 <span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance=&quot;simple&quot;}</span>
 <span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to use this document</span></span>
 <span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a>**Teaching alongside the deck?** <span class="co">[</span><span class="ot">Open the Day 6 teaching deck</span><span class="co">](6_causal_teaching_deck.html)</span>{target=&quot;_blank&quot;}. Each deck button opens the exact section of this walkthrough in a separate tab, so keep both tabs open and switch between them during class.</span>
+<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Open the Day 6 teaching deck</span><span class="co">](6_causal_teaching_deck.html)</span>{target=&quot;_blank&quot;}.</span>
 <span id="cb48-48"><a href="#cb48-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-49"><a href="#cb48-49" aria-hidden="true" tabindex="-1"></a>Everything in here runs. There is no separate script; this *is* the</span>
 <span id="cb48-50"><a href="#cb48-50" aria-hidden="true" tabindex="-1"></a>script, with the reasoning left in. Read it top to bottom in class; re-run</span>
@@ -4758,7 +4758,7 @@ window.Quarto = {
 <span id="cb48-509"><a href="#cb48-509" aria-hidden="true" tabindex="-1"></a>is large even when the clustering is imperfect.</span>
 <span id="cb48-510"><a href="#cb48-510" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-511"><a href="#cb48-511" aria-hidden="true" tabindex="-1"></a>If you remember one sentence from this segment: **randomization plus</span>
-<span id="cb48-512"><a href="#cb48-512" aria-hidden="true" tabindex="-1"></a>design choices can handle interference; nothing on this slide is available</span>
+<span id="cb48-512"><a href="#cb48-512" aria-hidden="true" tabindex="-1"></a>design choices can handle interference; none of these protections is available</span>
 <span id="cb48-513"><a href="#cb48-513" aria-hidden="true" tabindex="-1"></a>to a purely observational study.** That is where most of you live, so the</span>
 <span id="cb48-514"><a href="#cb48-514" aria-hidden="true" tabindex="-1"></a>observational frontier comes next.</span>
 <span id="cb48-515"><a href="#cb48-515" aria-hidden="true" tabindex="-1"></a></span>

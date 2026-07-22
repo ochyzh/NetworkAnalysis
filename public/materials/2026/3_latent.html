@@ -2431,7 +2431,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Teaching alongside the deck?</strong> <a href="3_latent_teaching_deck.html" target="_blank">Open the Day 3 teaching deck</a>. Each deck button opens the exact section of this walkthrough in a separate tab, so keep both tabs open and switch between them during class.</p>
+<p><a href="3_latent_teaching_deck.html" target="_blank">Open the Day 3 teaching deck</a>.</p>
 <p>Everything in here runs. There is no separate script; this <em>is</em> the script, with the reasoning left in. Read it top to bottom in class; re-run any chunk against the warm cache afterwards and you will get the same numbers, because everything is seeded at <code>6886</code>. One habit: after restarting R, always run the setup chunk first: skip it and some model functions (<code>ergmm()</code> among them) complain about a missing <code>.Random.seed</code> object, which looks like a failure and is not.</p>
 <p>The expensive model fits are wrapped in <code>cache_fit()</code>, which stores them in <code>cache/</code>. The first person to run a chunk pays for the fit; everyone after loads it in milliseconds. The slow ones: the three trade AME fits in <a href="#sec-fits" class="quarto-xref">Section 8</a> at roughly 30 seconds each, the four-chain convergence check in the same section at about 50 seconds (it runs its chains in parallel), and the dimension-selection loop in <a href="#sec-uv" class="quarto-xref">Section 10</a>’s collapsed callout at about a minute, so a fully cold document costs three to four minutes of fitting, once, total. Change the model code and the cache notices and refits. Delete <code>cache/</code> to force honest refits of everything.</p>
 <p><code>lame</code> (the factor-model workhorse) comes from GitHub; everything else is on CRAN:</p>
@@ -5152,7 +5152,7 @@ p(Y \mid \theta) \propto \exp\{\theta^\top g(Y)\},
 <span id="cb93-54"><a href="#cb93-54" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance=&quot;simple&quot;}</span>
 <span id="cb93-55"><a href="#cb93-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to use this document</span></span>
 <span id="cb93-56"><a href="#cb93-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-57"><a href="#cb93-57" aria-hidden="true" tabindex="-1"></a>**Teaching alongside the deck?** <span class="co">[</span><span class="ot">Open the Day 3 teaching deck</span><span class="co">](3_latent_teaching_deck.html)</span>{target=&quot;_blank&quot;}. Each deck button opens the exact section of this walkthrough in a separate tab, so keep both tabs open and switch between them during class.</span>
+<span id="cb93-57"><a href="#cb93-57" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Open the Day 3 teaching deck</span><span class="co">](3_latent_teaching_deck.html)</span>{target=&quot;_blank&quot;}.</span>
 <span id="cb93-58"><a href="#cb93-58" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb93-59"><a href="#cb93-59" aria-hidden="true" tabindex="-1"></a>Everything in here runs. There is no separate script; this *is* the script,</span>
 <span id="cb93-60"><a href="#cb93-60" aria-hidden="true" tabindex="-1"></a>with the reasoning left in. Read it top to bottom in class; re-run any chunk</span>

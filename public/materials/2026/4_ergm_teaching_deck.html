@@ -1015,7 +1015,7 @@ Shahryar Minhas
 <p><a href="4_ergm.html#block-a" class="walkthrough-link" target="_blank">Open the walkthrough</a></p>
 </div>
 <aside class="notes">
-<p>Frame the day around one shift: the random object is the graph. Terms such as reciprocity and closure enter through statistics g(y), not as residual correlations added after an ordinary regression.</p>
+<p>Opening shift: the random object is the graph. Reciprocity and closure enter through statistics <span class="math inline">\(g(y)\)</span>, not as residual correlations added after an ordinary regression.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1045,7 +1045,7 @@ display:block!important;
 <p>The statistics describe the graph. The coefficients describe how those statistics tilt probability across possible graphs.</p>
 </div>
 <aside class="notes">
-<p>Count edges and mutual dyads by hand on the small example. Separate the data statistic from its coefficient so students do not confuse a network feature with an effect estimate.</p>
+<p>Small example by hand: count edges and mutual dyads. Keep the data statistic separate from its coefficient so a network feature is not confused with an effect estimate.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1066,7 +1066,7 @@ display:block!important;
 </div>
 <p>But it also does something substantively important: a tie’s probability can depend on how toggling that tie changes configurations elsewhere in the graph.</p>
 <aside class="notes">
-<p>Explain why the difficult constant and dependence are two sides of the same joint model. This motivates simulation-based estimation without turning the class into an MCMC derivation.</p>
+<p>The difficult normalizing constant and dependence are two sides of the same joint model. That motivates simulation-based estimation without an MCMC derivation detour.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1114,7 +1114,7 @@ display:block!important;
 </div>
 <p>Once endogenous terms enter, the edges coefficient remains a conditional baseline for a toggle whose other change statistics equal zero. It is not the marginal density by itself.</p>
 <aside class="notes">
-<p>Fit the dyad-independent model and address the console language about pseudolikelihood or MCMC. Keep the special case separate from the general ERGM.</p>
+<p>QMD: dyad-independent model. Address the console language about pseudolikelihood or MCMC, but keep this special case separate from the general ERGM.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1141,7 +1141,7 @@ display:block!important;
 <p><a href="4_ergm.html#b2" class="walkthrough-link" target="_blank">Translate the fitted numbers</a></p>
 </div>
 <aside class="notes">
-<p>Use the baseline, then compute a covariate contrast and an average marginal effect. Explain why exponentiating a coefficient alone may not answer a human-scale probability question.</p>
+<p>Start from the baseline, then calculate a covariate contrast and an average marginal effect. Exponentiating a coefficient alone may not answer the probability question we care about.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1171,7 +1171,7 @@ display:block!important;
 <p><span class="math inline">\(\exp(\theta_{mutual})\)</span> is the conditional odds multiplier for adding a tie when its reverse exists, holding the other change statistics fixed.</p>
 </div>
 <aside class="notes">
-<p>Connect this interpretation to dyadic reciprocity in the SRM. The models represent the same empirical feature through different probability structures.</p>
+<p>SRM connection: the same empirical reciprocity feature enters through a different probability structure.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1192,7 +1192,7 @@ display:block!important;
 <p>If closing ties makes later closures increasingly attractive, what keeps the model away from almost-empty or almost-complete graphs?</p>
 </div>
 <aside class="notes">
-<p>Fit the naive triangle specification and show the unstable or degenerate behavior. Explain positive feedback in terms of change statistics rather than saying triangles are simply bad.</p>
+<p>QMD: naive triangle specification and its unstable or degenerate behavior. The explanation is positive feedback in the change statistic, not that triangles are inherently bad.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1224,7 +1224,7 @@ display:block!important;
 <p><a href="4_ergm.html#c1" class="walkthrough-link" target="_blank">Break and repair the model</a></p>
 </div>
 <aside class="notes">
-<p>Compare simulated networks from the raw triangle and geometrically weighted specifications. Do not present gwesp as a magic anti-degeneracy term. Its weighting must make sense for the network.</p>
+<p>Raw-triangle and geometrically weighted simulations side by side. <code>gwesp</code> is not a magic anti-degeneracy term; its weighting still has to make sense for the network.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1252,7 +1252,7 @@ display:block!important;
 <p>If one group has no within-group ties, is a huge negative mixing coefficient a stable finding or a symptom of limited support?</p>
 </div>
 <aside class="notes">
-<p>Run the cell checks from C2 before looking at chain diagnostics. A sampler cannot create overlap that the observed risk set does not contain.</p>
+<p>Diagnostic order: C2 cell checks before chain diagnostics. A sampler cannot create overlap that the observed risk set does not contain.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1279,7 +1279,7 @@ display:block!important;
 <p><a href="4_ergm.html#c2" class="walkthrough-link" target="_blank">Run the diagnostic sequence</a></p>
 </div>
 <aside class="notes">
-<p>Walk through the cell check, trace and diagnostic output, then goodness of fit. Keep computational adequacy and substantive adequacy separate.</p>
+<p>Diagnostic sequence: cell check, trace and MCMC output, then goodness of fit. Computational adequacy and substantive adequacy are separate questions.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1306,7 +1306,7 @@ display:block!important;
 <p>Which observed feature would change your substantive conclusion if the model consistently failed to reproduce it?</p>
 </div>
 <aside class="notes">
-<p>Show simulate as the tool underneath posterior or model-based goodness of fit. Encourage students to add statistics tied to their research question rather than accepting only package defaults.</p>
+<p><code>simulate()</code> is the engine underneath model-based goodness of fit. The checked statistics should come from the research question, not only the package defaults.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1337,7 +1337,7 @@ display:block!important;
 <p><a href="4_ergm.html#c3" class="walkthrough-link" target="_blank">See the valued extension</a></p>
 </div>
 <aside class="notes">
-<p>Keep this section conceptual unless the room needs the code. Explain why a count reference and a binary reference imply different sample spaces and likelihoods.</p>
+<p>Conceptual unless the code becomes useful. A count reference and a binary reference imply different sample spaces and likelihoods.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1366,7 +1366,7 @@ display:block!important;
 <p>Is a stable tie explained by the same process as a newly formed tie?</p>
 </div>
 <aside class="notes">
-<p>Return to Day 1’s time construction. The temporal model cannot recover distinctions between formation and persistence if the data were pooled into one network.</p>
+<p>Day 1 connection: a temporal model cannot recover formation versus persistence after the data have been pooled into one network.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1396,7 +1396,7 @@ display:block!important;
 <p><a href="4_ergm.html#c4" class="walkthrough-link" target="_blank">Fit the temporal comparison</a></p>
 </div>
 <aside class="notes">
-<p>Use the adolescent network waves. Interpret the memory term and show how other coefficients move when the past is represented. Avoid calling temporal association a causal formation mechanism.</p>
+<p>Adolescent network waves: interpret the memory term and track how other coefficients move once the past is represented. Temporal association is not a causal formation mechanism.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1428,7 +1428,7 @@ display:block!important;
 <p><a href="4_ergm.html#wrap" class="walkthrough-link" target="_blank">Read the honest comparison</a></p>
 </div>
 <aside class="notes">
-<p>State the contrast without declaring a winner. An ERGM term can be a descriptive dependence parameter rather than a proven behavioral mechanism, while a latent term can absorb closure without naming it.</p>
+<p>Closing contrast, no winner: an ERGM term can be a descriptive dependence parameter rather than a proven behavioral mechanism; a latent term can absorb closure without naming it.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1454,7 +1454,7 @@ display:block!important;
 <p>Tomorrow changes the temporal story again: actors receive opportunities to change ties one micro-step at a time.</p>
 </div>
 <aside class="notes">
-<p>Bridge to SAOM by contrasting a temporal graph distribution with an actor-oriented micro-step process. Both use longitudinal networks but encode change differently.</p>
+<p>Day 5 bridge: temporal graph distribution versus actor-oriented micro-step process. Both use longitudinal networks but encode change differently.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;

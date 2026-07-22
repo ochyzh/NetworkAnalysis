@@ -2421,7 +2421,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Teaching alongside the deck?</strong> <a href="4_ergm_teaching_deck.html" target="_blank">Open the Day 4 teaching deck</a>. Each deck button opens the exact section of this walkthrough in a separate tab, so keep both tabs open and switch between them during class.</p>
+<p><a href="4_ergm_teaching_deck.html" target="_blank">Open the Day 4 teaching deck</a>.</p>
 <p>This is a <strong>walkthrough</strong>, not slides. Every number, table and figure you will see on the projector today is produced by a chunk in this file. Nothing here is a screenshot of my console, which means you can reproduce all of it, tonight, alone, without me.</p>
 <ul>
 <li><strong>Open this <code>.qmd</code> in RStudio now</strong> and run chunks alongside me (<code>Ctrl/Cmd + Enter</code>).</li>
@@ -3868,7 +3868,7 @@ window.Quarto = {
 <section id="c4" class="level2">
 <h2 class="anchored" data-anchor-id="c4">C4 · Temporal ERGMs: when you have more than one snapshot</h2>
 <p>Cranmer &amp; Desmarais (2011), on today’s reading list, name the ERGM’s two chief limitations: ties are binary, and the model sees a single cross-section. <a href="#c3">C3</a> just closed the first with Krivitsky’s reference measures. We close the second one right now, and the price is smaller than you think, because a temporal ERGM is not a new model.</p>
-<p>Today’s arc, said out loud: binary cross-sectional (<a href="#block-a">A</a>–<a href="#c2">C2</a>) → valued (<a href="#c3">C3</a>) → temporal. Three extensions of one exponential family.</p>
+<p>Today’s arc: binary cross-sectional (<a href="#block-a">A</a>–<a href="#c2">C2</a>) → valued (<a href="#c3">C3</a>) → temporal. Three extensions of one exponential family.</p>
 <p>Suppose you observe the same network at several waves, <span class="math inline">\(Y^1, Y^2, \ldots, Y^T\)</span>: friendships each term, alliances each decade. Make one assumption: <strong>given last wave, this wave is independent of everything earlier.</strong> Then the joint distribution factors into transitions, and each transition gets <a href="#a2">A2</a>’s equation:</p>
 <p><span class="math display">\[\Pr(Y^2, \ldots, Y^T \mid Y^1) = \prod_{t=2}^{T} \Pr(Y^t \mid Y^{t-1}), \qquad
 \Pr(Y^t \mid Y^{t-1}, \theta) = \frac{\exp\{\theta^{\top} g(Y^t,\, Y^{t-1})\}}{\kappa(\theta, Y^{t-1})}\]</span></p>
@@ -4848,7 +4848,7 @@ window.Quarto = {
 <span id="cb76-51"><a href="#cb76-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb76-52"><a href="#cb76-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-53"><a href="#cb76-53" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;How to use this document&quot;}</span>
-<span id="cb76-54"><a href="#cb76-54" aria-hidden="true" tabindex="-1"></a>**Teaching alongside the deck?** <span class="co">[</span><span class="ot">Open the Day 4 teaching deck</span><span class="co">](4_ergm_teaching_deck.html)</span>{target=&quot;_blank&quot;}. Each deck button opens the exact section of this walkthrough in a separate tab, so keep both tabs open and switch between them during class.</span>
+<span id="cb76-54"><a href="#cb76-54" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Open the Day 4 teaching deck</span><span class="co">](4_ergm_teaching_deck.html)</span>{target=&quot;_blank&quot;}.</span>
 <span id="cb76-55"><a href="#cb76-55" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-56"><a href="#cb76-56" aria-hidden="true" tabindex="-1"></a>This is a **walkthrough**, not slides. Every number, table and figure you will see on the</span>
 <span id="cb76-57"><a href="#cb76-57" aria-hidden="true" tabindex="-1"></a>projector today is produced by a chunk in this file. Nothing here is a screenshot of my</span>
@@ -6430,7 +6430,7 @@ window.Quarto = {
 <span id="cb76-1769"><a href="#cb76-1769" aria-hidden="true" tabindex="-1"></a>with Krivitsky&#39;s reference measures. We close the second one right now, and the price is</span>
 <span id="cb76-1770"><a href="#cb76-1770" aria-hidden="true" tabindex="-1"></a>smaller than you think, because a temporal ERGM is not a new model.</span>
 <span id="cb76-1771"><a href="#cb76-1771" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-1772"><a href="#cb76-1772" aria-hidden="true" tabindex="-1"></a>Today&#39;s arc, said out loud: binary cross-sectional (<span class="co">[</span><span class="ot">A</span><span class="co">](#block-a)</span>–<span class="co">[</span><span class="ot">C2</span><span class="co">](#c2)</span>) → valued</span>
+<span id="cb76-1772"><a href="#cb76-1772" aria-hidden="true" tabindex="-1"></a>Today&#39;s arc: binary cross-sectional (<span class="co">[</span><span class="ot">A</span><span class="co">](#block-a)</span>–<span class="co">[</span><span class="ot">C2</span><span class="co">](#c2)</span>) → valued</span>
 <span id="cb76-1773"><a href="#cb76-1773" aria-hidden="true" tabindex="-1"></a>(<span class="co">[</span><span class="ot">C3</span><span class="co">](#c3)</span>) → temporal. Three extensions of one exponential family.</span>
 <span id="cb76-1774"><a href="#cb76-1774" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-1775"><a href="#cb76-1775" aria-hidden="true" tabindex="-1"></a>Suppose you observe the same network at several waves, $Y^1, Y^2, \ldots, Y^T$: friendships</span>
