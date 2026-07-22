@@ -1057,6 +1057,61 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="model-compass" class="slide level2">
+<h2>The Models Answer Different Applied Questions</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Main question</th>
+<th>Human result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Additive SRM</td>
+<td>Are sender, receiver, and reciprocity terms enough?</td>
+<td>Actor heterogeneity remains, but pairwise compatibility is still missed</td>
+</tr>
+<tr class="even">
+<td>Distance model</td>
+<td>Can unobserved proximity summarize ties?</td>
+<td>Nearby actors have similar fitted tie profiles; the axes are not named traits</td>
+</tr>
+<tr class="odd">
+<td>Factor model</td>
+<td>Do similarity and complementary roles both matter?</td>
+<td>A low-rank surface captures residual compatibility</td>
+</tr>
+<tr class="even">
+<td>AME</td>
+<td>Does the covariate story survive all these dependence terms together?</td>
+<td>A dependence-adjusted association plus an interpretable relational surface</td>
+</tr>
+</tbody>
+</table>
+<div class="slide-link">
+<p><a href="3_latent.html#sec-model-compass" class="walkthrough-link" target="_blank">Use the applied model compass</a></p>
+</div>
+<aside class="notes">
+<p>The choice follows the question. Distance is attractive when proximity is meaningful. Factors are more flexible for roles. AME is useful when covariates and both dependence components matter together.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
 <section id="estimation" class="slide level2">
 <h2>How the Latent Quantities Are Estimated</h2>
 <ol type="1">
@@ -1072,6 +1127,35 @@ display:block!important;
 </div>
 <aside class="notes">
 <p>The package call hides a repeated conditional-update cycle. The fitted surface is more stable than any one orientation of the raw factors.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="baby-mcmc" class="slide level2">
+<h2>Baby MCMC for a Latent Map</h2>
+<p>Imagine reconstructing a seating chart from observed relationships:</p>
+<ol type="1">
+<li>Start with a provisional map and provisional coefficients.</li>
+<li>Hold the map fixed and update the observed and additive effects.</li>
+<li>Hold those effects fixed and move actor positions or factor profiles.</li>
+<li>Record the whole current explanation and repeat.</li>
+</ol>
+<div class="bottom-line">
+<p>Posterior draws are plausible explanations of the same network. Longer chains reduce Monte Carlo error; they do not add actors or identify a causal latent trait.</p>
+</div>
+<div class="slide-link">
+<p><a href="3_latent.html#sec-baby-mcmc" class="walkthrough-link" target="_blank">Read the baby MCMC section</a></p>
+</div>
+<aside class="notes">
+<p>I will distinguish a chain moving through parameter values from the social network changing over time. Rotation and reflection can change a displayed map without changing any fitted distance, so identification is part of the MCMC discussion.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1399,6 +1483,42 @@ display:block!important;
 </div>
 <aside class="notes">
 <p>Get predictions before showing the fits. Each model deliberately omits a different component, which makes the comparison interpretable.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="als-primer" class="slide level2">
+<h2>ALS Without the Math</h2>
+<p>ALS estimates the same additive and multiplicative structure by taking turns:</p>
+<ol type="1">
+<li>Hold the latent profiles fixed and update regression and actor effects.</li>
+<li>Hold the receiver profiles fixed and update sender profiles.</li>
+<li>Hold the sender profiles fixed and update receiver profiles.</li>
+<li>Repeat until another cycle barely improves the fit.</li>
+</ol>
+<div class="comparison-row">
+<div class="comparison-card">
+<p><span class="card-title">ALS</span></p>
+<p>Fast point estimate for exploration, rank selection, and multiple starts</p>
+</div>
+<div class="comparison-card accent-card">
+<p><span class="card-title">MCMC</span></p>
+<p>Posterior draws for confirmation and uncertainty</p>
+</div>
+</div>
+<div class="slide-link">
+<p><a href="3_latent.html#sec-als-primer" class="walkthrough-link" target="_blank">Read the plain-language ALS primer</a></p>
+</div>
+<aside class="notes">
+<p>ALS is an estimator, not a different substantive model. It can stop at a local solution, so starting values matter. My shorthand is explore with ALS, confirm with MCMC.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;

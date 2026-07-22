@@ -442,7 +442,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Shahryar Minhas">
-  <title>Day 4: ERGMs and Temporal ERGMs</title>
+  <title>Day 4: Advanced ERGMs and Temporal ERGMs</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -986,8 +986,8 @@ margin-right: 0; }
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Day 4: ERGMs and Temporal ERGMs</h1>
-  <p class="subtitle">Modeling graph structure through change statistics</p>
+  <h1 class="title">Day 4: Advanced ERGMs and Temporal ERGMs</h1>
+  <p class="subtitle">Specification, network change, and what the model can claim</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -998,24 +998,232 @@ Shahryar Minhas
 </div>
 
 </section>
-<section id="route" class="slide level2">
-<h2>What the Model Treats as the Outcome</h2>
+<section id="assumed" class="slide level2">
+<h2>The Refresher We Need</h2>
+<p>Olga has already covered:</p>
+<ul>
+<li>Why a random-graph baseline matters</li>
+<li>The ERGM probability model and change statistics</li>
+<li><code>edges</code>, <code>nodematch</code>, <code>mutual</code>, <code>triangle</code>, and <code>gwesp</code></li>
+<li>MCMC estimation, diagnostics, and goodness of fit</li>
+<li>Mesa and rebel-cooperation applications</li>
+</ul>
+<div class="say-it">
+<p>We will not repeat the full introduction, but we will recover the pieces needed to understand today’s questions.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-assumed" class="walkthrough-link" target="_blank">See what we are refreshing</a></p>
+</div>
+<aside class="notes">
+<p>The course is moving quickly, so I do not want to confuse prior exposure with complete recall. I will briefly recover the question, the comparison, and the estimation logic, then move into what becomes difficult after the introduction.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="ergm-question" class="slide level2">
+<h2>What Is an ERGM Meant to Answer?</h2>
+<div class="big-question">
+<p>After accounting for the other declared features of the graph, which tie configurations make one possible network more plausible than another?</p>
+</div>
+<p>The model does not stop at:</p>
+<ul>
+<li>Are there triangles?</li>
+<li>Are there reciprocal ties?</li>
+<li>Are similar actors connected?</li>
+</ul>
+<p>It asks whether those patterns are more common than the rest of the specification predicts.</p>
+<div class="bottom-line">
+<p>The outcome is the whole graph. We usually interpret it through the conditional comparison created by toggling one eligible tie.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-fast-refresher" class="walkthrough-link" target="_blank">Review the question ERGMs answer</a></p>
+</div>
+<aside class="notes">
+<p>I will use one alliance tie as the toggle. The question is not whether alliances form triangles. It is whether the closure toggle receives more probability after density, homophily, activity, and the other included features are represented.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="latent-contrast" class="slide level2">
+<h2>How Is This Different From What We Just Did?</h2>
 <div class="comparison-row">
 <div class="comparison-card">
-<p><span class="card-title">Dyadic regression</span></p>
-<p>Models one tie outcome at a time and then repairs or represents dependence across rows.</p>
+<p><span class="card-title">Latent Models</span></p>
+<p>Represent residual dependence through sender, receiver, distance, or multiplicative latent structure.</p>
+<p>Useful when the goal is adjustment, representation, or prediction.</p>
 </div>
 <div class="comparison-card accent-card">
 <p><span class="card-title">ERGM</span></p>
-<p>Assigns probability to the entire graph using statistics of ties, actors, and configurations.</p>
+<p>Represents declared configurations directly in the probability distribution of the graph.</p>
+<p>Useful when reciprocity, closure, popularity, or another network feature is itself part of the question.</p>
 </div>
 </div>
-<p><span class="math display">\[\Pr_\theta(Y=y)=\frac{\exp\{\theta^{\mathsf T}g(y)\}}{\kappa(\theta)}\]</span></p>
+<div class="bottom-line">
+<p>AME can absorb clustering without naming it. An ERGM can estimate a shared-partner term, but that coefficient still does not prove the behavioral mechanism.</p>
+</div>
 <div class="slide-link">
-<p><a href="4_ergm.html#block-a" class="walkthrough-link" target="_blank">Open the walkthrough</a></p>
+<p><a href="4_ergm.html#sec-fast-refresher" class="walkthrough-link" target="_blank">Compare the questions and model locations</a></p>
 </div>
 <aside class="notes">
-<p>Opening shift: the random object is the graph. Reciprocity and closure enter through statistics <span class="math inline">\(g(y)\)</span>, not as residual correlations added after an ordinary regression.</p>
+<p>This is a difference in what we choose to parameterize, not a claim that one model is universally better. Day 3 treated latent structure as a way to represent dependence. Today asks when a specific network configuration is the substantive estimand.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="estimation-refresher" class="slide level2">
+<h2>How Is an ERGM Estimated?</h2>
+<ol type="1">
+<li>Start with provisional coefficients.</li>
+<li>Simulate whole networks using MCMC tie toggles.</li>
+<li>Calculate the statistics in every simulated network.</li>
+<li>Compare their averages with the observed graph statistics.</li>
+<li>Update the coefficients and repeat.</li>
+</ol>
+<p><span class="math display">\[E_{\hat\theta}[g(Y)]\approx g(y_{obs})\]</span></p>
+<div class="say-it">
+<p>The fitted model should make the observed sufficient statistics look typical among networks it generates.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-estimation-roadmap" class="walkthrough-link" target="_blank">Walk through the estimation loop</a></p>
+</div>
+<aside class="notes">
+<p>I will draw this as a loop and connect it to the code output. The normalizing constant explains why we simulate, but students do not need the full derivation again before they can understand what the algorithm is matching.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="social-science-payoff" class="slide level2">
+<h2>Why Social Scientists Care</h2>
+<p>Social relationships can be self-organizing:</p>
+<ul>
+<li>Alliances are shaped by existing partners and threats.</li>
+<li>Legislative coalitions expand through common collaborators.</li>
+<li>Organizations attract ties partly because they are already prominent.</li>
+<li>Segregation can emerge from many local relational choices.</li>
+</ul>
+<div class="say-it">
+<p>Dependence may be part of the social process, not merely a nuisance in the standard errors.</p>
+</div>
+<p>ERGMs let us put those competing processes into one declared graph model and ask which stories remain compatible with the data.</p>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-fast-refresher" class="walkthrough-link" target="_blank">Read the social science payoff and limit</a></p>
+</div>
+<aside class="notes">
+<p>This is why the extra machinery is worth it. The payoff is a sharper social science comparison. The limit is that a structural coefficient and good fit do not, by themselves, identify a causal actor motivation.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="model-compass" class="slide level2">
+<h2>The Models Answer Different Applied Questions</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Main question</th>
+<th>Human result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ERGM</td>
+<td>Which configurations make this graph more plausible?</td>
+<td>Closure is positive conditional on the other represented graph features</td>
+</tr>
+<tr class="even">
+<td>Valued ERGM</td>
+<td>What explains tie existence and tie magnitude?</td>
+<td>Existing ties have greater volume than the reference process predicts</td>
+</tr>
+<tr class="odd">
+<td>TERGM</td>
+<td>How does the preceding network relate to the next one?</td>
+<td>Receiving a tie predicts returning it in the next interval</td>
+</tr>
+<tr class="even">
+<td>STERGM</td>
+<td>Do formation and persistence have different explanations?</td>
+<td>Threat predicts alliance formation, while institutions predict survival</td>
+</tr>
+</tbody>
+</table>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-model-compass" class="walkthrough-link" target="_blank">Use the applied model compass</a></p>
+</div>
+<aside class="notes">
+<p>Each row needs a different risk set and a different sentence. I want students to hear the social question before the package name and the conditional limit after the result.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="route" class="slide level2">
+<h2>Where We Are Going</h2>
+<ol type="1">
+<li>Decide what political mechanism a structural term can actually represent.</li>
+<li>Put fitted results into units a human can understand.</li>
+<li>Separate data, estimation, degeneracy, and fit problems.</li>
+<li>Define the outcome and risk set in a network panel.</li>
+<li>Distinguish stability, formation, persistence, and sequence.</li>
+<li>Decide what a TERGM can claim and where a SAOM asks a different question.</li>
+</ol>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-advanced-route" class="walkthrough-link" target="_blank">Open the advanced route</a></p>
+</div>
+<aside class="notes">
+<p>The first half sharpens our use of ERGMs. The second half is the main new model. I will move between these slides and the code rather than trying to put console output on slides.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1029,22 +1237,22 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="political-question" class="slide level2">
-<h2>Begin With the Political Mechanism</h2>
+<h2>A Triangle Is Not Yet a Political Mechanism</h2>
 <p>Triangles in an alliance, cosponsorship, or rebel-cooperation network could reflect:</p>
 <ul>
 <li>Partners introducing partners</li>
-<li>Shared ideology or geography</li>
+<li>Shared ideology, geography, or threat</li>
 <li>Highly active actors creating triangles mechanically</li>
 <li>A genuinely self-reinforcing closure process</li>
 </ul>
 <div class="big-question">
-<p>Does closure remain compatible with the data after rival processes enter the same graph model?</p>
+<p>Does apparent closure survive after we represent the rival processes our theory says are plausible?</p>
 </div>
 <div class="slide-link">
-<p><a href="4_ergm.html#sec-political-question" class="walkthrough-link" target="_blank">Read the political science version</a></p>
+<p><a href="4_ergm.html#sec-political-question" class="walkthrough-link" target="_blank">Work through the specification dispute</a></p>
 </div>
 <aside class="notes">
-<p>Start with the rival explanations for triangles. The ERGM coefficient is conditional evidence about a declared graph statistic, not proof of one behavioral story.</p>
+<p>The statistic is exact, but its political interpretation is not automatic. A positive closure parameter is evidence about this specification, not a behavioral label attached to every triangle.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1057,230 +1265,26 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="estimation" class="slide level2">
-<h2>MCMLE Learns by Simulating Whole Graphs</h2>
-<ol type="1">
-<li>Begin from provisional coefficients.</li>
-<li>Simulate graphs under those coefficients.</li>
-<li>Compare simulated statistics with the observed graph.</li>
-<li>Update coefficients toward the observed statistics.</li>
-<li>Repeat until the observed statistics are plausible under the fitted model.</li>
-<li>Diagnose estimation, then assess substantive fit separately.</li>
-</ol>
-<div class="slide-link">
-<p><a href="4_ergm.html#sec-estimation-roadmap" class="walkthrough-link" target="_blank">Walk through ERGM estimation</a></p>
-</div>
-<aside class="notes">
-<p>This loop is the reason estimation and model diagnostics cannot be separated. A chain can run correctly for a model that still misses politically important features.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="statistics" class="slide level2">
-<h2>The Sufficient Statistics Count Network Features</h2>
-<p>Examples of <span class="math inline">\(g(y)\)</span>:</p>
-<ul>
-<li>Number of edges</li>
-<li>Number of mutual dyads</li>
-<li>Covariate-weighted ties</li>
-<li>Degree-related configurations</li>
-<li>Geometrically weighted shared partners</li>
-</ul>
-<div class="room-prompt compact-prompt">
-<p>For a proposed graph, could you calculate each statistic without knowing the model coefficient?</p>
-</div>
-<div class="bottom-line">
-<p>The statistics describe the graph. The coefficients describe how those statistics tilt probability across possible graphs.</p>
-</div>
-<aside class="notes">
-<p>Small example by hand: count edges and mutual dyads. Keep the data statistic separate from its coefficient so a network feature is not confused with an effect estimate.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="normalizer" class="slide level2">
-<h2>The Normalizing Constant Couples the Graph</h2>
-<p><span class="math display">\[\kappa(\theta)=\sum_{y&#39;\in\mathcal{Y}}\exp\{\theta^{\mathsf T}g(y&#39;)\}\]</span></p>
-<div class="say-it">
-<p>The denominator sums over the graph sample space, which is why direct likelihood calculation becomes impossible for realistically sized networks.</p>
-</div>
-<p>But it also does something substantively important: a tie’s probability can depend on how toggling that tie changes configurations elsewhere in the graph.</p>
-<aside class="notes">
-<p>The difficult normalizing constant and dependence are two sides of the same joint model. That motivates simulation-based estimation without an MCMC derivation detour.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="change" class="slide level2">
-<h2>Change Statistics Make the Model Usable</h2>
-<p>For dyad <span class="math inline">\((i,j)\)</span>:</p>
-<p><span class="math display">\[\Delta_{ij}g(y)=g(y_{ij}^{+})-g(y_{ij}^{-})\]</span></p>
-<p>and</p>
-<p><span class="math display">\[\operatorname{logit}\Pr(Y_{ij}=1\mid Y_{-ij})=\theta^{\mathsf T}\Delta_{ij}g(y).\]</span></p>
-<div class="big-question">
-<p>What new edges, mutual pairs, shared partners, or covariate totals appear when this one tie is toggled?</p>
-</div>
-<div class="slide-link">
-<p><a href="4_ergm.html#a3" class="walkthrough-link" target="_blank">Compute a change statistic</a></p>
-</div>
-<aside class="notes">
-<p>Toggle one edge in the toy network. Compute the edge and mutual change statistics by hand. This is the interpretation engine for the rest of the day.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="edges" class="slide level2">
-<h2>The Edges Term Is a Conditional Baseline</h2>
-<p>With only <code>edges</code>:</p>
-<p><span class="math display">\[\operatorname{logit}\Pr(Y_{ij}=1\mid Y_{-ij})=\theta_{edges}.\]</span></p>
-<div class="say-it">
-<p>This special case is dyad independent and behaves like an intercept-only logistic regression.</p>
-</div>
-<p>Once endogenous terms enter, the edges coefficient remains a conditional baseline for a toggle whose other change statistics equal zero. It is not the marginal density by itself.</p>
-<aside class="notes">
-<p>QMD: dyad-independent model. Address the console language about pseudolikelihood or MCMC, but keep this special case separate from the general ERGM.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="interpretation" class="slide level2">
-<h2>Read Coefficients Through a Toggle</h2>
-<p>For a one-unit increase in a change statistic:</p>
-<p><span class="math display">\[\text{conditional odds multiply by }\exp(\theta_k).\]</span></p>
-<p>But ask three questions before interpreting:</p>
-<ol type="1">
-<li>What exact toggle changes the statistic?</li>
-<li>What other statistics are held fixed?</li>
-<li>Is the desired quantity conditional odds, a predicted probability, or an average marginal effect?</li>
-</ol>
-<div class="slide-link">
-<p><a href="4_ergm.html#b2" class="walkthrough-link" target="_blank">Translate the fitted numbers</a></p>
-</div>
-<aside class="notes">
-<p>Start from the baseline, then calculate a covariate contrast and an average marginal effect. Exponentiating a coefficient alone may not answer the probability question we care about.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="mutual" class="slide level2">
-<h2>Reciprocity Is a One-Tie Change Statistic</h2>
-<p>For the mutual statistic, toggling <span class="math inline">\(i\rightarrow j\)</span> changes the statistic by one exactly when <span class="math inline">\(j\rightarrow i\)</span> already exists.</p>
+<section id="nulls" class="slide level2">
+<h2>Two Nulls Tell Two Political Stories</h2>
 <div class="comparison-row">
 <div class="comparison-card">
-<p><span class="card-title">Reverse tie absent</span></p>
-<p><span class="math inline">\(\Delta mutual=0\)</span></p>
+<p><span class="card-title">Density Baseline</span></p>
+<p>What would the network look like if eligible ties occurred at the observed overall rate?</p>
 </div>
 <div class="comparison-card accent-card">
-<p><span class="card-title">Reverse tie present</span></p>
-<p><span class="math inline">\(\Delta mutual=1\)</span></p>
+<p><span class="card-title">Degree-Constrained Baseline</span></p>
+<p>What would the network look like if actors kept their observed activity and popularity but partners were rearranged?</p>
 </div>
 </div>
 <div class="bottom-line">
-<p><span class="math inline">\(\exp(\theta_{mutual})\)</span> is the conditional odds multiplier for adding a tie when its reverse exists, holding the other change statistics fixed.</p>
-</div>
-<aside class="notes">
-<p>SRM connection: the same empirical reciprocity feature enters through a different probability structure.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="triangles" class="slide level2">
-<h2>A Triangle Count Can Create Runaway Feedback</h2>
-<p>Adding one tie can close several two-paths. With a raw triangle term:</p>
-<p><span class="math display">\[\Delta triangles = \text{number of shared partners closed by the toggle}.\]</span></p>
-<div class="big-question">
-<p>If closing ties makes later closures increasingly attractive, what keeps the model away from almost-empty or almost-complete graphs?</p>
-</div>
-<aside class="notes">
-<p>QMD: naive triangle specification and its unstable or degenerate behavior. The explanation is positive feedback in the change statistic, not that triangles are inherently bad.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="gwesp" class="slide level2">
-<h2>Geometric Weighting Adds Diminishing Returns</h2>
-<div class="comparison-row">
-<div class="comparison-card">
-<p><span class="card-title">Raw triangles</span></p>
-<p>Each additional shared partner contributes the same increment.</p>
-</div>
-<div class="comparison-card accent-card">
-<p><span class="card-title">GWESP</span></p>
-<p>The first shared partners matter most, and additional shared partners contribute less.</p>
-</div>
-</div>
-<div class="say-it">
-<p>The repair is substantive: closure may matter, but the tenth shared partner need not add as much as the first.</p>
+<p>The same observed triangle count can be surprising under one null and ordinary under the other.</p>
 </div>
 <div class="slide-link">
-<p><a href="4_ergm.html#c1" class="walkthrough-link" target="_blank">Break and repair the model</a></p>
+<p><a href="4_ergm.html#sec-null-models" class="walkthrough-link" target="_blank">Compare the two null models</a></p>
 </div>
 <aside class="notes">
-<p>Raw-triangle and geometrically weighted simulations side by side. <code>gwesp</code> is not a magic anti-degeneracy term; its weighting still has to make sense for the network.</p>
+<p>This is the first place I want students to argue. The null is not a neutral technical choice. It decides which rival political process the comparison preserves.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1293,166 +1297,23 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="cells" class="slide level2">
-<h2>Check the Cells Before You Fit</h2>
-<p>Sparse or empty mixing cells can create separation before MCMC begins.</p>
-<p>Check:</p>
-<ul>
-<li>Counts for every categorical nodal level</li>
-<li>Ties within and between mixing categories</li>
-<li>Covariates with almost no variation among observed ties</li>
-<li>Structural zeros and forbidden dyads</li>
-<li>Actors or categories that perfectly predict a tie outcome</li>
-</ul>
-<div class="room-prompt compact-prompt">
-<p>If one group has no within-group ties, is a huge negative mixing coefficient a stable finding or a symptom of limited support?</p>
-</div>
-<aside class="notes">
-<p>Diagnostic order: C2 cell checks before chain diagnostics. A sampler cannot create overlap that the observed risk set does not contain.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="diagnostics" class="slide level2">
-<h2>Diagnose in the Right Order</h2>
+<section id="human-scale" class="slide level2">
+<h2>Put Effects on a Human Scale</h2>
+<p>For a proposed tie toggle, move through four steps:</p>
 <ol type="1">
-<li><strong>Data cells:</strong> Are any actor categories, mixing cells, or covariates separated or nearly empty?</li>
-<li><strong>Estimation:</strong> Did the MCMC sample mix and stabilize around the target statistics?</li>
-<li><strong>Fit:</strong> Do simulated networks reproduce substantive statistics not mechanically guaranteed by the specification?</li>
-</ol>
-<div class="bottom-line">
-<p>A goodness-of-fit plot cannot rescue separation, and a well-mixed chain cannot rescue a model that reproduces the wrong networks.</p>
-</div>
-<div class="slide-link">
-<p><a href="4_ergm.html#c2" class="walkthrough-link" target="_blank">Run the diagnostic sequence</a></p>
-</div>
-<aside class="notes">
-<p>Diagnostic sequence: cell check, trace and MCMC output, then goodness of fit. Computational adequacy and substantive adequacy are separate questions.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="simulate" class="slide level2">
-<h2>Simulation Is the Common Diagnostic Language</h2>
-<p>After fitting, simulate graphs and compare:</p>
-<ul>
-<li>Degree distributions</li>
-<li>Geodesic distances</li>
-<li>Edgewise shared partners</li>
-<li>Mixing patterns</li>
-<li>Substantively defined network statistics</li>
-</ul>
-<div class="room-prompt compact-prompt">
-<p>Which observed feature would change your substantive conclusion if the model consistently failed to reproduce it?</p>
-</div>
-<aside class="notes">
-<p><code>simulate()</code> is the engine underneath model-based goodness of fit. The checked statistics should come from the research question, not only the package defaults.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="valued" class="slide level2">
-<h2>Valued ERGMs Need a Reference Distribution</h2>
-<p>For count or valued ties, sufficient statistics alone do not define the outcome support and baseline measure.</p>
-<div class="columns">
-<div class="column" style="width:48%;">
-<p><span class="card-title">Binary ERGM</span></p>
-<p>Each eligible dyad is 0 or 1.</p>
-</div><div class="column" style="width:48%;">
-<p><span class="card-title">Valued ERGM</span></p>
-<p>Each dyad may take several or infinitely many values, so the reference measure is part of the model.</p>
-</div></div>
-<div class="bottom-line">
-<p>Choose a valued specification that matches how the tie is measured, not merely because the edge list contains numbers.</p>
-</div>
-<div class="slide-link">
-<p><a href="4_ergm.html#c3" class="walkthrough-link" target="_blank">See the valued extension</a></p>
-</div>
-<aside class="notes">
-<p>Conceptual unless the code becomes useful. A count reference and a binary reference imply different sample spaces and likelihoods.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="temporal" class="slide level2">
-<h2>More Than One Snapshot Changes the Question</h2>
-<div class="comparison-row">
-<div class="comparison-card">
-<p><span class="card-title">Cross-sectional ERGM</span></p>
-<p>What graph configurations are associated with the observed network?</p>
-</div>
-<div class="comparison-card accent-card">
-<p><span class="card-title">Temporal ERGM</span></p>
-<p>How do past ties and configurations relate to formation, persistence, or the next network?</p>
-</div>
-</div>
-<div class="big-question">
-<p>Is a stable tie explained by the same process as a newly formed tie?</p>
-</div>
-<aside class="notes">
-<p>Day 1 connection: a temporal model cannot recover formation versus persistence after the data have been pooled into one network.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="stability" class="slide level2">
-<h2>Stability Can Dominate a Temporal Model</h2>
-<p>Compare two specifications:</p>
-<ol type="1">
-<li>Network statistics and covariates without the past tie.</li>
-<li>The same terms plus a stability or memory term.</li>
+<li>Calculate the change statistics.</li>
+<li>Construct the conditional log-odds.</li>
+<li>Convert them to a probability.</li>
+<li>Average or contrast over configurations that matter politically.</li>
 </ol>
 <div class="say-it">
-<p>If prior ties strongly predict current ties, omitting memory can make structural terms explain persistence they did not generate.</p>
-</div>
-<div class="bottom-line">
-<p>This classroom example has three waves and only two observed transitions. Treat it as a worked comparison, not as publication-grade temporal inference.</p>
+<p>An odds ratio is sometimes useful. A probability difference for recognizable actors and network settings is usually easier to understand.</p>
 </div>
 <div class="slide-link">
-<p><a href="4_ergm.html#c4" class="walkthrough-link" target="_blank">Fit the temporal comparison</a></p>
+<p><a href="4_ergm.html#b2" class="walkthrough-link" target="_blank">Translate the fitted model</a></p>
 </div>
 <aside class="notes">
-<p>Adolescent network waves: interpret the memory term and track how other coefficients move once the past is represented. Temporal association is not a causal formation mechanism.</p>
+<p>I will use one actual dyad and show every step. The goal is not to hide the conditional model. It is to connect the model to a sentence someone outside the methods community could evaluate.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1465,26 +1326,557 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="comparison" class="slide level2">
-<h2>ERGM and Latent Models Can Fit the Same Feature Differently</h2>
+<section id="coefficient-comparison" class="slide level2">
+<h2>Coefficients Can Move When the Scale Moves</h2>
+<p>Adding a dependence term can change:</p>
+<ul>
+<li>The process represented by the model</li>
+<li>Every dyad’s conditional predictor</li>
+<li>The residual variation left for other terms</li>
+<li>The log-odds scale on which coefficients are reported</li>
+</ul>
+<div class="bottom-line">
+<p>Do not treat a coefficient difference across nested ERGMs as the amount of omitted-variable bias that was removed.</p>
+</div>
+<p>Compare stated configurations using probabilities, first differences, and simulations.</p>
+<div class="slide-link">
+<p><a href="4_ergm.html#b2" class="walkthrough-link" target="_blank">See the comparison warning and AME</a></p>
+</div>
+<aside class="notes">
+<p>A coefficient moving is a specification warning, not a clean decomposition. I want to keep that principle in view when we later add memory to the temporal model.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="diagnostic-map" class="slide level2">
+<h2>Diagnose Four Different Problems</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>Question to Ask</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Data support</td>
+<td>Are categories, mixing cells, or transition types empty?</td>
+</tr>
+<tr class="even">
+<td>Estimation</td>
+<td>Did the MCMC sample mix and reach the target statistics?</td>
+</tr>
+<tr class="odd">
+<td>Degeneracy</td>
+<td>Does the model put mass on nearly empty or complete graphs?</td>
+</tr>
+<tr class="even">
+<td>Substantive fit</td>
+<td>Do simulated graphs reproduce features the political claim needs?</td>
+</tr>
+</tbody>
+</table>
+<div class="bottom-line">
+<p>A fix for one row does not repair the other three.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#c2" class="walkthrough-link" target="_blank">Use the diagnostic sequence</a></p>
+</div>
+<aside class="notes">
+<p>I want students to name the problem before changing control settings or adding terms. More MCMC iterations cannot create ties in an empty mixing cell, and convergence does not imply good fit.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="fixed-trap" class="slide level2">
+<h2><code>Fixed = TRUE</code> Changes the Model</h2>
+<p><code>gwesp(0.25, fixed = TRUE)</code> estimates one coefficient with decay held at 0.25.</p>
+<p><code>gwesp(0.25, fixed = FALSE)</code> treats 0.25 as a starting value and estimates the decay as an additional parameter.</p>
+<div class="big-question">
+<p>Does the network contain enough information to identify both the strength and shape of shared-partner dependence?</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#c1" class="walkthrough-link" target="_blank">See the failure and repair</a></p>
+</div>
+<aside class="notes">
+<p>This is a small syntax difference with a large inferential consequence. When decay estimation fails, that is often information about support in this network, not a request to keep increasing iterations.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="simulation" class="slide level2">
+<h2>Simulation Is a Critic, Not a Victory Lap</h2>
+<p>After fitting, ask simulated networks to reproduce:</p>
+<ul>
+<li>Degree and centralization</li>
+<li>Reciprocity and mixing</li>
+<li>Shared partners and distances</li>
+<li>The particular structure needed for the substantive claim</li>
+</ul>
+<div class="room-prompt compact-prompt">
+<p>What observed feature would make us withdraw the political conclusion if the fitted model consistently missed it?</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#c2" class="walkthrough-link" target="_blank">Inspect goodness of fit and simulation</a></p>
+</div>
+<aside class="notes">
+<p>I want the goodness-of-fit target to come from the argument, not just the package defaults. If the paper is about coalition clustering, reproducing density alone is beside the point.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="model-comparison" class="slide level2">
+<h2>ERGMs and Latent Models Can Fit the Same Pattern Differently</h2>
 <div class="comparison-row">
 <div class="comparison-card">
-<p><span class="card-title">Latent model</span></p>
-<p>Residual closure may arise because actors occupy similar positions or share latent profiles.</p>
+<p><span class="card-title">Latent Factor or AME</span></p>
+<p>Absorbs residual dependence through unobserved actor positions or multiplicative effects.</p>
 </div>
 <div class="comparison-card accent-card">
 <p><span class="card-title">ERGM</span></p>
-<p>Closure enters through an explicit graph statistic and its conditional change.</p>
+<p>Represents declared network configurations directly in the joint graph distribution.</p>
 </div>
 </div>
 <div class="bottom-line">
-<p>Similar simulated triangles do not imply the same substantive explanation. Compare the questions encoded by the models, not only their fit scores.</p>
+<p>Similar fit does not imply the same explanation. Neither model identifies closure versus unobserved homophily from one cross-section.</p>
 </div>
 <div class="slide-link">
 <p><a href="4_ergm.html#wrap" class="walkthrough-link" target="_blank">Read the honest comparison</a></p>
 </div>
 <aside class="notes">
-<p>Closing contrast, no winner: an ERGM term can be a descriptive dependence parameter rather than a proven behavioral mechanism; a latent term can absorb closure without naming it.</p>
+<p>There is no winner slide here. I want to distinguish what each model parameterizes, what it absorbs, and what neither design can identify.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="sequence" class="slide level2">
+<h2>A Cross-Section Cannot Recover Sequence</h2>
+<p>Suppose an alliance exists in 2010.</p>
+<p>The snapshot cannot tell us whether it:</p>
+<ul>
+<li>Formed during the preceding interval</li>
+<li>Survived from an earlier period</li>
+<li>Dissolved and re-formed between observations</li>
+<li>Was impossible to observe for part of the interval</li>
+</ul>
+<div class="say-it">
+<p>Sequence has to be present in the data and represented in the model. It cannot be recovered from a photograph.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#c4" class="walkthrough-link" target="_blank">Begin the temporal model</a></p>
+</div>
+<aside class="notes">
+<p>This is the transition into the main new material. I will use alliances first because formation, survival, and eligibility are immediately political rather than abstract.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="temporal-target" class="slide level2">
+<h2>A TERGM Models Network Transitions</h2>
+<p><span class="math display">\[\Pr(Y^2,\ldots,Y^T\mid Y^1)=\prod_{t=2}^{T}\Pr(Y^t\mid Y^{t-1})\]</span></p>
+<p>The statistics may reference:</p>
+<ul>
+<li>Configurations in the current graph</li>
+<li>Dyad states in the preceding graph</li>
+<li>Relationships between current and lagged configurations</li>
+</ul>
+<div class="bottom-line">
+<p>The coefficient is a conditional association under a transition distribution. It is not automatically a causal effect of an actor’s choice.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-tergm-target" class="walkthrough-link" target="_blank">Define the temporal estimand</a></p>
+</div>
+<aside class="notes">
+<p>The first-order Markov assumption belongs in the substantive discussion. If earlier wars or treaties matter beyond one wave, conditioning on the last network alone may not be enough.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="risk-set" class="slide level2">
+<h2>Audit the Temporal Risk Set First</h2>
+<p>Before writing the formula, verify:</p>
+<ol type="1">
+<li>Which actors exist and are eligible in every interval?</li>
+<li>Is each dyad an observed zero, missing, or structurally impossible?</li>
+<li>Are actor labels and tie direction aligned across waves?</li>
+<li>Which version of a time-varying covariate predicts each transition?</li>
+<li>Are the observation intervals politically comparable?</li>
+<li>How many transitions do the waves actually provide?</li>
+</ol>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-temporal-riskset" class="walkthrough-link" target="_blank">Run the panel audit</a></p>
+</div>
+<aside class="notes">
+<p>Coding an ineligible state pair as a non-alliance changes the outcome. So does using a covariate measured after the transition. These are estimand decisions, not housekeeping.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="temporal-statistics" class="slide level2">
+<h2>Three Terms Ask Three Sequence Questions</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Stability</td>
+<td>Does the dyad remain in its preceding state?</td>
+</tr>
+<tr class="even">
+<td>Delayed reciprocity</td>
+<td>Does receiving a tie at <span class="math inline">\(t-1\)</span> predict returning it at <span class="math inline">\(t\)</span>?</td>
+</tr>
+<tr class="odd">
+<td>Lagged two-path closure</td>
+<td>Does a two-path at <span class="math inline">\(t-1\)</span> predict its closure at <span class="math inline">\(t\)</span>?</td>
+</tr>
+</tbody>
+</table>
+<div class="bottom-line">
+<p>Current-wave <code>mutual</code> and <code>gwesp</code> describe dependence within <span class="math inline">\(Y^t\)</span>. They are not substitutes for lagged sequence terms.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-temporal-statistics" class="walkthrough-link" target="_blank">Interpret the temporal statistics</a></p>
+</div>
+<aside class="notes">
+<p>For each term, I will draw the configuration before and after. If a claim uses words like return, persist, or close later, the statistic has to encode that ordering.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="stability-coding" class="slide level2">
+<h2>Stability Uses a Two-Unit Contrast</h2>
+<p>For <code>memory(type = &quot;stability&quot;)</code>:</p>
+<div class="comparison-row">
+<div class="comparison-card">
+<p><span class="card-title">Lagged Tie Present</span></p>
+<p>Current-tie log-odds contribution: <span class="math inline">\(+\theta\)</span></p>
+</div>
+<div class="comparison-card accent-card">
+<p><span class="card-title">Lagged Tie Absent</span></p>
+<p>Current-tie log-odds contribution: <span class="math inline">\(-\theta\)</span></p>
+</div>
+</div>
+<p><span class="math display">\[\text{Previously tied versus previously untied}=2\theta\]</span></p>
+<div class="bottom-line">
+<p>Stability combines persistence of ties and persistence of non-ties. It is not a tie-survival coefficient by itself.</p>
+</div>
+<aside class="notes">
+<p>This coding is easy to misread. I will stop here and calculate the two linear predictors explicitly before showing the fitted model.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="temporal-comparison" class="slide level2">
+<h2>The Past Can Change the Structural Story</h2>
+<p>We fit the same two outcome waves twice:</p>
+<ol type="1">
+<li>Current network terms and covariates only</li>
+<li>The same specification plus lagged dyad stability</li>
+</ol>
+<div class="say-it">
+<p>If reciprocity or closure changes after memory enters, the cross-sectional story was entangled with persistence.</p>
+</div>
+<p>But the coefficient movement is not a clean bias estimate. Compare recognizable configurations on a probability scale and examine simulated transitions.</p>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-temporal-comparison" class="walkthrough-link" target="_blank">Fit the matched outcome-wave comparison</a></p>
+</div>
+<aside class="notes">
+<p>Both models now explain waves two and three. That makes the comparison cleaner, but the conditional distributions and coefficient scales still differ.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="few-transitions" class="slide level2">
+<h2>Three Waves Give Us Two Transitions</h2>
+<p><span class="math display">\[T\text{ waves}=T-1\text{ transitions}\]</span></p>
+<p>The first wave conditions the first transition. It is not another transition outcome.</p>
+<div class="big-question">
+<p>Can resampling two transitions tell us how a political process varies over time?</p>
+</div>
+<div class="bottom-line">
+<p>This dataset is useful for learning the workflow. It is not a foundation for publication-grade temporal uncertainty.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-few-transitions" class="walkthrough-link" target="_blank">Inspect the bootstrap limitation</a></p>
+</div>
+<aside class="notes">
+<p>The network has 50 adolescents and many dyads, but the temporal process is observed only twice. The bootstrap cannot invent missing historical replication.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="estimation-choice" class="slide level2">
+<h2>Estimation Strategy Is Part of the Claim</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Approach</th>
+<th>Core Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>btergm()</code></td>
+<td>MPLE with bootstrap uncertainty over temporal observations</td>
+</tr>
+<tr class="even">
+<td><code>mtergm()</code></td>
+<td>MCMC maximum likelihood using a constrained block-diagonal representation</td>
+</tr>
+<tr class="odd">
+<td>Statnet <code>tergm()</code></td>
+<td>Conditional maximum likelihood for a network series</td>
+</tr>
+</tbody>
+</table>
+<p>Choose based on the estimand, dependence structure, number of waves, network size, and diagnostics.</p>
+<div class="bottom-line">
+<p>We use <code>btergm()</code> for a fast worked example, not because one estimator is universally best.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-tergm-estimation" class="walkthrough-link" target="_blank">Compare the estimation strategies</a></p>
+</div>
+<aside class="notes">
+<p>I want students to be able to explain why they chose the estimator, not just name the package that ran. The small number of transitions matters under every approach.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="stergm" class="slide level2">
+<h2>Formation and Persistence Need Different Risk Sets</h2>
+<div class="comparison-row">
+<div class="comparison-card">
+<p><span class="card-title">Formation</span></p>
+<p>At risk: dyads without a tie at <span class="math inline">\(t-1\)</span></p>
+<p>Which eligible pairs form a tie by <span class="math inline">\(t\)</span>?</p>
+</div>
+<div class="comparison-card accent-card">
+<p><span class="card-title">Persistence</span></p>
+<p>At risk: dyads with a tie at <span class="math inline">\(t-1\)</span></p>
+<p>Which existing ties survive through <span class="math inline">\(t\)</span>?</p>
+</div>
+</div>
+<div class="say-it">
+<p>Common threats may help alliances form. Institutions may help established alliances endure. One equation need not describe both processes.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-stergm" class="walkthrough-link" target="_blank">See the separable model</a></p>
+</div>
+<aside class="notes">
+<p>Statnet uses <code>Form()</code> and <code>Persist()</code>. Positive <code>Persist()</code> means less dissolution, while <code>Diss()</code> reverses the statistic and sign interpretation. I will emphasize the risk sets before the syntax because that is where the political question lives.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="temporal-fit" class="slide level2">
+<h2>Temporal Fit Must Be Temporal</h2>
+<p>Simulate one step ahead and check:</p>
+<ul>
+<li>Formed, persistent, and dissolved ties</li>
+<li>Next-wave degree, reciprocity, mixing, and shared partners</li>
+<li>Delayed reciprocity and lagged closure</li>
+<li>Calibration of transition probabilities</li>
+<li>Held-out later waves when the panel is long enough</li>
+</ul>
+<div class="bottom-line">
+<p>In a sparse network, predicting “no tie” everywhere can look accurate. Classification accuracy alone is not a useful validation strategy.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-temporal-gof" class="walkthrough-link" target="_blank">Build a temporal fit assessment</a></p>
+</div>
+<aside class="notes">
+<p>One-step-ahead validation conditions on the observed previous network. Recursive forecasting feeds simulated networks forward and is a harder test. I want those tasks kept separate.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="causal-limit" class="slide level2">
+<h2>A Temporal Coefficient Is Not Automatically Causal</h2>
+<p>A lagged term establishes ordering in the model, but causal interpretation still requires:</p>
+<ul>
+<li>Defensible timing and measurement</li>
+<li>Adequate controls for common causes</li>
+<li>A credible risk set</li>
+<li>No consequential unobserved change between waves</li>
+<li>An identification argument beyond model fit</li>
+</ul>
+<div class="say-it">
+<p>“Associated with subsequent tie formation” is often accurate. “Causes actors to form ties” usually requires more.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-tergm-target" class="walkthrough-link" target="_blank">Return to the temporal estimand</a></p>
+</div>
+<aside class="notes">
+<p>Lagging a variable can clarify temporal order without solving confounding or simultaneity. I want the final political sentence to match the design we actually have.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="saom-bridge" class="slide level2">
+<h2>TERGM and SAOM Encode Different Change Stories</h2>
+<div class="comparison-row">
+<div class="comparison-card">
+<p><span class="card-title">TERGM</span></p>
+<p>Specifies the distribution of a network transition, conditional on the preceding network.</p>
+</div>
+<div class="comparison-card accent-card">
+<p><span class="card-title">SAOM</span></p>
+<p>Represents actors receiving opportunities to make small tie changes between panel waves.</p>
+</div>
+</div>
+<div class="bottom-line">
+<p>Both use longitudinal networks. They place the process at different levels and rely on different assumptions.</p>
+</div>
+<div class="slide-link">
+<p><a href="4_ergm.html#sec-saom-bridge" class="walkthrough-link" target="_blank">Read the Day 5 bridge</a></p>
+</div>
+<aside class="notes">
+<p>Tomorrow is not a replacement for today. The question is whether the theory is more naturally expressed as a transition distribution or an actor-oriented micro-step process.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1498,24 +1890,22 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="after-fit" class="slide level2">
-<h2>After the Model Runs, Translate the Graph Parameter</h2>
+<h2>After the Model Runs</h2>
 <ol type="1">
-<li>Name the tie toggle and its change statistic.</li>
-<li>Show conditional probabilities or first differences for recognizable configurations.</li>
-<li>Simulate networks and check the features the political claim needs.</li>
-<li>Separate a useful dependence term from proof of actor motivation.</li>
+<li>Name the outcome, transition, and eligible dyads.</li>
+<li>Translate terms into before-and-after political configurations.</li>
+<li>Report probabilities or first differences for recognizable cases.</li>
+<li>Simulate the structures and changes the argument needs.</li>
+<li>State what the model does not identify.</li>
 </ol>
 <div class="say-it">
-<p>“Conditional on density, homophily, and degree structure, ties that close shared partners have higher conditional odds. Simulated networks reproduce the observed shared-partner pattern reasonably well.”</p>
-</div>
-<div class="bottom-line">
-<p>A positive closure term is compatible with closure in this specification. It does not prove that actors consciously seek triangles.</p>
+<p>“Among eligible non-allied dyads, a common threat is associated with a higher probability of alliance formation in the next interval. The fitted model reproduces observed formation rates and degree patterns, but the association is not by itself causal.”</p>
 </div>
 <div class="slide-link">
-<p><a href="4_ergm.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the full interpretation guide</a></p>
+<p><a href="4_ergm.html#sec-after-fit" class="walkthrough-link" target="_blank">Use the interpretation guide</a></p>
 </div>
 <aside class="notes">
-<p>Move from coefficient to change statistic, then to a human-scale comparison, then to simulation evidence, and finally to the mechanism limit.</p>
+<p>This is the paragraph I want after the coefficient table. The point is to recover a political result while keeping the estimand and inferential limits visible.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1531,17 +1921,17 @@ display:block!important;
 <section id="close" class="slide level2">
 <h2>What to Carry Into Day 5</h2>
 <ol type="1">
-<li>ERGMs model the probability of a whole graph through network statistics.</li>
-<li>Change statistics provide the conditional interpretation of a tie toggle.</li>
-<li>Endogenous terms can create feedback, so specification and simulation matter.</li>
-<li>Diagnostics proceed from data cells to estimation to substantive fit.</li>
-<li>Temporal models require an explicit representation of the past and of actor eligibility across waves.</li>
+<li>A structural statistic has an exact mathematical definition but not an automatic political mechanism.</li>
+<li>Human-scale comparisons are more useful than an isolated log-odds coefficient.</li>
+<li>Data support, estimation, degeneracy, and substantive fit are different problems.</li>
+<li>Temporal models require an explicit risk set, lag structure, and transition estimand.</li>
+<li>Formation, persistence, and actor-oriented change are related but distinct questions.</li>
 </ol>
 <div class="final-claim">
-<p>Tomorrow changes the temporal story again: actors receive opportunities to change ties one micro-step at a time.</p>
+<p>The model becomes useful when the political story, the risk set, the statistic, and the interpretation all describe the same process.</p>
 </div>
 <aside class="notes">
-<p>Day 5 bridge: temporal graph distribution versus actor-oriented micro-step process. Both use longitudinal networks but encode change differently.</p>
+<p>I will close by asking students to name one sentence they would now rewrite in a network paper. That makes the takeaway about claims, not software.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;

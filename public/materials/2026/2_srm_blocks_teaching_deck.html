@@ -1057,6 +1057,61 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="model-compass" class="slide level2">
+<h2>The Models Answer Different Applied Questions</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Main question</th>
+<th>Human result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dyadic GLM</td>
+<td>Which observed characteristics predict trade?</td>
+<td>A benchmark association that treats dyads as fresh rows</td>
+</tr>
+<tr class="even">
+<td>SRM</td>
+<td>Are persistent exporters, importers, or reciprocal pairs changing that story?</td>
+<td>A covariate result conditional on actor heterogeneity and reciprocity</td>
+</tr>
+<tr class="odd">
+<td>SBM</td>
+<td>Do countries occupy a few relational types?</td>
+<td>A description of who mixes with which fitted type</td>
+</tr>
+<tr class="even">
+<td>Mixed-membership SBM</td>
+<td>Do countries combine several roles?</td>
+<td>A graded role profile, not one natural geopolitical label</td>
+</tr>
+</tbody>
+</table>
+<div class="slide-link">
+<p><a href="2_srm_blocks.html#sec-model-compass" class="walkthrough-link" target="_blank">Use the applied model compass</a></p>
+</div>
+<aside class="notes">
+<p>I want one ordinary-language sentence from each model. That keeps the morning from becoming a long regression table and the afternoon from becoming unnamed colored blocks.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
 <section id="estimation-roadmap" class="slide level2">
 <h2>How the Two Estimators Learn</h2>
 <div class="comparison-row">
@@ -1077,6 +1132,35 @@ display:block!important;
 </div>
 <aside class="notes">
 <p>Pause on the loops before the package calls. MCMC produces posterior draws; variational EM produces an optimized approximation to membership uncertainty.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="baby-mcmc" class="slide level2">
+<h2>Baby MCMC: The Computer Takes Turns</h2>
+<ol type="1">
+<li>Start with provisional coefficients, actor effects, variances, and reciprocity.</li>
+<li>Update one group while temporarily holding the others fixed.</li>
+<li>Complete the cycle and record the current values as one draw.</li>
+<li>Repeat until the retained draws explore a stable posterior region.</li>
+</ol>
+<div class="say-it">
+<p>A chain is a correlated walk through plausible explanations of one observed network. It is not a collection of new countries or new datasets.</p>
+</div>
+<p>Burn-in discards the warm-up. Trace plots show the walk. Effective sample size tells us how much independent Monte Carlo information it contains.</p>
+<div class="slide-link">
+<p><a href="2_srm_blocks.html#sec-baby-mcmc" class="walkthrough-link" target="_blank">Read the beginner MCMC explanation</a></p>
+</div>
+<aside class="notes">
+<p>I will draw linked dials for beta, sender effects, receiver effects, and reciprocity. Running longer can reduce Monte Carlo error, but it cannot add actors or fix a badly measured outcome.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;

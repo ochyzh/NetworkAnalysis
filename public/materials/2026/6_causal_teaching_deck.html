@@ -1059,6 +1059,59 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="model-compass" class="slide level2">
+<h2>Three Methods, Three Different Operations</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Main question</th>
+<th>What changes?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Exposure mapping and HT</td>
+<td>What is the contrast among randomized treatment-and-exposure conditions?</td>
+<td>The estimand and design-weighted comparison</td>
+</tr>
+<tr class="even">
+<td>DCR</td>
+<td>How uncertain is the existing dyadic GLM under shared actors?</td>
+<td>The covariance matrix, not the coefficients</td>
+</tr>
+<tr class="odd">
+<td>AME</td>
+<td>Does the association change when dependence enters the mean?</td>
+<td>Coefficients, actor effects, latent structure, and uncertainty</td>
+</tr>
+</tbody>
+</table>
+<div class="say-it">
+<p>Do not call all three a network adjustment. Say whether we changed the question, the mean, or only the uncertainty.</p>
+</div>
+<div class="slide-link">
+<p><a href="6_causal.html#sec-model-compass" class="walkthrough-link" target="_blank">Use the applied method compass</a></p>
+</div>
+<aside class="notes">
+<p>I want one human sentence for each operation. HT supports an exposure contrast under a design. DCR can remove stars without changing the coefficient. AME can move the coefficient because it changes the conditional mean.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
 <section id="estimation" class="slide level2">
 <h2>Two Estimators, Two Different Operations</h2>
 <div class="comparison-row">

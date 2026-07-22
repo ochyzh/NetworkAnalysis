@@ -165,7 +165,7 @@ All the class materials will be posted/updated here.
       </tr>
       <tr>
         <td>Day 11<br>Mon Jul 27</td>
-        <td>ERGMs and Temporal ERGMs</td>
+        <td>Advanced ERGM Specification and Temporal ERGMs</td>
         <td>
           <dl>
           <dd><a href="../materials/2026/4_ergm_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/4_ergm_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/4_ergm.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/4_ergm.zip" target=_blank> Code &amp; data </a>
