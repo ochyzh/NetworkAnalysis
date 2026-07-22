@@ -2428,7 +2428,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Extends:</strong> the ERGM session (day 4, W3 Mon), block C3. There we introduced valued ERGMs: why you need a reference measure, <code>sum</code> as the valued analogue of <code>edges</code>, and the <code>sum + nonzero</code> sign flip. That is the whole idea and it is genuinely enough to get started.</p>
+<p><strong>Extends:</strong> the ERGM session (day 11, W3 Mon), block C3. There we introduced valued ERGMs: why you need a reference measure, <code>sum</code> as the valued analogue of <code>edges</code>, and the <code>sum + nonzero</code> sign flip. That is the whole idea and it is genuinely enough to get started.</p>
 <p><strong>This document is the rest of it.</strong> Specifically: the other reference measures and how to choose between them, valued mutuality, the <code>transitiveweights</code> family (valued triadic closure, which is much stranger than it sounds), valued covariate effects, and how to simulate from a valued fit and check it. If you have valued data: counts of interactions, message volumes, trade values, durations: this is where the terms you actually need live.</p>
 <p><strong>What you need:</strong> <code>ergm</code>, <code>ergm.count</code>, <code>network</code>. All on CRAN, all installed for the course.</p>
 </div>
@@ -3353,404 +3353,406 @@ window.Quarto = {
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Valued ERGMs, in depth&quot;</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Ancillary self-study · ICPSR Network Analysis: Advanced Topics&quot;</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;_helpers.R&quot;</span>)</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="fu">require_pkgs</span>(<span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;ergm.count&quot;</span>, <span class="st">&quot;network&quot;</span>))</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>{{&lt; include _ancillary_header.qmd &gt;}}</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="an">engine:</span><span class="co"> knitr</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> source</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Ancillary self-study · ICPSR Network Analysis: Advanced Topics&quot;</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;_helpers.R&quot;</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="fu">require_pkgs</span>(<span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;ergm.count&quot;</span>, <span class="st">&quot;network&quot;</span>))</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title=&quot;What this extends, and why it is here&quot;}</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 4, W3 Mon), block C3. There we introduced valued ERGMs: why you need a reference measure, <span class="in">`sum`</span> as the valued analogue of <span class="in">`edges`</span>, and the <span class="in">`sum + nonzero`</span> sign flip. That is the whole idea and it is genuinely enough to get started.</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>**This document is the rest of it.** Specifically: the other reference measures and how to choose between them, valued mutuality, the <span class="in">`transitiveweights`</span> family (valued triadic closure, which is much stranger than it sounds), valued covariate effects, and how to simulate from a valued fit and check it. If you have valued data: counts of interactions, message volumes, trade values, durations: this is where the terms you actually need live.</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>{{&lt; include _ancillary_header.qmd &gt;}}</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title=&quot;What this extends, and why it is here&quot;}</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>**Extends:** the ERGM session (day 11, W3 Mon), block C3. There we introduced valued ERGMs: why you need a reference measure, <span class="in">`sum`</span> as the valued analogue of <span class="in">`edges`</span>, and the <span class="in">`sum + nonzero`</span> sign flip. That is the whole idea and it is genuinely enough to get started.</span>
 <span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>**What you need:** <span class="in">`ergm`</span>, <span class="in">`ergm.count`</span>, <span class="in">`network`</span>. All on CRAN, all installed for the course.</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>**This document is the rest of it.** Specifically: the other reference measures and how to choose between them, valued mutuality, the <span class="in">`transitiveweights`</span> family (valued triadic closure, which is much stranger than it sounds), valued covariate effects, and how to simulate from a valued fit and check it. If you have valued data: counts of interactions, message volumes, trade values, durations: this is where the terms you actually need live.</span>
 <span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>**What you need:** <span class="in">`ergm`</span>, <span class="in">`ergm.count`</span>, <span class="in">`network`</span>. All on CRAN, all installed for the course.</span>
 <span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. Where we left off</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>The monastery again. Sampson observed his novices at three time points, so summing the three adjacency matrices gives a count from 0 to 3 for each ordered pair: how many times $i$ nominated $j$.</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1. Where we left off</span></span>
 <span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data</span></span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm)</span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm.count)</span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(network)</span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(samplk)</span>
-<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>tot <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(samplk1) <span class="sc">+</span> <span class="fu">as.matrix</span>(samplk2) <span class="sc">+</span> <span class="fu">as.matrix</span>(samplk3)</span>
-<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(tot)</span>
-<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>nw <span class="ot">&lt;-</span> <span class="fu">network</span>(tot, <span class="at">directed =</span> <span class="cn">TRUE</span>, <span class="at">matrix.type =</span> <span class="st">&quot;adjacency&quot;</span>,</span>
-<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>              <span class="at">ignore.eval =</span> <span class="cn">FALSE</span>, <span class="at">names.eval =</span> <span class="st">&quot;nom&quot;</span>)</span>
-<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>nw</span>
-<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>Note the three arguments that make this a *valued* network rather than a binary one: <span class="in">`ignore.eval = FALSE`</span> tells <span class="in">`network()`</span> not to throw the weights away, and <span class="in">`names.eval = &quot;nom&quot;`</span> gives the edge attribute a name you will pass as <span class="in">`response = &quot;nom&quot;`</span> to every model below. Leave either out and you will silently fit a binary ERGM to dichotomised data, which is a mistake that does not announce itself.</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>The monastery again. Sampson observed his novices at three time points, so summing the three adjacency matrices gives a count from 0 to 3 for each ordered pair: how many times $i$ nominated $j$.</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data</span></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm)</span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ergm.count)</span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(network)</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(samplk)</span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>tot <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(samplk1) <span class="sc">+</span> <span class="fu">as.matrix</span>(samplk2) <span class="sc">+</span> <span class="fu">as.matrix</span>(samplk3)</span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(tot)</span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>nw <span class="ot">&lt;-</span> <span class="fu">network</span>(tot, <span class="at">directed =</span> <span class="cn">TRUE</span>, <span class="at">matrix.type =</span> <span class="st">&quot;adjacency&quot;</span>,</span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>              <span class="at">ignore.eval =</span> <span class="cn">FALSE</span>, <span class="at">names.eval =</span> <span class="st">&quot;nom&quot;</span>)</span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>nw</span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: checkpoint-data</span></span>
-<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">nodes =</span> <span class="fu">network.size</span>(nw),</span>
-<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a>           <span class="at">nonzero_dyads =</span> <span class="fu">sum</span>(tot <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
-<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a>           <span class="at">max_count =</span> <span class="fu">max</span>(tot))</span>
-<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. Reference measures: the thing that has no binary analogue</span></span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a>Note the three arguments that make this a *valued* network rather than a binary one: <span class="in">`ignore.eval = FALSE`</span> tells <span class="in">`network()`</span> not to throw the weights away, and <span class="in">`names.eval = &quot;nom&quot;`</span> gives the edge attribute a name you will pass as <span class="in">`response = &quot;nom&quot;`</span> to every model below. Leave either out and you will silently fit a binary ERGM to dichotomised data, which is a mistake that does not announce itself.</span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: checkpoint-data</span></span>
+<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a><span class="fu">checkpoint</span>(<span class="at">nodes =</span> <span class="fu">network.size</span>(nw),</span>
+<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a>           <span class="at">nonzero_dyads =</span> <span class="fu">sum</span>(tot <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
+<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a>           <span class="at">max_count =</span> <span class="fu">max</span>(tot))</span>
+<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a>This is the concept the ERGM session had time to name but not to develop, and it is the one that actually distinguishes valued ERGMs from binary ones.</span>
+<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2. Reference measures: the thing that has no binary analogue</span></span>
 <span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a>For a binary ERGM, writing down the sufficient statistics is enough. The sample space is fixed: all graphs on $n$ nodes, and every graph in it starts equally likely. Specify $g(y)$ and you have specified the model.</span>
+<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a>This is the concept the ERGM session had time to name but not to develop, and it is the one that actually distinguishes valued ERGMs from binary ones.</span>
 <span id="cb22-66"><a href="#cb22-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-67"><a href="#cb22-67" aria-hidden="true" tabindex="-1"></a>For a valued ERGM that is **not true**, and the reason is worth internalising. Suppose your statistic is `sum`, the total of all edge values. That pins down the *mean*. It says nothing about whether the counts should be Poisson-shaped, geometric-shaped, or bounded at some maximum. Infinitely many distributions have the same total. So you must supply a **reference measure**: the baseline distribution the model tilts away from, which fixes both the sample space and the shape.</span>
+<span id="cb22-67"><a href="#cb22-67" aria-hidden="true" tabindex="-1"></a>For a binary ERGM, writing down the sufficient statistics is enough. The sample space is fixed: all graphs on $n$ nodes, and every graph in it starts equally likely. Specify $g(y)$ and you have specified the model.</span>
 <span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a>$$\Pr(Y = y) = \frac{h(y)\exp<span class="sc">\{</span>\theta^{\top}g(y)<span class="sc">\}</span>}{\kappa(\theta)}$$</span>
+<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a>For a valued ERGM that is **not true**, and the reason is worth internalising. Suppose your statistic is `sum`, the total of all edge values. That pins down the *mean*. It says nothing about whether the counts should be Poisson-shaped, geometric-shaped, or bounded at some maximum. Infinitely many distributions have the same total. So you must supply a **reference measure**: the baseline distribution the model tilts away from, which fixes both the sample space and the shape.</span>
 <span id="cb22-70"><a href="#cb22-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a>where $h(y)$ is the reference. Setting $h(y) = 1$ over binary graphs recovers the ordinary ERGM, so the binary case is the special case where you did not have to think about this.</span>
+<span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a>$$\Pr(Y = y) = \frac{h(y)\exp<span class="sc">\{</span>\theta^{\top}g(y)<span class="sc">\}</span>}{\kappa(\theta)}$$</span>
 <span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> reference <span class="pp">|</span> $h(y)$ <span class="pp">|</span> sample space <span class="pp">|</span> use it when <span class="pp">|</span></span>
-<span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|</span></span>
-<span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`~Poisson`</span> <span class="pp">|</span> $\prod 1/y_{ij}!$ <span class="pp">|</span> counts $0, 1, 2, \ldots$ <span class="pp">|</span> counts with no natural ceiling: messages, citations, interactions <span class="pp">|</span></span>
-<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`~Binomial(trials)`</span> <span class="pp">|</span> $\prod \binom{n}{y_{ij}}$ <span class="pp">|</span> $0, \ldots, n$ <span class="pp">|</span> counts out of a known maximum: nominations from a fixed roster <span class="pp">|</span></span>
-<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`~Geometric`</span> <span class="pp">|</span> $1$ <span class="pp">|</span> counts $0, 1, 2, \ldots$ <span class="pp">|</span> heavier tails than Poisson, but read the warning below <span class="pp">|</span></span>
-<span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`~DiscUnif(a,b)`</span> <span class="pp">|</span> $1$ on $<span class="co">[</span><span class="ot">a,b</span><span class="co">]</span>$ <span class="pp">|</span> integers $a$ to $b$ <span class="pp">|</span> bounded ratings: a 1–5 Likert tie strength <span class="pp">|</span></span>
-<span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-80"><a href="#cb22-80" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;The geometric reference is a degeneracy trap&quot;}</span>
-<span id="cb22-81"><a href="#cb22-81" aria-hidden="true" tabindex="-1"></a><span class="in">`~Geometric`</span> has $h(y) = 1$, which means it puts **no penalty at all** on large values. Combine that with a positive <span class="in">`sum`</span> coefficient and the model happily wanders off toward infinite edge weights. The <span class="in">`ergm.count`</span> vignette is explicit that the geometric reference is prone to degeneracy for exactly this reason and that Poisson is the safer default for counts.</span>
-<span id="cb22-82"><a href="#cb22-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-83"><a href="#cb22-83" aria-hidden="true" tabindex="-1"></a>If you think you need heavier tails than Poisson, the better move is usually to keep the Poisson reference and add a dispersion-handling term, rather than to change the reference.</span>
-<span id="cb22-84"><a href="#cb22-84" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb22-85"><a href="#cb22-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-86"><a href="#cb22-86" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: why the reference is not just a prior&quot;}</span>
-<span id="cb22-87"><a href="#cb22-87" aria-hidden="true" tabindex="-1"></a>It is tempting to file the reference measure under &quot;prior&quot; and move on. Resist that, because it does something a prior does not: it **defines the sample space**. Under <span class="in">`~Poisson`</span> the space is all non-negative integer-valued arrays; under <span class="in">`~DiscUnif(1,5)`</span> it is arrays with entries in $<span class="sc">\{</span>1,\ldots,5<span class="sc">\}</span>$ and there is no such thing as a zero. Those are different models of the world, not different beliefs about the same one.</span>
-<span id="cb22-88"><a href="#cb22-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-89"><a href="#cb22-89" aria-hidden="true" tabindex="-1"></a>The practical consequence you will hit immediately: **likelihood-based comparisons are only valid within a reference.** <span class="in">`ergm`</span> prints this warning on every valued fit:</span>
+<span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a>where $h(y)$ is the reference. Setting $h(y) = 1$ over binary graphs recovers the ordinary ERGM, so the binary case is the special case where you did not have to think about this.</span>
+<span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> reference <span class="pp">|</span> $h(y)$ <span class="pp">|</span> sample space <span class="pp">|</span> use it when <span class="pp">|</span></span>
+<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|</span></span>
+<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`~Poisson`</span> <span class="pp">|</span> $\prod 1/y_{ij}!$ <span class="pp">|</span> counts $0, 1, 2, \ldots$ <span class="pp">|</span> counts with no natural ceiling: messages, citations, interactions <span class="pp">|</span></span>
+<span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`~Binomial(trials)`</span> <span class="pp">|</span> $\prod \binom{n}{y_{ij}}$ <span class="pp">|</span> $0, \ldots, n$ <span class="pp">|</span> counts out of a known maximum: nominations from a fixed roster <span class="pp">|</span></span>
+<span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`~Geometric`</span> <span class="pp">|</span> $1$ <span class="pp">|</span> counts $0, 1, 2, \ldots$ <span class="pp">|</span> heavier tails than Poisson, but read the warning below <span class="pp">|</span></span>
+<span id="cb22-80"><a href="#cb22-80" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`~DiscUnif(a,b)`</span> <span class="pp">|</span> $1$ on $<span class="co">[</span><span class="ot">a,b</span><span class="co">]</span>$ <span class="pp">|</span> integers $a$ to $b$ <span class="pp">|</span> bounded ratings: a 1–5 Likert tie strength <span class="pp">|</span></span>
+<span id="cb22-81"><a href="#cb22-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-82"><a href="#cb22-82" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;The geometric reference is a degeneracy trap&quot;}</span>
+<span id="cb22-83"><a href="#cb22-83" aria-hidden="true" tabindex="-1"></a><span class="in">`~Geometric`</span> has $h(y) = 1$, which means it puts **no penalty at all** on large values. Combine that with a positive <span class="in">`sum`</span> coefficient and the model happily wanders off toward infinite edge weights. The <span class="in">`ergm.count`</span> vignette is explicit that the geometric reference is prone to degeneracy for exactly this reason and that Poisson is the safer default for counts.</span>
+<span id="cb22-84"><a href="#cb22-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-85"><a href="#cb22-85" aria-hidden="true" tabindex="-1"></a>If you think you need heavier tails than Poisson, the better move is usually to keep the Poisson reference and add a dispersion-handling term, rather than to change the reference.</span>
+<span id="cb22-86"><a href="#cb22-86" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb22-87"><a href="#cb22-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-88"><a href="#cb22-88" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: why the reference is not just a prior&quot;}</span>
+<span id="cb22-89"><a href="#cb22-89" aria-hidden="true" tabindex="-1"></a>It is tempting to file the reference measure under &quot;prior&quot; and move on. Resist that, because it does something a prior does not: it **defines the sample space**. Under <span class="in">`~Poisson`</span> the space is all non-negative integer-valued arrays; under <span class="in">`~DiscUnif(1,5)`</span> it is arrays with entries in $<span class="sc">\{</span>1,\ldots,5<span class="sc">\}</span>$ and there is no such thing as a zero. Those are different models of the world, not different beliefs about the same one.</span>
 <span id="cb22-90"><a href="#cb22-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-91"><a href="#cb22-91" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; &quot;Null model likelihood calculation is not implemented for valued ERGMs at this time. This means that all likelihood-based inference (LRT, Analysis of Deviance, AIC, BIC, etc.) is only valid between models with the same reference distribution and constraints.&quot;</span></span>
+<span id="cb22-91"><a href="#cb22-91" aria-hidden="true" tabindex="-1"></a>The practical consequence you will hit immediately: **likelihood-based comparisons are only valid within a reference.** <span class="in">`ergm`</span> prints this warning on every valued fit:</span>
 <span id="cb22-92"><a href="#cb22-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-93"><a href="#cb22-93" aria-hidden="true" tabindex="-1"></a>So you cannot use AIC to choose between a Poisson model and a geometric one. You choose the reference from what you know about how the data were generated, and *then* you use AIC within it. This is a case where the software&#39;s limitation and the correct statistical practice happen to coincide.</span>
-<span id="cb22-94"><a href="#cb22-94" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb22-95"><a href="#cb22-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-96"><a href="#cb22-96" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. The `sum + nonzero` result, restated</span></span>
+<span id="cb22-93"><a href="#cb22-93" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; &quot;Null model likelihood calculation is not implemented for valued ERGMs at this time. This means that all likelihood-based inference (LRT, Analysis of Deviance, AIC, BIC, etc.) is only valid between models with the same reference distribution and constraints.&quot;</span></span>
+<span id="cb22-94"><a href="#cb22-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-95"><a href="#cb22-95" aria-hidden="true" tabindex="-1"></a>So you cannot use AIC to choose between a Poisson model and a geometric one. You choose the reference from what you know about how the data were generated, and *then* you use AIC within it. This is a case where the software&#39;s limitation and the correct statistical practice happen to coincide.</span>
+<span id="cb22-96"><a href="#cb22-96" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb22-97"><a href="#cb22-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-98"><a href="#cb22-98" aria-hidden="true" tabindex="-1"></a>The taught session&#39;s headline, reproduced here so this document stands alone.</span>
+<span id="cb22-98"><a href="#cb22-98" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3. The `sum + nonzero` result, restated</span></span>
 <span id="cb22-99"><a href="#cb22-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-102"><a href="#cb22-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-103"><a href="#cb22-103" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fits-basic</span></span>
-<span id="cb22-104"><a href="#cb22-104" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb22-105"><a href="#cb22-105" aria-hidden="true" tabindex="-1"></a>v1 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_sum&quot;</span>,</span>
-<span id="cb22-106"><a href="#cb22-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum, <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
-<span id="cb22-107"><a href="#cb22-107" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb22-108"><a href="#cb22-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-109"><a href="#cb22-109" aria-hidden="true" tabindex="-1"></a>v2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_sum_nonzero&quot;</span>,</span>
-<span id="cb22-110"><a href="#cb22-110" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero, <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
-<span id="cb22-111"><a href="#cb22-111" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb22-112"><a href="#cb22-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-113"><a href="#cb22-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-116"><a href="#cb22-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-117"><a href="#cb22-117" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fits-basic-show</span></span>
-<span id="cb22-118"><a href="#cb22-118" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="st">`</span><span class="at">sum only</span><span class="st">`</span>        <span class="ot">=</span> <span class="fu">c</span>(<span class="at">sum =</span> <span class="fu">coef</span>(v1)[[<span class="st">&quot;sum&quot;</span>]], <span class="at">nonzero =</span> <span class="cn">NA</span>),</span>
-<span id="cb22-119"><a href="#cb22-119" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">sum + nonzero</span><span class="st">`</span>   <span class="ot">=</span> <span class="fu">c</span>(<span class="at">sum =</span> <span class="fu">coef</span>(v2)[[<span class="st">&quot;sum&quot;</span>]], <span class="at">nonzero =</span> <span class="fu">coef</span>(v2)[[<span class="st">&quot;nonzero&quot;</span>]])) <span class="sc">|&gt;</span></span>
-<span id="cb22-120"><a href="#cb22-120" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="dv">4</span>)</span>
-<span id="cb22-121"><a href="#cb22-121" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-122"><a href="#cb22-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-123"><a href="#cb22-123" aria-hidden="true" tabindex="-1"></a>The <span class="in">`sum`</span> coefficient **flips sign**. On its own it is negative; add <span class="in">`nonzero`</span> and it turns positive, while <span class="in">`nonzero`</span> itself comes out strongly negative.</span>
+<span id="cb22-100"><a href="#cb22-100" aria-hidden="true" tabindex="-1"></a>The taught session&#39;s headline, reproduced here so this document stands alone.</span>
+<span id="cb22-101"><a href="#cb22-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-104"><a href="#cb22-104" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-105"><a href="#cb22-105" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fits-basic</span></span>
+<span id="cb22-106"><a href="#cb22-106" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb22-107"><a href="#cb22-107" aria-hidden="true" tabindex="-1"></a>v1 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_sum&quot;</span>,</span>
+<span id="cb22-108"><a href="#cb22-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum, <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
+<span id="cb22-109"><a href="#cb22-109" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb22-110"><a href="#cb22-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-111"><a href="#cb22-111" aria-hidden="true" tabindex="-1"></a>v2 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_sum_nonzero&quot;</span>,</span>
+<span id="cb22-112"><a href="#cb22-112" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero, <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
+<span id="cb22-113"><a href="#cb22-113" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb22-114"><a href="#cb22-114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb22-115"><a href="#cb22-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-118"><a href="#cb22-118" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-119"><a href="#cb22-119" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fits-basic-show</span></span>
+<span id="cb22-120"><a href="#cb22-120" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="st">`</span><span class="at">sum only</span><span class="st">`</span>        <span class="ot">=</span> <span class="fu">c</span>(<span class="at">sum =</span> <span class="fu">coef</span>(v1)[[<span class="st">&quot;sum&quot;</span>]], <span class="at">nonzero =</span> <span class="cn">NA</span>),</span>
+<span id="cb22-121"><a href="#cb22-121" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">sum + nonzero</span><span class="st">`</span>   <span class="ot">=</span> <span class="fu">c</span>(<span class="at">sum =</span> <span class="fu">coef</span>(v2)[[<span class="st">&quot;sum&quot;</span>]], <span class="at">nonzero =</span> <span class="fu">coef</span>(v2)[[<span class="st">&quot;nonzero&quot;</span>]])) <span class="sc">|&gt;</span></span>
+<span id="cb22-122"><a href="#cb22-122" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="dv">4</span>)</span>
+<span id="cb22-123"><a href="#cb22-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-124"><a href="#cb22-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-125"><a href="#cb22-125" aria-hidden="true" tabindex="-1"></a>The reading: a bare Poisson reference cannot accommodate how many zeros are in real network data. Left to explain 236 zero cells with a single parameter, <span class="in">`sum`</span> is dragged negative: it is doing the job of a zero-inflation term badly. Give the model a dedicated zero-inflation parameter and <span class="in">`sum`</span> is freed to describe the counts that actually exist. **Conditional on a tie existing at all, the monks nominate each other more than Poisson predicts, not less.** The original negative was zero-inflation wearing a disguise.</span>
+<span id="cb22-125"><a href="#cb22-125" aria-hidden="true" tabindex="-1"></a>The <span class="in">`sum`</span> coefficient **flips sign**. On its own it is negative; add <span class="in">`nonzero`</span> and it turns positive, while <span class="in">`nonzero`</span> itself comes out strongly negative.</span>
 <span id="cb22-126"><a href="#cb22-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-127"><a href="#cb22-127" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;The general lesson, which is not about monks&quot;}</span>
-<span id="cb22-128"><a href="#cb22-128" aria-hidden="true" tabindex="-1"></a>Almost all valued network data is zero-inflated, because most pairs of anything never interact. **`nonzero` (or `Binary()`, or a hurdle construction) is close to mandatory, not optional.**</span>
-<span id="cb22-129"><a href="#cb22-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-130"><a href="#cb22-130" aria-hidden="true" tabindex="-1"></a>If you fit a valued ERGM with only <span class="in">`sum`</span> and report the coefficient, you are very likely reporting a zero-inflation parameter and calling it a volume parameter. Check by adding <span class="in">`nonzero`</span> and seeing whether anything moves. If it moves a lot, you had the wrong model.</span>
-<span id="cb22-131"><a href="#cb22-131" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb22-132"><a href="#cb22-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-133"><a href="#cb22-133" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Beyond `sum`: the terms you will actually need</span></span>
+<span id="cb22-127"><a href="#cb22-127" aria-hidden="true" tabindex="-1"></a>The reading: a bare Poisson reference cannot accommodate how many zeros are in real network data. Left to explain 236 zero cells with a single parameter, <span class="in">`sum`</span> is dragged negative: it is doing the job of a zero-inflation term badly. Give the model a dedicated zero-inflation parameter and <span class="in">`sum`</span> is freed to describe the counts that actually exist. **Conditional on a tie existing at all, the monks nominate each other more than Poisson predicts, not less.** The original negative was zero-inflation wearing a disguise.</span>
+<span id="cb22-128"><a href="#cb22-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-129"><a href="#cb22-129" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;The general lesson, which is not about monks&quot;}</span>
+<span id="cb22-130"><a href="#cb22-130" aria-hidden="true" tabindex="-1"></a>Almost all valued network data is zero-inflated, because most pairs of anything never interact. **`nonzero` (or `Binary()`, or a hurdle construction) is close to mandatory, not optional.**</span>
+<span id="cb22-131"><a href="#cb22-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-132"><a href="#cb22-132" aria-hidden="true" tabindex="-1"></a>If you fit a valued ERGM with only <span class="in">`sum`</span> and report the coefficient, you are very likely reporting a zero-inflation parameter and calling it a volume parameter. Check by adding <span class="in">`nonzero`</span> and seeing whether anything moves. If it moves a lot, you had the wrong model.</span>
+<span id="cb22-133"><a href="#cb22-133" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb22-134"><a href="#cb22-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-135"><a href="#cb22-135" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4.1 Mutuality, valued</span></span>
+<span id="cb22-135"><a href="#cb22-135" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4. Beyond `sum`: the terms you will actually need</span></span>
 <span id="cb22-136"><a href="#cb22-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-137"><a href="#cb22-137" aria-hidden="true" tabindex="-1"></a>Binary <span class="in">`mutual`</span> asks whether $i \to j$ and $j \to i$ co-occur. Valued mutuality has to answer a harder question: what does it mean for a weight of 3 and a weight of 1 to be &quot;reciprocated&quot;?</span>
+<span id="cb22-137"><a href="#cb22-137" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4.1 Mutuality, valued</span></span>
 <span id="cb22-138"><a href="#cb22-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-139"><a href="#cb22-139" aria-hidden="true" tabindex="-1"></a><span class="in">`ergm.count`</span> gives you a choice of *how much* correlation to credit, via the <span class="in">`form`</span> argument:</span>
+<span id="cb22-139"><a href="#cb22-139" aria-hidden="true" tabindex="-1"></a>Binary <span class="in">`mutual`</span> asks whether $i \to j$ and $j \to i$ co-occur. Valued mutuality has to answer a harder question: what does it mean for a weight of 3 and a weight of 1 to be &quot;reciprocated&quot;?</span>
 <span id="cb22-140"><a href="#cb22-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-141"><a href="#cb22-141" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`mutual(&quot;min&quot;)`</span>: credits $\min(y_{ij}, y_{ji})$. Conservative: a pair is reciprocal only up to the weaker of the two directions.</span>
-<span id="cb22-142"><a href="#cb22-142" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`mutual(&quot;nabsdiff&quot;)`</span>: credits $-|y_{ij} - y_{ji}|$. Penalises *imbalance* rather than rewarding overlap.</span>
-<span id="cb22-143"><a href="#cb22-143" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`mutual(&quot;product&quot;)`</span>: credits $y_{ij} \cdot y_{ji}$, i.e. raw correlation.</span>
-<span id="cb22-144"><a href="#cb22-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-147"><a href="#cb22-147" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-148"><a href="#cb22-148" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-mutual</span></span>
-<span id="cb22-149"><a href="#cb22-149" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb22-150"><a href="#cb22-150" aria-hidden="true" tabindex="-1"></a>v3 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_mutual&quot;</span>,</span>
-<span id="cb22-151"><a href="#cb22-151" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">mutual</span>(<span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
-<span id="cb22-152"><a href="#cb22-152" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb22-153"><a href="#cb22-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-154"><a href="#cb22-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-157"><a href="#cb22-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-158"><a href="#cb22-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-mutual-show</span></span>
-<span id="cb22-159"><a href="#cb22-159" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(v3), <span class="dv">4</span>)</span>
-<span id="cb22-160"><a href="#cb22-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-161"><a href="#cb22-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-162"><a href="#cb22-162" aria-hidden="true" tabindex="-1"></a>Strong positive mutuality, and notice what it does to <span class="in">`sum`</span>: adding mutuality pulls <span class="in">`sum`</span> back toward zero, because some of the volume the model was attributing to a general propensity to nominate is in fact a propensity to nominate *back*.</span>
+<span id="cb22-141"><a href="#cb22-141" aria-hidden="true" tabindex="-1"></a><span class="in">`ergm.count`</span> gives you a choice of *how much* correlation to credit, via the <span class="in">`form`</span> argument:</span>
+<span id="cb22-142"><a href="#cb22-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-143"><a href="#cb22-143" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`mutual(&quot;min&quot;)`</span>: credits $\min(y_{ij}, y_{ji})$. Conservative: a pair is reciprocal only up to the weaker of the two directions.</span>
+<span id="cb22-144"><a href="#cb22-144" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`mutual(&quot;nabsdiff&quot;)`</span>: credits $-|y_{ij} - y_{ji}|$. Penalises *imbalance* rather than rewarding overlap.</span>
+<span id="cb22-145"><a href="#cb22-145" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`mutual(&quot;product&quot;)`</span>: credits $y_{ij} \cdot y_{ji}$, i.e. raw correlation.</span>
+<span id="cb22-146"><a href="#cb22-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-149"><a href="#cb22-149" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-150"><a href="#cb22-150" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-mutual</span></span>
+<span id="cb22-151"><a href="#cb22-151" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb22-152"><a href="#cb22-152" aria-hidden="true" tabindex="-1"></a>v3 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_mutual&quot;</span>,</span>
+<span id="cb22-153"><a href="#cb22-153" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">mutual</span>(<span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
+<span id="cb22-154"><a href="#cb22-154" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb22-155"><a href="#cb22-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb22-156"><a href="#cb22-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-159"><a href="#cb22-159" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-160"><a href="#cb22-160" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-mutual-show</span></span>
+<span id="cb22-161"><a href="#cb22-161" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(v3), <span class="dv">4</span>)</span>
+<span id="cb22-162"><a href="#cb22-162" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-163"><a href="#cb22-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-164"><a href="#cb22-164" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4.2 Triadic closure, valued, and why it is genuinely hard</span></span>
+<span id="cb22-164"><a href="#cb22-164" aria-hidden="true" tabindex="-1"></a>Strong positive mutuality, and notice what it does to <span class="in">`sum`</span>: adding mutuality pulls <span class="in">`sum`</span> back toward zero, because some of the volume the model was attributing to a general propensity to nominate is in fact a propensity to nominate *back*.</span>
 <span id="cb22-165"><a href="#cb22-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-166"><a href="#cb22-166" aria-hidden="true" tabindex="-1"></a>Here is the part of valued ERGMs that catches people out.</span>
+<span id="cb22-166"><a href="#cb22-166" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4.2 Triadic closure, valued, and why it is genuinely hard</span></span>
 <span id="cb22-167"><a href="#cb22-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-168"><a href="#cb22-168" aria-hidden="true" tabindex="-1"></a>In a binary network, &quot;$i$ and $j$ share a partner $k$&quot; is a yes/no question. In a valued network it is not. If $y_{ik} = 3$ and $y_{kj} = 1$, how strong is that two-path? And if $i$ has ten weak two-paths to $j$, does that count for more or less than one strong one?</span>
+<span id="cb22-168"><a href="#cb22-168" aria-hidden="true" tabindex="-1"></a>Here is the part of valued ERGMs that catches people out.</span>
 <span id="cb22-169"><a href="#cb22-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-170"><a href="#cb22-170" aria-hidden="true" tabindex="-1"></a>There is **no single right answer**, so <span class="in">`ergm.count`</span> makes you choose three things, which is why <span class="in">`transitiveweights()`</span> takes three arguments:</span>
+<span id="cb22-170"><a href="#cb22-170" aria-hidden="true" tabindex="-1"></a>In a binary network, &quot;$i$ and $j$ share a partner $k$&quot; is a yes/no question. In a valued network it is not. If $y_{ik} = 3$ and $y_{kj} = 1$, how strong is that two-path? And if $i$ has ten weak two-paths to $j$, does that count for more or less than one strong one?</span>
 <span id="cb22-171"><a href="#cb22-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-172"><a href="#cb22-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-173"><a href="#cb22-173" aria-hidden="true" tabindex="-1"></a><span class="in">transitiveweights(twopath, combine, affect)</span></span>
+<span id="cb22-172"><a href="#cb22-172" aria-hidden="true" tabindex="-1"></a>There is **no single right answer**, so <span class="in">`ergm.count`</span> makes you choose three things, which is why <span class="in">`transitiveweights()`</span> takes three arguments:</span>
+<span id="cb22-173"><a href="#cb22-173" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-174"><a href="#cb22-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-175"><a href="#cb22-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-176"><a href="#cb22-176" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**`twopath`**: how to combine $y_{ik}$ and $y_{kj}$ into the strength of one two-path. <span class="in">`&quot;min&quot;`</span> (a chain is as strong as its weakest link) or <span class="in">`&quot;geomean&quot;`</span>.</span>
-<span id="cb22-177"><a href="#cb22-177" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**`combine`**: how to aggregate across all the intermediaries $k$. <span class="in">`&quot;max&quot;`</span> (the single strongest path is what matters) or <span class="in">`&quot;sum&quot;`</span> (they accumulate).</span>
-<span id="cb22-178"><a href="#cb22-178" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**`affect`**: how the aggregated two-path strength relates to $y_{ij}$ itself. <span class="in">`&quot;min&quot;`</span> or <span class="in">`&quot;geomean&quot;`</span>.</span>
-<span id="cb22-179"><a href="#cb22-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-180"><a href="#cb22-180" aria-hidden="true" tabindex="-1"></a>The default, <span class="in">`transitiveweights(&quot;min&quot;, &quot;max&quot;, &quot;min&quot;)`</span>, reads as: *a two-path is as strong as its weakest leg; what matters is the strongest available two-path; and closure is credited up to the weaker of that path and the direct tie.* That is a defensible reading of &quot;triadic closure&quot; for valued data. It is not the only one.</span>
+<span id="cb22-175"><a href="#cb22-175" aria-hidden="true" tabindex="-1"></a><span class="in">transitiveweights(twopath, combine, affect)</span></span>
+<span id="cb22-176"><a href="#cb22-176" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb22-177"><a href="#cb22-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-178"><a href="#cb22-178" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**`twopath`**: how to combine $y_{ik}$ and $y_{kj}$ into the strength of one two-path. <span class="in">`&quot;min&quot;`</span> (a chain is as strong as its weakest link) or <span class="in">`&quot;geomean&quot;`</span>.</span>
+<span id="cb22-179"><a href="#cb22-179" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**`combine`**: how to aggregate across all the intermediaries $k$. <span class="in">`&quot;max&quot;`</span> (the single strongest path is what matters) or <span class="in">`&quot;sum&quot;`</span> (they accumulate).</span>
+<span id="cb22-180"><a href="#cb22-180" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**`affect`**: how the aggregated two-path strength relates to $y_{ij}$ itself. <span class="in">`&quot;min&quot;`</span> or <span class="in">`&quot;geomean&quot;`</span>.</span>
 <span id="cb22-181"><a href="#cb22-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-184"><a href="#cb22-184" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-185"><a href="#cb22-185" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-trans</span></span>
-<span id="cb22-186"><a href="#cb22-186" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb22-187"><a href="#cb22-187" aria-hidden="true" tabindex="-1"></a>v4 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_trans&quot;</span>,</span>
-<span id="cb22-188"><a href="#cb22-188" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">transitiveweights</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;min&quot;</span>),</span>
-<span id="cb22-189"><a href="#cb22-189" aria-hidden="true" tabindex="-1"></a>       <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
-<span id="cb22-190"><a href="#cb22-190" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb22-191"><a href="#cb22-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-192"><a href="#cb22-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-195"><a href="#cb22-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-196"><a href="#cb22-196" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-trans-show</span></span>
-<span id="cb22-197"><a href="#cb22-197" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(v4), <span class="dv">4</span>)</span>
-<span id="cb22-198"><a href="#cb22-198" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-199"><a href="#cb22-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-200"><a href="#cb22-200" aria-hidden="true" tabindex="-1"></a>Positive, as expected: monks nominate those their nominees nominate.</span>
+<span id="cb22-182"><a href="#cb22-182" aria-hidden="true" tabindex="-1"></a>The default, <span class="in">`transitiveweights(&quot;min&quot;, &quot;max&quot;, &quot;min&quot;)`</span>, reads as: *a two-path is as strong as its weakest leg; what matters is the strongest available two-path; and closure is credited up to the weaker of that path and the direct tie.* That is a defensible reading of &quot;triadic closure&quot; for valued data. It is not the only one.</span>
+<span id="cb22-183"><a href="#cb22-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-186"><a href="#cb22-186" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-187"><a href="#cb22-187" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-trans</span></span>
+<span id="cb22-188"><a href="#cb22-188" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb22-189"><a href="#cb22-189" aria-hidden="true" tabindex="-1"></a>v4 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_trans&quot;</span>,</span>
+<span id="cb22-190"><a href="#cb22-190" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">transitiveweights</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;min&quot;</span>),</span>
+<span id="cb22-191"><a href="#cb22-191" aria-hidden="true" tabindex="-1"></a>       <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
+<span id="cb22-192"><a href="#cb22-192" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb22-193"><a href="#cb22-193" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb22-194"><a href="#cb22-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-197"><a href="#cb22-197" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-198"><a href="#cb22-198" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-trans-show</span></span>
+<span id="cb22-199"><a href="#cb22-199" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(v4), <span class="dv">4</span>)</span>
+<span id="cb22-200"><a href="#cb22-200" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-201"><a href="#cb22-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-202"><a href="#cb22-202" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;Report your three arguments. Always.&quot;}</span>
-<span id="cb22-203"><a href="#cb22-203" aria-hidden="true" tabindex="-1"></a>Because <span class="in">`transitiveweights`</span> has three switches, **`transitiveweights` is not a term, it is a family of terms.** Two papers both reporting &quot;a positive valued transitivity effect&quot; may have fitted quite different models.</span>
-<span id="cb22-204"><a href="#cb22-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-205"><a href="#cb22-205" aria-hidden="true" tabindex="-1"></a>So: state all three arguments in your write-up, and if you had a substantive reason for choosing them, give it. If you did not: if you took the default because it was the default: say that instead of inventing a rationale after the fact. The defaults are sensible and there is nothing wrong with using them.</span>
+<span id="cb22-202"><a href="#cb22-202" aria-hidden="true" tabindex="-1"></a>Positive, as expected: monks nominate those their nominees nominate.</span>
+<span id="cb22-203"><a href="#cb22-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-204"><a href="#cb22-204" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title=&quot;Report your three arguments. Always.&quot;}</span>
+<span id="cb22-205"><a href="#cb22-205" aria-hidden="true" tabindex="-1"></a>Because <span class="in">`transitiveweights`</span> has three switches, **`transitiveweights` is not a term, it is a family of terms.** Two papers both reporting &quot;a positive valued transitivity effect&quot; may have fitted quite different models.</span>
 <span id="cb22-206"><a href="#cb22-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-207"><a href="#cb22-207" aria-hidden="true" tabindex="-1"></a>There is also a practical warning to expect. On the fits above <span class="in">`ergm`</span> reports <span class="in">`Best valid proposal &#39;DiscTNT&#39; cannot take into account hint(s) &#39;triadic&#39;`</span>: the triadic MCMC hint that speeds up binary models with closure terms has no valued counterpart, so it is ignored. This is informational, not an error, but it does mean valued triadic models mix more slowly than their binary equivalents. Budget more iterations and check <span class="in">`mcmc.diagnostics()`</span>.</span>
-<span id="cb22-208"><a href="#cb22-208" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb22-209"><a href="#cb22-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-210"><a href="#cb22-210" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4.3 Covariate effects: how a nodal attribute maps to volume</span></span>
+<span id="cb22-207"><a href="#cb22-207" aria-hidden="true" tabindex="-1"></a>So: state all three arguments in your write-up, and if you had a substantive reason for choosing them, give it. If you did not: if you took the default because it was the default: say that instead of inventing a rationale after the fact. The defaults are sensible and there is nothing wrong with using them.</span>
+<span id="cb22-208"><a href="#cb22-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-209"><a href="#cb22-209" aria-hidden="true" tabindex="-1"></a>There is also a practical warning to expect. On the fits above <span class="in">`ergm`</span> reports <span class="in">`Best valid proposal &#39;DiscTNT&#39; cannot take into account hint(s) &#39;triadic&#39;`</span>: the triadic MCMC hint that speeds up binary models with closure terms has no valued counterpart, so it is ignored. This is informational, not an error, but it does mean valued triadic models mix more slowly than their binary equivalents. Budget more iterations and check <span class="in">`mcmc.diagnostics()`</span>.</span>
+<span id="cb22-210"><a href="#cb22-210" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb22-211"><a href="#cb22-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-212"><a href="#cb22-212" aria-hidden="true" tabindex="-1"></a>Sampson recorded which faction each novice belonged to: Loyal Opposition, Young Turks, Outcasts, Waverers. A natural valued question: do monks in the *same* faction nominate each other **more heavily**, not merely more often?</span>
+<span id="cb22-212"><a href="#cb22-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4.3 Covariate effects: how a nodal attribute maps to volume</span></span>
 <span id="cb22-213"><a href="#cb22-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-214"><a href="#cb22-214" aria-hidden="true" tabindex="-1"></a>That last distinction is the point. Binary <span class="in">`nodematch(&quot;group&quot;)`</span> can only ask whether same-faction ties are more likely to *exist*. The valued version, `nodematch(&quot;group&quot;, form = &quot;sum&quot;)`, asks whether same-faction ties carry more *weight*: a question that only exists once edges have values.</span>
+<span id="cb22-214"><a href="#cb22-214" aria-hidden="true" tabindex="-1"></a>Sampson recorded which faction each novice belonged to: Loyal Opposition, Young Turks, Outcasts, Waverers. A natural valued question: do monks in the *same* faction nominate each other **more heavily**, not merely more often?</span>
 <span id="cb22-215"><a href="#cb22-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-218"><a href="#cb22-218" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-219"><a href="#cb22-219" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-covar</span></span>
-<span id="cb22-220"><a href="#cb22-220" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb22-221"><a href="#cb22-221" aria-hidden="true" tabindex="-1"></a>network<span class="sc">::</span><span class="fu">set.vertex.attribute</span>(nw, <span class="st">&quot;group&quot;</span>, <span class="fu">as.character</span>(samplk1 <span class="sc">%v%</span> <span class="st">&quot;group&quot;</span>))</span>
-<span id="cb22-222"><a href="#cb22-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-223"><a href="#cb22-223" aria-hidden="true" tabindex="-1"></a>v5 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_nodematch&quot;</span>,</span>
-<span id="cb22-224"><a href="#cb22-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">nodematch</span>(<span class="st">&quot;group&quot;</span>, <span class="at">form =</span> <span class="st">&quot;sum&quot;</span>),</span>
-<span id="cb22-225"><a href="#cb22-225" aria-hidden="true" tabindex="-1"></a>       <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
-<span id="cb22-226"><a href="#cb22-226" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb22-227"><a href="#cb22-227" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-228"><a href="#cb22-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-231"><a href="#cb22-231" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-232"><a href="#cb22-232" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-covar-show</span></span>
-<span id="cb22-233"><a href="#cb22-233" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(v5), <span class="dv">4</span>)</span>
-<span id="cb22-234"><a href="#cb22-234" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-235"><a href="#cb22-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-236"><a href="#cb22-236" aria-hidden="true" tabindex="-1"></a>Strongly positive: conditional on the reference and the zero-inflation term, monks nominate same-faction brothers with noticeably higher counts. The <span class="in">`form = &quot;sum&quot;`</span> argument is doing the work: it tells <span class="in">`ergm`</span> to accumulate the *weights* on matching dyads rather than count matching edges. Drop it and you get the binary-style match term applied to a valued network, which is rarely what you want and does not warn you.</span>
+<span id="cb22-216"><a href="#cb22-216" aria-hidden="true" tabindex="-1"></a>That last distinction is the point. Binary <span class="in">`nodematch(&quot;group&quot;)`</span> can only ask whether same-faction ties are more likely to *exist*. The valued version, `nodematch(&quot;group&quot;, form = &quot;sum&quot;)`, asks whether same-faction ties carry more *weight*: a question that only exists once edges have values.</span>
+<span id="cb22-217"><a href="#cb22-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-220"><a href="#cb22-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-221"><a href="#cb22-221" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-covar</span></span>
+<span id="cb22-222"><a href="#cb22-222" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb22-223"><a href="#cb22-223" aria-hidden="true" tabindex="-1"></a>network<span class="sc">::</span><span class="fu">set.vertex.attribute</span>(nw, <span class="st">&quot;group&quot;</span>, <span class="fu">as.character</span>(samplk1 <span class="sc">%v%</span> <span class="st">&quot;group&quot;</span>))</span>
+<span id="cb22-224"><a href="#cb22-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-225"><a href="#cb22-225" aria-hidden="true" tabindex="-1"></a>v5 <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_nodematch&quot;</span>,</span>
+<span id="cb22-226"><a href="#cb22-226" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">nodematch</span>(<span class="st">&quot;group&quot;</span>, <span class="at">form =</span> <span class="st">&quot;sum&quot;</span>),</span>
+<span id="cb22-227"><a href="#cb22-227" aria-hidden="true" tabindex="-1"></a>       <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
+<span id="cb22-228"><a href="#cb22-228" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb22-229"><a href="#cb22-229" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb22-230"><a href="#cb22-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-233"><a href="#cb22-233" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-234"><a href="#cb22-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit-covar-show</span></span>
+<span id="cb22-235"><a href="#cb22-235" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(v5), <span class="dv">4</span>)</span>
+<span id="cb22-236"><a href="#cb22-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-237"><a href="#cb22-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-238"><a href="#cb22-238" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: the dispersion terms, and why they are not in this document&quot;}</span>
-<span id="cb22-239"><a href="#cb22-239" aria-hidden="true" tabindex="-1"></a>There is a second family of valued nodal terms: <span class="in">`nodeocovar`</span>, <span class="in">`nodeicovar`</span>, <span class="in">`nodecovar`</span>: that measure **dispersion** rather than level: not &quot;do high-<span class="in">`attr`</span> actors send more&quot; but &quot;do actors differ in how *evenly* they spread what they send.&quot; These are conceptually the valued analogue of degree terms, and on the right data they are exactly what you want.</span>
-<span id="cb22-240"><a href="#cb22-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-241"><a href="#cb22-241" aria-hidden="true" tabindex="-1"></a>They are deliberately absent from the runnable part of this document, for two honest reasons I hit while building it:</span>
+<span id="cb22-238"><a href="#cb22-238" aria-hidden="true" tabindex="-1"></a>Strongly positive: conditional on the reference and the zero-inflation term, monks nominate same-faction brothers with noticeably higher counts. The <span class="in">`form = &quot;sum&quot;`</span> argument is doing the work: it tells <span class="in">`ergm`</span> to accumulate the *weights* on matching dyads rather than count matching edges. Drop it and you get the binary-style match term applied to a valued network, which is rarely what you want and does not warn you.</span>
+<span id="cb22-239"><a href="#cb22-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-240"><a href="#cb22-240" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: the dispersion terms, and why they are not in this document&quot;}</span>
+<span id="cb22-241"><a href="#cb22-241" aria-hidden="true" tabindex="-1"></a>There is a second family of valued nodal terms: <span class="in">`nodeocovar`</span>, <span class="in">`nodeicovar`</span>, <span class="in">`nodecovar`</span>: that measure **dispersion** rather than level: not &quot;do high-<span class="in">`attr`</span> actors send more&quot; but &quot;do actors differ in how *evenly* they spread what they send.&quot; These are conceptually the valued analogue of degree terms, and on the right data they are exactly what you want.</span>
 <span id="cb22-242"><a href="#cb22-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-243"><a href="#cb22-243" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**`nodecovar` requires an undirected network.** On directed Sampson it errors outright (<span class="in">`Term may not be used with networks with directed==TRUE`</span>), and <span class="in">`nodesqrtcovar`</span> is deprecated in favour of <span class="in">`nodecovar(transform = &quot;sqrt&quot;)`</span>, which inherits the same restriction.</span>
-<span id="cb22-244"><a href="#cb22-244" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**`nodeocovar` / `nodeicovar` do run on directed data but mix very slowly here**: repeated fits produced no reliable convergence on 18 nodes, because these are strongly dyad-dependent terms and the triadic MCMC hint is unavailable for valued models (§4.2).</span>
-<span id="cb22-245"><a href="#cb22-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-246"><a href="#cb22-246" aria-hidden="true" tabindex="-1"></a>The lesson is more useful than a fitted table would have been: **valued dyad-dependent terms are substantially harder to estimate than their binary cousins, and not every term that exists is practical on every dataset.** If you need dispersion terms, use an undirected network, budget real MCMC time, and read <span class="in">`mcmc.diagnostics()`</span> carefully before trusting anything. The <span class="in">`ergm.count`</span> vignette works them on undirected data for exactly this reason.</span>
-<span id="cb22-247"><a href="#cb22-247" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb22-248"><a href="#cb22-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-249"><a href="#cb22-249" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Checking a valued fit</span></span>
+<span id="cb22-243"><a href="#cb22-243" aria-hidden="true" tabindex="-1"></a>They are deliberately absent from the runnable part of this document, for two honest reasons I hit while building it:</span>
+<span id="cb22-244"><a href="#cb22-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-245"><a href="#cb22-245" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**`nodecovar` requires an undirected network.** On directed Sampson it errors outright (<span class="in">`Term may not be used with networks with directed==TRUE`</span>), and <span class="in">`nodesqrtcovar`</span> is deprecated in favour of <span class="in">`nodecovar(transform = &quot;sqrt&quot;)`</span>, which inherits the same restriction.</span>
+<span id="cb22-246"><a href="#cb22-246" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**`nodeocovar` / `nodeicovar` do run on directed data but mix very slowly here**: repeated fits produced no reliable convergence on 18 nodes, because these are strongly dyad-dependent terms and the triadic MCMC hint is unavailable for valued models (§4.2).</span>
+<span id="cb22-247"><a href="#cb22-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-248"><a href="#cb22-248" aria-hidden="true" tabindex="-1"></a>The lesson is more useful than a fitted table would have been: **valued dyad-dependent terms are substantially harder to estimate than their binary cousins, and not every term that exists is practical on every dataset.** If you need dispersion terms, use an undirected network, budget real MCMC time, and read <span class="in">`mcmc.diagnostics()`</span> carefully before trusting anything. The <span class="in">`ergm.count`</span> vignette works them on undirected data for exactly this reason.</span>
+<span id="cb22-249"><a href="#cb22-249" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb22-250"><a href="#cb22-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-251"><a href="#cb22-251" aria-hidden="true" tabindex="-1"></a>Two things to do, and neither is optional.</span>
+<span id="cb22-251"><a href="#cb22-251" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5. Checking a valued fit</span></span>
 <span id="cb22-252"><a href="#cb22-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-253"><a href="#cb22-253" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5.1 MCMC diagnostics</span></span>
+<span id="cb22-253"><a href="#cb22-253" aria-hidden="true" tabindex="-1"></a>Two things to do, and neither is optional.</span>
 <span id="cb22-254"><a href="#cb22-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-255"><a href="#cb22-255" aria-hidden="true" tabindex="-1"></a>Every model in §4 is dyad-dependent and was fitted by MCMC, so the chains need looking at. The valued case deserves *more* attention than the binary case, not less, because the triadic proposal hint is unavailable (§4.2).</span>
+<span id="cb22-255"><a href="#cb22-255" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5.1 MCMC diagnostics</span></span>
 <span id="cb22-256"><a href="#cb22-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-259"><a href="#cb22-259" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-260"><a href="#cb22-260" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: mcmc-diag</span></span>
-<span id="cb22-261"><a href="#cb22-261" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
-<span id="cb22-262"><a href="#cb22-262" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
-<span id="cb22-263"><a href="#cb22-263" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: hide</span></span>
-<span id="cb22-264"><a href="#cb22-264" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc.diagnostics</span>(v3, <span class="at">which =</span> <span class="st">&quot;plots&quot;</span>)</span>
-<span id="cb22-265"><a href="#cb22-265" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-266"><a href="#cb22-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-267"><a href="#cb22-267" aria-hidden="true" tabindex="-1"></a>What you want: traces that look like fuzzy horizontal bands with no drift, and densities that look roughly unimodal. What you do not want: a trace that wanders steadily in one direction, or one that sticks at a value for long stretches.</span>
+<span id="cb22-257"><a href="#cb22-257" aria-hidden="true" tabindex="-1"></a>Every model in §4 is dyad-dependent and was fitted by MCMC, so the chains need looking at. The valued case deserves *more* attention than the binary case, not less, because the triadic proposal hint is unavailable (§4.2).</span>
+<span id="cb22-258"><a href="#cb22-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-261"><a href="#cb22-261" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-262"><a href="#cb22-262" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: mcmc-diag</span></span>
+<span id="cb22-263"><a href="#cb22-263" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb22-264"><a href="#cb22-264" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
+<span id="cb22-265"><a href="#cb22-265" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: hide</span></span>
+<span id="cb22-266"><a href="#cb22-266" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc.diagnostics</span>(v3, <span class="at">which =</span> <span class="st">&quot;plots&quot;</span>)</span>
+<span id="cb22-267"><a href="#cb22-267" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-268"><a href="#cb22-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-269"><a href="#cb22-269" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5.2 Simulate and compare</span></span>
+<span id="cb22-269"><a href="#cb22-269" aria-hidden="true" tabindex="-1"></a>What you want: traces that look like fuzzy horizontal bands with no drift, and densities that look roughly unimodal. What you do not want: a trace that wanders steadily in one direction, or one that sticks at a value for long stretches.</span>
 <span id="cb22-270"><a href="#cb22-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-271"><a href="#cb22-271" aria-hidden="true" tabindex="-1"></a>The valued analogue of <span class="in">`gof()`</span>. As of <span class="in">`ergm`</span> 4.11, <span class="in">`gof()`</span> does support valued models, but the transparent thing, and the thing that generalises to any statistic you care about: is to simulate and compare by hand.</span>
+<span id="cb22-271"><a href="#cb22-271" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5.2 Simulate and compare</span></span>
 <span id="cb22-272"><a href="#cb22-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-275"><a href="#cb22-275" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-276"><a href="#cb22-276" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sim</span></span>
-<span id="cb22-277"><a href="#cb22-277" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
-<span id="cb22-278"><a href="#cb22-278" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3.4</span></span>
-<span id="cb22-279"><a href="#cb22-279" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb22-280"><a href="#cb22-280" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">&lt;-</span> <span class="fu">simulate</span>(v3, <span class="at">nsim =</span> <span class="dv">200</span>, <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">output =</span> <span class="st">&quot;network&quot;</span>)</span>
-<span id="cb22-281"><a href="#cb22-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-282"><a href="#cb22-282" aria-hidden="true" tabindex="-1"></a>obs_stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">mutual</span>(<span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>)</span>
-<span id="cb22-283"><a href="#cb22-283" aria-hidden="true" tabindex="-1"></a>sim_stats <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(sims, <span class="cf">function</span>(s)</span>
-<span id="cb22-284"><a href="#cb22-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(s <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">mutual</span>(<span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>)))</span>
-<span id="cb22-285"><a href="#cb22-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-286"><a href="#cb22-286" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
-<span id="cb22-287"><a href="#cb22-287" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_along</span>(obs_stats)) {</span>
-<span id="cb22-288"><a href="#cb22-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(sim_stats[, j], <span class="at">breaks =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>,</span>
-<span id="cb22-289"><a href="#cb22-289" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">names</span>(obs_stats)[j], <span class="at">xlab =</span> <span class="st">&quot;simulated value&quot;</span>)</span>
-<span id="cb22-290"><a href="#cb22-290" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">v =</span> obs_stats[j], <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
-<span id="cb22-291"><a href="#cb22-291" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb22-292"><a href="#cb22-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-293"><a href="#cb22-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-296"><a href="#cb22-296" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-297"><a href="#cb22-297" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sim-table</span></span>
-<span id="cb22-298"><a href="#cb22-298" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb22-299"><a href="#cb22-299" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="fu">names</span>(obs_stats),</span>
-<span id="cb22-300"><a href="#cb22-300" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed  =</span> <span class="fu">round</span>(obs_stats, <span class="dv">2</span>),</span>
-<span id="cb22-301"><a href="#cb22-301" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_mean  =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(sim_stats), <span class="dv">2</span>),</span>
-<span id="cb22-302"><a href="#cb22-302" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_value   =</span> <span class="fu">round</span>(<span class="fu">sapply</span>(<span class="fu">seq_along</span>(obs_stats), <span class="cf">function</span>(j) {</span>
-<span id="cb22-303"><a href="#cb22-303" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">mean</span>(sim_stats[, j] <span class="sc">&gt;=</span> obs_stats[j])</span>
-<span id="cb22-304"><a href="#cb22-304" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(p, <span class="dv">1</span> <span class="sc">-</span> p)</span>
-<span id="cb22-305"><a href="#cb22-305" aria-hidden="true" tabindex="-1"></a>  }), <span class="dv">3</span>),</span>
-<span id="cb22-306"><a href="#cb22-306" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
-<span id="cb22-307"><a href="#cb22-307" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-308"><a href="#cb22-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-309"><a href="#cb22-309" aria-hidden="true" tabindex="-1"></a>The red line is the observed value; the histogram is what the model produces. For in-model statistics this should land comfortably inside the distribution: the model is fitted to reproduce exactly these, so if it does not, something has gone wrong with estimation rather than with the model.</span>
+<span id="cb22-273"><a href="#cb22-273" aria-hidden="true" tabindex="-1"></a>The valued analogue of <span class="in">`gof()`</span>. As of <span class="in">`ergm`</span> 4.11, <span class="in">`gof()`</span> does support valued models, but the transparent thing, and the thing that generalises to any statistic you care about: is to simulate and compare by hand.</span>
+<span id="cb22-274"><a href="#cb22-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-277"><a href="#cb22-277" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-278"><a href="#cb22-278" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sim</span></span>
+<span id="cb22-279"><a href="#cb22-279" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb22-280"><a href="#cb22-280" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3.4</span></span>
+<span id="cb22-281"><a href="#cb22-281" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb22-282"><a href="#cb22-282" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">&lt;-</span> <span class="fu">simulate</span>(v3, <span class="at">nsim =</span> <span class="dv">200</span>, <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">output =</span> <span class="st">&quot;network&quot;</span>)</span>
+<span id="cb22-283"><a href="#cb22-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-284"><a href="#cb22-284" aria-hidden="true" tabindex="-1"></a>obs_stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">mutual</span>(<span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>)</span>
+<span id="cb22-285"><a href="#cb22-285" aria-hidden="true" tabindex="-1"></a>sim_stats <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(sims, <span class="cf">function</span>(s)</span>
+<span id="cb22-286"><a href="#cb22-286" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(s <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">mutual</span>(<span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>)))</span>
+<span id="cb22-287"><a href="#cb22-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-288"><a href="#cb22-288" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb22-289"><a href="#cb22-289" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_along</span>(obs_stats)) {</span>
+<span id="cb22-290"><a href="#cb22-290" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(sim_stats[, j], <span class="at">breaks =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb22-291"><a href="#cb22-291" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">names</span>(obs_stats)[j], <span class="at">xlab =</span> <span class="st">&quot;simulated value&quot;</span>)</span>
+<span id="cb22-292"><a href="#cb22-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">v =</span> obs_stats[j], <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb22-293"><a href="#cb22-293" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-294"><a href="#cb22-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb22-295"><a href="#cb22-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-298"><a href="#cb22-298" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-299"><a href="#cb22-299" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sim-table</span></span>
+<span id="cb22-300"><a href="#cb22-300" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb22-301"><a href="#cb22-301" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="fu">names</span>(obs_stats),</span>
+<span id="cb22-302"><a href="#cb22-302" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed  =</span> <span class="fu">round</span>(obs_stats, <span class="dv">2</span>),</span>
+<span id="cb22-303"><a href="#cb22-303" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_mean  =</span> <span class="fu">round</span>(<span class="fu">colMeans</span>(sim_stats), <span class="dv">2</span>),</span>
+<span id="cb22-304"><a href="#cb22-304" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_value   =</span> <span class="fu">round</span>(<span class="fu">sapply</span>(<span class="fu">seq_along</span>(obs_stats), <span class="cf">function</span>(j) {</span>
+<span id="cb22-305"><a href="#cb22-305" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">mean</span>(sim_stats[, j] <span class="sc">&gt;=</span> obs_stats[j])</span>
+<span id="cb22-306"><a href="#cb22-306" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(p, <span class="dv">1</span> <span class="sc">-</span> p)</span>
+<span id="cb22-307"><a href="#cb22-307" aria-hidden="true" tabindex="-1"></a>  }), <span class="dv">3</span>),</span>
+<span id="cb22-308"><a href="#cb22-308" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb22-309"><a href="#cb22-309" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-310"><a href="#cb22-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-311"><a href="#cb22-311" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? <span class="in">`abline(v = obs)`</span> drew three lines and I wanted one&quot;}</span>
-<span id="cb22-312"><a href="#cb22-312" aria-hidden="true" tabindex="-1"></a>A classic. <span class="in">`obs_stats`</span> is a **vector** of three numbers, and <span class="in">`abline()`</span> is vectorised: pass it a vector and it draws one line per element, on whichever panel is current.</span>
-<span id="cb22-313"><a href="#cb22-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-314"><a href="#cb22-314" aria-hidden="true" tabindex="-1"></a>Inside the loop above the fix is <span class="in">`abline(v = obs_stats[j])`</span>, indexing to the one you want. If you find yourself with a plot carrying mysterious extra vertical lines, this is almost always why.</span>
-<span id="cb22-315"><a href="#cb22-315" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb22-316"><a href="#cb22-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-317"><a href="#cb22-317" aria-hidden="true" tabindex="-1"></a>The real test is an **out-of-model** statistic: something the model was not fitted to reproduce. Model <span class="in">`v3`</span> has <span class="in">`sum + nonzero + mutual(&quot;min&quot;)`</span> in it, so valued *transitivity* is fair game: the model was never told about triadic closure, so whether it reproduces the observed amount is a genuine test.</span>
+<span id="cb22-311"><a href="#cb22-311" aria-hidden="true" tabindex="-1"></a>The red line is the observed value; the histogram is what the model produces. For in-model statistics this should land comfortably inside the distribution: the model is fitted to reproduce exactly these, so if it does not, something has gone wrong with estimation rather than with the model.</span>
+<span id="cb22-312"><a href="#cb22-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-313"><a href="#cb22-313" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? <span class="in">`abline(v = obs)`</span> drew three lines and I wanted one&quot;}</span>
+<span id="cb22-314"><a href="#cb22-314" aria-hidden="true" tabindex="-1"></a>A classic. <span class="in">`obs_stats`</span> is a **vector** of three numbers, and <span class="in">`abline()`</span> is vectorised: pass it a vector and it draws one line per element, on whichever panel is current.</span>
+<span id="cb22-315"><a href="#cb22-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-316"><a href="#cb22-316" aria-hidden="true" tabindex="-1"></a>Inside the loop above the fix is <span class="in">`abline(v = obs_stats[j])`</span>, indexing to the one you want. If you find yourself with a plot carrying mysterious extra vertical lines, this is almost always why.</span>
+<span id="cb22-317"><a href="#cb22-317" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb22-318"><a href="#cb22-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-321"><a href="#cb22-321" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-322"><a href="#cb22-322" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sim-oom</span></span>
-<span id="cb22-323"><a href="#cb22-323" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
-<span id="cb22-324"><a href="#cb22-324" aria-hidden="true" tabindex="-1"></a>obs_oom <span class="ot">&lt;-</span> <span class="fu">summary</span>(nw <span class="sc">~</span> <span class="fu">transitiveweights</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>)</span>
-<span id="cb22-325"><a href="#cb22-325" aria-hidden="true" tabindex="-1"></a>sim_oom <span class="ot">&lt;-</span> <span class="fu">sapply</span>(sims, <span class="cf">function</span>(s)</span>
-<span id="cb22-326"><a href="#cb22-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(s <span class="sc">~</span> <span class="fu">transitiveweights</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>))</span>
-<span id="cb22-327"><a href="#cb22-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-328"><a href="#cb22-328" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">observed =</span> <span class="fu">round</span>(obs_oom, <span class="dv">2</span>),</span>
-<span id="cb22-329"><a href="#cb22-329" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_mean =</span> <span class="fu">round</span>(<span class="fu">mean</span>(sim_oom), <span class="dv">2</span>),</span>
-<span id="cb22-330"><a href="#cb22-330" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_q025 =</span> <span class="fu">round</span>(<span class="fu">quantile</span>(sim_oom, <span class="fl">0.025</span>), <span class="dv">2</span>),</span>
-<span id="cb22-331"><a href="#cb22-331" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_q975 =</span> <span class="fu">round</span>(<span class="fu">quantile</span>(sim_oom, <span class="fl">0.975</span>), <span class="dv">2</span>))</span>
-<span id="cb22-332"><a href="#cb22-332" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-333"><a href="#cb22-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-334"><a href="#cb22-334" aria-hidden="true" tabindex="-1"></a>Compare the observed value against the simulated interval. Here the observed transitivity sits comfortably **inside** the simulated band: the model reproduces a feature it was never told about, which is genuine (if modest) evidence in its favour: the mutuality and volume terms it *does* contain already generate about the right amount of closure, so you would not gain much by adding a `transitiveweights` term. Had the observed value landed *above* the band instead, you would have found closure the model is missing, and §4.2 has the term to add. That is the whole logic of an out-of-model check: the informative outcome is the one where observed and simulated disagree.</span>
+<span id="cb22-319"><a href="#cb22-319" aria-hidden="true" tabindex="-1"></a>The real test is an **out-of-model** statistic: something the model was not fitted to reproduce. Model <span class="in">`v3`</span> has <span class="in">`sum + nonzero + mutual(&quot;min&quot;)`</span> in it, so valued *transitivity* is fair game: the model was never told about triadic closure, so whether it reproduces the observed amount is a genuine test.</span>
+<span id="cb22-320"><a href="#cb22-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-323"><a href="#cb22-323" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-324"><a href="#cb22-324" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sim-oom</span></span>
+<span id="cb22-325"><a href="#cb22-325" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
+<span id="cb22-326"><a href="#cb22-326" aria-hidden="true" tabindex="-1"></a>obs_oom <span class="ot">&lt;-</span> <span class="fu">summary</span>(nw <span class="sc">~</span> <span class="fu">transitiveweights</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>)</span>
+<span id="cb22-327"><a href="#cb22-327" aria-hidden="true" tabindex="-1"></a>sim_oom <span class="ot">&lt;-</span> <span class="fu">sapply</span>(sims, <span class="cf">function</span>(s)</span>
+<span id="cb22-328"><a href="#cb22-328" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(s <span class="sc">~</span> <span class="fu">transitiveweights</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;min&quot;</span>), <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>))</span>
+<span id="cb22-329"><a href="#cb22-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-330"><a href="#cb22-330" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">observed =</span> <span class="fu">round</span>(obs_oom, <span class="dv">2</span>),</span>
+<span id="cb22-331"><a href="#cb22-331" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_mean =</span> <span class="fu">round</span>(<span class="fu">mean</span>(sim_oom), <span class="dv">2</span>),</span>
+<span id="cb22-332"><a href="#cb22-332" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_q025 =</span> <span class="fu">round</span>(<span class="fu">quantile</span>(sim_oom, <span class="fl">0.025</span>), <span class="dv">2</span>),</span>
+<span id="cb22-333"><a href="#cb22-333" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_q975 =</span> <span class="fu">round</span>(<span class="fu">quantile</span>(sim_oom, <span class="fl">0.975</span>), <span class="dv">2</span>))</span>
+<span id="cb22-334"><a href="#cb22-334" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-335"><a href="#cb22-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-336"><a href="#cb22-336" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Exercises</span></span>
+<span id="cb22-336"><a href="#cb22-336" aria-hidden="true" tabindex="-1"></a>Compare the observed value against the simulated interval. Here the observed transitivity sits comfortably **inside** the simulated band: the model reproduces a feature it was never told about, which is genuine (if modest) evidence in its favour: the mutuality and volume terms it *does* contain already generate about the right amount of closure, so you would not gain much by adding a `transitiveweights` term. Had the observed value landed *above* the band instead, you would have found closure the model is missing, and §4.2 has the term to add. That is the whole logic of an out-of-model check: the informative outcome is the one where observed and simulated disagree.</span>
 <span id="cb22-337"><a href="#cb22-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-338"><a href="#cb22-338" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb22-338"><a href="#cb22-338" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6. Exercises</span></span>
 <span id="cb22-339"><a href="#cb22-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-340"><a href="#cb22-340" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
+<span id="cb22-340"><a href="#cb22-340" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
 <span id="cb22-341"><a href="#cb22-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-342"><a href="#cb22-342" aria-hidden="true" tabindex="-1"></a>Fit the <span class="in">`sum + nonzero`</span> model with a **binomial** reference instead of Poisson. The counts run 0 to 3 because there were three observation waves, so <span class="in">`trials = 3`</span> is the natural choice.</span>
+<span id="cb22-342"><a href="#cb22-342" aria-hidden="true" tabindex="-1"></a><span class="fu">## Core</span></span>
 <span id="cb22-343"><a href="#cb22-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-346"><a href="#cb22-346" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-347"><a href="#cb22-347" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb22-348"><a href="#cb22-348" aria-hidden="true" tabindex="-1"></a>v_binom <span class="ot">&lt;-</span> <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero,</span>
-<span id="cb22-349"><a href="#cb22-349" aria-hidden="true" tabindex="-1"></a>                <span class="at">response  =</span> <span class="st">&quot;nom&quot;</span>,</span>
-<span id="cb22-350"><a href="#cb22-350" aria-hidden="true" tabindex="-1"></a>                <span class="at">reference =</span> <span class="sc">~</span><span class="fu">Binomial</span>(______),</span>
-<span id="cb22-351"><a href="#cb22-351" aria-hidden="true" tabindex="-1"></a>                <span class="at">control   =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>))</span>
-<span id="cb22-352"><a href="#cb22-352" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-353"><a href="#cb22-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-354"><a href="#cb22-354" aria-hidden="true" tabindex="-1"></a>Then answer: the coefficients differ from the Poisson version. In one sentence, why can you **not** use AIC to decide which of the two is better?</span>
+<span id="cb22-344"><a href="#cb22-344" aria-hidden="true" tabindex="-1"></a>Fit the <span class="in">`sum + nonzero`</span> model with a **binomial** reference instead of Poisson. The counts run 0 to 3 because there were three observation waves, so <span class="in">`trials = 3`</span> is the natural choice.</span>
+<span id="cb22-345"><a href="#cb22-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-348"><a href="#cb22-348" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-349"><a href="#cb22-349" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb22-350"><a href="#cb22-350" aria-hidden="true" tabindex="-1"></a>v_binom <span class="ot">&lt;-</span> <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero,</span>
+<span id="cb22-351"><a href="#cb22-351" aria-hidden="true" tabindex="-1"></a>                <span class="at">response  =</span> <span class="st">&quot;nom&quot;</span>,</span>
+<span id="cb22-352"><a href="#cb22-352" aria-hidden="true" tabindex="-1"></a>                <span class="at">reference =</span> <span class="sc">~</span><span class="fu">Binomial</span>(______),</span>
+<span id="cb22-353"><a href="#cb22-353" aria-hidden="true" tabindex="-1"></a>                <span class="at">control   =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>))</span>
+<span id="cb22-354"><a href="#cb22-354" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-355"><a href="#cb22-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-356"><a href="#cb22-356" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stretch</span></span>
+<span id="cb22-356"><a href="#cb22-356" aria-hidden="true" tabindex="-1"></a>Then answer: the coefficients differ from the Poisson version. In one sentence, why can you **not** use AIC to decide which of the two is better?</span>
 <span id="cb22-357"><a href="#cb22-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-358"><a href="#cb22-358" aria-hidden="true" tabindex="-1"></a>Refit §4.2&#39;s transitivity model with <span class="in">`transitiveweights(&quot;geomean&quot;, &quot;sum&quot;, &quot;geomean&quot;)`</span> instead of the default <span class="in">`(&quot;min&quot;, &quot;max&quot;, &quot;min&quot;)`</span>.</span>
+<span id="cb22-358"><a href="#cb22-358" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stretch</span></span>
 <span id="cb22-359"><a href="#cb22-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-360"><a href="#cb22-360" aria-hidden="true" tabindex="-1"></a>Report both coefficients. Then make the harder argument: which of the two specifications is a better description of *this* dataset, and what feature of the data would you look at to decide? &quot;The one with the bigger coefficient&quot; is not an answer. You may compare AIC because the two models share a response, reference, and constraints, but explain why AIC alone cannot tell you which closure interpretation is substantively right.</span>
+<span id="cb22-360"><a href="#cb22-360" aria-hidden="true" tabindex="-1"></a>Refit §4.2&#39;s transitivity model with <span class="in">`transitiveweights(&quot;geomean&quot;, &quot;sum&quot;, &quot;geomean&quot;)`</span> instead of the default <span class="in">`(&quot;min&quot;, &quot;max&quot;, &quot;min&quot;)`</span>.</span>
 <span id="cb22-361"><a href="#cb22-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-362"><a href="#cb22-362" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
+<span id="cb22-362"><a href="#cb22-362" aria-hidden="true" tabindex="-1"></a>Report both coefficients. Then make the harder argument: which of the two specifications is a better description of *this* dataset, and what feature of the data would you look at to decide? &quot;The one with the bigger coefficient&quot; is not an answer. You may compare AIC because the two models share a response, reference, and constraints, but explain why AIC alone cannot tell you which closure interpretation is substantively right.</span>
 <span id="cb22-363"><a href="#cb22-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-366"><a href="#cb22-366" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-367"><a href="#cb22-367" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-binom</span></span>
-<span id="cb22-368"><a href="#cb22-368" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb22-369"><a href="#cb22-369" aria-hidden="true" tabindex="-1"></a>v_binom <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_binom&quot;</span>,</span>
-<span id="cb22-370"><a href="#cb22-370" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero, <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span><span class="fu">Binomial</span>(<span class="dv">3</span>),</span>
-<span id="cb22-371"><a href="#cb22-371" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb22-372"><a href="#cb22-372" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-373"><a href="#cb22-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-376"><a href="#cb22-376" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-377"><a href="#cb22-377" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-binom-show</span></span>
-<span id="cb22-378"><a href="#cb22-378" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">Poisson  =</span> <span class="fu">round</span>(<span class="fu">coef</span>(v2), <span class="dv">4</span>),</span>
-<span id="cb22-379"><a href="#cb22-379" aria-hidden="true" tabindex="-1"></a>      <span class="at">Binomial =</span> <span class="fu">round</span>(<span class="fu">coef</span>(v_binom), <span class="dv">4</span>))</span>
-<span id="cb22-380"><a href="#cb22-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-381"><a href="#cb22-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-382"><a href="#cb22-382" aria-hidden="true" tabindex="-1"></a>**Core.** The `sum` coefficients are close (both positive, around 0.38–0.40), but look at `nonzero`: it is markedly **more negative** under the binomial reference (around −3.6) than under Poisson (around −2.1). That is the reference doing visible work. A binomial with `trials = 3` **already knows the counts are capped at 3** and puts more of its own mass on the low end, so relative to that stricter baseline the excess of zeros looks even more extreme, and <span class="in">`nonzero`</span> has to push harder. The sign-flip story from §3 survives the change of reference, but the magnitudes do not transfer, which is the whole point of the next paragraph.</span>
+<span id="cb22-364"><a href="#cb22-364" aria-hidden="true" tabindex="-1"></a><span class="fu">## Solution</span></span>
+<span id="cb22-365"><a href="#cb22-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-368"><a href="#cb22-368" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-369"><a href="#cb22-369" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-binom</span></span>
+<span id="cb22-370"><a href="#cb22-370" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb22-371"><a href="#cb22-371" aria-hidden="true" tabindex="-1"></a>v_binom <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_binom&quot;</span>,</span>
+<span id="cb22-372"><a href="#cb22-372" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero, <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span><span class="fu">Binomial</span>(<span class="dv">3</span>),</span>
+<span id="cb22-373"><a href="#cb22-373" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb22-374"><a href="#cb22-374" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb22-375"><a href="#cb22-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-378"><a href="#cb22-378" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-379"><a href="#cb22-379" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-binom-show</span></span>
+<span id="cb22-380"><a href="#cb22-380" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">Poisson  =</span> <span class="fu">round</span>(<span class="fu">coef</span>(v2), <span class="dv">4</span>),</span>
+<span id="cb22-381"><a href="#cb22-381" aria-hidden="true" tabindex="-1"></a>      <span class="at">Binomial =</span> <span class="fu">round</span>(<span class="fu">coef</span>(v_binom), <span class="dv">4</span>))</span>
+<span id="cb22-382"><a href="#cb22-382" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-383"><a href="#cb22-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-384"><a href="#cb22-384" aria-hidden="true" tabindex="-1"></a>You cannot use AIC to choose between them because **they are not defined over the same sample space.** The Poisson model assigns probability to a monastery where someone is nominated 47 times; the binomial model assigns that outcome probability zero, because it does not exist in its universe. Likelihoods computed over different sample spaces are not comparable numbers, and <span class="in">`ergm`</span> warns you about exactly this on every valued fit (see the Depth box in §2).</span>
+<span id="cb22-384"><a href="#cb22-384" aria-hidden="true" tabindex="-1"></a>**Core.** The `sum` coefficients are close (both positive, around 0.38–0.40), but look at `nonzero`: it is markedly **more negative** under the binomial reference (around −3.6) than under Poisson (around −2.1). That is the reference doing visible work. A binomial with `trials = 3` **already knows the counts are capped at 3** and puts more of its own mass on the low end, so relative to that stricter baseline the excess of zeros looks even more extreme, and <span class="in">`nonzero`</span> has to push harder. The sign-flip story from §3 survives the change of reference, but the magnitudes do not transfer, which is the whole point of the next paragraph.</span>
 <span id="cb22-385"><a href="#cb22-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-386"><a href="#cb22-386" aria-hidden="true" tabindex="-1"></a>Choose the reference from what you know about the data-generating process. Here the binomial is arguably the more honest choice, since three waves genuinely cannot produce a count above three.</span>
+<span id="cb22-386"><a href="#cb22-386" aria-hidden="true" tabindex="-1"></a>You cannot use AIC to choose between them because **they are not defined over the same sample space.** The Poisson model assigns probability to a monastery where someone is nominated 47 times; the binomial model assigns that outcome probability zero, because it does not exist in its universe. Likelihoods computed over different sample spaces are not comparable numbers, and <span class="in">`ergm`</span> warns you about exactly this on every valued fit (see the Depth box in §2).</span>
 <span id="cb22-387"><a href="#cb22-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-390"><a href="#cb22-390" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-391"><a href="#cb22-391" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-trans2</span></span>
-<span id="cb22-392"><a href="#cb22-392" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb22-393"><a href="#cb22-393" aria-hidden="true" tabindex="-1"></a>v4b <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_trans_geomean&quot;</span>,</span>
-<span id="cb22-394"><a href="#cb22-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">transitiveweights</span>(<span class="st">&quot;geomean&quot;</span>, <span class="st">&quot;sum&quot;</span>, <span class="st">&quot;geomean&quot;</span>),</span>
-<span id="cb22-395"><a href="#cb22-395" aria-hidden="true" tabindex="-1"></a>       <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
-<span id="cb22-396"><a href="#cb22-396" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
-<span id="cb22-397"><a href="#cb22-397" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-398"><a href="#cb22-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-401"><a href="#cb22-401" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-402"><a href="#cb22-402" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-trans2-show</span></span>
-<span id="cb22-403"><a href="#cb22-403" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb22-404"><a href="#cb22-404" aria-hidden="true" tabindex="-1"></a>  <span class="at">spec =</span> <span class="fu">c</span>(<span class="st">&quot;min / max / min&quot;</span>, <span class="st">&quot;geomean / sum / geomean&quot;</span>),</span>
-<span id="cb22-405"><a href="#cb22-405" aria-hidden="true" tabindex="-1"></a>  <span class="at">transitivity =</span> <span class="fu">c</span>(<span class="fu">round</span>(<span class="fu">coef</span>(v4)[<span class="dv">3</span>], <span class="dv">4</span>), <span class="fu">round</span>(<span class="fu">coef</span>(v4b)[<span class="dv">3</span>], <span class="dv">4</span>)),</span>
-<span id="cb22-406"><a href="#cb22-406" aria-hidden="true" tabindex="-1"></a>  <span class="at">sum          =</span> <span class="fu">c</span>(<span class="fu">round</span>(<span class="fu">coef</span>(v4)[<span class="dv">1</span>], <span class="dv">4</span>), <span class="fu">round</span>(<span class="fu">coef</span>(v4b)[<span class="dv">1</span>], <span class="dv">4</span>)),</span>
-<span id="cb22-407"><a href="#cb22-407" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names    =</span> <span class="cn">NULL</span>)</span>
-<span id="cb22-408"><a href="#cb22-408" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(v4, v4b)</span>
-<span id="cb22-409"><a href="#cb22-409" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-410"><a href="#cb22-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-411"><a href="#cb22-411" aria-hidden="true" tabindex="-1"></a>**Stretch.** The two coefficients are on **different scales**: they are not measuring the same quantity in different amounts, they are measuring different quantities. <span class="in">`(&quot;min&quot;,&quot;max&quot;,&quot;min&quot;)`</span> counts the single strongest two-path and caps its contribution at the weaker leg; <span class="in">`(&quot;geomean&quot;,&quot;sum&quot;,&quot;geomean&quot;)`</span> accumulates across all intermediaries and lets many weak paths add up. Naturally the summing version produces a larger raw number. Comparing the magnitudes is meaningless.</span>
+<span id="cb22-388"><a href="#cb22-388" aria-hidden="true" tabindex="-1"></a>Choose the reference from what you know about the data-generating process. Here the binomial is arguably the more honest choice, since three waves genuinely cannot produce a count above three.</span>
+<span id="cb22-389"><a href="#cb22-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-392"><a href="#cb22-392" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-393"><a href="#cb22-393" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-trans2</span></span>
+<span id="cb22-394"><a href="#cb22-394" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb22-395"><a href="#cb22-395" aria-hidden="true" tabindex="-1"></a>v4b <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;val_trans_geomean&quot;</span>,</span>
+<span id="cb22-396"><a href="#cb22-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ergm</span>(nw <span class="sc">~</span> sum <span class="sc">+</span> nonzero <span class="sc">+</span> <span class="fu">transitiveweights</span>(<span class="st">&quot;geomean&quot;</span>, <span class="st">&quot;sum&quot;</span>, <span class="st">&quot;geomean&quot;</span>),</span>
+<span id="cb22-397"><a href="#cb22-397" aria-hidden="true" tabindex="-1"></a>       <span class="at">response =</span> <span class="st">&quot;nom&quot;</span>, <span class="at">reference =</span> <span class="sc">~</span>Poisson,</span>
+<span id="cb22-398"><a href="#cb22-398" aria-hidden="true" tabindex="-1"></a>       <span class="at">control =</span> <span class="fu">control.ergm</span>(<span class="at">seed =</span> <span class="dv">6886</span>)))</span>
+<span id="cb22-399"><a href="#cb22-399" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb22-400"><a href="#cb22-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-403"><a href="#cb22-403" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-404"><a href="#cb22-404" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ex-trans2-show</span></span>
+<span id="cb22-405"><a href="#cb22-405" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb22-406"><a href="#cb22-406" aria-hidden="true" tabindex="-1"></a>  <span class="at">spec =</span> <span class="fu">c</span>(<span class="st">&quot;min / max / min&quot;</span>, <span class="st">&quot;geomean / sum / geomean&quot;</span>),</span>
+<span id="cb22-407"><a href="#cb22-407" aria-hidden="true" tabindex="-1"></a>  <span class="at">transitivity =</span> <span class="fu">c</span>(<span class="fu">round</span>(<span class="fu">coef</span>(v4)[<span class="dv">3</span>], <span class="dv">4</span>), <span class="fu">round</span>(<span class="fu">coef</span>(v4b)[<span class="dv">3</span>], <span class="dv">4</span>)),</span>
+<span id="cb22-408"><a href="#cb22-408" aria-hidden="true" tabindex="-1"></a>  <span class="at">sum          =</span> <span class="fu">c</span>(<span class="fu">round</span>(<span class="fu">coef</span>(v4)[<span class="dv">1</span>], <span class="dv">4</span>), <span class="fu">round</span>(<span class="fu">coef</span>(v4b)[<span class="dv">1</span>], <span class="dv">4</span>)),</span>
+<span id="cb22-409"><a href="#cb22-409" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names    =</span> <span class="cn">NULL</span>)</span>
+<span id="cb22-410"><a href="#cb22-410" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(v4, v4b)</span>
+<span id="cb22-411"><a href="#cb22-411" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-412"><a href="#cb22-412" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-413"><a href="#cb22-413" aria-hidden="true" tabindex="-1"></a>AIC is legitimate here. The models share a response, sample space, reference, and constraints, and AIC does not require models to be nested. A lower value says one specification has the better expected information tradeoff under the fitted likelihood. It does not tell you that its definition of a valued two-path is the true social mechanism. Choosing the statistic still requires theory and diagnostics, rather than treating an information criterion as a mechanism identifier.</span>
+<span id="cb22-413"><a href="#cb22-413" aria-hidden="true" tabindex="-1"></a>**Stretch.** The two coefficients are on **different scales**: they are not measuring the same quantity in different amounts, they are measuring different quantities. <span class="in">`(&quot;min&quot;,&quot;max&quot;,&quot;min&quot;)`</span> counts the single strongest two-path and caps its contribution at the weaker leg; <span class="in">`(&quot;geomean&quot;,&quot;sum&quot;,&quot;geomean&quot;)`</span> accumulates across all intermediaries and lets many weak paths add up. Naturally the summing version produces a larger raw number. Comparing the magnitudes is meaningless.</span>
 <span id="cb22-414"><a href="#cb22-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-415"><a href="#cb22-415" aria-hidden="true" tabindex="-1"></a>What you would actually look at, in order:</span>
+<span id="cb22-415"><a href="#cb22-415" aria-hidden="true" tabindex="-1"></a>AIC is legitimate here. The models share a response, sample space, reference, and constraints, and AIC does not require models to be nested. A lower value says one specification has the better expected information tradeoff under the fitted likelihood. It does not tell you that its definition of a valued two-path is the true social mechanism. Choosing the statistic still requires theory and diagnostics, rather than treating an information criterion as a mechanism identifier.</span>
 <span id="cb22-416"><a href="#cb22-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-417"><a href="#cb22-417" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**The distribution of the counts.** With a maximum of 3 and most non-zero cells at 1, the difference between &quot;strongest path&quot; and &quot;sum of paths&quot; is small, because there are not many multi-path pairs with much weight to accumulate. On denser valued data, such as email volumes or trade, the choice matters much more. Diagnostic: how many pairs have two or more non-trivial two-paths between them?</span>
-<span id="cb22-418"><a href="#cb22-418" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**What you think closure *means* here.** Sampson&#39;s monks are eighteen people in one building. The plausible mechanism is &quot;I nominate the person my close friend nominates,&quot; which is a strongest-path story, not an accumulation story. That argues for the default.</span>
-<span id="cb22-419"><a href="#cb22-419" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Out-of-model fit**, as in §5.2. Simulate from each and compare on a statistic neither was fitted to, such as the valued triad census or <span class="in">`nodeicovar`</span>. This complements AIC by asking whether the model reproduces features it was not tuned on.</span>
-<span id="cb22-420"><a href="#cb22-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-421"><a href="#cb22-421" aria-hidden="true" tabindex="-1"></a>Item 2 is the one that should carry the most weight, and it is the one people skip.</span>
-<span id="cb22-422"><a href="#cb22-422" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb22-423"><a href="#cb22-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-424"><a href="#cb22-424" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7. Readings</span></span>
+<span id="cb22-417"><a href="#cb22-417" aria-hidden="true" tabindex="-1"></a>What you would actually look at, in order:</span>
+<span id="cb22-418"><a href="#cb22-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-419"><a href="#cb22-419" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**The distribution of the counts.** With a maximum of 3 and most non-zero cells at 1, the difference between &quot;strongest path&quot; and &quot;sum of paths&quot; is small, because there are not many multi-path pairs with much weight to accumulate. On denser valued data, such as email volumes or trade, the choice matters much more. Diagnostic: how many pairs have two or more non-trivial two-paths between them?</span>
+<span id="cb22-420"><a href="#cb22-420" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**What you think closure *means* here.** Sampson&#39;s monks are eighteen people in one building. The plausible mechanism is &quot;I nominate the person my close friend nominates,&quot; which is a strongest-path story, not an accumulation story. That argues for the default.</span>
+<span id="cb22-421"><a href="#cb22-421" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Out-of-model fit**, as in §5.2. Simulate from each and compare on a statistic neither was fitted to, such as the valued triad census or <span class="in">`nodeicovar`</span>. This complements AIC by asking whether the model reproduces features it was not tuned on.</span>
+<span id="cb22-422"><a href="#cb22-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-423"><a href="#cb22-423" aria-hidden="true" tabindex="-1"></a>Item 2 is the one that should carry the most weight, and it is the one people skip.</span>
+<span id="cb22-424"><a href="#cb22-424" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb22-425"><a href="#cb22-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-426"><a href="#cb22-426" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Krivitsky (2012)**, &quot;Exponential-family random graph models for valued networks,&quot; *Electronic Journal of Statistics* 6:1100–1128. The paper the ERGM session assigns. Sections 2 and 3 are the reference-measure argument; section 4 is the term taxonomy in §4 above.</span>
-<span id="cb22-427"><a href="#cb22-427" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The `ergm.count` vignette**: <span class="in">`vignette(&quot;valued&quot;, package = &quot;ergm.count&quot;)`</span>. Runnable, current, and maintained by Krivitsky himself. If you read one thing, read this.</span>
-<span id="cb22-428"><a href="#cb22-428" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Krivitsky, Hunter, Morris &amp; Klumb (2023)**, &quot;ergm 4: New Features,&quot; *Journal of Statistical Software* 105(6). Documents valued <span class="in">`gof()`</span> support and the current term operators.</span>
-<span id="cb22-429"><a href="#cb22-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-432"><a href="#cb22-432" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-433"><a href="#cb22-433" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
-<span id="cb22-434"><a href="#cb22-434" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb22-435"><a href="#cb22-435" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb22-436"><a href="#cb22-436" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions: expand if your numbers differ from mine&quot;</span></span>
-<span id="cb22-437"><a href="#cb22-437" aria-hidden="true" tabindex="-1"></a>pk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;ergm.count&quot;</span>, <span class="st">&quot;network&quot;</span>)</span>
-<span id="cb22-438"><a href="#cb22-438" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> pk,</span>
-<span id="cb22-439"><a href="#cb22-439" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">sapply</span>(pk, <span class="cf">function</span>(p) <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(p))),</span>
-<span id="cb22-440"><a href="#cb22-440" aria-hidden="true" tabindex="-1"></a>           <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
-<span id="cb22-441"><a href="#cb22-441" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb22-442"><a href="#cb22-442" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb22-426"><a href="#cb22-426" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7. Readings</span></span>
+<span id="cb22-427"><a href="#cb22-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-428"><a href="#cb22-428" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Krivitsky (2012)**, &quot;Exponential-family random graph models for valued networks,&quot; *Electronic Journal of Statistics* 6:1100–1128. The paper the ERGM session assigns. Sections 2 and 3 are the reference-measure argument; section 4 is the term taxonomy in §4 above.</span>
+<span id="cb22-429"><a href="#cb22-429" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The `ergm.count` vignette**: <span class="in">`vignette(&quot;valued&quot;, package = &quot;ergm.count&quot;)`</span>. Runnable, current, and maintained by Krivitsky himself. If you read one thing, read this.</span>
+<span id="cb22-430"><a href="#cb22-430" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Krivitsky, Hunter, Morris &amp; Klumb (2023)**, &quot;ergm 4: New Features,&quot; *Journal of Statistical Software* 105(6). Documents valued <span class="in">`gof()`</span> support and the current term operators.</span>
+<span id="cb22-431"><a href="#cb22-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-434"><a href="#cb22-434" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-435"><a href="#cb22-435" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: versions</span></span>
+<span id="cb22-436"><a href="#cb22-436" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
+<span id="cb22-437"><a href="#cb22-437" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb22-438"><a href="#cb22-438" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Versions: expand if your numbers differ from mine&quot;</span></span>
+<span id="cb22-439"><a href="#cb22-439" aria-hidden="true" tabindex="-1"></a>pk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ergm&quot;</span>, <span class="st">&quot;ergm.count&quot;</span>, <span class="st">&quot;network&quot;</span>)</span>
+<span id="cb22-440"><a href="#cb22-440" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">package =</span> pk,</span>
+<span id="cb22-441"><a href="#cb22-441" aria-hidden="true" tabindex="-1"></a>           <span class="at">version =</span> <span class="fu">sapply</span>(pk, <span class="cf">function</span>(p) <span class="fu">as.character</span>(<span class="fu">packageVersion</span>(p))),</span>
+<span id="cb22-442"><a href="#cb22-442" aria-hidden="true" tabindex="-1"></a>           <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb22-443"><a href="#cb22-443" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R&quot;</span>, <span class="fu">as.character</span>(<span class="fu">getRversion</span>()), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb22-444"><a href="#cb22-444" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

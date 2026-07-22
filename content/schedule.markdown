@@ -138,7 +138,7 @@ All the class materials will be posted/updated here.
         <td>Netify: Building Network Data and the Map of the Whole Course</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/day1_teaching_shell.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day1_teaching_shell.html" download> Download deck </a> | <a href="../materials/2026/1_netify.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/1_netify.zip" target=_blank> Code &amp; data </a> | <a href="https://netify-dev.github.io/netify/" target=_blank> Netify website </a>
+          <dd><a href="../materials/2026/day8_teaching_shell.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day8_teaching_shell.html" download> Download deck </a> | <a href="../materials/2026/day8_netify.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day8_netify.zip" target=_blank> Code &amp; data </a> | <a href="https://netify-dev.github.io/netify/" target=_blank> Netify website </a>
           </dd>
           </dl>
         </td>
@@ -148,7 +148,7 @@ All the class materials will be posted/updated here.
         <td>Social Relations Model and Blockmodels <br><em>(HW 3 Due)</em></td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/2_srm_blocks_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/2_srm_blocks_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/2_srm_blocks.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/2_srm_blocks.zip" target=_blank> Code &amp; data </a> | <a href="../materials/2026/bayes_aside.zip" target=_blank> Bayesian workflow aside </a>
+          <dd><a href="../materials/2026/day9_srm_blocks_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day9_srm_blocks_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/day9_srm_blocks.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day9_srm_blocks.zip" target=_blank> Code &amp; data </a> | <a href="../materials/2026/bayes_aside.zip" target=_blank> Bayesian workflow aside </a>
           </dd>
           </dl>
         </td>
@@ -158,7 +158,7 @@ All the class materials will be posted/updated here.
         <td>Latent Geometry: The Distance Model &rarr; The Factor Model (AME)</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/3_latent_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/3_latent_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/3_latent.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/3_latent.zip" target=_blank> Code &amp; data </a>
+          <dd><a href="../materials/2026/day10_latent_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day10_latent_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/day10_latent.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day10_latent.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
@@ -168,7 +168,7 @@ All the class materials will be posted/updated here.
         <td>Advanced ERGM Specification and Temporal ERGMs</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/4_ergm_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/4_ergm_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/4_ergm.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/4_ergm.zip" target=_blank> Code &amp; data </a>
+          <dd><a href="../materials/2026/day11_ergm_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day11_ergm_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/day11_ergm.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day11_ergm.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
@@ -178,7 +178,7 @@ All the class materials will be posted/updated here.
         <td>Stochastic Actor-Oriented Models (SAOMs) <br><em>(HW 4 Due)</em></td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/5_saom_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/5_saom_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/5_saom.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/5_saom.zip" target=_blank> Code &amp; data </a>
+          <dd><a href="../materials/2026/day12_saom_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day12_saom_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/day12_saom.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day12_saom.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
@@ -188,7 +188,7 @@ All the class materials will be posted/updated here.
         <td>Causal Inference on Networks</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/6_causal_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/6_causal_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/6_causal.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/6_causal.zip" target=_blank> Code &amp; data </a>
+          <dd><a href="../materials/2026/day13_causal_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day13_causal_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/day13_causal.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day13_causal.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
@@ -198,7 +198,7 @@ All the class materials will be posted/updated here.
         <td>Which Model When? The Frontier</td>
         <td>
           <dl>
-          <dd><a href="../materials/2026/7_capstone_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/7_capstone_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/7_capstone.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/7_capstone.zip" target=_blank> Code &amp; data </a>
+          <dd><a href="../materials/2026/day14_capstone_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day14_capstone_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/day14_capstone.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day14_capstone.zip" target=_blank> Code &amp; data </a>
           </dd>
           </dl>
         </td>
