@@ -29,7 +29,7 @@ Homework assignments and data are posted here.
         <td>July 29</td>
         <td>
           <dl>
-          <dd><a href="../materials/homeworks/.ICPSR2024_homework02.html" target=_blank>Homework 2</a>| <a href="../materials/homeworks/ICPSR2024_homework02.rmd" target=_blank> Homework 2 rmd </a>
+          <dd><a href="../materials/homeworks/ICPSR2026_homework02.html" target=_blank>Homework 2</a>| <a href="../materials/homeworks/ICPSR2026_homework02.rmd" target=_blank> Homework 2 rmd </a>
           </dd>
           </dl>
         </td>
