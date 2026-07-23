@@ -1602,11 +1602,11 @@ display:block!important;
 </section>
 <section id="coefficients" class="slide level2">
 <h2>Read Point Estimates and Intervals Separately</h2>
-<p>The Syrian application supports three broad patterns:</p>
+<p>The direction and uncertainty are not the same for every term:</p>
 <ul>
-<li>Greater ideological difference is associated with less cooperation.</li>
-<li>Greater power difference is associated with less cooperation.</li>
-<li>Shared location is associated with more cooperation.</li>
+<li>Greater power difference has the clearest negative association in the SRM.</li>
+<li>Ideological difference is negative, but its interval crosses zero in the SRM and AME fits.</li>
+<li>Shared location is positive and clears zero in the AME fit.</li>
 <li>Shared sponsorship remains uncertain.</li>
 </ul>
 <div class="bottom-line">
@@ -1616,7 +1616,7 @@ display:block!important;
 <p><a href="day9_srm_blocks.html#srm-compare" class="walkthrough-link" target="_blank">Compare the coefficients</a></p>
 </div>
 <aside class="notes">
-<p>Keep the outcome scale visible. These coefficients concern square-root counts, not percentage changes.</p>
+<p>Keep the outcome scale visible. These coefficients concern square-root counts, not percentage changes. The published ideology finding is stronger than the uncertainty in this particular classroom refit, so separate the shared direction from the model-specific interval.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1737,18 +1737,20 @@ display:block!important;
 <div class="comparison-row">
 <div class="comparison-card">
 <p><span class="card-title">SRM</span></p>
-<p>Reproduces organization-level activity heterogeneity but misses much of the triadic structure.</p>
+<p>Actor heterogeneity: observed 0.44, fitted median 0.41</p>
+<p>Transitivity: observed 0.21, fitted median -0.03</p>
 </div>
 <div class="comparison-card accent-card">
 <p><span class="card-title">AME</span></p>
-<p>Keeps the actor heterogeneity and substantially improves cycle and transitivity fit.</p>
+<p>Actor heterogeneity: observed 0.44, fitted median 0.44</p>
+<p>Transitivity: observed 0.21, fitted median 0.22</p>
 </div>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-gof" class="walkthrough-link" target="_blank">Compare posterior predictive checks</a></p>
 </div>
 <aside class="notes">
-<p>Convergence says the sampler worked. Posterior predictive checks ask whether the fitted model reproduces the features needed for the claim.</p>
+<p>Convergence says the sampler worked. These numbers show exactly what the multiplicative layer buys: it retains the actor heterogeneity and recovers the third-order pattern the additive SRM misses.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1995,14 +1997,15 @@ display:block!important;
 </tr>
 </tbody>
 </table>
+<p>The panel contains the 18 most conflict-active senders with complete Polity and GDP coverage across all 13 years.</p>
 <div class="bottom-line">
-<p>The data and binary outcome stay fixed. The latent representation and political question change.</p>
+<p>This is a purposive high-information case set, not a sample from which to generalize to all states.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-longitudinal" class="walkthrough-link" target="_blank">Build the longitudinal panel</a></p>
 </div>
 <aside class="notes">
-<p>The binary outcome is whether one state directed more than 20 materially conflictual events toward another state in that year.</p>
+<p>The binary outcome is whether one state directed more than 20 materially conflictual events toward another state in that year. The actor set and threshold are fixed across the two models.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2071,20 +2074,20 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="longitudinal-results" class="slide level2">
-<h2>What the Longitudinal SRM Shows</h2>
+<h2>Put the Probit Results Into Probabilities</h2>
 <ul>
-<li>Greater polity difference is associated with a higher probability of crossing the high-conflict threshold.</li>
-<li>Same-region state pairs are also more likely to cross the threshold.</li>
-<li>Sender and receiver propensities are strongly positively related.</li>
+<li>Different region to same region: about a 28 percentage-point increase in fitted probability.</li>
+<li>Polity difference from 0 to 10 points: about a 7 percentage-point increase.</li>
+<li>Sender-receiver effect correlation: about 0.93.</li>
 </ul>
 <div class="bottom-line">
-<p>States that more often initiate high-intensity events also tend to be on the receiving end of them.</p>
+<p>Within this selected system, states that more often initiate high-intensity events also tend to receive them.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-lame-results" class="walkthrough-link" target="_blank">Inspect the longitudinal SRM results</a></p>
 </div>
 <aside class="notes">
-<p>Translate the probit signs into actions. These are conditional associations from a fast point fit, not causal effects and not posterior inference.</p>
+<p>The probability contrasts hold the observed actor pair and year fixed and standardize over the panel. They are conditional associations from a fast point fit, not causal effects or posterior inference.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2099,8 +2102,8 @@ display:block!important;
 </section>
 <section id="longitudinal-effects" class="slide level2">
 <h2>Persistent Conflict Positions</h2>
-<p>The United States has the largest pooled adjusted sender and receiver effects in this restricted ICEWS network.</p>
-<p>Iran, Russia, Pakistan, Israel, and the United Kingdom also appear near the top of one or both rankings.</p>
+<p>The United States has the largest pooled adjusted sender and receiver effects in this selected ICEWS network.</p>
+<p>Israel, Iran, the United Kingdom, Pakistan, India, and Russia appear near the top of one or both rankings.</p>
 <div class="bottom-line">
 <p>The effects can reflect geopolitical centrality and ICEWS news coverage. The model cannot distinguish those explanations by itself.</p>
 </div>
@@ -2143,18 +2146,17 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="netmix-components" class="slide level2">
-<h2>NetMix Learns Four Connected Pieces</h2>
+<h2>NetMix Learns Two Connected Pieces</h2>
 <ol type="1">
 <li>Conflict risk for every sender-role and receiver-role pair</li>
 <li>A mixed-membership vector for every state-year</li>
-<li>Direct dyadic associations for region and polity difference</li>
-<li>Associations of polity and GDP with role membership</li>
 </ol>
+<p>The main demonstration is role-only. We let the annual conflict relationships define the roles before adding predictors to either equation.</p>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-fit" class="walkthrough-link" target="_blank">Read the complete NetMix call</a></p>
 </div>
 <aside class="notes">
-<p>Keep the tie equation and membership equation separate. The same variable would answer different questions in the two locations.</p>
+<p>This makes the contrast with the SRM clean. The SRM centers covariate-adjusted persistent actor effects. NetMix centers changing relational profiles.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2167,23 +2169,22 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="netmix-svi" class="slide level2">
+<section id="netmix-vi" class="slide level2">
 <h2>How the Fast NetMix Estimator Works</h2>
 <ol type="1">
 <li>Start with soft role probabilities for every state-year.</li>
-<li>Sample a small proportion of nodes for a local update.</li>
-<li>Revise role probabilities for the sampled relationships.</li>
-<li>Take a weighted global step for the block matrix and coefficients.</li>
-<li>Repeat while monitoring the evidence lower bound.</li>
+<li>Update those probabilities using all observed dyad-years.</li>
+<li>Update the role-to-role conflict matrix using the new memberships.</li>
+<li>Alternate while monitoring the evidence lower bound.</li>
 </ol>
 <div class="bottom-line">
-<p>Stochastic variational inference optimizes an approximation. It does not generate an MCMC posterior sample.</p>
+<p>Full-batch variational inference is extremely fast for this small system. It does not generate an MCMC posterior sample.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-fit" class="walkthrough-link" target="_blank">Walk through the fast NetMix estimator</a></p>
 </div>
 <aside class="notes">
-<p>Early updates move quickly and later updates retain more of the accumulated estimate. Speed comes with approximate uncertainty and local-optimum risk.</p>
+<p>NetMix also offers stochastic subsampling for larger networks. Full-batch updates are faster and more stable here, but approximate uncertainty and local-optimum risk remain.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2198,13 +2199,13 @@ display:block!important;
 </section>
 <section id="netmix-starts" class="slide level2">
 <h2>Multiple Runs Are Part of the Analysis</h2>
-<p>Fits from four external seeds recover a similar conflict-active role but reach different objective values and noticeably different probabilities.</p>
-<p>Each run uses five internal initializations. We retain the run with the largest evidence lower bound.</p>
+<p>We run 20 external seeds, each with 10 internal initializations.</p>
+<p>The nine highest-ranking runs recover nearly identical probabilities after aligning the role labels.</p>
 <div class="bottom-line">
-<p>Qualitative stability is stronger than exact-probability stability. Report that distinction.</p>
+<p>The stable result is a two-role pattern. The numeric role labels remain arbitrary.</p>
 </div>
 <aside class="notes">
-<p>This is a real local-optimum issue found during the audit. Do not hide it behind the word converged.</p>
+<p>We retain the largest evidence lower bound. A three-role stochastic sensitivity fit does not reproduce its two low-activity roles, so it is not used for the substantive claim.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2218,17 +2219,21 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="netmix-theta" class="slide level2">
-<h2>Read the NetMix Matrix Before Naming Roles</h2>
-<p>One role is substantially more conflict-active, especially in its within-role cell.</p>
-<p>The other roles have low within-role conflict risk but differ in how they connect to the active role.</p>
+<h2>Read the NetMix Matrix as Conflict Relationships</h2>
+<ul>
+<li>Lower with lower: 0.05</li>
+<li>Lower with broadly involved: 0.83</li>
+<li>Broadly involved with lower: 0.86</li>
+<li>Broadly involved with broadly involved: 0.97</li>
+</ul>
 <div class="bottom-line">
-<p>Role numbers are arbitrary. Name a role from its entire pattern of directed conflict relationships.</p>
+<p>One broadly involved state raises high-conflict risk in either direction. Two such states produce the highest risk.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-results" class="walkthrough-link" target="_blank">Inspect the fitted block matrix</a></p>
 </div>
 <aside class="notes">
-<p>Read rows as the role associated with initiating events and columns as the role associated with receiving them.</p>
+<p>Read rows as the role associated with initiating events and columns as the role associated with receiving them. The fitted role is broad involvement, not merely sending or receiving.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2242,20 +2247,21 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="trajectories" class="slide level2">
-<h2>Follow the States That Actually Move</h2>
+<h2>The Trajectories Now Tell a Political Story</h2>
 <ul>
-<li>China moves more strongly toward the conflict-active role.</li>
-<li>Pakistan shows the largest first-to-last change across the fitted role mixture.</li>
-<li>Iran becomes more concentrated in its dominant role.</li>
+<li>The United States stays strongly associated with broad conflict involvement.</li>
+<li>Syria is near zero through 2010, rises in 2011, and reaches about 0.37 in 2012.</li>
+<li>Russia ends higher than it begins.</li>
+<li>Iran and Pakistan show episodic peaks rather than smooth trends.</li>
 </ul>
 <div class="bottom-line">
-<p>Describe changing relational behavior, not a state “becoming Group 2.”</p>
+<p>Describe changing relational profiles, not a state permanently “becoming a block.”</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-trajectories" class="walkthrough-link" target="_blank">Open the role trajectories</a></p>
 </div>
 <aside class="notes">
-<p>Feature Pakistan, China, and Iran because they show the clearest changes. Keep Russia and the United States as more stable contrasts.</p>
+<p>The Syrian rise is the clearest face-validating change, but do not turn alignment with known history into causal validation. ICEWS coverage is part of the fitted profile.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2270,15 +2276,20 @@ display:block!important;
 </section>
 <section id="calibration" class="slide level2">
 <h2>Calibration Before Storytelling</h2>
-<p>The model identifies the highest-risk dyads reasonably well but compresses some middle-to-high risks.</p>
+<p>Observed high-conflict rates by predicted fifth:</p>
+<ul>
+<li>Lowest: 0.01, predicted 0.08</li>
+<li>Middle: 0.15, predicted 0.15</li>
+<li>Highest: 0.61, predicted 0.57</li>
+</ul>
 <div class="bottom-line">
-<p>The conflict-active role is a useful ordering of risk, but the exact probabilities are not perfectly calibrated.</p>
+<p>Brier score: 0.115 for the role model versus 0.170 for one constant probability.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-calibration" class="walkthrough-link" target="_blank">Inspect the calibration table</a></p>
 </div>
 <aside class="notes">
-<p>Prediction and interpretation are connected. A dramatic role label is less useful if the model does not distinguish observed risk well.</p>
+<p>The ordering is strong and the middle is well calibrated. The model overpredicts the quietest dyads and underpredicts the most active ones.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2291,17 +2302,19 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="hmm" class="slide level2">
-<h2>Two Requested Regimes Do Not Produce Two Eras</h2>
-<p>The two-state extension places nearly every year in the same hidden state.</p>
+<section id="netmix-boundary" class="slide level2">
+<h2>What the Role Trajectory Does Not Mean</h2>
+<ul>
+<li>Membership is not the probability that a state is “in conflict.”</li>
+<li>The two roles are not natural geopolitical kinds.</li>
+<li>Role numbers cannot be compared across fits without alignment.</li>
+<li>The selected actor set is not the entire international system.</li>
+</ul>
 <div class="bottom-line">
-<p>This specification provides no meaningful evidence of a historical regime break.</p>
-</div>
-<div class="slide-link">
-<p><a href="day9_srm_blocks.html#sec-netmix-hmm" class="walkthrough-link" target="_blank">Inspect the HMM extension</a></p>
+<p>The model gives a compact description of relationships in this selected panel, not permanent national identities.</p>
 </div>
 <aside class="notes">
-<p>Treat this as a substantive nonfinding and a lesson about latent models. Asking for two states does not force history to contain two distinct eras.</p>
+<p>Keep the estimand and case boundary attached to the finding. A role-membership trajectory is a model-based relational summary.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2364,7 +2377,7 @@ display:block!important;
 </section>
 <section id="human-result" class="slide level2">
 <h2>Say the Syrian Result in Human Terms</h2>
-<p>Ideologically and organizationally similar rebel groups tended to conduct more joint operations, and shared location facilitated cooperation.</p>
+<p>In the AME fit, similarly powerful organizations and organizations operating in the same location conduct more joint operations. Ideological difference remains negative, but its interval crosses zero in this refit.</p>
 <p>ANF and ASIM were unusually active and occupied a cooperative core that linked broadly across a fragmented periphery.</p>
 <div class="bottom-line">
 <p>These are dependence-adjusted associations and relational descriptions, not causal effects of ideology or sponsorship.</p>
@@ -2373,7 +2386,31 @@ display:block!important;
 <p><a href="day9_srm_blocks.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the complete interpretation</a></p>
 </div>
 <aside class="notes">
-<p>End the application with actions, organizations, and the political system. Do not end with coefficient signs or block numbers.</p>
+<p>End with actions, organizations, and the political system. Distinguish the direction of the ideology estimate from the precision of this fit.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="human-longitudinal" class="slide level2">
+<h2>Say the Longitudinal Result in Human Terms</h2>
+<p>Within this selected ICEWS system, high-intensity conflict is more likely within regions and across larger regime differences. The United States has the largest persistent adjusted sender and receiver effects.</p>
+<p>The role model finds broad and lower conflict-involvement profiles. The United States remains broadly involved, while Syria moves sharply toward broad involvement beginning in 2011.</p>
+<div class="bottom-line">
+<p>These are conditional descriptions of coded relationships, not causal effects or permanent geopolitical identities.</p>
+</div>
+<div class="slide-link">
+<p><a href="day9_srm_blocks.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the complete interpretation</a></p>
+</div>
+<aside class="notes">
+<p>Use the SRM for the persistent adjusted position and NetMix for change in relational profile. Keep the selected case set and ICEWS coverage caveat attached.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
