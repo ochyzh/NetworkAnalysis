@@ -1053,7 +1053,7 @@ margin-right: 0; }
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Day 9: Actor Effects and Relational Roles</h1>
-  <p class="subtitle">The Social Relations Model, AME, and Blockmodels</p>
+  <p class="subtitle">The Social Relations Model (SRM), Additive and Multiplicative Effects (AME), and Blockmodels</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -1072,10 +1072,10 @@ Shahryar Minhas
 <p>We built defensible network objects and saw why dyads sharing actors are not independent rows.</p>
 </div><div class="column" style="width:48%;">
 <p><span class="card-title">Day 9</span></p>
-<p>We model recurring actors as continuous effects, latent affinities, discrete roles, and annual role mixtures.</p>
+<p>We ask whether the missing pattern is broad actor involvement, especially strong pairings, a few recurring roles, or role profiles that differ across years.</p>
 </div></div>
 <div class="bottom-line">
-<p>The model should match the kind of unobserved political structure we are trying to understand.</p>
+<p>Start with what may be missing from the political story, then choose the model that can represent it.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-today" class="walkthrough-link" target="_blank">Open the walkthrough</a></p>
@@ -1104,7 +1104,7 @@ display:block!important;
 <li>Did organizations occupy a small number of relational roles?</li>
 </ul>
 <div class="bottom-line">
-<p>The political question comes first: what organized tactical cooperation across a fragmented opposition?</p>
+<p>The political question comes first: how was tactical cooperation organized within a fragmented opposition?</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-gade" class="walkthrough-link" target="_blank">Meet the Syrian cooperation data</a></p>
@@ -1182,7 +1182,7 @@ display:block!important;
 <td>Greater ideological distance, less cooperation</td>
 </tr>
 <tr class="even">
-<td>Symmetric alliances</td>
+<td>Preference for similarly strong partners</td>
 <td>Greater power difference, less cooperation</td>
 </tr>
 <tr class="odd">
@@ -1224,7 +1224,7 @@ display:block!important;
 <tr class="header">
 <th>Model</th>
 <th>Question</th>
-<th>Human result</th>
+<th>What We Learn</th>
 </tr>
 </thead>
 <tbody>
@@ -1235,28 +1235,28 @@ display:block!important;
 </tr>
 <tr class="even">
 <td>SRM</td>
-<td>Which organizations are consistently more active?</td>
-<td>An association conditional on recurring organizations</td>
+<td>Which organizations cooperate unusually often across many partners?</td>
+<td>A score for each organization’s adjusted level of involvement</td>
 </tr>
 <tr class="odd">
 <td>AME</td>
-<td>What unmeasured affinity remains?</td>
-<td>Continuous latent cooperative profiles</td>
+<td>Which pairs cooperate unusually well after those broad actor differences enter?</td>
+<td>A map of otherwise unexplained pairings</td>
 </tr>
 <tr class="even">
-<td>Cross-sectional SBM</td>
-<td>What relational roles organize this network?</td>
-<td>A role-to-role cooperation matrix</td>
+<td>Cross-sectional stochastic blockmodel (SBM)</td>
+<td>Does cooperation follow a small number of recurring roles?</td>
+<td>The cooperation rate for each role pairing</td>
 </tr>
 <tr class="odd">
 <td>Longitudinal SRM</td>
-<td>Which states persistently appear on the source and target sides of high-volume event relationships?</td>
-<td>Pooled source-side and target-side propensities</td>
+<td>Which states repeatedly appear on each side of high-volume event relationships?</td>
+<td>One adjusted source-side and target-side score per state</td>
 </tr>
 <tr class="even">
 <td>Repeated-network NetMix</td>
-<td>How do annual relational profiles differ?</td>
-<td>State-year mixtures with no Markov transition model</td>
+<td>How does each state’s pattern of relationships look in each year?</td>
+<td>A yearly blend of relational roles for each state</td>
 </tr>
 </tbody>
 </table>
@@ -1264,7 +1264,7 @@ display:block!important;
 <p><a href="day9_srm_blocks.html#sec-model-compass" class="walkthrough-link" target="_blank">Use the model compass</a></p>
 </div>
 <aside class="notes">
-<p>Ask for one ordinary-language sentence from every model. The estimand changes as we move down the table.</p>
+<p>Ask for one ordinary-language sentence from every model. The political question changes as we move down the table.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1281,11 +1281,13 @@ display:block!important;
 <h2>Why Independent Dyads Are Not Credible Here</h2>
 <p>The pairs <code>ANF-ASIM</code> and <code>ANF-ISIL</code> both contain ANF.</p>
 <p>If ANF has unmeasured organizational capacity, both observations inherit it.</p>
+<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\epsilon_{ij}</annotation></semantics></math> be what the independent regression still gets wrong for pair <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>j</mi></mrow><annotation encoding="application/x-tex">ij</annotation></semantics></math>. Then</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mtext mathvariant="normal">ANF,ASIM</mtext></msub><mo>⟂̸</mo><msub><mi>ϵ</mi><mtext mathvariant="normal">ANF,ISIL</mtext></msub></mrow><annotation encoding="application/x-tex">
 \epsilon_{\text{ANF,ASIM}} \not\perp \epsilon_{\text{ANF,ISIL}}
 </annotation></semantics></math></p>
+<p>The crossed independence symbol, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⟂̸</mo><annotation encoding="application/x-tex">\not\perp</annotation></semantics></math>, means the two remaining errors are not statistically independent.</p>
 <div class="bottom-line">
-<p>Repeated organizations couple the evidence even when every unordered pair appears only once.</p>
+<p>Pairs involving the same organization are not separate pieces of evidence, even when every unordered pair appears only once.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-glm" class="walkthrough-link" target="_blank">Run the independent benchmark</a></p>
@@ -1312,7 +1314,7 @@ display:block!important;
 <p><span class="card-title">Independent model works</span></p>
 <p>Organization-level residual means cluster around zero.</p>
 </div><div class="column" style="width:49%;">
-<p><span class="card-title">Unmodeled actor heterogeneity</span></p>
+<p><span class="card-title">Recurring Organization Pattern</span></p>
 <p>The same organizations repeatedly sit above or below the regression line.</p>
 </div></div>
 <div class="slide-link">
@@ -1334,24 +1336,29 @@ display:block!important;
 </section>
 <section id="srm" class="slide level2">
 <h2>The Symmetric SRM Adds One Actor Effect</h2>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi><mo>+</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>a</mi><mi>j</mi></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
-y_{ij}=\mathbf{x}_{ij}^{\mathsf T}\boldsymbol\beta+a_i+a_j+\epsilon_{ij}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi><mo>+</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>a</mi><mi>j</mi></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>a</mi><mi>i</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mover><mo>∼</mo><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">d</mi></mrow></mover><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><msubsup><mi>σ</mi><mi>a</mi><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
+\begin{aligned}
+y_{ij}&amp;=\mathbf{x}_{ij}^{\mathsf T}\boldsymbol\beta+a_i+a_j+\epsilon_{ij},\\
+a_i&amp;\stackrel{\mathrm{iid}}{\sim}\mathcal N(0,\sigma_a^2).
+\end{aligned}
 </annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\mathbf x_{ij}</annotation></semantics></math> contains the measured pair attributes, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛃</mi><annotation encoding="application/x-tex">\boldsymbol\beta</annotation></semantics></math> contains their coefficients, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\epsilon_{ij}</annotation></semantics></math> is what remains unique to the pair.</p>
+<p>The label <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">d</mi></mrow><annotation encoding="application/x-tex">\mathrm{iid}</annotation></semantics></math> means independent and identically distributed across organizations: the actor effects use the same distribution but are separate draws.</p>
 <div class="comparison-row">
 <div class="comparison-card">
 <p><span class="card-title"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>i</mi></msub><annotation encoding="application/x-tex">a_i</annotation></semantics></math></span></p>
-<p>How active organization <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> is across all of its observed partnerships, after the measured variables enter.</p>
+<p>Whether organization <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> records more or fewer joint operations across its partners than the measured variables predict.</p>
 </div>
 <div class="comparison-card accent-card">
 <p><span class="card-title"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mi>a</mi><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma_a^2</annotation></semantics></math></span></p>
-<p>How much persistent organization-level heterogeneity remains across the system.</p>
+<p>How much the organizations differ in that adjusted level of cooperation.</p>
 </div>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-srm" class="walkthrough-link" target="_blank">Build the symmetric SRM</a></p>
 </div>
 <aside class="notes">
-<p>The actor effect is partially pooled. It is not simply the raw number of partnerships.</p>
+<p>The second line is what gives sigma a squared a meaning. The actor effects are centered at zero and partially pooled. They are not simply the raw number of partnerships.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1366,14 +1373,23 @@ display:block!important;
 </section>
 <section id="directed-srm" class="slide level2">
 <h2>Directed SRM: Same Logic, More Pieces</h2>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi><mo>+</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>b</mi><mi>j</mi></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
-y_{ij}=\mathbf{x}_{ij}^{\mathsf T}\boldsymbol\beta+a_i+b_j+\epsilon_{ij}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi><mo>+</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>b</mi><mi>j</mi></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mi>i</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>b</mi><mi>i</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="left" style="text-align: left"><mover><mo>∼</mo><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">d</mi></mrow></mover><mi>𝒩</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">[</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mi>a</mi><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mi>b</mi><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mo>Corr</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo><msub><mi>ϵ</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>ρ</mi><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
+\begin{aligned}
+y_{ij}&amp;=\mathbf{x}_{ij}^{\mathsf T}\boldsymbol\beta+a_i+b_j+\epsilon_{ij},\\
+\begin{pmatrix}a_i\\b_i\end{pmatrix}
+&amp;\stackrel{\mathrm{iid}}{\sim}\mathcal N\!\left[
+\begin{pmatrix}0\\0\end{pmatrix},
+\begin{pmatrix}\sigma_a^2&amp;\sigma_{ab}\\\sigma_{ab}&amp;\sigma_b^2\end{pmatrix}
+\right],\qquad
+\operatorname{Corr}(\epsilon_{ij},\epsilon_{ji})=\rho .
+\end{aligned}
 </annotation></semantics></math></p>
 <ul>
-<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>i</mi></msub><annotation encoding="application/x-tex">a_i</annotation></semantics></math>: sender activity</li>
-<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>j</mi></msub><annotation encoding="application/x-tex">b_j</annotation></semantics></math>: receiver attractiveness or exposure</li>
-<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>,</mo><msub><mi>b</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(a_i,b_i)</annotation></semantics></math>: whether active senders are also active receivers</li>
-<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>: residual reciprocity between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>j</mi></mrow><annotation encoding="application/x-tex">ij</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">ji</annotation></semantics></math></li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>i</mi></msub><annotation encoding="application/x-tex">a_i</annotation></semantics></math>: how often actor <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> appears on the source side, beyond the measured predictors</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>i</mi></msub><annotation encoding="application/x-tex">b_i</annotation></semantics></math>: how often the same actor appears on the target side</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mi>a</mi><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma_a^2</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mi>b</mi><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma_b^2</annotation></semantics></math>: how much the adjusted source-side and target-side scores differ across actors</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub><annotation encoding="application/x-tex">\sigma_{ab}</annotation></semantics></math>: whether states that are often sources are also often targets</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>: whether an unexpectedly high <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mspace width="-0.167em"></mspace><mo>→</mo><mspace width="-0.167em"></mspace><mi>j</mi></mrow><annotation encoding="application/x-tex">i\!\rightarrow\!j</annotation></semantics></math> outcome accompanies an unexpectedly high <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mspace width="-0.167em"></mspace><mo>→</mo><mspace width="-0.167em"></mspace><mi>i</mi></mrow><annotation encoding="application/x-tex">j\!\rightarrow\!i</annotation></semantics></math> outcome</li>
 </ul>
 <div class="bottom-line">
 <p>Use the symmetric form for joint operations and the directed form when the political action has a meaningful direction.</p>
@@ -1403,8 +1419,9 @@ y_{ij}=\beta x_{ij}+\gamma z_{ij}+\epsilon_{ij}
 \operatorname{plim}(\widehat\beta_{\text{naive}})
 =\beta+\gamma\frac{\operatorname{Cov}(x,z)}{\operatorname{Var}(x)}
 </annotation></semantics></math></p>
+<p>The probability limit, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>plim</mo><annotation encoding="application/x-tex">\operatorname{plim}</annotation></semantics></math>, is the value an estimate approaches with a very large sample. Here <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> is the measured predictor, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> is the missing political process, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> is the association we want, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math> tells us how <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> relates to the outcome.</p>
 <div class="bottom-line">
-<p>The direction of bias depends on both what the omitted structure does and how it overlaps the measured predictor after the other included predictors are partialled out.</p>
+<p>Leaving out <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> can pull the estimated association for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> up or down. The direction depends on what <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> does and whether it tends to occur at high or low values of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-inference" class="walkthrough-link" target="_blank">Work through the inference cases</a></p>
@@ -1426,10 +1443,10 @@ display:block!important;
 <section id="positive-case" class="slide level2">
 <h2>Positive Covariance Case</h2>
 <p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> be ideological distance and let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> be unmeasured brokerage that raises cooperation, so <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\gamma&gt;0</annotation></semantics></math>.</p>
-<p>If brokers disproportionately connect ideologically distant pairs, then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x,z)&gt;0</annotation></semantics></math> and the naive coefficient is shifted upward.</p>
-<p>The direct ideology association can therefore look less negative, disappear, or even change sign.</p>
+<p>If brokers disproportionately connect ideologically distant pairs, then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x,z)&gt;0</annotation></semantics></math> and the estimated ideology coefficient is pulled upward.</p>
+<p>Ideological distance can therefore look less negatively associated with cooperation than it would if brokerage were measured, appear unrelated, or even appear positively associated.</p>
 <div class="bottom-line">
-<p>The coefficient mixes the direct association of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> with the omitted pathway through <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>.</p>
+<p>Because brokerage is missing from the model, some of its cooperation pattern gets credited to ideological distance.</p>
 </div>
 <aside class="notes">
 <p>Do not call the coefficient simply wrong. It targets an unconditional combination rather than the direct coefficient beta.</p>
@@ -1448,10 +1465,10 @@ display:block!important;
 <section id="negative-case" class="slide level2">
 <h2>Negative Covariance Case</h2>
 <p>Keep <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> as ideological distance. Now let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> be shared unmeasured command infrastructure that raises cooperation.</p>
-<p>If politically similar organizations are more likely to share that infrastructure, then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x,z)&lt;0</annotation></semantics></math> and the naive coefficient is shifted downward.</p>
-<p>The ideology coefficient can look more negative than its direct association.</p>
+<p>If politically similar organizations are more likely to share that infrastructure, then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x,z)&lt;0</annotation></semantics></math> and the estimated ideology coefficient is pulled downward.</p>
+<p>Ideological distance can then look more negatively associated with cooperation than it would if shared infrastructure were measured.</p>
 <div class="bottom-line">
-<p>The same cooperation-enhancing omitted mechanism can make the measured ideology association look more negative when its covariance with distance is negative.</p>
+<p>Because shared infrastructure is missing from the model, some of its cooperation pattern gets credited to ideological similarity.</p>
 </div>
 <aside class="notes">
 <p>Contrast this with the brokerage case. The same omitted variable can move a coefficient in opposite directions depending on how it overlaps the measured predictor.</p>
@@ -1469,10 +1486,10 @@ display:block!important;
 </section>
 <section id="zero-case" class="slide level2">
 <h2>Zero Covariance Case</h2>
-<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x,z)=0</annotation></semantics></math>, the linear point estimate can remain centered on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>.</p>
-<p>But the errors are still dependent because relationships sharing organizations inherit the same <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>.</p>
+<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x,z)=0</annotation></semantics></math>, the estimated ideology association can still be centered on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>.</p>
+<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> includes recurring actor differences, the errors are still dependent because relationships sharing organizations inherit the same <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>.</p>
 <div class="bottom-line">
-<p>No point-estimate bias does not mean valid IID uncertainty.</p>
+<p>A coefficient that approaches the right target in a large sample can still come with the wrong independent-row uncertainty calculation.</p>
 </div>
 <aside class="notes">
 <p>This is the case that corrects the slogan that network dependence always biases every coefficient.</p>
@@ -1491,14 +1508,15 @@ display:block!important;
 <section id="exogeneity" class="slide level2">
 <h2>What the SRM Does Not Magically Solve</h2>
 <p>Random effects are not a causal identification strategy by themselves.</p>
+<p>Adding actor effects helps represent relationships that share actors. It does not tell us what would have happened if an organization had a different ideology, sponsor, or location.</p>
 <ul>
-<li>If latent effects remain correlated with the predictor, the coefficient can still mix pathways.</li>
-<li>The latent-effect distribution is an assumption.</li>
-<li>A one-period network cannot separate actor fixed effects from time-invariant nodal predictors.</li>
-<li>Post-treatment controls and colliders remain post-treatment controls and colliders.</li>
+<li>If an unmeasured actor difference overlaps with a predictor, the coefficient can still blend the two stories.</li>
+<li>We must assume a distribution for the unmeasured actor effects.</li>
+<li>With one network, we cannot compare the same actor with itself over time.</li>
+<li>A badly chosen control variable remains a problem after we add actor effects.</li>
 </ul>
 <div class="bottom-line">
-<p>The SRM models dependence. Exogeneity still needs a research design and defensible assumptions.</p>
+<p>The SRM handles an important source of dependence. Causal claims still need a research design and assumptions we can defend.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-inference" class="walkthrough-link" target="_blank">Read the inferential boundary</a></p>
@@ -1520,18 +1538,17 @@ display:block!important;
 <section id="remedies" class="slide level2">
 <h2>What Can We Do About Correlated Effects?</h2>
 <ul>
-<li>Measure the omitted political mechanism when possible.</li>
-<li>Add actor means in a correlated-random-effects or Mundlak specification.</li>
-<li>Separate within-actor from between-actor variation.</li>
-<li>Compare actor fixed effects when the estimand permits it.</li>
-<li>Compare SRM and richer AME specifications.</li>
-<li>Report how the substantive conclusion changes.</li>
+<li>Measure the missing political mechanism when possible.</li>
+<li>With repeated observations, add each actor’s long-run predictor average so within-actor change is not confused with across-actor differences. This is a correlated-random-effects or Mundlak approach.</li>
+<li>Compare the same actor over time with actor fixed effects when the question and data allow it.</li>
+<li>Compare the SRM with a richer AME model that represents pair-specific affinity.</li>
+<li>Report which political conclusions survive those reasonable choices.</li>
 </ul>
 <div class="bottom-line">
-<p>Sensitivity across defensible specifications is evidence. No single latent model settles the identification question.</p>
+<p>Results that survive several defensible models are more reassuring. No single latent model settles the causal question.</p>
 </div>
 <aside class="notes">
-<p>Connect the remedy to the estimand. Fixed effects cannot estimate a separate coefficient for a time-invariant actor variable in one cross-section.</p>
+<p>Connect the remedy to the question being asked. Fixed effects cannot estimate a separate coefficient for a time-invariant actor variable in one cross-section.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1546,15 +1563,16 @@ display:block!important;
 </section>
 <section id="baby-mcmc" class="slide level2">
 <h2>Baby MCMC: The Computer Takes Turns</h2>
+<p>Markov chain Monte Carlo (MCMC) learns the model by repeatedly updating one group of unknown quantities at a time.</p>
 <ol type="1">
-<li>Update the observed-variable coefficients.</li>
-<li>Update every organization’s latent activity effect.</li>
-<li>Update the variance components.</li>
+<li>Update the coefficients for the measured variables.</li>
+<li>Update every organization’s unobserved activity effect.</li>
+<li>Update how much those actor effects vary overall.</li>
 <li>With AME, update the latent coordinates.</li>
-<li>Repeat after burn-in and retain draws.</li>
+<li>Repeat, discard the early settling-in rounds, and save later rounds.</li>
 </ol>
 <div class="bottom-line">
-<p>The chain is a correlated walk through plausible explanations of one network, not a collection of new networks.</p>
+<p>The chain explores plausible parameter values for this one observed network. It is not a collection of newly observed networks.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-baby-mcmc" class="walkthrough-link" target="_blank">Walk through the MCMC cycle</a></p>
@@ -1580,8 +1598,9 @@ display:block!important;
 <span id="cb1-3"><a href></a></span>
 <span id="cb1-4"><a href></a><span class="co"># Persistent organization effects</span></span>
 <span id="cb1-5"><a href></a><span class="fu">ame</span>(..., <span class="at">symmetric =</span> <span class="cn">TRUE</span>, <span class="at">nvar =</span> <span class="cn">TRUE</span>, <span class="at">R =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here <code>R = 0</code> means that neither fit includes an AME pair-pattern factor yet.</p>
 <div class="bottom-line">
-<p>The models use the same outcome, predictors, likelihood, priors, and MCMC settings.</p>
+<p>The models use the same outcome, predictors, likelihood, shared-parameter priors, and MCMC settings. The SRM adds the actor effects and their variance prior.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-srm-fit" class="walkthrough-link" target="_blank">Run the fitted models</a></p>
@@ -1602,15 +1621,15 @@ display:block!important;
 </section>
 <section id="coefficients" class="slide level2">
 <h2>Read Point Estimates and Intervals Separately</h2>
-<p>The main AME uses one multiplicative factor. A two-factor fit is a rank sensitivity check.</p>
+<p>AME keeps the SRM actor effects and adds hidden pair-pattern factors. The rank is the number of those factors. The main fit uses one; a two-factor fit checks whether the conclusions depend on that choice.</p>
 <ul>
 <li>Greater power difference is negative across the SRM and both AME ranks.</li>
 <li>Shared location is positive across both AME ranks.</li>
-<li>Ideological difference is negative, but whether its interval clears zero depends on the chosen rank.</li>
+<li>Ideological difference is negative, but whether its uncertainty interval stays entirely below zero depends on whether the model uses one or two latent factors.</li>
 <li>Shared sponsorship remains uncertain.</li>
 </ul>
 <div class="bottom-line">
-<p>Power and location are the stable findings. The precision of the ideology result is rank-sensitive.</p>
+<p>Power and location tell the clearest story. For ideology, the honest conclusion depends on how much unmeasured pair structure we allow.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#srm-compare" class="walkthrough-link" target="_blank">Compare the coefficients</a></p>
@@ -1631,7 +1650,7 @@ display:block!important;
 </section>
 <section id="action-scale" class="slide level2">
 <h2>Put the AME Coefficients Back Into Operations</h2>
-<p>For an otherwise fixed pair with a modeled square-root count of 2, which corresponds to four operations under the working Gaussian model:</p>
+<p>For an otherwise fixed pair with a fitted square-root count of 2, use four operations as a simple back-transformed reference because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">2^2=4</annotation></semantics></math>:</p>
 <ul>
 <li>Moving the ideology gap from 0 to 2 gives roughly 3.6 modeled operations.</li>
 <li>Moving the power gap from 0 to 10,000 fighters gives roughly 3.4 modeled operations.</li>
@@ -1659,9 +1678,9 @@ display:block!important;
 </section>
 <section id="actor-effects" class="slide level2">
 <h2>The Actor Effects Are Political Quantities</h2>
-<p>Al-Nusrah Front (ANF) and Ahrar al-Sham Islamic Movement (ASIM) have the two largest posterior-mean cooperative-activity effects.</p>
+<p>The model gives Al-Nusrah Front (ANF) and Ahrar al-Sham Islamic Movement (ASIM) the two highest adjusted cooperation scores.</p>
 <div class="bottom-line">
-<p>They participated in more joint operations across partners than the measured ideology, power, location, sponsorship, and nodal attributes predict.</p>
+<p>They participated in more recorded joint operations across their partnerships than we would expect from the measured ideology, power, location, sponsorship, and organization characteristics alone.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-actor-effects" class="walkthrough-link" target="_blank">Inspect the organization effects</a></p>
@@ -1685,11 +1704,11 @@ display:block!important;
 <p>The effect <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>i</mi></msub><annotation encoding="application/x-tex">a_i</annotation></semantics></math> is inferred from the network rather than observed directly.</p>
 <div class="columns">
 <div class="column" style="width:49%;">
-<p><span class="card-title">Adjustment</span></p>
-<p>Prevent measured covariates from explaining every persistent actor difference.</p>
+<p><span class="card-title">Represent Recurring Differences</span></p>
+<p>Keep the measured variables from having to explain every recurring difference among organizations.</p>
 </div><div class="column" style="width:49%;">
-<p><span class="card-title">Discovery</span></p>
-<p>Use the estimated effects to identify actors and mechanisms the measured model missed.</p>
+<p><span class="card-title">A Political Clue</span></p>
+<p>See which organizations take part in unusually many recorded joint operations across their partnerships, then investigate what political capacity or position may explain it.</p>
 </div></div>
 <div class="bottom-line">
 <p>A substantive label for a latent effect must be validated with information beyond the fitted network.</p>
@@ -1717,8 +1736,8 @@ display:block!important;
 y_{ij}=\mathbf{x}_{ij}^{\mathsf T}\boldsymbol\beta+a_i+a_j+
 \mathbf{u}_i^{\mathsf T}\mathbf{D}\mathbf{u}_j+\epsilon_{ij}
 </annotation></semantics></math></p>
-<p>The additive term says some organizations cooperate broadly.</p>
-<p>The multiplicative term says some pairs fit together especially well.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐮</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\mathbf{u}_i</annotation></semantics></math> is organization <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>’s unobserved relational profile, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐃</mi><annotation encoding="application/x-tex">\mathbf D</annotation></semantics></math> weights the profile dimensions when two organizations meet. Rank is the number of profile dimensions: rank one uses one and rank two uses two.</p>
+<p>The actor effects say some organizations record more operations across their partnerships. The new multiplicative term says some particular pairings work unusually well or unusually poorly.</p>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#fit-ame" class="walkthrough-link" target="_blank">Fit the rank-one AME model</a></p>
 </div>
@@ -1737,17 +1756,17 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="latent-map" class="slide level2">
-<h2>What the Rank-Two Sensitivity Map Means</h2>
-<p>The biplot visualizes the two-factor sensitivity fit after the observed variables and actor effects enter.</p>
+<h2>What the Two-Factor Sensitivity Map Means</h2>
+<p>The map visualizes the two-factor sensitivity fit after the observed variables and actor effects enter.</p>
 <p>Do not interpret the horizontal and vertical axes as named political dimensions without external validation.</p>
 <div class="bottom-line">
-<p>Rotation, reflection, and sign changes do not alter the fitted network.</p>
+<p>We can reverse an axis or swap the two axis labels without changing the fitted relationships. Neither axis has an automatic political meaning, so name one only with outside evidence.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#latent-positions" class="walkthrough-link" target="_blank">Open the latent positions</a></p>
 </div>
 <aside class="notes">
-<p>This is not the main rank-one fit. Interpret fitted pairwise affinities and relational profiles, not left versus right on arbitrary axes.</p>
+<p>This is not the main rank-one fit. Interpret fitted pairwise affinities and relational profiles, not left versus right on an unlabeled axis. In this symmetric eigenmodel, sign reversals and a matching reordering of the axes and diagonal weights preserve the fit. An arbitrary rotation need not preserve it when the two diagonal weights differ.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1765,14 +1784,17 @@ display:block!important;
 <div class="comparison-row">
 <div class="comparison-card">
 <p><span class="card-title">SRM</span></p>
-<p>Actor heterogeneity: observed 0.44, fitted median 0.41</p>
-<p>Transitivity: observed 0.21, fitted median -0.03</p>
+<p>Uneven activity across organizations: observed 0.44, fitted median 0.41</p>
+<p>Standardized triple-pattern statistic: observed 0.21, fitted median -0.03</p>
 </div>
 <div class="comparison-card accent-card">
 <p><span class="card-title">Rank-one AME</span></p>
-<p>Actor heterogeneity: observed 0.44, fitted median 0.44</p>
-<p>Transitivity: observed 0.21, fitted median 0.22</p>
+<p>Uneven activity across organizations: observed 0.44, fitted median 0.44</p>
+<p>Standardized triple-pattern statistic: observed 0.21, fitted median 0.22</p>
 </div>
+</div>
+<div class="bottom-line">
+<p>The SRM captures which organizations cooperate broadly but misses the observed tendency for cooperation to cluster in threes. The rank-one AME captures both patterns.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-gof" class="walkthrough-link" target="_blank">Compare posterior predictive checks</a></p>
@@ -1828,6 +1850,7 @@ display:block!important;
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∣</mo><msub><mi>z</mi><mi>i</mi></msub><mo>,</mo><msub><mi>z</mi><mi>j</mi></msub><mo>∼</mo><mo>Bernoulli</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>θ</mi><mrow><msub><mi>z</mi><mi>i</mi></msub><msub><mi>z</mi><mi>j</mi></msub></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 Y_{ij}\mid z_i,z_j\sim\operatorname{Bernoulli}(\theta_{z_i z_j})
 </annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mi>i</mi></msub><annotation encoding="application/x-tex">z_i</annotation></semantics></math> is organization <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>’s role. The value <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>g</mi><mi>h</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{gh}</annotation></semantics></math> is the probability of a recorded tie between an organization in role <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math> and one in role <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>.</p>
 <div class="bottom-line">
 <p>Here, a tie means any recorded cooperative relationship over the full study period. It is not the probability of a single future operation.</p>
 </div>
@@ -1876,14 +1899,16 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="block-estimation" class="slide level2">
-<h2>Variational EM Has Two Interlocking Tasks</h2>
+<h2>How the Blockmodel Fits Roles and Cooperation Rates</h2>
+<p>Variational expectation-maximization (EM) alternates between two jobs:</p>
 <ol type="1">
-<li>Given provisional memberships, update role-to-role cooperation probabilities.</li>
-<li>Given those probabilities, update each organization’s membership probabilities.</li>
-<li>Repeat for candidate values of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> and multiple starts.</li>
+<li>Start with tentative probabilities that each organization occupies each role.</li>
+<li>Use those probabilities to update the cooperation rate for every role pairing.</li>
+<li>Use the new cooperation rates to update the organizations’ role probabilities.</li>
+<li>Keep alternating until the fit stops improving, then repeat from several starting points.</li>
 </ol>
 <div class="bottom-line">
-<p>The output is an optimized approximation, not a set of MCMC posterior draws.</p>
+<p>This is a fast approximation to the fitted roles and cooperation rates. It does not produce MCMC draws from a posterior distribution.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-block-estimation" class="walkthrough-link" target="_blank">Walk through block estimation</a></p>
@@ -1903,16 +1928,16 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="choose-k" class="slide level2">
-<h2>Two Blocks Give the Best Compression</h2>
-<p>ICL prefers two blocks, but the three-block solution is close enough to inspect.</p>
+<h2>Two Roles Best Balance Simplicity and Fit</h2>
+<p>The integrated completed likelihood, or ICL, rewards fit and penalizes unnecessary roles. Higher is better here. It prefers <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">K=2</annotation></semantics></math> roles, but the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">K=3</annotation></semantics></math> solution is close enough to inspect. Here <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> is the number of roles.</p>
 <div class="bottom-line">
-<p>Model-selection criteria are evidence. We look for the finding that survives nearby values of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> and different starting values.</p>
+<p>The score helps us choose, but it does not reveal a single true number of political groups. We look for the political finding that survives nearby choices and different starting values.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#fit-gade-blocks" class="walkthrough-link" target="_blank">Inspect ICL and nearby models</a></p>
 </div>
 <aside class="notes">
-<p>The two-versus-three distinction is about how finely to divide the periphery. The core is stable.</p>
+<p>Define K as the number of roles. The two-versus-three distinction is about how finely to divide the periphery. The core is stable.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1930,7 +1955,7 @@ display:block!important;
 <p>Across the two- and three-block solutions, Al-Nusrah Front (ANF) and Ahrar al-Sham Islamic Movement (ASIM) remain together in the core.</p>
 <p>The other organizations occupy one broad periphery or two peripheral roles with different access to the core.</p>
 <div class="bottom-line">
-<p>The result suggests a tactically central backbone spanning political distinctions, not one unified opposition coalition.</p>
+<p>ANF and ASIM form a small tactical backbone with links across much of this observed cooperation network. That does not make the opposition one unified coalition.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#gade-block-membership" class="walkthrough-link" target="_blank">See who occupies each role</a></p>
@@ -1964,7 +1989,7 @@ display:block!important;
 <p><a href="day9_srm_blocks.html#gade-block-membership" class="walkthrough-link" target="_blank">Interpret the block matrix</a></p>
 </div>
 <aside class="notes">
-<p>Speak in terms of organizations recording at least one cooperative relationship over the study period. The standard SBM may also be discretizing the same broad activity differences that the SRM captures continuously, so do not treat the blocks as a discovered political ontology.</p>
+<p>Speak in terms of organizations recording at least one cooperative relationship over the study period. The standard SBM may be turning the same broad activity differences captured by the SRM into two categories, so do not present the blocks as natural political types discovered by the model.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1978,13 +2003,13 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="block-gof" class="slide level2">
-<h2>A Plug-In Check of the Block Compression</h2>
+<h2>Simulate Networks From the Fitted Roles</h2>
 <ul>
-<li>Degree standard deviation: 5.43 observed, 4.72 simulated mean</li>
-<li>Triangles: 99 observed, about 61 simulated mean</li>
+<li>Spread in the number of partners: 5.43 observed, 4.72 in an average fitted simulation</li>
+<li>Three-organization cooperation triangles: 99 observed, about 61 in an average fitted simulation</li>
 </ul>
 <div class="bottom-line">
-<p>The two roles compress the main architecture but miss meaningful local structure.</p>
+<p>The two roles capture the broad core-periphery shape, but they produce too few triangles and slightly too little variation in how many partners organizations have.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-block-gof" class="walkthrough-link" target="_blank">Run the block fit check</a></p>
@@ -2032,6 +2057,7 @@ display:block!important;
 </tbody>
 </table>
 <p>The outcome equals one when an ICEWS source-target dyad records more than 20 materially conflictual events in a year.</p>
+<p>Polity scores run from -10 for strongly autocratic regimes to 10 for strongly democratic regimes. We divide the absolute gap by 20, so a 10-point difference enters the model as 0.5.</p>
 <div class="bottom-line">
 <p>The threshold measures coded event volume, not the severity of violence or the probability that war begins.</p>
 </div>
@@ -2059,8 +2085,9 @@ display:block!important;
 </annotation></semantics></math></p>
 <ul>
 <li>Year intercepts absorb changes in overall above-threshold network density.</li>
-<li>Source-side effects identify states that more often appear as the coded source in high-volume dyad-years.</li>
-<li>Target-side effects identify states that more often appear as the coded target.</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math> turns the fitted probit score into a probability between zero and one.</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\alpha_t</annotation></semantics></math> gives each year its own baseline rate, while <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi><mi>t</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi></mrow><annotation encoding="application/x-tex">\mathbf{x}_{ijt}^{\mathsf T}\boldsymbol\beta</annotation></semantics></math> contains the measured dyad-year predictors.</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>i</mi></msub><annotation encoding="application/x-tex">a_i</annotation></semantics></math> records how often state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> appears as the coded source beyond those predictors, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>j</mi></msub><annotation encoding="application/x-tex">b_j</annotation></semantics></math> does the same for state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math> as the coded target.</li>
 <li>The effects are pooled across all 13 years.</li>
 </ul>
 <div class="slide-link">
@@ -2086,7 +2113,7 @@ display:block!important;
 <span id="cb2-2"><a href></a>  <span class="at">family =</span> <span class="st">&quot;binary&quot;</span>,</span>
 <span id="cb2-3"><a href></a>  <span class="at">R =</span> <span class="dv">0</span>,</span>
 <span id="cb2-4"><a href></a>  <span class="at">method =</span> <span class="st">&quot;als&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>We already did the baby Bayesian and MCMC introduction today. Alternating least squares gets its own introduction next time.</p>
+<p>We already did the baby Bayesian and MCMC introduction today. Alternating least squares (ALS) gets its own introduction next time.</p>
 <div class="bottom-line">
 <p>Today, treat ALS as a fast exploratory point estimator. It does not return posterior draws or credible intervals.</p>
 </div>
@@ -2110,13 +2137,13 @@ display:block!important;
 <section id="longitudinal-results" class="slide level2">
 <h2>Put the Probit Results Into Probabilities</h2>
 <ul>
-<li>Assigning <code>same_region</code> first to 0 and then to 1 for every modeled dyad-year changes the average fitted probability by about 28 percentage points.</li>
-<li>Moving the Polity gap from 0 to 10 points gives about a 7 percentage-point increase.</li>
-<li>Source-side and target-side actor effects correlate at about 0.93.</li>
-<li>Residual dyadic reciprocity is about 0.18.</li>
+<li>Setting the same modeled pairs to different-region and same-region changes the average predicted probability from 17% to 45%.</li>
+<li>Setting their Polity gap to 0 and 10 points changes the average from 17% to 24%.</li>
+<li>Source-side and target-side state scores correlate at 0.93; the remaining connection between the two directions of one pair is 0.18.</li>
+<li>These are summaries from a fast fit with no uncertainty intervals.</li>
 </ul>
 <div class="bottom-line">
-<p>Persistent actor prominence on the two sides of the event coding is strongly related, while residual reciprocity is a separate and much smaller quantity.</p>
+<p>States that appear often as coded sources also tend to appear often as coded targets. That is different from asking whether both directions of one particular pair are unexpectedly active.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-lame-results" class="walkthrough-link" target="_blank">Inspect the longitudinal SRM results</a></p>
@@ -2137,10 +2164,10 @@ display:block!important;
 </section>
 <section id="longitudinal-effects" class="slide level2">
 <h2>Persistent Above-Threshold Positions</h2>
-<p>The United States has the largest pooled adjusted source-side and target-side effects in this selected ICEWS panel.</p>
+<p>After accounting for region, Polity difference, and year, the United States appears most often on both sides of high-volume coded event relationships in this selected ICEWS panel.</p>
 <p>Israel, Iran, the United Kingdom, Pakistan, India, and Russia appear near the top of one or both rankings.</p>
 <div class="bottom-line">
-<p>The effects can reflect geopolitical centrality and ICEWS news coverage. The model cannot distinguish those explanations by itself, and the plotted ALS effects are point estimates without intervals.</p>
+<p>That prominence may reflect real geopolitical involvement, heavier news coverage, or both. The model cannot separate those explanations, and this fast fit does not provide uncertainty intervals for the state scores.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#lame-long-plot" class="walkthrough-link" target="_blank">Plot source-side and target-side effects</a></p>
@@ -2161,10 +2188,10 @@ display:block!important;
 </section>
 <section id="longitudinal-scope" class="slide level2">
 <h2>What This Pooled Model Does Not Show</h2>
-<p>The source-side and target-side effects do not change by year.</p>
-<p>The model does not contain a dyad random effect, lagged ties, or a separate serial-dependence parameter.</p>
+<p>Each state keeps the same source-side and target-side score in every year.</p>
+<p>The model does not give each state pair its own long-run baseline, ask whether last year’s outcome predicts this year’s, or directly model leftover dependence over time.</p>
 <div class="bottom-line">
-<p>It estimates persistent actor heterogeneity from repeated binary networks, with year indicators for system-wide changes.</p>
+<p>It summarizes which states repeatedly appear above or below the fitted expectation across all 13 networks, while allowing the overall rate to differ by year.</p>
 </div>
 <aside class="notes">
 <p>A dynamic SRM would allow actor effects to change through a specified temporal process. That is a different model requiring its own stability and uncertainty checks.</p>
@@ -2183,15 +2210,15 @@ display:block!important;
 <section id="netmix-components" class="slide level2">
 <h2>NetMix Learns Two Connected Pieces</h2>
 <ol type="1">
-<li>Above-threshold probability for every source-role and target-role pair</li>
-<li>A mixed-membership vector for every state-year</li>
+<li>How often each source-role and target-role pairing crosses the event threshold</li>
+<li>Two weights for each state-year showing how closely its relationships resemble each role</li>
 </ol>
-<p>The main demonstration is role-only and uses two roles chosen in advance for a readable compression.</p>
+<p>A state-year can partly resemble both roles. The main demonstration fixes the number of roles at two in advance, then learns both role patterns from the observed relationships.</p>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-fit" class="walkthrough-link" target="_blank">Read the complete NetMix call</a></p>
 </div>
 <aside class="notes">
-<p>This makes the contrast with the SRM clean. The SRM centers covariate-adjusted persistent actor effects. NetMix centers annual relational profiles.</p>
+<p>This makes the contrast with the SRM clean. The SRM asks which states repeatedly sit above or below a measured prediction. NetMix asks what each state’s relationship pattern looks like in each year.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2205,11 +2232,11 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="netmix-h1" class="slide level2">
-<h2>What <code>n.hmmstates = 1</code> Means</h2>
-<p>The model estimates a membership vector <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝛑</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">\boldsymbol\pi_{it}</annotation></semantics></math> for each state-year and one shared role matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛉</mi><annotation encoding="application/x-tex">\boldsymbol\theta</annotation></semantics></math>.</p>
+<h2>One Hidden Markov State Means No Transition Model</h2>
+<p>The model estimates a role-weight vector <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝛑</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">\boldsymbol\pi_{it}</annotation></semantics></math> for each state-year and one shared role-to-role probability matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛉</mi><annotation encoding="application/x-tex">\boldsymbol\theta</annotation></semantics></math>. The weights in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝛑</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">\boldsymbol\pi_{it}</annotation></semantics></math> add to one.</p>
 <p>With one hidden Markov state, there is no transition matrix, temporal smoothing, or estimated switching process.</p>
 <div class="bottom-line">
-<p>This is a time-indexed mixed-membership model for repeated networks, not evidence about how states transition between latent regimes.</p>
+<p>Each year receives its own fitted profile, but the model does not say how one year’s profile leads to the next.</p>
 </div>
 <aside class="notes">
 <p>Annual estimates can differ because the annual relationships differ. Do not use the words dynamic transition, persistence parameter, or evolution for this fitted specification.</p>
@@ -2228,13 +2255,13 @@ display:block!important;
 <section id="netmix-vi" class="slide level2">
 <h2>How the Fast NetMix Estimator Works</h2>
 <ol type="1">
-<li>Start with soft role probabilities for every state-year.</li>
-<li>Update those probabilities using all observed dyad-years.</li>
-<li>Update the role-to-role threshold matrix using the new memberships.</li>
-<li>Alternate while monitoring the evidence lower bound.</li>
+<li>Start with tentative role weights for every state-year.</li>
+<li>Update each state-year’s weights using all observed relationships.</li>
+<li>Re-estimate how often every role pairing crosses the threshold.</li>
+<li>Repeat until the evidence lower bound, or ELBO, stops improving.</li>
 </ol>
 <div class="bottom-line">
-<p>Full-batch variational inference is extremely fast for this small system. It does not generate an MCMC posterior sample.</p>
+<p>The ELBO is the approximate fit score the algorithm tries to increase. This method is fast, but it does not produce MCMC draws or exact uncertainty intervals.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-fit" class="walkthrough-link" target="_blank">Walk through the fast NetMix estimator</a></p>
@@ -2258,7 +2285,7 @@ display:block!important;
 <p>We prespecify <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">K=2</annotation></semantics></math>, then run 20 external seeds with 10 internal initializations each.</p>
 <p>The nine highest-ranking runs recover nearly identical probabilities after aligning the role labels.</p>
 <div class="bottom-line">
-<p>This supports optimization stability conditional on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">K=2</annotation></semantics></math>. It does not select two roles over other values of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>.</p>
+<p>The best runs reach almost the same answer, so the result does not look like an accident of the starting values. This check does not show that two is the correct number of roles.</p>
 </div>
 <aside class="notes">
 <p>We retain the largest evidence lower bound. Numeric role labels remain arbitrary and must be aligned before comparing runs. Do not imply that the starts establish the correct number of roles.</p>
@@ -2276,7 +2303,7 @@ display:block!important;
 </section>
 <section id="netmix-theta" class="slide level2">
 <h2>Read the NetMix Matrix as High-Volume Event Relationships</h2>
-<p>For hypothetical endpoints assigned entirely to one role:</p>
+<p>For hypothetical state-years whose relationships fit one role completely:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -2309,7 +2336,7 @@ display:block!important;
 </tbody>
 </table>
 <div class="bottom-line">
-<p>These are pure-role endpoint probabilities, not the fitted probabilities for actual state dyads.</p>
+<p>These probabilities describe hypothetical state-years that fully match one role. Actual state-years usually combine the roles.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-results" class="walkthrough-link" target="_blank">Inspect the fitted block matrix</a></p>
@@ -2360,7 +2387,7 @@ display:block!important;
 <p>Broad-role membership correlates about 0.95 with raw annual breadth, the share of possible source-side and target-side dyads that exceed the threshold.</p>
 <p>The correlations are about 0.92 with source-side breadth and 0.92 with target-side breadth separately.</p>
 <div class="bottom-line">
-<p>In this application, the role is mainly a low-dimensional summary of how broadly a state appears in high-volume dyad-years, not a geopolitical bloc.</p>
+<p>In this application, the role mostly summarizes how many different high-volume relationships a state has in a year. It is not a hidden geopolitical camp.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-profiles" class="walkthrough-link" target="_blank">Compare memberships with raw breadth</a></p>
@@ -2409,14 +2436,14 @@ display:block!important;
 </section>
 <section id="calibration" class="slide level2">
 <h2>In-Sample Reconstruction Check</h2>
-<p>Observed threshold rates by fitted-probability fifth:</p>
+<p>Sort the dyad-years into five equal groups from lowest to highest fitted probability, then compare what the model predicted with what occurred:</p>
 <ul>
 <li>Lowest: 0.01, predicted 0.08</li>
 <li>Middle: 0.15, predicted 0.15</li>
 <li>Highest: 0.61, predicted 0.57</li>
 </ul>
 <div class="bottom-line">
-<p>In-sample Brier score: 0.115 for the role model versus 0.170 for one constant probability.</p>
+<p>The Brier score is the average squared probability error, so lower is better. It is 0.115 for the role model and 0.170 for one constant probability.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-netmix-calibration" class="walkthrough-link" target="_blank">Inspect the in-sample fit table</a></p>
@@ -2446,10 +2473,10 @@ display:block!important;
 <li>The selected actor set is not the entire international system.</li>
 </ul>
 <div class="bottom-line">
-<p>The point fit gives a compact in-sample description of annual relationships in this selected panel, not permanent national identities.</p>
+<p>This summarizes annual relationships among these 18 states. It does not assign them permanent political identities.</p>
 </div>
 <aside class="notes">
-<p>Keep the estimand and case boundary attached to the finding. <code>hessian = FALSE</code> also means that the displayed fit has no standard errors.</p>
+<p>Keep the political question and selected case set attached to the finding. <code>hessian = FALSE</code> also means that the displayed fit has no standard errors.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2463,35 +2490,39 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="spine" class="slide level2">
-<h2>Four Latent Representations</h2>
+<h2>Four Ways to Represent the Missing Pattern</h2>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Model</th>
-<th>Latent representation</th>
+<th>How It Represents What We Did Not Measure</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>SRM</td>
-<td>Additive actor activity</td>
+<td>One adjusted activity score for each actor</td>
 </tr>
 <tr class="even">
 <td>AME</td>
-<td>Continuous latent affinity</td>
+<td>Continuous hidden profiles that explain pair-specific fit</td>
 </tr>
 <tr class="odd">
 <td>SBM</td>
-<td>Discrete relational role</td>
+<td>One relational role for each actor</td>
 </tr>
 <tr class="even">
-<td>Repeated-network MMSBM</td>
-<td>A separate role mixture for each actor-year</td>
+<td>Repeated-network mixed-membership stochastic blockmodel, fitted with NetMix</td>
+<td>A separate blend of roles for each actor-year</td>
 </tr>
 </tbody>
 </table>
 <div class="bottom-line">
-<p>Choose the latent representation from the political question and the residual pattern, then check what it fails to reproduce.</p>
+<p>Choose the model from the political question and the pattern left in the errors, then check what the model still fails to reproduce.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-spine" class="walkthrough-link" target="_blank">Compare the representations</a></p>
@@ -2512,10 +2543,10 @@ display:block!important;
 </section>
 <section id="human-result" class="slide level2">
 <h2>Say the Syrian Result in Human Terms</h2>
-<p>In the rank-one AME fit, organizations closer in power and organizations operating in the same location conduct more joint operations after the other measured and latent terms enter. Ideological distance is negative, but its interval is sensitive to whether we use one or two latent factors.</p>
-<p>Al-Nusrah Front and Ahrar al-Sham Islamic Movement have the two largest posterior-mean actor effects and occupy a cooperative core that links broadly across a fragmented periphery.</p>
+<p>Among these Syrian armed organizations, groups closer to one another in estimated size and groups operating in the same places carried out more recorded joint operations. The evidence also points toward more cooperation among ideologically similar groups, although that finding becomes less certain when the model allows a second unmeasured cooperation pattern.</p>
+<p>ANF and ASIM stand out in two ways. They took part in more recorded joint operations across their partnerships than their measured characteristics would lead us to expect. When we look only at whether each pair ever cooperated, they also form a small tactical core with links across much of the otherwise fragmented network. That does not mean they shared the same long-term political project or formed a unified coalition.</p>
 <div class="bottom-line">
-<p>These are dependence-adjusted associations and relational descriptions, not causal effects of ideology or sponsorship.</p>
+<p>These patterns describe who cooperated with whom in this network and period. They do not show that changing ideology, relative power, or location would cause cooperation to change.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the complete interpretation</a></p>
@@ -2536,16 +2567,16 @@ display:block!important;
 </section>
 <section id="human-longitudinal" class="slide level2">
 <h2>Say the Longitudinal Result in Human Terms</h2>
-<p>Within this selected ICEWS system, annual source-target dyads are more likely to exceed 20 coded material-conflict events when the states are in the same region and when their Polity scores are farther apart. The United States has the largest persistent adjusted source-side and target-side point effects.</p>
-<p>The role model compresses annual event-volume breadth into broad and lower-involvement profiles. The United States remains broadly involved, while Syria’s membership and raw event breadth both rise beginning in 2011.</p>
+<p>To make the model concrete, we use it twice on the same state-pair-years, leaving everything else as fitted. The average estimated chance of more than 20 coded conflict events is 17% when we set the pair to different-region and 45% when we set it to same-region. In a separate comparison, the average is 17% with a 0-point Polity gap and 24% with a 10-point gap.</p>
+<p>The United States appeared unusually often on both sides of these high-volume relationships across the 13 years. NetMix gives us a yearly summary: the United States remains connected to many different states, while Syria’s high-volume connections widen beginning in 2011.</p>
 <div class="bottom-line">
-<p>These are point-fit descriptions of coded event volume, not causal effects, conflict-severity measures, estimated transitions, or permanent geopolitical identities.</p>
+<p>These patterns may reflect real political involvement, news coverage, and coding practices. They do not measure conflict severity, establish causal effects, or show states moving through a fixed sequence of political roles.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the complete interpretation</a></p>
 </div>
 <aside class="notes">
-<p>Use the SRM for persistent adjusted positions and NetMix for annual relational profiles. Keep the selected case set, ICEWS coverage, prespecified <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">K=2</annotation></semantics></math>, and lack of a transition model attached to the result.</p>
+<p>Use the SRM for recurring adjusted state positions and NetMix for yearly relationship patterns. Keep the selected case set, ICEWS coverage, prespecified <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">K=2</annotation></semantics></math>, and lack of a transition model attached to the result.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2561,13 +2592,13 @@ display:block!important;
 <section id="close" class="slide level2">
 <h2>What to Carry Into Day 10</h2>
 <ol type="1">
-<li>Repeated actors can change both coefficient estimates and uncertainty.</li>
-<li>Positive, negative, and zero covariance with omitted structure imply different inferential problems.</li>
-<li>SRM effects are useful latent political quantities, but they do not guarantee exogeneity.</li>
-<li>AME adds continuous latent affinity when additive activity is not enough.</li>
-<li>Blocks are relational roles, not necessarily communities.</li>
-<li>The same binary panel can support a pooled SRM question and a repeated-network role-mixture question.</li>
-<li>Fast ALS and variational fits are point or approximate fits, so optimization checks, model boundaries, and honest in-sample assessment belong before the political story.</li>
+<li>Relationships that share an actor are connected, even when each pair appears only once.</li>
+<li>A missing political process can pull a coefficient up, pull it down, or leave it centered while still making the usual uncertainty calculation wrong.</li>
+<li>SRM actor effects show which actors repeatedly sit above or below the measured prediction. They do not create a causal design.</li>
+<li>AME adds pair-specific patterns when broad actor activity is not enough.</li>
+<li>Blockmodels find recurring relationship patterns, not automatically political communities.</li>
+<li>The same annual networks can answer one question about persistent state positions and another about how each year’s relationship pattern looks.</li>
+<li>Fast fitting methods still require multiple starts, fit checks, and political conclusions that stay within what the model and data can support.</li>
 </ol>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-after-fit" class="walkthrough-link" target="_blank">Return to the walkthrough</a></p>
