@@ -1053,7 +1053,7 @@ margin-right: 0; }
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Day 9: Actor Effects and Relational Roles</h1>
-  <p class="subtitle">The Social Relations Model (SRM), Additive and Multiplicative Effects (AME), and Blockmodels</p>
+  <p class="subtitle">The Social Relations Model (SRM) and Blockmodels</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -1072,7 +1072,7 @@ Shahryar Minhas
 <p>We built defensible network objects and saw why dyads sharing actors are not independent rows.</p>
 </div><div class="column" style="width:48%;">
 <p><span class="card-title">Day 9</span></p>
-<p>We ask whether the missing pattern is broad actor involvement, especially strong pairings, a few recurring roles, or role profiles that differ across years.</p>
+<p>We ask whether the missing pattern is broad actor involvement, a few recurring roles, or role profiles that differ across years.</p>
 </div></div>
 <div class="bottom-line">
 <p>Start with what may be missing from the story, then choose the model that can represent it.</p>
@@ -1095,12 +1095,11 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="application" class="slide level2">
-<h2>One Real Case, Several Questions</h2>
-<p>Syrian armed organizations conducted claimed joint tactical operations from July 2012 through June 2015 during a fragmented civil war.</p>
+<h2>The Syrian Cooperation Case</h2>
+<p>Gade et al. (2019) study armed organizations operating in the Syrian rebellion from July 2012 through June 2015. The network includes organizations such as Al-Nusrah Front (ANF) and Ahrar al-Sham Islamic Movement (ASIM).</p>
 <ul>
 <li>Why did some pairs cooperate more than others?</li>
 <li>Were some organizations unusually active across many partnerships?</li>
-<li>Did unmeasured affinities organize the network?</li>
 <li>Did organizations occupy a small number of relational roles?</li>
 </ul>
 <div class="bottom-line">
@@ -1110,7 +1109,7 @@ display:block!important;
 <p><a href="day9_srm_blocks.html#sec-gade" class="walkthrough-link" target="_blank">Meet the Syrian cooperation data</a></p>
 </div>
 <aside class="notes">
-<p>Lead with the civil-war problem. Fragmentation affects bargaining and battlefield coordination, so the composition of cooperation matters.</p>
+<p>Lead with the organizations and the measured action. These are armed organizations in a fragmented civil war, and the ties record claimed joint tactical operations.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1151,6 +1150,42 @@ display:block!important;
 </div>
 <aside class="notes">
 <p>Explain why we use the square root of the count to stay close to the published analysis. Mention Poisson as a modern sensitivity model, not as the model being interpreted today.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="netify-bridge" class="slide level2">
+<h2>Use <code>netify</code> to Build the Network Inputs</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href></a>gade_net <span class="ot">&lt;-</span> <span class="fu">netify</span>(</span>
+<span id="cb1-2"><a href></a>  <span class="at">input =</span> gade,</span>
+<span id="cb1-3"><a href></a>  <span class="at">actor1 =</span> <span class="st">&quot;actor1&quot;</span>,</span>
+<span id="cb1-4"><a href></a>  <span class="at">actor2 =</span> <span class="st">&quot;actor2&quot;</span>,</span>
+<span id="cb1-5"><a href></a>  <span class="at">symmetric =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-6"><a href></a>  <span class="at">weight =</span> <span class="st">&quot;sqrt_coop&quot;</span>,</span>
+<span id="cb1-7"><a href></a>  <span class="at">nodal_vars =</span> <span class="fu">c</span>(<span class="st">&quot;averageId_actor1&quot;</span>, <span class="st">&quot;size_actor1&quot;</span>, <span class="st">&quot;spons_actor1&quot;</span>),</span>
+<span id="cb1-8"><a href></a>  <span class="at">dyad_vars =</span> <span class="fu">c</span>(<span class="st">&quot;ideol_diff&quot;</span>, <span class="st">&quot;powerdiff&quot;</span>, <span class="st">&quot;loc&quot;</span>, <span class="st">&quot;spons&quot;</span>),</span>
+<span id="cb1-9"><a href></a>  <span class="at">dyad_vars_symmetric =</span> <span class="fu">rep</span>(<span class="cn">TRUE</span>, <span class="dv">4</span>),</span>
+<span id="cb1-10"><a href></a>  <span class="at">missing_to_zero =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-11"><a href></a>)</span>
+<span id="cb1-12"><a href></a></span>
+<span id="cb1-13"><a href></a>gade_lame <span class="ot">&lt;-</span> <span class="fu">to_lame</span>(gade_net, <span class="at">family =</span> <span class="st">&quot;normal&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>netify</code> turns the pair-level table into one symmetric outcome matrix, one dyadic predictor array, and one row of actor attributes per organization.</p>
+<div class="bottom-line">
+<p>The data bridge preserves who appears in each relationship. That repeated-actor structure is exactly what the SRM needs.</p>
+</div>
+<div class="slide-link">
+<p><a href="day9_srm_blocks.html#sec-netify" class="walkthrough-link" target="_blank">Build the network inputs</a></p>
+</div>
+<aside class="notes">
+<p>Connect directly to Day 8. The matrix diagonal is missing because an organization cannot conduct a joint operation with itself, and the duplicated directions in the source table are a storage convention for a symmetric relationship.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1239,21 +1274,16 @@ display:block!important;
 <td>A score for each organization’s adjusted level of involvement</td>
 </tr>
 <tr class="odd">
-<td>AME</td>
-<td>Which pairs cooperate unusually well after those broad actor differences enter?</td>
-<td>A map of otherwise unexplained pairings</td>
-</tr>
-<tr class="even">
 <td>Cross-sectional stochastic blockmodel (SBM)</td>
 <td>Does cooperation follow a small number of recurring roles?</td>
 <td>The cooperation rate for each role pairing</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Longitudinal SRM</td>
 <td>Which states repeatedly appear on each side of high-volume event relationships?</td>
 <td>One adjusted source-side and target-side score per state</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Repeated-network NetMix</td>
 <td>How does each state’s pattern of relationships look in each year?</td>
 <td>A yearly blend of relational roles for each state</td>
@@ -1409,25 +1439,29 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="ovb" class="slide level2">
-<h2>The Omitted-Structure Equation</h2>
-<p>True model:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mi>β</mi><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>+</mo><mi>γ</mi><msub><mi>z</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
-y_{ij}=\beta x_{ij}+\gamma z_{ij}+\epsilon_{ij}
+<h2>Omitted Actor Structure and the SRM</h2>
+<p>Suppose the relationship really follows:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mi>β</mi><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>+</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>a</mi><mi>j</mi></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+y_{ij}=\beta x_{ij}+a_i+a_j+\epsilon_{ij}.
 </annotation></semantics></math></p>
-<p>Omit <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>plim</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mtext mathvariant="normal">naive</mtext></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mfrac><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mo>Var</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+<p>If we omit the actor effects:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>plim</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mtext mathvariant="normal">naive</mtext></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>β</mi><mo>+</mo><mfrac><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>a</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mo>Var</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \operatorname{plim}(\widehat\beta_{\text{naive}})
-=\beta+\gamma\frac{\operatorname{Cov}(x,z)}{\operatorname{Var}(x)}
+=\beta+\frac{\operatorname{Cov}(x_{ij},a_i+a_j)}
+{\operatorname{Var}(x_{ij})}.
 </annotation></semantics></math></p>
-<p>The probability limit, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>plim</mo><annotation encoding="application/x-tex">\operatorname{plim}</annotation></semantics></math>, is the value an estimate approaches with a very large sample. Here <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> is the measured predictor, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> is the missing process, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> is the association we want, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math> tells us how <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> relates to the outcome.</p>
+<p>The standard random-effects SRM assumes that the remaining actor effect has conditional mean zero given the included predictors:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>E</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>∣</mo><mi>X</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\operatorname{E}(a_i\mid X)=0.
+</annotation></semantics></math></p>
 <div class="bottom-line">
-<p>Leaving out <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> can pull the estimated association for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> up or down. The direction depends on what <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> does and whether it tends to occur at high or low values of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>.</p>
+<p>If a predictor systematically varies with the actor effects, the random-effects assumption fails and the coefficient can mix the predictor association with recurring actor differences.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-inference" class="walkthrough-link" target="_blank">Work through the inference cases</a></p>
 </div>
 <aside class="notes">
-<p>Slow down here. Define z as omitted actor effects or latent dyadic affinity. In a multivariable model, the relevant covariance uses the residual variation in x and z after the other included predictors are removed.</p>
+<p>In a multivariable model, the relevant covariance is between the residualized predictor and the omitted actor component after the other included predictors have been removed.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1442,14 +1476,14 @@ display:block!important;
 </section>
 <section id="positive-case" class="slide level2">
 <h2>Positive Covariance Case</h2>
-<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> be ideological distance and let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> be unmeasured brokerage that raises cooperation, so <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\gamma&gt;0</annotation></semantics></math>.</p>
-<p>If brokers disproportionately connect ideologically distant pairs, then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x,z)&gt;0</annotation></semantics></math> and the estimated ideology coefficient is pulled upward.</p>
-<p>Ideological distance can therefore look less negatively associated with cooperation than it would if brokerage were measured, appear unrelated, or even appear positively associated.</p>
+<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> be ideological distance. Suppose organizations with high positive actor effects are disproportionately involved in ideologically distant pairs.</p>
+<p>Then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>a</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x_{ij},a_i+a_j)&gt;0</annotation></semantics></math>, so the independent model credits ideological distance with some of the broad organizational activity.</p>
+<p>Ideological distance can look less negatively associated with cooperation than it does after recurring actor activity enters, appear unrelated, or even appear positively associated.</p>
 <div class="bottom-line">
-<p>Because brokerage is missing from the model, some of its cooperation pattern gets credited to ideological distance.</p>
+<p>Positive covariance pulls the naive ideology coefficient upward in this setup.</p>
 </div>
 <aside class="notes">
-<p>Do not call the coefficient simply wrong. It targets an unconditional combination rather than the direct coefficient beta.</p>
+<p>This is the direction under the displayed linear setup. The point is that the predictor and the omitted actor component carry overlapping information.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1464,14 +1498,14 @@ display:block!important;
 </section>
 <section id="negative-case" class="slide level2">
 <h2>Negative Covariance Case</h2>
-<p>Keep <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> as ideological distance. Now let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> be shared unmeasured command infrastructure that raises cooperation.</p>
-<p>If ideologically similar organizations are more likely to share that infrastructure, then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x,z)&lt;0</annotation></semantics></math> and the estimated ideology coefficient is pulled downward.</p>
-<p>Ideological distance can then look more negatively associated with cooperation than it would if shared infrastructure were measured.</p>
+<p>Keep <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> as ideological distance. Suppose organizations with high positive actor effects are concentrated in ideologically similar pairs.</p>
+<p>Then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>a</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x_{ij},a_i+a_j)&lt;0</annotation></semantics></math>, so the independent-model ideology coefficient is pulled downward.</p>
+<p>Ideological distance can look more negatively associated with cooperation than it does after broad recurring organization activity enters.</p>
 <div class="bottom-line">
-<p>Because shared infrastructure is missing from the model, some of its cooperation pattern gets credited to ideological similarity.</p>
+<p>Negative covariance pulls the naive ideology coefficient downward in this setup.</p>
 </div>
 <aside class="notes">
-<p>Contrast this with the brokerage case. The same omitted variable can move a coefficient in opposite directions depending on how it overlaps the measured predictor.</p>
+<p>Contrast this with the positive case. The sign depends on how the measured predictor overlaps the omitted actor component.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1486,10 +1520,10 @@ display:block!important;
 </section>
 <section id="zero-case" class="slide level2">
 <h2>Zero Covariance Case</h2>
-<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x,z)=0</annotation></semantics></math>, the estimated ideology association can still be centered on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>.</p>
-<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> includes recurring actor differences, the errors are still dependent because relationships sharing organizations inherit the same <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>.</p>
+<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Cov</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>a</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(x_{ij},a_i+a_j)=0</annotation></semantics></math>, the independent-model ideology coefficient can still be centered on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>.</p>
+<p>The errors are still dependent because relationships sharing organizations inherit the same actor effects.</p>
 <div class="bottom-line">
-<p>A coefficient that approaches the right target in a large sample can still come with the wrong independent-row uncertainty calculation.</p>
+<p>A coefficient can approach the right target while the independent-row uncertainty calculation remains wrong.</p>
 </div>
 <aside class="notes">
 <p>This is the case that corrects the slogan that network dependence always biases every coefficient.</p>
@@ -1506,23 +1540,22 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="exogeneity" class="slide level2">
-<h2>What the SRM Does Not Magically Solve</h2>
-<p>Random effects are not a causal identification strategy by themselves.</p>
-<p>Adding actor effects helps represent relationships that share actors. It does not tell us what would have happened if an organization had a different ideology, sponsor, or location.</p>
+<h2>What the Random-Effects SRM Assumes</h2>
+<p>Adding actor effects represents relationships that share actors, but the usual SRM still assumes the remaining actor effects are unrelated to the included predictors after conditioning on the model.</p>
 <ul>
-<li>If an unmeasured actor difference overlaps with a predictor, the coefficient can still blend the two stories.</li>
-<li>We must assume a distribution for the unmeasured actor effects.</li>
-<li>With one network, we cannot compare the same actor with itself over time.</li>
-<li>A badly chosen control variable remains a problem after we add actor effects.</li>
+<li>If an actor effect and a covariate remain correlated, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>E</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>∣</mo><mi>X</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{E}(a_i\mid X)=0</annotation></semantics></math> is violated.</li>
+<li>The coefficient can then blend stable actor differences with the measured predictor.</li>
+<li>With one cross-sectional network, we cannot compare the same actor with itself over time.</li>
+<li>A badly chosen control variable remains a problem after actor effects enter.</li>
 </ul>
 <div class="bottom-line">
-<p>The SRM handles an important source of dependence. Causal claims still need a research design and assumptions we can defend.</p>
+<p>The SRM models an important dependence source. It does not make actor effects exogenous by estimation alone or create a causal design.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-inference" class="walkthrough-link" target="_blank">Read the inferential boundary</a></p>
 </div>
 <aside class="notes">
-<p>This is the central qualification. Do not imply that an estimated latent effect recovers every missing cause.</p>
+<p>Say the random-effects assumption explicitly. Estimating a latent actor effect does not prove that the effect is independent of the covariates.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1536,19 +1569,18 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="remedies" class="slide level2">
-<h2>What Can We Do About Correlated Effects?</h2>
-<ul>
-<li>Measure the missing mechanism when possible.</li>
-<li>With repeated observations, add each actor’s long-run predictor average so within-actor change is not confused with across-actor differences. This is a correlated-random-effects or Mundlak approach.</li>
-<li>Compare the same actor over time with actor fixed effects when the question and data allow it.</li>
-<li>Compare the SRM with a richer AME model that represents pair-specific affinity.</li>
-<li>Report which conclusions survive those reasonable choices.</li>
-</ul>
+<h2>A Concise Mundlak Remedy</h2>
+<p>For a time-varying predictor, separate within-actor change from stable between-actor differences:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mi>i</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+x_{it}=(x_{it}-\bar x_i)+\bar x_i.
+</annotation></semantics></math></p>
+<p>Include the actor mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\bar x_i</annotation></semantics></math> in the model, with separate source and target means in a directed network. The remaining random effect is then assumed unrelated to the within-actor deviation rather than to the raw predictor.</p>
+<p>Also measure the missing mechanism when possible, compare fixed-effects specifications when the needed variation exists, and report sensitivity across defensible models.</p>
 <div class="bottom-line">
-<p>Results that survive several defensible models are more reassuring. No single latent model settles the causal question.</p>
+<p>Mundlak terms relax the standard random-effects assumption in a specific way. They do not remove pair-level confounding or create a causal design.</p>
 </div>
 <aside class="notes">
-<p>Connect the remedy to the question being asked. Fixed effects cannot estimate a separate coefficient for a time-invariant actor variable in one cross-section.</p>
+<p>For a dyadic predictor, construct the relevant actor-specific means on each endpoint and keep the within and between pieces distinct. Fixed effects cannot estimate a separate coefficient for a time-invariant actor variable.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1568,7 +1600,7 @@ display:block!important;
 <li>Update the coefficients for the measured variables.</li>
 <li>Update every organization’s unobserved activity effect.</li>
 <li>Update how much those actor effects vary overall.</li>
-<li>With AME, update the latent coordinates.</li>
+<li>Update the remaining outcome variance.</li>
 <li>Repeat, discard the early settling-in rounds, and save later rounds.</li>
 </ol>
 <div class="bottom-line">
@@ -1593,12 +1625,11 @@ display:block!important;
 </section>
 <section id="fit" class="slide level2">
 <h2>One Switch Separates the Benchmark and SRM</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href></a><span class="co"># Independent pairs</span></span>
-<span id="cb1-2"><a href></a><span class="fu">ame</span>(..., <span class="at">symmetric =</span> <span class="cn">TRUE</span>, <span class="at">nvar =</span> <span class="cn">FALSE</span>, <span class="at">R =</span> <span class="dv">0</span>)</span>
-<span id="cb1-3"><a href></a></span>
-<span id="cb1-4"><a href></a><span class="co"># Persistent organization effects</span></span>
-<span id="cb1-5"><a href></a><span class="fu">ame</span>(..., <span class="at">symmetric =</span> <span class="cn">TRUE</span>, <span class="at">nvar =</span> <span class="cn">TRUE</span>, <span class="at">R =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Here <code>R = 0</code> means that neither fit includes an AME pair-pattern factor yet.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href></a><span class="co"># Independent pairs</span></span>
+<span id="cb2-2"><a href></a><span class="fu">ame</span>(..., <span class="at">symmetric =</span> <span class="cn">TRUE</span>, <span class="at">nvar =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-3"><a href></a></span>
+<span id="cb2-4"><a href></a><span class="co"># Persistent organization effects</span></span>
+<span id="cb2-5"><a href></a><span class="fu">ame</span>(..., <span class="at">symmetric =</span> <span class="cn">TRUE</span>, <span class="at">nvar =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="bottom-line">
 <p>The models use the same outcome, predictors, likelihood, shared-parameter priors, and MCMC settings. The SRM adds the actor effects and their variance prior.</p>
 </div>
@@ -1621,49 +1652,20 @@ display:block!important;
 </section>
 <section id="coefficients" class="slide level2">
 <h2>Read Point Estimates and Intervals Separately</h2>
-<p>AME keeps the SRM actor effects and adds hidden pair-pattern factors. The rank is the number of those factors. The main fit uses one; a two-factor fit checks whether the conclusions depend on that choice.</p>
 <ul>
-<li>Greater power difference is negative across the SRM and both AME ranks.</li>
-<li>Shared location is positive across both AME ranks.</li>
-<li>Ideological difference is negative, but whether its uncertainty interval stays entirely below zero depends on whether the model uses one or two latent factors.</li>
-<li>Shared sponsorship remains uncertain.</li>
+<li>Greater ideological distance has a negative point estimate, but its SRM interval crosses zero.</li>
+<li>A larger difference in estimated fighters has a negative estimate, and its SRM interval stays below zero.</li>
+<li>Shared operating location has a positive point estimate, but its interval crosses zero.</li>
+<li>Shared state sponsorship remains uncertain.</li>
 </ul>
 <div class="bottom-line">
-<p>Power and location tell the clearest story. For ideology, the honest conclusion depends on how much unmeasured pair structure we allow.</p>
+<p>The clearest SRM result is that organizations closer in estimated strength carried out more claimed joint operations, conditional on the included variables and recurring organization activity.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#srm-compare" class="walkthrough-link" target="_blank">Compare the coefficients</a></p>
 </div>
 <aside class="notes">
-<p>Keep the outcome scale visible. These coefficients concern square-root counts, not percentage changes. The rank-one AME is the parsimonious main fit because it reproduces the missing third-order structure. The rank-two fit is a sensitivity check, not automatically the better model.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="action-scale" class="slide level2">
-<h2>Put the AME Coefficients Back Into Operations</h2>
-<p>For an otherwise fixed pair with a fitted square-root count of 2, use four operations as a simple back-transformed reference because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">2^2=4</annotation></semantics></math>:</p>
-<ul>
-<li>Moving the ideology gap from 0 to 2 gives roughly 3.6 modeled operations.</li>
-<li>Moving the power gap from 0 to 10,000 fighters gives roughly 3.4 modeled operations.</li>
-<li>Moving from different to shared operating locations gives roughly 4.6 modeled operations.</li>
-</ul>
-<div class="bottom-line">
-<p>These are conditional scale illustrations, not causal effects, named-pair forecasts, or exact count-model expectations.</p>
-</div>
-<div class="slide-link">
-<p><a href="day9_srm_blocks.html#sec-ame-actions" class="walkthrough-link" target="_blank">Translate the AME coefficients</a></p>
-</div>
-<aside class="notes">
-<p>Use the walkthrough for draw-by-draw intervals. The point is to return to recognizable actions and units after discussing a transformed outcome.</p>
+<p>Keep the outcome scale visible. These coefficients concern square-root counts of claimed joint operations, not percentages or causal effects. Point estimates and interval widths can both change when actor effects enter.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1677,7 +1679,7 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="actor-effects" class="slide level2">
-<h2>The Actor Effects Describe Real Organizations</h2>
+<h2>The Actor Effects Describe Named Organizations</h2>
 <p>The model gives Al-Nusrah Front (ANF) and Ahrar al-Sham Islamic Movement (ASIM) the two highest adjusted cooperation scores.</p>
 <div class="bottom-line">
 <p>They participated in more recorded joint operations across their partnerships than we would expect from the measured ideology, power, location, sponsorship, and organization characteristics alone.</p>
@@ -1730,77 +1732,26 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="ame" class="slide level2">
-<h2>AME Adds Latent Dyadic Affinity</h2>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi><mo>+</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>a</mi><mi>j</mi></msub><mo>+</mo><msubsup><mi>𝐮</mi><mi>i</mi><mi>𝖳</mi></msubsup><mi>𝐃</mi><msub><mi>𝐮</mi><mi>j</mi></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
-y_{ij}=\mathbf{x}_{ij}^{\mathsf T}\boldsymbol\beta+a_i+a_j+
-\mathbf{u}_i^{\mathsf T}\mathbf{D}\mathbf{u}_j+\epsilon_{ij}
-</annotation></semantics></math></p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐮</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\mathbf{u}_i</annotation></semantics></math> is organization <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>’s unobserved relational profile, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐃</mi><annotation encoding="application/x-tex">\mathbf D</annotation></semantics></math> weights the profile dimensions when two organizations meet. Rank is the number of profile dimensions: rank one uses one and rank two uses two.</p>
-<p>The actor effects say some organizations record more operations across their partnerships. The new multiplicative term says some particular pairings work unusually well or unusually poorly.</p>
-<div class="slide-link">
-<p><a href="day9_srm_blocks.html#fit-ame" class="walkthrough-link" target="_blank">Fit the rank-one AME model</a></p>
-</div>
-<aside class="notes">
-<p>The multiplicative term is a latent dyadic covariate. Rank one is the main fit because it is parsimonious and already recovers the missing transitivity pattern. Rank two is retained as a sensitivity check.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="latent-map" class="slide level2">
-<h2>What the Two-Factor Sensitivity Map Means</h2>
-<p>The map visualizes the two-factor sensitivity fit after the observed variables and actor effects enter.</p>
-<p>Do not give the horizontal and vertical axes names without external validation.</p>
-<div class="bottom-line">
-<p>We can reverse an axis or swap the two axis labels without changing the fitted relationships. Neither axis has an automatic meaning, so name one only with outside evidence.</p>
-</div>
-<div class="slide-link">
-<p><a href="day9_srm_blocks.html#latent-positions" class="walkthrough-link" target="_blank">Open the latent positions</a></p>
-</div>
-<aside class="notes">
-<p>This is not the main rank-one fit. Interpret fitted pairwise affinities and relational profiles, not left versus right on an unlabeled axis. In this symmetric eigenmodel, sign reversals and a matching reordering of the axes and diagonal weights preserve the fit. An arbitrary rotation need not preserve it when the two diagonal weights differ.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
 <section id="gof" class="slide level2">
-<h2>Posterior Predictive Checks Tell Us What Each Layer Buys</h2>
+<h2>Posterior Predictive Checks Show the SRM Boundary</h2>
 <div class="comparison-row">
 <div class="comparison-card">
-<p><span class="card-title">SRM</span></p>
+<p><span class="card-title">What the SRM Reproduces</span></p>
 <p>Uneven activity across organizations: observed 0.44, fitted median 0.41</p>
-<p>Standardized triple-pattern statistic: observed 0.21, fitted median -0.03</p>
 </div>
 <div class="comparison-card accent-card">
-<p><span class="card-title">Rank-one AME</span></p>
-<p>Uneven activity across organizations: observed 0.44, fitted median 0.44</p>
-<p>Standardized triple-pattern statistic: observed 0.21, fitted median 0.22</p>
+<p><span class="card-title">What the SRM Misses</span></p>
+<p>Standardized triple-pattern statistic: observed 0.21, fitted median -0.03</p>
 </div>
 </div>
 <div class="bottom-line">
-<p>The SRM captures which organizations cooperate broadly but misses the observed tendency for cooperation to cluster in threes. The rank-one AME captures both patterns.</p>
+<p>The SRM captures which organizations cooperate broadly but misses the observed tendency for high cooperation values to cluster across connected triples.</p>
 </div>
 <div class="slide-link">
-<p><a href="day9_srm_blocks.html#sec-gof" class="walkthrough-link" target="_blank">Compare posterior predictive checks</a></p>
+<p><a href="day9_srm_blocks.html#sec-gof" class="walkthrough-link" target="_blank">Inspect the SRM posterior predictive checks</a></p>
 </div>
 <aside class="notes">
-<p>The normalized transitivity statistic is not the percentage of triples that close. Also remind students that one multi-organization operation is expanded into all of its pairwise ties, which can create triangles mechanically. The check shows what the latent layer reproduces, not why the pattern exists.</p>
+<p>The standardized statistic is not the percentage of triples that close. One multi-organization operation is expanded into all pairwise ties, which can create triangles mechanically. The failure tells us that broad actor activity is not the whole relationship structure, not that friend-of-a-friend closure caused cooperation.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1816,10 +1767,10 @@ display:block!important;
 <section id="citations" class="slide level2">
 <h2>Where These Methods Come From</h2>
 <ul>
-<li>Hoff (2005): bilinear mixed-effects models for dyadic data</li>
-<li>Minhas, Hoff, and Ward (2019): AME for inference with network data</li>
-<li>Gade et al. (2019): ideology and tactical cooperation among Syrian rebels</li>
-<li>Minhas et al. (2022): dyadic dependence, latent recovery, and omitted-variable limits</li>
+<li>Back and Kenny (2010): the general SRM decomposition</li>
+<li>Hoff (2005): network regression with additive actor effects</li>
+<li>Gade et al. (2019): ideology and tactical cooperation among Syrian armed organizations</li>
+<li>Minhas et al. (2022): dyadic dependence and omitted-variable limits</li>
 <li>Boschee et al. (2015): ICEWS event coding and source-target records</li>
 <li>Olivella, Pratt, and Imai (2022): mixed-membership models for repeated networks</li>
 </ul>
@@ -1830,7 +1781,7 @@ display:block!important;
 <p><a href="day9_srm_blocks.html#sec-reading" class="walkthrough-link" target="_blank">See the reading bridge</a></p>
 </div>
 <aside class="notes">
-<p>Connect each citation to a use, not just a reading list. The Gade application uses AME on the cooperation data. Boschee and colleagues document the ICEWS coding that defines the longitudinal outcome.</p>
+<p>Connect each citation to a use, not just a reading list. Gade and colleagues supply the Syrian cooperation application. Boschee and colleagues document the ICEWS coding that defines the longitudinal outcome.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1844,21 +1795,17 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="blocks" class="slide level2">
-<h2>The Block Question Is Different</h2>
-<p>Instead of one continuous effect or vector per organization, suppose there are a few discrete relational roles.</p>
-<p>This analysis uses the 31 organizations with at least one recorded cooperation tie. The SRM and AME used square-root counts for the 30 organizations with complete covariates.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∣</mo><msub><mi>z</mi><mi>i</mi></msub><mo>,</mo><msub><mi>z</mi><mi>j</mi></msub><mo>∼</mo><mo>Bernoulli</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>θ</mi><mrow><msub><mi>z</mi><mi>i</mi></msub><msub><mi>z</mi><mi>j</mi></msub></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
-Y_{ij}\mid z_i,z_j\sim\operatorname{Bernoulli}(\theta_{z_i z_j})
-</annotation></semantics></math></p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mi>i</mi></msub><annotation encoding="application/x-tex">z_i</annotation></semantics></math> is organization <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>’s role. The value <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>g</mi><mi>h</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{gh}</annotation></semantics></math> is the probability of a recorded tie between an organization in role <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math> and one in role <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>.</p>
+<h2>From Actor Effects to Discrete Roles</h2>
+<p>The SRM gives every organization one continuous activity score. The blockmodel asks whether organizations can instead be summarized by a few recurring relational roles.</p>
+<p>This analysis uses the 31 organizations with at least one recorded cooperation tie. The SRM used square-root counts for the 30 organizations with complete covariates.</p>
 <div class="bottom-line">
-<p>Here, a tie means any recorded cooperative relationship over the full study period. It is not the probability of a single future operation.</p>
+<p>The question changes from “Who cooperates unusually broadly?” to “Which organizations show similar patterns of partners?”</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-blocks-bridge" class="walkthrough-link" target="_blank">Move from effects to roles</a></p>
 </div>
 <aside class="notes">
-<p>This is the same case and source study, but not an identical analytic network. Make the change in outcome and actor set explicit.</p>
+<p>This is the same source study but not an identical analytic network. Here a tie means at least one recorded cooperative relationship over the full period. It is not the probability of a single future operation.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1882,7 +1829,7 @@ display:block!important;
 <p>Dense core, extensive core-to-periphery cooperation, sparse cooperation within the periphery.</p>
 </div></div>
 <div class="bottom-line">
-<p>Read the whole <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math> matrix. A large diagonal is only one possible relational structure.</p>
+<p>Read all within-role and across-role rates. Dense diagonal cells are only one possible relational structure.</p>
 </div>
 <aside class="notes">
 <p>The Syrian result is core-periphery. Calling the two blocks communities would misdescribe the relationship pattern.</p>
@@ -1900,7 +1847,7 @@ display:block!important;
 </section>
 <section id="block-estimation" class="slide level2">
 <h2>How the Blockmodel Fits Roles and Cooperation Rates</h2>
-<p>Variational expectation-maximization (EM) alternates between two jobs:</p>
+<p>Variational expectation-maximization (EM) alternates between two plain-language jobs:</p>
 <ol type="1">
 <li>Start with tentative probabilities that each organization occupies each role.</li>
 <li>Use those probabilities to update the cooperation rate for every role pairing.</li>
@@ -1914,7 +1861,37 @@ display:block!important;
 <p><a href="day9_srm_blocks.html#sec-block-estimation" class="walkthrough-link" target="_blank">Walk through block estimation</a></p>
 </div>
 <aside class="notes">
-<p>Keep MCMC and variational uncertainty distinct. Both iterate, but they return different inferential objects.</p>
+<p>The expectation step updates tentative roles using the current relationship rates. The maximization step updates relationship rates using the current tentative roles. Keep MCMC and variational uncertainty distinct. Both iterate, but they return different inferential objects.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="block-notation" class="slide level2">
+<h2>The Blockmodel in Notation</h2>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∣</mo><msub><mi>z</mi><mi>i</mi></msub><mo>,</mo><msub><mi>z</mi><mi>j</mi></msub><mo>∼</mo><mo>Bernoulli</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>θ</mi><mrow><msub><mi>z</mi><mi>i</mi></msub><msub><mi>z</mi><mi>j</mi></msub></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+Y_{ij}\mid z_i,z_j\sim\operatorname{Bernoulli}(\theta_{z_i z_j})
+</annotation></semantics></math></p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mi>i</mi></msub><annotation encoding="application/x-tex">z_i</annotation></semantics></math> is organization <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>’s relational role.</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>g</mi><mi>h</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{gh}</annotation></semantics></math> is the probability of a recorded tie between roles <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>.</li>
+<li>The full <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛉</mi><annotation encoding="application/x-tex">\boldsymbol\theta</annotation></semantics></math> matrix contains every within-role and across-role probability.</li>
+</ul>
+<div class="bottom-line">
+<p>The role labels are arbitrary. Their substantive meaning comes from the fitted relationship matrix and the organizations assigned to each role.</p>
+</div>
+<div class="slide-link">
+<p><a href="day9_srm_blocks.html#sec-blockmodel" class="walkthrough-link" target="_blank">Read the cross-sectional blockmodel</a></p>
+</div>
+<aside class="notes">
+<p>The plain-language estimation loop came first. Now the notation simply names the tentative roles and the relationship rates the algorithm has been updating.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2002,6 +1979,29 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="block-plots" class="slide level2">
+<h2>Compare the Observed Network With the Role Model</h2>
+
+<img role="img" data-src="data:image/png;base64,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" width="1008" class="r-stretch"><div class="bottom-line">
+<p>Observed matrix: individual ties. Heat map: fitted probabilities for core-core, core-periphery, and periphery-periphery ties.</p>
+</div>
+<div class="slide-link">
+<p><a href="day9_srm_blocks.html#gade-block-plots" class="walkthrough-link" target="_blank">Open both block plots</a></p>
+</div>
+<aside class="notes">
+<p>Point first to the broad core-to-periphery band, then to the sparse periphery. The smooth heat map is a fitted summary, not a second observed network.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
 <section id="block-gof" class="slide level2">
 <h2>Simulate Networks From the Fitted Roles</h2>
 <ul>
@@ -2015,7 +2015,7 @@ display:block!important;
 <p><a href="day9_srm_blocks.html#sec-block-gof" class="walkthrough-link" target="_blank">Run the block fit check</a></p>
 </div>
 <aside class="notes">
-<p>The simulation holds the estimated hard memberships and block probabilities fixed. It is a plug-in simulation check, not a full parametric bootstrap with uncertainty and refitting. Multi-organization operations are expanded into all pairwise ties, which can generate triangles mechanically. Name degree-corrected blocks or continuous AME factors as useful extensions.</p>
+<p>The simulation holds the estimated hard memberships and block probabilities fixed. It is a plug-in simulation check, not a full parametric bootstrap with uncertainty and refitting. Multi-organization operations are expanded into all pairwise ties, which can generate triangles mechanically. A degree-corrected blockmodel or the continuous geometry introduced on Day 10 could represent additional within-role variation.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2045,9 +2045,9 @@ display:block!important;
 </thead>
 <tbody>
 <tr class="odd">
-<td>Which states persistently appear on the source and target sides of high-volume event relationships?</td>
+<td>How do states’ adjusted source-side and target-side positions change across years?</td>
 <td>13 directed annual networks</td>
-<td>Pooled SRM with <code>lame</code></td>
+<td>Dynamic SRM with <code>lame</code></td>
 </tr>
 <tr class="even">
 <td>How do states’ relational profiles differ across years?</td>
@@ -2080,21 +2080,22 @@ display:block!important;
 </section>
 <section id="longitudinal-srm" class="slide level2">
 <h2>The Binary Longitudinal SRM</h2>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Pr</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Y</mi><mrow><mi>i</mi><mi>j</mi><mi>t</mi></mrow></msub><mo>=</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>Φ</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mi>t</mi></msub><mo>+</mo><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi><mi>t</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi><mo>+</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>b</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
-\Pr(Y_{ijt}=1)=\Phi\!\left(\alpha_t+\mathbf{x}_{ijt}^{\mathsf T}\boldsymbol\beta+a_i+b_j\right)
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Pr</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Y</mi><mrow><mi>i</mi><mi>j</mi><mi>t</mi></mrow></msub><mo>=</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>Φ</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mi>t</mi></msub><mo>+</mo><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi><mi>t</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi><mo>+</mo><msub><mi>a</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>j</mi><mi>t</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+\Pr(Y_{ijt}=1)=\Phi\!\left(\alpha_t+\mathbf{x}_{ijt}^{\mathsf T}\boldsymbol\beta+a_{it}+b_{jt}\right)
 </annotation></semantics></math></p>
 <ul>
 <li>Year intercepts absorb changes in overall above-threshold network density.</li>
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math> turns the fitted probit score into a probability between zero and one.</li>
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\alpha_t</annotation></semantics></math> gives each year its own baseline rate, while <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi><mi>t</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi></mrow><annotation encoding="application/x-tex">\mathbf{x}_{ijt}^{\mathsf T}\boldsymbol\beta</annotation></semantics></math> contains the measured dyad-year predictors.</li>
-<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>i</mi></msub><annotation encoding="application/x-tex">a_i</annotation></semantics></math> records how often state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> appears as the coded source beyond those predictors, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>j</mi></msub><annotation encoding="application/x-tex">b_j</annotation></semantics></math> does the same for state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math> as the coded target.</li>
-<li>The effects are pooled across all 13 years.</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">a_{it}</annotation></semantics></math> records how often state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> appears as the coded source in year <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> beyond those predictors.</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mrow><mi>j</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">b_{jt}</annotation></semantics></math> records how often state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math> appears as the coded target in year <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> beyond those predictors.</li>
+<li><code>dynamic_ab = TRUE</code> smooths each trajectory through an AR(1) process.</li>
 </ul>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-lame-long" class="walkthrough-link" target="_blank">Fit the binary longitudinal SRM</a></p>
 </div>
 <aside class="notes">
-<p>Call this a pooled longitudinal SRM. It uses the dyad-year panel jointly, but the actor effects are persistent rather than changing annually. Source and target are data-coding positions, so avoid stronger claims about battlefield initiation.</p>
+<p>The AR(1) structure lets adjacent annual effects inform one another while allowing state positions to change. Source and target are ICEWS coding positions, so avoid stronger claims about battlefield initiation and victimization.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2108,20 +2109,22 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="longitudinal-als" class="slide level2">
-<h2>Use the Fast Point Estimator Today</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href></a><span class="fu">lame</span>(...,</span>
-<span id="cb2-2"><a href></a>  <span class="at">family =</span> <span class="st">&quot;binary&quot;</span>,</span>
-<span id="cb2-3"><a href></a>  <span class="at">R =</span> <span class="dv">0</span>,</span>
-<span id="cb2-4"><a href></a>  <span class="at">method =</span> <span class="st">&quot;als&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>We already did the baby Bayesian and MCMC introduction today. Alternating least squares (ALS) gets its own introduction next time.</p>
+<h2>Use the Fast Point Estimator</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href></a><span class="fu">lame</span>(...,</span>
+<span id="cb3-2"><a href></a>  <span class="at">family =</span> <span class="st">&quot;binary&quot;</span>,</span>
+<span id="cb3-3"><a href></a>  <span class="at">method =</span> <span class="st">&quot;als&quot;</span>,</span>
+<span id="cb3-4"><a href></a>  <span class="at">dynamic_ab =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-5"><a href></a>  <span class="at">bootstrap =</span> <span class="dv">100</span>,</span>
+<span id="cb3-6"><a href></a>  <span class="at">bootstrap_type =</span> <span class="st">&quot;parametric&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We already did the baby Bayesian and MCMC introduction today. Alternating least squares (ALS) will be unpacked on Day 10.</p>
 <div class="bottom-line">
-<p>Today, treat ALS as a fast exploratory point estimator. It does not return posterior draws or credible intervals.</p>
+<p>ALS supplies the fitted trajectories quickly. One hundred parametric bootstrap refits show how much those trajectories would vary across repeated panels generated by the fitted SRM.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#lame-long-fit" class="walkthrough-link" target="_blank">Read the estimator boundary</a></p>
 </div>
 <aside class="notes">
-<p>One-sentence preview only: ALS cycles through regression and actor-effect updates until the fitted values stabilize. Do not turn this into a second estimation lecture today.</p>
+<p>One-sentence preview only: ALS cycles through regression and actor-effect updates until the fitted values stabilize. The AR(1) penalty links neighboring annual actor effects. Save the detailed estimation explanation for Day 10.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2135,21 +2138,37 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="longitudinal-results" class="slide level2">
-<h2>Put the Probit Results Into Probabilities</h2>
-<ul>
-<li>Setting the same modeled pairs to different-region and same-region changes the average predicted probability from 17% to 45%.</li>
-<li>Setting their Polity gap to 0 and 10 points changes the average from 17% to 24%.</li>
-<li>Source-side and target-side state scores correlate at 0.93; the remaining connection between the two directions of one pair is 0.18.</li>
-<li>These are summaries from a fast fit with no uncertainty intervals.</li>
-</ul>
+<h2>Measured Associations and Bootstrap Intervals</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Predictor</th>
+<th style="text-align: right;">Probit coefficient</th>
+<th style="text-align: right;">95% bootstrap interval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Polity gap, 0 to 20 points</td>
+<td style="text-align: right;">0.881</td>
+<td style="text-align: right;">[0.698, 1.268]</td>
+</tr>
+<tr class="even">
+<td>Same region</td>
+<td style="text-align: right;">1.451</td>
+<td style="text-align: right;">[1.400, 1.722]</td>
+</tr>
+</tbody>
+</table>
+<p>Both associations are positive in this selected panel. The coefficients move a latent probit score, so they are not percentage-point changes.</p>
 <div class="bottom-line">
-<p>States that appear often as coded sources also tend to appear often as coded targets. That is different from asking whether both directions of one particular pair are unexpectedly active.</p>
+<p>Use the fitted probability contrasts in the walkthrough to discuss ordinary units. Those comparisons are not observed changes within a pair or causal effects.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-lame-results" class="walkthrough-link" target="_blank">Inspect the longitudinal SRM results</a></p>
 </div>
 <aside class="notes">
-<p>The same-region number is an average discrete model contrast over the observed actor effects, years, and Polity gaps. It is not a comparison of observed regional groups or a within-pair change, because one fixed pair cannot switch regions. Both contrasts come from an ALS point fit with no uncertainty intervals, and neither is causal.</p>
+<p>Read the displayed before, after, and percentage-point difference values from the walkthrough. One fixed state pair cannot switch regions, so the same-region comparison is a scoring exercise rather than an observed transition. A 10-point Polity gap is 0.5 on the scaled predictor.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2163,17 +2182,83 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="longitudinal-effects" class="slide level2">
-<h2>Persistent Above-Threshold Positions</h2>
-<p>After accounting for region, Polity difference, and year, the United States appears most often on both sides of high-volume coded event relationships in this selected ICEWS panel.</p>
-<p>Israel, Iran, the United Kingdom, Pakistan, India, and Russia appear near the top of one or both rankings.</p>
+<h2>Syria’s Above-Threshold Relationships Changed</h2>
+<p>The fitted score for events coded <strong>from Syria</strong> rises:</p>
+<ul>
+<li>2002: -1.34, with 95% bootstrap interval [-2.46, -0.85]</li>
+<li>2012: 0.09, with interval [-0.53, 0.49]</li>
+<li>2014: 0.29, with interval [-0.38, 0.79]</li>
+</ul>
+<p>The fitted score for events coded <strong>toward Syria</strong> rises more sharply:</p>
+<ul>
+<li>2002: -1.51, with interval [-2.18, -0.39]</li>
+<li>2012: 0.71, with interval [0.11, 1.04]</li>
+<li>2014: 0.72, with interval [0.33, 1.27]</li>
+</ul>
 <div class="bottom-line">
-<p>That prominence may reflect real geopolitical involvement, heavier news coverage, or both. The model cannot separate those explanations, and this fast fit does not provide uncertainty intervals for the state scores.</p>
+<p>After 2011, Syria appears in many more relationships that cross the 20-event cutoff, especially as the state toward which ICEWS coded the events.</p>
 </div>
 <div class="slide-link">
-<p><a href="day9_srm_blocks.html#lame-long-plot" class="walkthrough-link" target="_blank">Plot source-side and target-side effects</a></p>
+<p><a href="day9_srm_blocks.html#sec-lame-trajectories" class="walkthrough-link" target="_blank">Open the dynamic trajectories</a></p>
 </div>
 <aside class="notes">
-<p>Speak in terms of coded source-side and target-side event relationships. Keep the source-coverage caveat visible.</p>
+<p>These are latent probit actor scores, not event counts or probabilities. Zero is the adjusted reference after region, Polity gap, and annual baseline enter. The nonoverlapping early and later intervals support a clear change, especially for events coded toward Syria.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="longitudinal-other-states" class="slide level2">
+<h2>The Other Focus States</h2>
+<ul>
+<li>The United States stays clearly above zero for events coded both from it and toward it throughout 2002 to 2014.</li>
+<li>Iran is clearly above zero for events coded toward it from 2006 onward, with especially high values from 2010 through 2013.</li>
+<li>Russia is clearly above zero for events coded toward it from 2012 through 2014.</li>
+</ul>
+<div class="bottom-line">
+<p>These paths describe which states appear in many above-threshold ICEWS relationships after the included predictors enter. They do not measure military initiation, victimization, or conflict severity.</p>
+</div>
+<div class="slide-link">
+<p><a href="day9_srm_blocks.html#sec-lame-trajectories" class="walkthrough-link" target="_blank">Compare the four states</a></p>
+</div>
+<aside class="notes">
+<p>Read the direction of the coded events every time. Media visibility and source coverage remain plausible contributors to the apparent prominence of a state.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="longitudinal-bootstrap" class="slide level2">
+<h2>What the Bootstrap Ribbons Mean</h2>
+<p>For each of 100 bootstrap replications:</p>
+<ol type="1">
+<li>Generate a new 13-year panel from the fitted dynamic SRM.</li>
+<li>Refit the same model to that generated panel.</li>
+<li>Save the annual source-side and target-side trajectories.</li>
+<li>Use the spread across refits to build the ribbons.</li>
+</ol>
+<div class="bottom-line">
+<p>The ribbons show how much the fitted paths vary across panels generated by this SRM. They are not Bayesian credible intervals, design-based intervals, or protection against model misspecification.</p>
+</div>
+<div class="slide-link">
+<p><a href="day9_srm_blocks.html#sec-lame-trajectories" class="walkthrough-link" target="_blank">Inspect the bootstrap procedure</a></p>
+</div>
+<aside class="notes">
+<p>The bootstrap includes refitting, so it carries more uncertainty than plotting one fitted trajectory alone. It remains conditional on the outcome definition, selected states, AR(1) dynamic structure, covariates, and fitted parameter values.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2187,14 +2272,14 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="longitudinal-scope" class="slide level2">
-<h2>What This Pooled Model Does Not Show</h2>
-<p>Each state keeps the same source-side and target-side score in every year.</p>
-<p>The model does not give each state pair its own long-run baseline, ask whether last year’s outcome predicts this year’s, or directly model leftover dependence over time.</p>
+<h2>What This Dynamic SRM Does Not Show</h2>
+<p>The AR(1) process smooths adjacent annual actor effects. It does not identify the political mechanism that produced a rise or fall.</p>
+<p>The model does not give every state pair its own long-run baseline, include a lagged outcome, or show that a source-side change caused a target-side change.</p>
 <div class="bottom-line">
-<p>It summarizes which states repeatedly appear above or below the fitted expectation across all 13 networks, while allowing the overall rate to differ by year.</p>
+<p>The trajectories describe changing adjusted positions in this selected coded-event panel, not changes in conflict severity or a causal response process.</p>
 </div>
 <aside class="notes">
-<p>A dynamic SRM would allow actor effects to change through a specified temporal process. That is a different model requiring its own stability and uncertainty checks.</p>
+<p>The actor effects can change by year, but the outcome remains a thresholded event-volume measure. News coverage and coding practices remain plausible contributors.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2233,7 +2318,7 @@ display:block!important;
 </section>
 <section id="netmix-h1" class="slide level2">
 <h2>One Hidden Markov State Means No Transition Model</h2>
-<p>The model estimates a role-weight vector <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝛑</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">\boldsymbol\pi_{it}</annotation></semantics></math> for each state-year and one shared role-to-role probability matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛉</mi><annotation encoding="application/x-tex">\boldsymbol\theta</annotation></semantics></math>. The weights in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝛑</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">\boldsymbol\pi_{it}</annotation></semantics></math> add to one.</p>
+<p>Every state-year receives two role weights that add to one, and all years share one table of role-to-role event probabilities.</p>
 <p>With one hidden Markov state, there is no transition matrix, temporal smoothing, or estimated switching process.</p>
 <div class="bottom-line">
 <p>Each year receives its own fitted profile, but the model does not say how one year’s profile leads to the next.</p>
@@ -2435,21 +2520,51 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="calibration" class="slide level2">
-<h2>In-Sample Reconstruction Check</h2>
-<p>Sort the dyad-years into five equal groups from lowest to highest fitted probability, then compare what the model predicted with what occurred:</p>
-<ul>
-<li>Lowest: 0.01, predicted 0.08</li>
-<li>Middle: 0.15, predicted 0.15</li>
-<li>Highest: 0.61, predicted 0.57</li>
-</ul>
+<h2>Does the Model Put the More Active Relationships Near the Top?</h2>
+<ol type="1">
+<li>Rank every directed state-pair-year from the lowest to highest NetMix fitted probability.</li>
+<li>Divide that ordered list into five equally sized groups.</li>
+<li>Within each group, compare the observed share that crossed the 20-event threshold with the mean predicted probability.</li>
+</ol>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Selected group</th>
+<th style="text-align: right;">Observed share above threshold</th>
+<th style="text-align: right;">Mean predicted probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lowest fifth</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.08</td>
+</tr>
+<tr class="even">
+<td>Middle fifth</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td>Highest fifth</td>
+<td style="text-align: right;">0.61</td>
+<td style="text-align: right;">0.57</td>
+</tr>
+</tbody>
+</table>
 <div class="bottom-line">
-<p>The Brier score is the average squared probability error, so lower is better. It is 0.115 for the role model and 0.170 for one constant probability.</p>
+<p>The model separates quiet from active pairs, but it expects too many events in the quietest fifth.</p>
 </div>
 <div class="slide-link">
-<p><a href="day9_srm_blocks.html#sec-netmix-calibration" class="walkthrough-link" target="_blank">Inspect the in-sample fit table</a></p>
+<p><a href="day9_srm_blocks.html#sec-netmix-calibration" class="walkthrough-link" target="_blank">Open the full model check</a></p>
 </div>
 <aside class="notes">
-<p>The memberships and role matrix were learned from these same dyad-years, so this is reconstruction, not out-of-sample prediction or validation. The model overpredicts the quietest dyads and underpredicts the most active ones.</p>
+<p>The Brier score is the average squared probability error, so lower is better. It is 0.115 for NetMix and 0.170 for one constant probability. The memberships and role matrix were learned from these same state-pair-years, so this is reconstruction, not out-of-sample prediction or validation.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2490,7 +2605,7 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="spine" class="slide level2">
-<h2>Four Ways to Represent the Missing Pattern</h2>
+<h2>Three Ways to Represent the Missing Pattern</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -2508,14 +2623,10 @@ display:block!important;
 <td>One adjusted activity score for each actor</td>
 </tr>
 <tr class="even">
-<td>AME</td>
-<td>Continuous hidden profiles that explain pair-specific fit</td>
-</tr>
-<tr class="odd">
 <td>SBM</td>
 <td>One relational role for each actor</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Repeated-network mixed-membership stochastic blockmodel, fitted with NetMix</td>
 <td>A separate blend of roles for each actor-year</td>
 </tr>
@@ -2542,17 +2653,17 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="human-result" class="slide level2">
-<h2>Say the Syrian Result in Human Terms</h2>
-<p>Among these Syrian armed organizations, groups closer to one another in estimated size and groups operating in the same places carried out more recorded joint operations. The evidence also points toward more cooperation among ideologically similar groups, although that finding becomes less certain when the model allows a second unmeasured cooperation pattern.</p>
-<p>ANF and ASIM stand out in two ways. They took part in more recorded joint operations across their partnerships than their measured characteristics would lead us to expect. When we look only at whether each pair ever cooperated, they also form a small tactical core with links across much of the otherwise fragmented network. That does not mean they shared the same long-term goals or formed a unified coalition.</p>
+<h2>What Happened Among the Syrian Organizations?</h2>
+<p>The data count claimed joint tactical operations between pairs of armed organizations from July 2012 through June 2015. Pairs closer in estimated fighter strength carried out more of these operations after accounting for ideology, operating location, state sponsorship, and whether each organization cooperated broadly with many partners.</p>
+<p>Al-Nusrah Front and Ahrar al-Sham Islamic Movement carried out more claimed joint operations across their many partnerships than the measured variables predicted. In the binary network, these two organizations connected to 44 of 58 possible pairs involving the rest of the network, while the other organizations connected to only 41 of 406 possible pairs among themselves.</p>
 <div class="bottom-line">
-<p>These patterns describe who cooperated with whom in this network and period. They do not show that changing ideology, relative power, or location would cause cooperation to change.</p>
+<p>They formed a small tactical backbone in the recorded cooperation network. That does not mean they shared long-term goals, formed a unified coalition, or would have cooperated differently if we changed one measured attribute.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the complete interpretation</a></p>
 </div>
 <aside class="notes">
-<p>End with actions, organizations, and the case. The cross-cell breadth is stronger evidence for the core than the single observed core-core pair.</p>
+<p>The fighter-strength interval is the clearest measured association. The ideology and shared-location point estimates move in the expected directions, but their SRM intervals cross zero, and shared sponsorship remains uncertain. The 44 of 58 cross-role ties are stronger evidence for the core than the one possible tie between the two core organizations.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2566,17 +2677,18 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="human-longitudinal" class="slide level2">
-<h2>Say the Longitudinal Result in Human Terms</h2>
-<p>To make the model concrete, we use it twice on the same state-pair-years, leaving everything else as fitted. The average estimated chance of more than 20 coded conflict events is 17% when we set the pair to different-region and 45% when we set it to same-region. In a separate comparison, the average is 17% with a 0-point Polity gap and 24% with a 10-point gap.</p>
-<p>The United States appeared unusually often on both sides of these high-volume relationships across the 13 years. NetMix gives us a yearly summary: the United States remains connected to many different states, while Syria’s high-volume connections widen beginning in 2011.</p>
+<h2>What Happened in the ICEWS Example?</h2>
+<p>The outcome is whether ICEWS recorded more than 20 materially conflictual events from one state toward another in a year. The United States crossed that cutoff with many states in both directions from 2002 through 2014.</p>
+<p>Syria crossed the cutoff with relatively few states through 2010. After 2011, Syria appeared in many more above-threshold relationships, especially as the state toward which events were directed. The bootstrap intervals show a clear change from its earlier years.</p>
+<p>NetMix reaches the same descriptive point in another way. It simply looks at all of a state’s above-threshold partners in each year and summarizes whether that list was short or broad. It does not adjust for region, Polity differences, or the year as the SRM does, and it does not discover a geopolitical camp.</p>
 <div class="bottom-line">
-<p>These patterns may reflect real state involvement, news coverage, and coding practices. They do not measure conflict severity, establish causal effects, or show states moving through a fixed sequence of roles.</p>
+<p>These findings describe a selected panel of coded news events. They may reflect state behavior, news coverage, and coding practices, and they do not measure conflict severity or establish causal effects.</p>
 </div>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the complete interpretation</a></p>
 </div>
 <aside class="notes">
-<p>Use the SRM for recurring adjusted state positions and NetMix for yearly relationship patterns. Keep the selected case set, ICEWS coverage, prespecified <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">K=2</annotation></semantics></math>, and lack of a transition model attached to the result.</p>
+<p>Keep the contrast literal. The SRM adjusts for region, Polity gap, and year while estimating changing state effects. NetMix does not include those predictors in this fit and has no transition model. Both use the same selected 18-state ICEWS panel.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2594,17 +2706,17 @@ display:block!important;
 <ol type="1">
 <li>Relationships that share an actor are connected, even when each pair appears only once.</li>
 <li>A missing process can pull a coefficient up, pull it down, or leave it centered while still making the usual uncertainty calculation wrong.</li>
+<li>A random-effects SRM assumes the remaining actor effects are conditionally unrelated to the predictors; Mundlak terms can relax that assumption in repeated data.</li>
 <li>SRM actor effects show which actors repeatedly sit above or below the measured prediction. They do not create a causal design.</li>
-<li>AME adds pair-specific patterns when broad actor activity is not enough.</li>
-<li>Blockmodels find recurring relationship patterns, not automatically real-world communities.</li>
-<li>The same annual networks can answer one question about persistent state positions and another about how each year’s relationship pattern looks.</li>
-<li>Fast fitting methods still require multiple starts, fit checks, and conclusions that stay within what the model and data can support.</li>
+<li>The SRM reproduces broad actor heterogeneity here but misses third-order dependence.</li>
+<li>Blockmodels find recurring relationship patterns, not automatically substantive communities.</li>
+<li>Dynamic SRM trajectories and NetMix memberships answer different annual questions and carry different uncertainty.</li>
 </ol>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-after-fit" class="walkthrough-link" target="_blank">Return to the walkthrough</a></p>
 </div>
 <aside class="notes">
-<p>Day 10 goes deeper into continuous latent geometry and identification. Today gives students the reason that extra latent structure is needed.</p>
+<p>Day 10 introduces continuous latent geometry and explains ALS in detail. The SRM goodness-of-fit failure gives students a concrete reason to ask what additional relational structure might be needed.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
