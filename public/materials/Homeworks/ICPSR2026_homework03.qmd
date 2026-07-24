@@ -1,0 +1,256 @@
+---
+title: "Homework 3: The Social Relations Model"
+subtitle: "Advanced Network Analysis · ICPSR"
+author: "Your Name Here"
+date: last-modified
+engine: knitr
+editor: source
+format:
+  html:
+    theme: cosmo
+    css: hw3.css
+    toc: true
+    toc-depth: 2
+    toc-location: left
+    toc-title: "Homework 3"
+    number-sections: true
+    embed-resources: true
+    code-copy: true
+    fig-width: 8
+    fig-height: 5
+    fig-align: center
+    df-print: kable
+execute:
+  echo: true
+  warning: false
+  message: false
+knitr:
+  opts_chunk:
+    comment: "#>"
+---
+
+```{r}
+#| label: setup
+#| include: false
+source("_hw3_helpers.R")
+library(lame)
+library(ggplot2)
+library(patchwork)
+theme_set(theme_bw())
+```
+
+::: {.callout-important}
+## What You Need to Do
+
+This assignment has four short tasks. The code is already written and the fitted model is included in the download, so you do not need to wait for the model to estimate. Run the chunks, examine the output, and replace each **Your answer** line with a short response in your own words.
+
+Submit:
+
+1. Your completed `.qmd` file.
+2. The HTML file produced when you render it.
+
+Most answers should take one short paragraph. Focus on what the results tell us about students' friendship ratings rather than repeating statistical labels.
+:::
+
+:::: {.callout-note collapse="true"}
+## Installation Help
+
+You need `lame`, `ggplot2`, `patchwork`, `digest`, and `coda`. Install the CRAN packages with:
+
+```{r}
+#| eval: false
+install.packages(c("ggplot2", "patchwork", "digest", "coda", "remotes"))
+```
+
+`lame` will be on CRAN shortly. For now, the easiest installation is from GitHub if your computer has compilation tools:
+
+```{r}
+#| eval: false
+remotes::install_github("netify-dev/lame")
+```
+
+If compilation is not available on your computer, use the compiled release for your operating system from the [`lame` GitHub releases page](https://github.com/netify-dev/lame/releases).
+::::
+
+# The Question and the Data
+
+We want to understand how friendship ratings depend on three kinds of structure: who is giving the rating, who is receiving it, and whether two students have a particularly positive or negative relationship with one another.
+
+The data come from 32 Dutch university students. Each student rated every other student from \(-1\), a troubled relationship, to \(4\), best friends. Because the rating from student \(i\) to student \(j\) can differ from the rating from \(j\) to \(i\), this is a directed network. The data also record each student's sex, smoking status, and degree program.
+
+```{r}
+#| label: load-data
+load("data/dutch_friends.rda")
+Y[1:5, 1:5]
+head(nodes)
+```
+
+## Task 1: Read the Outcome
+
+Choose one nonmissing entry from the displayed section of `Y`. In two or three sentences, say who gave the rating, who received it, what the number means, and why reversing the row and column could produce a different answer.
+
+::: {.callout-tip icon=false}
+## Your Answer
+
+Replace this line with your answer.
+:::
+
+# The Model
+
+The code below organizes the covariates and loads the fitted Social Relations Model. The model includes:
+
+- A source effect for whether some students generally give warmer or colder ratings.
+- A target effect for whether some students generally receive warmer or colder ratings.
+- Reciprocity for whether two students' ratings of one another are related.
+- Covariates for student attributes and shared attributes.
+
+The fitted model is stored in `cache/hwSRM.rda`. Rendering this assignment should load that result rather than estimate it again.
+
+```{r}
+#| label: build-model-inputs
+Y <- Y[nodes$student, nodes$student]
+Xn <- as.matrix(nodes[, c("male", "smoker")])
+rownames(Xn) <- nodes$student
+same <- function(v) {
+  m <- outer(v, v, "==") * 1
+  dimnames(m) <- list(nodes$student, nodes$student)
+  m
+}
+Xd <- array(
+  NA,
+  dim = c(nrow(nodes), nrow(nodes), 3),
+  dimnames = list(
+    nodes$student,
+    nodes$student,
+    c("same_sex", "same_smoker", "same_program")
+  )
+)
+Xd[, , "same_sex"] <- same(nodes$male)
+Xd[, , "same_smoker"] <- same(nodes$smoker)
+Xd[, , "same_program"] <- same(nodes$program)
+```
+
+```{r}
+#| label: load-fitted-srm
+hwSRM <- cache_fit("hwSRM", ame(
+  Y = Y,
+  Xdyad = Xd,
+  Xrow = Xn,
+  Xcol = Xn,
+  family = "normal",
+  symmetric = FALSE,
+  R = 0,
+  seed = 6886,
+  nscan = 10000,
+  burn = 10000,
+  odens = 10,
+  verbose = FALSE,
+  plot = FALSE
+))
+```
+
+# Read the Actor Effects
+
+The source effect tells us whether a student gives higher or lower ratings than the model otherwise expects. The target effect tells us whether a student receives higher or lower ratings than the model otherwise expects. These are adjustments on the original friendship-rating scale after accounting for the covariates.
+
+```{r}
+#| label: actor-effects
+#| fig-height: 7
+ab_plot(hwSRM, effect = "sender") /
+  ab_plot(hwSRM, effect = "receiver")
+```
+
+```{r}
+#| label: actor-table
+actor_effects <- data.frame(
+  student = names(hwSRM$APM),
+  source_effect = round(hwSRM$APM, 2),
+  target_effect = round(hwSRM$BPM, 2)
+)
+head(actor_effects[order(-actor_effects$source_effect), ], 3)
+head(actor_effects[order(-actor_effects$target_effect), ], 3)
+```
+
+## Task 2: Describe Two Students
+
+Identify the student with the largest source effect and the student with the largest target effect. Explain each result using the actions in the data. Say who tended to give unusually warm ratings and who tended to receive unusually warm ratings. Do not describe either effect as a permanent personality trait.
+
+::: {.callout-tip icon=false}
+## Your Answer
+
+Replace this line with your answer.
+:::
+
+# Read the Covariates
+
+The estimate column gives the average fitted coefficient. The lower and upper columns give a 95% interval. Treat an association as clearly different from zero when its entire interval is either above or below zero.
+
+```{r}
+#| label: coefficient-table
+coef_tbl(hwSRM)
+```
+
+The coefficient names describe where each variable enters:
+
+- `male_row` and `smoker_row` concern the student giving the rating.
+- `male_col` and `smoker_col` concern the student receiving the rating.
+- `same_sex_dyad`, `same_smoker_dyad`, and `same_program_dyad` compare pairs who share an attribute with pairs who do not.
+
+## Task 3: Interpret Two Results
+
+Choose two coefficients whose 95% intervals do not include zero. For each coefficient, state which ratings are being compared, whether the expected rating is higher or lower, and approximately how large the difference is on the \(-1\) to \(4\) rating scale. These are adjusted associations, not automatically causal effects.
+
+::: {.callout-tip icon=false}
+## Your Answer
+
+Replace this line with your answer.
+:::
+
+# Check What the Model Still Misses
+
+The plot compares the observed network with networks simulated from the fitted SRM. The vertical line is the observed value. The histogram shows what the model tends to produce. A large separation means the model is missing that feature.
+
+```{r}
+#| label: model-fit
+#| fig-height: 6
+gof_plot(hwSRM)
+```
+
+```{r}
+#| label: fit-summary
+round(ppsd(hwSRM), 2)
+```
+
+Values near zero indicate close reproduction. Values much larger than two indicate a noticeable gap between the observed network and the networks generated by the model.
+
+## Task 4: Give the Bottom Line
+
+In one short paragraph, answer all three questions:
+
+1. Which parts of the network does the SRM reproduce well?
+2. Which parts does it reproduce poorly?
+3. What have you learned about the friendship ratings that you would have missed by treating all directed ratings as independent observations?
+
+Your answer should mention students giving ratings, receiving ratings, or rating one another. Avoid ending with only a technical statement such as "transitivity is high."
+
+::: {.callout-tip icon=false}
+## Your Answer
+
+Replace this line with your answer.
+:::
+
+# Submission Check
+
+Before submitting, confirm that:
+
+- Your name appears at the top.
+- All four answer boxes have been replaced.
+- The document renders without an error.
+- You are submitting both the `.qmd` and rendered HTML file.
+
+```{r}
+#| label: session
+#| code-fold: true
+#| code-summary: "Session information"
+sessionInfo()
+```

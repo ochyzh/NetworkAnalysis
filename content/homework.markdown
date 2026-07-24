@@ -90,14 +90,14 @@ Homework assignments and supporting files are posted here as they become availab
         <td>
           <strong>Homework 3: Social Relations Model</strong>
         </td>
-        <td>Thursday, July 23</td>
-        <td><span class="homework-status">Materials coming soon</span></td>
+        <td>To be announced</td>
+        <td><a href="../materials/Homeworks/ICPSR2026_homework03.html" target="_blank">View assignment</a> | <a href="../materials/Homeworks/ICPSR2026_homework03.zip" download>Download complete folder</a></td>
       </tr>
       <tr>
         <td>
           <strong>Homework 4: Stochastic Actor-Oriented Models</strong>
         </td>
-        <td>Tuesday, July 28</td>
+        <td>To be announced</td>
         <td><span class="homework-status">Materials coming soon</span></td>
       </tr>
       </tbody>

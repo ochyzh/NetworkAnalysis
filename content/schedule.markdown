@@ -145,7 +145,7 @@ All the class materials will be posted/updated here.
       </tr>
       <tr>
         <td>Day 9<br>Thu Jul 23</td>
-        <td>Social Relations Model and Blockmodels <br><em>(HW 3 Due)</em></td>
+        <td>Social Relations Model and Blockmodels</td>
         <td>
           <dl>
           <dd><a href="../materials/2026/day9_srm_blocks_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day9_srm_blocks_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/day9_srm_blocks.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day9_srm_blocks.zip" target=_blank> Code &amp; data </a> | <a href="../materials/2026/bayes_aside.zip" target=_blank> Bayesian workflow aside </a>
@@ -175,7 +175,7 @@ All the class materials will be posted/updated here.
       </tr>
       <tr>
         <td>Day 12<br>Tue Jul 28</td>
-        <td>Stochastic Actor-Oriented Models (SAOMs) <br><em>(HW 4 Due)</em></td>
+        <td>Stochastic Actor-Oriented Models (SAOMs)</td>
         <td>
           <dl>
           <dd><a href="../materials/2026/day12_saom_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day12_saom_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/day12_saom.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day12_saom.zip" target=_blank> Code &amp; data </a>
