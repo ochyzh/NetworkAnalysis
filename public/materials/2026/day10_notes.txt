@@ -1,14 +1,11 @@
-DAY 10 PRESENTER NOTES
-Latent Geometry, From Distance to the Factor Model
-
 Purpose of the Day
 ==================
 
-Day 9 separated broad actor tendencies from discrete relational roles. Day 10 asks what we gain when recurring relationship patterns are represented with continuous geometry. The class begins with a latent distance model because the map is intuitive, puts that map under pressure with a complementary-role network, builds the factor idea through a movie preference matrix and its singular value decomposition, and then applies a rank-two factor model to defense alliances.
+Day 9 separated broad actor tendencies from discrete relational roles. Day 10 asks what we gain when recurring relationship patterns are represented with continuous geometry. The class begins with a latent distance model because the map is intuitive, puts that map under pressure with a complementary-role network, builds the factor idea through a movie preference matrix and its singular value decomposition, and then applies a dynamic rank-two AME to changing ICEWS state-pair relationships.
 
-The central distinction is between broad activity and pair-specific fit. An additive effect can tell us that a state signs many defense pacts. A multiplicative term can tell us that one particular pair fits together much better or worse than broad activity and measured characteristics would suggest.
+The central distinction is between broad activity and pair-specific fit. An additive effect can tell us that a state appears often across many high-volume relationships. A multiplicative term can tell us that one particular ordered pair fits together much better or worse than broad activity and measured characteristics would suggest.
 
-The final application has an unusually useful combination of positive and negative evidence. Rank two predicts complete state-pair histories held out from estimation much better than rank zero, and its pair-level reconstructions are easy to understand. The four-chain MCMC fit does not converge on one posterior explanation, however, so we stop before reporting posterior coefficient intervals. That contrast gives students a clean lesson: a model can be useful for prediction and description without supporting finished inferential claims.
+The final application uses 13 annual directed networks with 462 observed relationship changes. Rank two improves complete-pair prediction and reproduces much more year-to-year movement than the dynamic SRM. It also misses reciprocity in several years and four of twelve transition intervals. The class therefore gets a model that is substantively useful without pretending that a good application must fit every feature perfectly.
 
 Files and Setup
 ===============
@@ -17,7 +14,7 @@ Open the Day 10 deck and the rendered walkthrough before class. The deck supplie
 
 Run the `setup` chunk after restarting R. The downloaded folder contains the data and saved fits used by the walkthrough. Expensive calls are wrapped in `cache_fit()`, so unchanged model code loads the saved result instead of rerunning estimation.
 
-Do not delete a cache during class unless a refit is intentional. The Gade latent-distance fit and the alliance MCMC diagnostic run are not useful places to make the room wait.
+Do not delete a cache during class unless a refit is intentional. The Gade latent-distance fit and the dynamic AME with 100 bootstrap refits are not useful places to make the room wait.
 
 Keep this sentence in view: distances, fitted probabilities, and the fitted multiplicative surface are meaningful model quantities; the displayed orientation of a map or factor axis is not.
 
@@ -26,7 +23,7 @@ Opening: Where Geometry Enters
 
 Walkthrough anchor: `#sec-where`
 
-Suggested opening: “Day 9 gave us source-side and target-side effects in the SRM, then discrete roles in blockmodels. We stopped before adding multiplicative effects. Today we build that missing piece and ask when a continuous relationship profile tells us something that broad actor activity and a small set of blocks cannot.”
+Suggested opening: “Day 9 gave us source-side and target-side effects in the SRM, then discrete roles in blockmodels. We stopped before adding multiplicative effects. Day 10 builds that missing piece and asks when a continuous relationship profile tells us something that broad actor activity and a small set of blocks cannot.”
 
 Put the general linear predictor on the screen:
 
@@ -34,13 +31,13 @@ eta_ij = x_ij' beta + a_i + b_j + latent relationship_ij
 
 Walk through the jobs in plain language. The measured variables describe things we observed about a pair. The additive actor terms represent actors that take part in many relationships across many partners. The final term asks whether this particular pair fits together more or less strongly than those broad tendencies predict.
 
-Ask: “If I know that two states sign many alliances, have I learned which partners they repeatedly choose?”
+Ask: “If I know that two states appear in many high-volume relationships, have I learned whether they cross the threshold with each other?”
 
-Expected answer: No. General alliance activity is not the same as partner choice.
+Expected answer: No. Broad state involvement is not the same as the fit of one ordered pair.
 
 Likely question: “Did we already fit AME on Day 9?”
 
-Answer: “No. Day 9 deliberately stopped with the random-effects SRM and blockmodels. Today is where we build the multiplicative part and connect it to AME.”
+Answer: “No. Day 9 deliberately stopped with the random-effects SRM and blockmodels. Day 10 is where we build the multiplicative part and connect it to AME.”
 
 Transition: “Before we choose a geometry, let’s be clear about what an unmeasured relationship pattern could represent.”
 
@@ -49,7 +46,7 @@ What the Missing Pattern Could Represent
 
 Walkthrough anchor: `#sec-political-question`
 
-Use the two applications to keep the discussion concrete. Some Syrian armed organizations repeatedly took part in recorded joint operations together. Some states repeatedly maintained defense pacts as part of larger coalition patterns. In both settings, observed variables and broad actor activity can leave an organized pair pattern behind.
+Use the two applications to keep the discussion concrete. Some Syrian armed organizations repeatedly took part in recorded joint operations together. In the ICEWS panel, some ordered state pairs repeatedly crossed a high event-volume threshold and those patterns changed across years. In both settings, observed variables and broad actor activity can leave an organized pair pattern behind.
 
 Keep four possible uses separate:
 
@@ -267,7 +264,7 @@ Answer: “No. It can reflect posterior uncertainty, Monte Carlo error, weak ide
 
 Likely question: “Can I align annual maps and interpret movement?”
 
-Answer: “Only if the model actually estimates time-varying positions and carries their uncertainty through the comparison. The alliance model later uses one pooled profile for 1991 through 2000.”
+Answer: “Only if the model actually estimates time-varying positions, aligns them, and carries uncertainty through the comparison. The ICEWS application later does estimate changing profiles, so we will inspect their inner products and fitted probabilities rather than naming the axes.”
 
 Optional point: The optimal Procrustes rotation itself uses an SVD of the cross-product between centered configurations. This gives a natural preview of the next section.
 
@@ -429,332 +426,334 @@ Likely question: “Does rank two mean two groups?”
 
 Answer: “No. Rank two means two continuous profile directions. It does not imply two clusters or two automatically named concepts.”
 
-Transition: “We now put the factor together with the additive terms and use the full structure to study defense alliances.”
+Transition: “We now put the factor together with the additive terms and let all three relationship pieces move across the ICEWS panel.”
 
-From Additive Effects to Coalition Profiles
-===========================================
+From Additive Effects to Changing Partner Profiles
+==================================================
 
 Walkthrough anchor: `#sec-fits`
 
-For the symmetric alliance application, write:
+For the directed ICEWS application, write:
 
-theta_ijt = alpha_t + x_ijt' beta + a_i + a_j + u_i' Lambda u_j
+Y*ijt = alpha_t + x_ijt' beta + a_it + b_jt + u_it'v_jt + e_ijt
 
-Pr(Y_ijt = 1) = Phi(theta_ijt)
+Yijt = 1(Y*ijt > 0)
 
-Translate every term into the relationship being studied. The year intercept lets the overall defense-alliance rate change. The measured pair variables describe contiguity, joint democracy, and capability imbalance. The additive effect describes states that sign defense pacts broadly. The multiplicative surface describes which pairs repeatedly fit together after those pieces enter.
+Translate every term into the relationship being studied. The year intercept lets the overall threshold rate change. The measured pair variables describe Polity gap and same region. The additive effects describe broad source-side and target-side involvement. The multiplicative surface describes which ordered pairs fit together after those pieces enter.
 
-Use the directed callout briefly. In a directed network, source actor i receives u_i, target actor j receives v_j, and the product u_i'v_j represents source-target compatibility. The surface UV' is identified more directly than the separate raw factor matrices.
+Source state i receives u_it, target state j receives v_jt, and the product u_it'v_jt represents source-target compatibility in year t. The changing surface is identified more directly than the separate raw factor matrices.
 
 Likely question: “What makes the rank-zero model different from the dyadic probit?”
 
-Answer: “Rank zero adds a state effect for both members of a pair, so states that sign many alliances can differ from states that sign few. The rank-two model then adds pair-specific coalition structure.”
+Answer: “Rank zero adds changing source and target effects, so broadly involved states can differ from less involved states. Rank two then adds changing partner-specific structure.”
 
-Transition: “With the model pieces separated, let’s define the alliance data and the exact question they can answer.”
+Transition: “With the model pieces separated, let’s return to the ICEWS data and verify that the relationship changes enough to estimate movement.”
 
-Defense Alliances as a Relational System
-========================================
+CHANGING STATE-PAIR RELATIONSHIPS WITH DYNAMIC AME
 
-Walkthrough anchor: `#sec-alliance-application`
+Walkthrough anchor: #sec-fits
 
-Chunks: `alliance-data`, `alliance-rate-plot`
+Deck slide: Same Data, A More Specific Question
 
-Suggested setup: “Why do some defense alliances recur as part of larger coalition patterns, even after we account for geography, regime type, capability imbalance, and states that sign many alliances?”
+Set up the bridge from Day 9 before showing the new equation. Say: “Yesterday we let every state have a changing source-side score and a changing target-side score. Those scores told us whether a state appeared broadly often across many relationships. They still could not tell us whether the particular partners associated with a state changed. That is the job of the multiplicative term.”
 
-The classroom panel contains annual defense-pact ties among 50 countries from 1991 through 2000. It is a computational subset of data described by Cranmer, Desmarais, and Menninga (2012) and Cranmer, Desmarais, and Kirkland (2012). The outcome is undirected, so United States-Canada and Canada-United States are the same pair.
+Ask: “If I know that Iran and Syria each appear in many high-volume relationships, do I yet know whether Iran toward Syria crosses the threshold?”
 
-Define the predictors in ordinary terms:
+Expected answer: No. Broad involvement is not the same thing as the fit of one ordered pair.
 
-1. Contiguity equals one for states that share a land border or are separated by a short stretch of water.
-2. Joint democracy equals one when both states have Polity scores of at least 6.
-3. Capability imbalance is the absolute CINC difference divided by the pair’s total CINC, running from 0 toward 1.
+State the question in one clean sentence: “After broad state involvement enters, do the particular source-target combinations that cross a high ICEWS event-volume threshold change across years?”
 
-Run `alliance-data`. There are 50 states, 1,225 unique unordered pairs, 10 years, and 12,250 pair-years. A defense pact appears in 1,140 pair-years, or about 9.3%.
+Keep the outcome wording precise. A one means that ICEWS contains more than 20 coded material-conflict events from one state toward another in a year. It does not mean that the source initiated a war, that the target suffered more harm, or that the relationship was more severe. It is a high coded event-volume relationship.
 
-Make the persistence visible. Of the 1,225 pair histories, 1,102 are never allied, 106 are allied in all ten years, and only 17 change during the decade. About 98.6% of pair histories are constant.
+Transition: “Now that the relationship and question are clear, we can give every part of the model one job.”
 
-Suggested language: “This model is learning persistent coalition profiles much more than alliance onset and dissolution. The effective validation unit is the complete state pair, not 12,250 independent yearly observations.”
+THE DYNAMIC AME EQUATION
 
-Run `alliance-rate-plot`. Annual edge counts range from 108 to 120, so the outcome remains uncommon and fairly stable. Year indicators still allow the baseline to shift.
+Walkthrough anchor: #sec-fits
 
-State the limits. This 50-country subset is not a probability sample of the international system. Actor and factor profiles are pooled across 1991 through 2000. The model is not a future forecast, does not separate alliance onset from persistence, and cannot show state profiles moving over time.
+Deck slide: The Dynamic AME Keeps Five Jobs Separate
 
-Likely question: “Why not add a lagged alliance?”
+Write the equation slowly:
 
-Answer: “That would answer a more explicitly temporal persistence question. Here we use complete pair histories and pooled profiles to isolate recurring coalition structure, then validate at the pair level so persistence cannot leak across training and test sets.”
+Y*ijt = alpha_t + x'ijt beta + a_it + b_jt + u'it v_jt + e_ijt
 
-Transition: “The model needs one outcome matrix and one predictor array for every year. We will let `netify` build them consistently.”
+Yijt = 1(Y*ijt > 0)
 
-Let `netify` Build the Matrices
-===============================
+Read from left to right. Alpha_t is the baseline for the whole network in year t. The x-beta term contains Polity gap and same region. The a_it term is state i’s broad source-side adjustment in year t. The b_jt term is state j’s broad target-side adjustment. The u-v inner product is the source-target compatibility adjustment for this exact ordered pair in this exact year.
 
-Walkthrough location: the subsection under `#sec-alliance-application`
+Suggested language: “The additive paths tell us whether a state appears in many relationships. The multiplicative surface tells us which particular relationships are more or less likely than that broad activity would suggest.”
 
-Chunk: `alliance-netify`
+Likely question: “Are u and v positions?”
 
-Explain why this step matters. Hand-written loops can silently change actor order across years or treat missing dyads as observed zeros. `netify` starts from the state-pair-year table, preserves the actor and time structure, and `to_lame()` returns the objects `lame()` expects.
+Answer: “They are source and target profiles whose inner product creates a fitted relationship adjustment. A plot can make them look like positions, but the model uses the inner products. The axes can rotate or reflect, so we do not name them as if the model discovered two literal traits.”
 
-Run `alliance-netify`. Check that each year has 50 actors and 1,225 observed unordered pairs.
+Likely question: “Is this already AME?”
 
-Point out the diagonal. It is `NA` because a state cannot form a defense alliance with itself. Every off-diagonal zero is an observed non-alliance because the source table contains every unordered pair in every year.
+Answer: “Yes. Rank-two ALS with additive and multiplicative effects is a point-estimated AME model. Moving to MCMC would change how we represent uncertainty, not create a different model family.”
 
-Likely question: “Why is `missing_to_zero = FALSE` important if the table is complete?”
+Transition: “Before fitting movement, we need to establish that the observed network actually moves.”
 
-Answer: “It protects the distinction between an observed zero and a relationship we did not observe. The table happens to be complete here, but the modeling habit should remain explicit.”
+RETURN TO THE ICEWS PANEL
 
-Transition: “Before trying to quantify uncertainty, we use fast point estimation to see whether a factor surface adds a repeatable relationship pattern.”
+Walkthrough anchor: #sec-icews-data
 
-ALS: Fast Point Estimation
-==========================
+Chunks: icews-dynamic-data, icews-dynamic-change
 
-Walkthrough anchor: `#sec-als-primer`
+Deck slides: Same Data, A More Specific Question; There Is Enough Movement to Ask
 
-Chunk: `alliance-als-fits`
+Run icews-dynamic-data. The panel contains 18 states, 13 years from 2002 through 2014, and 3,978 ordered state-pair-years. About 21.8 percent of the observations cross the threshold.
 
-Suggested language: “Alternating least squares turns one difficult joint problem into a cycle of easier conditional problems.”
+Explain the case selection. These are the 18 highest-volume ICEWS source states among states with complete Polity and GDP coverage across the panel. The selection is purposive because the classroom example needs enough positive relationships and enough change. It is not a probability sample, and the event rate should not be generalized to the international system.
 
-Walk through the three jobs:
+Run icews-dynamic-change. Across adjacent years, 244 ordered relationships move from zero to one and 218 move from one to zero. The total is 462 changes.
 
-1. Use current probabilities to form a working outcome on the probit scale.
-2. Hold the factor surface fixed and update year effects, measured coefficients, and broad state effects.
-3. Hold those pieces fixed and update the low-rank surface that reconstructs the remaining pair pattern.
+Suggested language: “A dynamic model cannot manufacture information about movement. Here we have hundreds of observed changes, so time-varying effects have something to learn.”
 
-The algorithm repeats until the objective barely changes. `multistart = "full"` tries several starting values because the rank-two objective is non-convex.
+Likely question: “Why use a threshold of 20?”
 
-Run or load `alliance-als-fits`. The rank-zero fit converges in 24 iterations with deviance 7104.9 and in-sample Brier score 0.035. The rank-two fit converges in 205 iterations with deviance 465.3 and in-sample Brier score 0.003.
+Answer: “It creates a binary high-volume relationship with enough ones and enough changes for this class example. It is a measurement choice, not a universal definition of conflict. In a research project, I would check nearby thresholds and the count outcome itself.”
 
-The rank-two multistart solutions are highly stable in this run: their residual sums of squares range only from about 894.206 to 894.236. This supports the reproducibility of the selected point solution, but it does not supply interval estimates.
+Likely question: “Why keep direction?”
 
-Suggested language: “The training fit improves dramatically, but that alone is not persuasive. A flexible surface can memorize cells. We need to hide complete relationships and ask the model to recover them.”
+Answer: “Iran toward Syria and Syria toward Iran can have different coded histories. A directed model keeps that difference instead of averaging it away.”
 
-Likely question: “Why not stop with ALS?”
+Transition: “Now we turn one long pair-year table into the exact aligned matrices the estimator needs.”
 
-Answer: “ALS is useful for point estimation, multistart checks, and rank comparison. It does not give us a posterior interval. We will try MCMC later, inspect whether it works, and refuse to use intervals if it does not.”
+BUILD THE MATRICES WITH NETIFY
 
-Transition: “The next test is deliberately hard to game through temporal persistence.”
+Walkthrough anchor: #sec-icews-netify
 
-Rank Selection With Complete-Pair Validation
-============================================
+Chunk: icews-dynamic-netify
 
-Walkthrough anchor: `#sec-rank`
+Deck slide: netify Keeps the Panel Aligned
 
-Chunks: `alliance-rank-cv`, `alliance-cv-plot`
+Run the chunk and point to the arguments rather than reading every line. actor1 is source, actor2 is target, time is year, symmetric is FALSE, and weight is the binary threshold outcome.
 
-Define the held-out unit before showing scores. Each unordered country pair is assigned to one of five folds. When a pair is held out, both symmetric entries and all ten years are hidden. The model can learn each country’s profile from its other alliance relationships, but it cannot see the held pair in another year or reverse direction.
+Explain missing_to_zero = FALSE. The source data already contain every ordered pair in every year. Every off-diagonal zero is therefore observed. We do not need the software to invent zeros for absent rows.
 
-Suggested language: “This is an unseen-pair test among the same 50 known states. It is not a future-year forecast and it is not a test on countries absent from estimation.”
+Point out validate_netify(). It checks actor labels, time slices, direction, missingness, and agreement among the object’s representations. The stopifnot() line makes the walkthrough stop immediately if a coherence check fails.
 
-Explain the metrics:
+Then explain to_lame(). It returns 13 outcome matrices and 13 predictor arrays with the same state order. This prevents a very dangerous error in longitudinal relational models: placing one state’s outcome in another state’s row because the ordering changed.
 
-1. Brier score is the average squared distance between predicted probabilities and observed zeros or ones. Lower is better.
-2. Log loss heavily penalizes confident wrong predictions. Lower is better.
-3. ROC AUC asks how often an alliance receives a higher score than a non-alliance. Higher is better.
-4. Average precision asks whether observed alliances are concentrated near the top of the prediction ranking. It is useful because alliances occur in only 9.3% of pair-years.
+Checkpoint: 13 outcome matrices, 18 actors in each matrix, and 2 predictors.
 
-Run or display `alliance-rank-cv`. The mean results are:
+Transition: “We have aligned inputs. Next we decide which parts are allowed to change.”
 
-Rank 0: Brier 0.047, log loss 0.166, ROC AUC 0.939, average precision 0.714.
+WHAT IS DYNAMIC
 
-Rank 1: Brier 0.017, log loss 0.077, ROC AUC 0.983, average precision 0.921.
+Walkthrough anchor: #sec-dynamic-pieces
 
-Rank 2: Brier 0.012, log loss 0.045, ROC AUC 0.994, average precision 0.972.
+Deck slide: Broad Involvement Is Not Partner Fit
 
-Rank 3: Brier 0.013, log loss 0.060, ROC AUC 0.992, average precision 0.945.
+Separate the three moving parts.
 
-All 20 fold fits report convergence. Rank two has the best mean value on all four metrics. Rank three gives back part of the gain, especially under log loss.
+Alpha_t lets the baseline event rate change for the entire network.
 
-Display `alliance-cv-plot`. Point to the fold-level lines and the green mean points. The graph shows that the rank-two gain is not one isolated fold.
+a_it and b_jt let each state’s broad source-side and target-side involvement change.
 
-Suggested language: “Convergence tells us the optimizer stopped. It does not tell us that the chosen complexity generalizes. Rank three converges everywhere and still performs worse on average than rank two.”
+u_it and v_jt let the source-target compatibility surface change.
 
-State the validation limit. These folds selected the rank, so they are internal model-selection evidence, not an untouched final test set. The states remain known through their other relationships.
+Explain dynamic_beta = "intercept". Only the intercept moves. The Polity-gap and same-region coefficients remain pooled across the 13 years. This keeps the applied question manageable and avoids estimating a noisy annual coefficient for every predictor.
 
-Likely question: “Does this mean the model can forecast alliances after 2000?”
+Explain dynamic_beta_kind = "rw1". A first-order random-walk penalty discourages sharp back-and-forth changes in the yearly intercept. It allows sustained drift without pulling the path toward one fixed long-run mean.
 
-Answer: “No. The target is complete pair histories hidden within 1991 through 2000. A future forecast requires leaving later years out and estimating a model that handles change.”
+Important wording: Do not call rho_ab, rho_uv, or rho_beta estimated persistence. In dynamic ALS they are fixed smoothing values derived from the prior settings. They tell the optimizer how strongly adjacent years should borrow information.
 
-Transition: “Rank two earns its place for prediction and description. The next question is whether MCMC gives us trustworthy posterior uncertainty for the same model.”
+Suggested language: “Smoothing is partial pooling across neighboring years. It keeps us from treating 2008 and 2009 as unrelated studies, while still allowing a path to move when the observations consistently support that movement.”
 
-MCMC Is Not a Box to Check
-==========================
+Transition: “The estimator now cycles through these pieces instead of trying to solve everything in one step.”
 
-Walkthrough anchor: `#sec-mcmc-fit`
+HOW DYNAMIC ALS WORKS
 
-Chunks: `alliance-mcmc-fit`, `alliance-mcmc-diagnostics`, `alliance-prior-summary`, `alliance-mcmc-diagnostics-full`, `alliance-trace-plot`
+Walkthrough anchor: #sec-dynamic-als
 
-Set up the run. Four chains begin near the best ALS solution with independent jitter. Each chain uses 5,000 burn-in rounds and 5,000 post-burn rounds, saving every tenth post-burn round. That leaves 500 saved draws per chain and 2,000 in total if the chains can be combined.
+Deck slide: Dynamic ALS Updates One Piece at a Time
 
-Ask before displaying diagnostics: “What would have to be true before we pooled these draws and reported an interval?”
+Walk students through six steps.
 
-Expected answers: chains should overlap, R-hat should be near 1, effective sample size should be adequate, and invariant surfaces should agree.
+First, begin with provisional fitted probabilities for every ordered pair-year.
 
-Display `alliance-mcmc-diagnostics`. The chains fail clearly:
+Second, update the yearly baseline and the two measured coefficients while holding the actor and factor paths fixed.
 
-1. Contiguity has R-hat about 1.50 and bulk effective sample size about 8.
-2. Joint democracy has R-hat about 1.77 and bulk effective sample size about 6.
-3. Capability imbalance has R-hat about 1.18 and bulk effective sample size about 18.
-4. One chain’s fitted coalition surface correlates only about 0.62 with the other surfaces, while the remaining three correlate about 0.96 to 0.98.
+Third, update the broad source and target paths.
 
-Display `alliance-trace-plot`. The separated joint-democracy traces are the clearest visual warning. Explain that a longer run did not remove the competing regions.
+Fourth, update the changing source and target factor profiles, which changes the pair-specific surface.
 
-Suggested language: “The sampler has not produced four versions of the same posterior story. Democracy and the latent coalition surface trade off, and one chain settles on a meaningfully different invariant surface. Averaging everything would manufacture a tidy interval from incompatible explanations.”
+Fifth, apply the smoothing penalties so adjacent years borrow information.
 
-State the decision plainly: “We do not report MCMC coefficient intervals from this fit.”
+Sixth, repeat until another pass barely changes the fitted surface.
 
-The `alliance-prior-summary` and full diagnostic table are folded for students who want the details. They document what was run; they do not rescue the failed diagnostics.
+Suggested language: “It is a coordinated back-and-forth. Each step solves an easier problem while treating the other pieces as temporarily known. The cycle continues until the pieces agree.”
 
-Likely question: “Does MCMC failure mean the rank-two surface is useless?”
+Distinguish ALS from MCMC. ALS returns one penalized point estimate. MCMC would return draws from a posterior distribution. The parametric bootstrap later repeatedly simulates and refits the ALS model to quantify one form of model-based uncertainty.
 
-Answer: “No. The multistart ALS point surface is stable and rank two predicts held-out pairs extremely well. The failure means we do not have trustworthy posterior coefficient uncertainty from this specification and sampler.”
+Likely question: “Does fast mean approximate or bad?”
 
-Likely question: “Why show a failed fit?”
+Answer: “Fast means we are optimizing for a point estimate rather than sampling a posterior. We still have to check convergence, multiple starts, held-out prediction, and goodness of fit. Speed does not remove those responsibilities.”
 
-Answer: “Because computation is part of the evidence. Hiding the failure would blur prediction, description, and inference. The responsible conclusion is narrower, not empty.”
+Transition: “Let’s look at the actual call and the evidence that it found a stable solution.”
 
-Likely question: “Could another parameterization or stronger prior help?”
+FIT THE DYNAMIC SRM AND DYNAMIC AME
 
-Answer: “Possibly, but it would define a new inferential analysis that needs its own diagnostics and sensitivity checks. We should not tune until a preferred interval appears.”
+Walkthrough anchor: #sec-dynamic-fit
 
-Transition: “We can still use the validated ALS point fit to describe how the measured associations and pair predictions change, as long as we label them as point estimates.”
+Chunks: icews-dynamic-fit, icews-dynamic-fit-call
 
-Measured Associations as Sensitivity Results
-============================================
+Deck slide: The Actual lame() Call
 
-Walkthrough anchor: `#sec-ame-results`
+Load the cached fits. Do not run the build script during class. The downloaded folder contains the dynamic rank-zero fit and the dynamic rank-two fit with 100 bootstrap refits.
 
-Chunks: `alliance-coefficient-comparison`, `alliance-probability-contrasts`
+Read the key arguments. R = 2 adds two multiplicative dimensions. dynamic_ab = TRUE turns on changing additive effects. dynamic_uv = TRUE turns on changing factor profiles. dynamic_beta = "intercept" allows the baseline to move. method = "als" selects penalized point estimation. als_stability = "validation" runs four jittered starts. bootstrap = 100 requests 100 parametric refits.
 
-Display `alliance-coefficient-comparison`. The ALS point estimates are:
+Both main fits converged. The rank-two fit took 48 iterations. All four stability starts converged. Their fitted probability surfaces correlate at essentially 1.00, and the largest surface RMSE is below 0.0001.
 
-Contiguity: 1.963 in rank zero and 1.256 in rank two.
+Suggested language: “Different starts reached the same relationship surface. That does not prove the model is correct, but it is strong evidence that our displayed point estimate is not a random local solution.”
 
-Joint democracy: 2.461 in rank zero and -0.116 in rank two.
+All 100 bootstrap refits succeeded. Explain that the bootstrap simulates a panel from the fitted model, refits the same model, and records how estimates vary. It is conditional on the fitted model, rank, smoothing setup, outcome threshold, and case selection.
 
-Capability imbalance: -0.177 in rank zero and 0.067 in rank two.
+Transition: “We will read the model in the same order as its equation: broad state paths first, then exact partner profiles.”
 
-Use joint democracy as the central sensitivity lesson. The additive model gives it a large positive coefficient. The estimate moves close to zero once the rank-two coalition surface enters.
+READ THE ADDITIVE PATHS WITH AB_PLOT
 
-Suggested language: “The measured democracy indicator and recurring coalition structure carry much of the same pattern in this panel. The two specifications allocate that shared pattern differently. The movement does not tell us that the rank-two value is the true direct effect.”
+Walkthrough anchor: #sec-dynamic-ab
 
-Use contiguity more cautiously. The point estimate remains positive after the factor surface enters, which is consistent with neighboring states having a higher fitted chance of sharing a defense pact. There is no trustworthy posterior interval from this joint fit, and geography is not randomly assigned.
+Chunk: icews-dynamic-ab-plot
 
-Run `alliance-probability-contrasts`. The point-fit comparisons are:
+Deck slide: Broad State Paths Come First
 
-Additive rank zero, contiguity: 7.6% when set to noncontiguous and 28.7% when set to contiguous, a 21.1 percentage-point difference.
+Display the source and target panels for the United States, Syria, Iran, and the Russian Federation. The plot uses lame::ab_plot(), which reads the model’s dynamic additive-effect arrays directly.
 
-Rank two, contiguity: 9.2% when set to noncontiguous and 13.2% when set to contiguous, a 4.0 percentage-point difference.
+Start with the source-side plot. A higher line means the model needs a larger broad source adjustment for that state after the year baseline, measured predictors, and multiplicative surface enter.
 
-Additive rank zero, joint democracy: 3.1% when set to not jointly democratic and 25.7% when set to jointly democratic, a 22.7 percentage-point difference.
+Then read the target-side plot. A higher line means the model needs a larger broad target adjustment.
 
-Rank two, joint democracy: 9.5% when set to not jointly democratic and 9.4% when set to jointly democratic, a -0.2 percentage-point difference after rounding.
+Do not say that a higher source effect means a state started more conflicts. Do not say that a higher target effect means a state was a greater victim. The outcome is high coded event volume, and the additive scores pool across all partners.
 
-Explain exactly what was held fixed. The code scores the observed pair-years twice while keeping year, state effects, factor surface, and other measured inputs fixed. These are not observed before-and-after changes, and they do not describe what would happen if a country democratized or moved across a border.
+Suggested language: “These paths tell us where the model needs a broad state-level correction. They do not identify which partner is responsible. That is exactly why we still need the multiplicative surface.”
 
-Likely question: “Which democracy estimate should we believe?”
+Likely question: “Where are the uncertainty intervals?”
 
-Answer: “The data and current specification do not justify choosing one as a causal effect. What we learned is that the apparent democracy association is highly sensitive to how recurring coalition structure is represented.”
+Answer: “The bootstrap refits contain uncertainty for the additive paths. The main display stays readable by showing the point paths. If we report one state’s path substantively, we should add its bootstrap interval and remember that the interval is conditional on the model and measurement choices.”
 
-Likely question: “Can we call the contiguity difference an effect?”
+Transition: “Now we move from how often a state appears broadly to which exact partners fit.”
 
-Answer: “No. It is a fitted conditional contrast under the point model. It is useful for scale, but it remains associational.”
+READ THE CHANGING FACTOR PROFILES WITH UV_PLOT
 
-Transition: “The coefficients tell us how the measured variables move across specifications. The surface tells us which particular alliances the additive model gets wrong.”
+Walkthrough anchor: #sec-dynamic-uv
 
-Read the Coalition Surface, Not the Axes
-========================================
+Chunk: icews-dynamic-uv-plot
 
-Walkthrough anchor: `#sec-uv`
+Deck slide: Then Look at Changing Partner Profiles
 
-Chunks: `alliance-profile-plot`, `alliance-pair-examples`, `alliance-pair-plot`
+The code first calls procrustes_align() and then uv_plot(). Alignment removes arbitrary rotations and reflections across years so those identification changes do not masquerade as movement.
 
-Write the symmetric surface:
+Explain source and target profiles. A source point and target point that line up contribute a positive inner product. Points facing in opposing directions contribute a negative inner product. The exact contribution is u_it'v_jt.
 
-U Lambda U'
+Do not name either axis. The axes can rotate, reflect, rescale, or mix while preserving the fitted surface. The estimand is the matrix of inner products and the resulting probability, not one raw coordinate column.
 
-Explain that a positive cell raises the pair’s fitted probit score after year, measured characteristics, and broad state activity enter. A negative cell lowers it. The surface value is not itself a probability.
+Suggested language: “The plot helps us inspect the surface. The model is not claiming that a state literally moved east or west in a geopolitical space.”
 
-Display `alliance-profile-plot`. The colors are broad geographic labels added after estimation to help inspect the pattern. The model did not estimate those labels.
+Likely question: “Why align if the axes do not matter?”
 
-Point to recognizable neighborhoods without naming the axes. The fitted profiles show an Americas pattern, a Western European and Turkey pattern, a Russia-Central Asian pattern, and a Middle Eastern and North African pattern. Poland sits between profiles, which is a useful reminder that one pooled position smooths over NATO enlargement and other changes within the decade.
+Answer: “Alignment removes arbitrary changes in pose so we can see whether the invariant relationship pattern changed. It makes the picture readable without making the axes substantive.”
 
-Suggested language: “The map helps us see recurring alliance profiles, but the axes are not named coalition variables. The most reliable objects are pair contributions and fitted probabilities.”
+Transition: “Before telling a story from two dimensions, we need to show that rank two earned its complexity.”
 
-Display `alliance-pair-examples` and `alliance-pair-plot`. Use the Russia comparisons as the main story:
+CHOOSE THE RANK
 
-Russia and the United States are allied in 0 of 10 years. The additive model gives an average fitted probability of 81.0%; rank two lowers it to 1.1%. The factor contribution is -3.98.
+Walkthrough anchor: #sec-dynamic-rank
 
-Russia and Uzbekistan are allied in 9 of 10 years. The additive model gives 0.5%; rank two raises it to 82.1%. The factor contribution is +4.37.
+Chunk: icews-dynamic-rank-cv
 
-Russia and Kazakhstan are allied in 9 of 10 years. The additive model gives 17.5%; rank two raises it to 86.3%. The factor contribution is +3.43.
+Deck slide: Rank Two Is a Practical Choice
 
-Use one or two additional examples if helpful:
+Define the held-out unit carefully. Every unordered pair is assigned to a fold. When a pair is held out, both directions and all 13 years are hidden together. This prevents the model from seeing Iran-Syria in another year or Syria-Iran in reverse while scoring that pair.
 
-Algeria and Iraq are allied in all ten years. The additive model gives 12.0%; rank two gives 95.4%.
+Explain the metrics briefly. ROC AUC asks whether positive relationships tend to receive higher scores than zero relationships. Precision-recall AUC focuses on how well positives are concentrated near the top and is useful with an imbalanced outcome. Brier score is the average squared probability error. Log loss strongly penalizes confident wrong probabilities.
 
-France and Turkey are allied in all ten years. The additive model gives 34.9%; rank two gives 99.4%.
+Mean results: rank zero has ROC AUC 0.825, precision-recall AUC 0.676, and Brier 0.118. Rank one has 0.837, 0.694, and 0.113. Rank two has 0.837, 0.695, and 0.113. Ranks three and four do not provide a consistent gain.
 
-Mexico and Chile are allied in all ten years. The additive model gives 32.0%; rank two gives 99.6%.
+Suggested language: “Rank one and rank two are essentially tied on hidden pair histories. I keep rank two because it also improves the transition check and gives us a two-dimensional profile display we can inspect. That is a balance among prediction, temporal reproduction, and interpretability, not proof that reality has exactly two dimensions.”
 
-Suggested language: “The additive model treats Russia’s general alliance activity too broadly. The factor surface learns that Russia’s relationships with the United States, Uzbekistan, and Kazakhstan are not interchangeable. It can sharply suppress one pair while raising the others.”
+Transition: “Now we can turn the abstract inner products into four ordered relationship histories.”
 
-Make clear that the six pairs were selected for explanation. They do not establish generalization by themselves. The complete-pair cross-validation is the evidence that the rank-two improvement extends beyond these examples.
+FOLLOW SPECIFIC STATE-PAIR PATHS
 
-Likely question: “Did the factor discover NATO or the post-Soviet system?”
+Walkthrough anchor: #sec-dynamic-pairs
 
-Answer: “It estimated a low-rank alliance surface with neighborhoods that resemble known groupings. Those labels come from outside history, not from a factor axis naming itself.”
+Chunk: icews-dynamic-pair-paths
 
-Likely question: “Does a large positive factor contribution cause the alliance?”
+Deck slide: Direction and Timing Matter
 
-Answer: “No. It summarizes recurring pair compatibility left after the other modeled pieces. That compatibility can reflect institutions, threat, history, measurement, and other processes.”
+Explain the symbols before interpreting the lines. The line is the estimated probability of crossing the threshold. A filled point means the observed relationship crossed the threshold in that year. An open point means it did not.
 
-Transition: “Strong held-pair prediction and vivid examples are not enough. We also need to know which network features the point fit reproduces.”
+Iran toward Syria remains below the threshold through 2011 and crosses it in 2012, 2013, and 2014. The fitted probability rises sharply in those final years.
 
-Point-Fit Simulation Checks
-===========================
+Syria toward Iran crosses the threshold in 2011 and stays above it through 2014. The model gives the two directions separate paths because the observed directed relationships differ.
 
-Walkthrough anchor: `#sec-gof`
+The United States toward Syria crosses the threshold in nearly every year after 2002 and receives a consistently high fitted probability. Syria toward the United States is more irregular early and becomes consistently above the threshold later.
 
-Chunks: `alliance-gof-summary`, `alliance-gof-plot`
+Suggested language: “This is what the multiplicative surface buys us. It distinguishes exact ordered relationships that broad state involvement alone would treat too similarly.”
 
-State the distinction first. Held-pair validation asks whether the model recovers unseen relationships. The simulation check asks whether networks generated from the fitted probabilities resemble the observed annual networks.
+Keep the causal boundary visible. The paths can be connected to dated events in a research project, but the fitted movement does not identify why the coded event relationship changed.
 
-The code holds the ALS point estimate fixed and simulates 300 networks for each year. It compares alliance density, variation in states’ alliance rates, and global transitivity.
+Likely question: “Can we say Iran and Syria became closer?”
 
-Suggested language: “This is not a posterior predictive check because parameter uncertainty is not carried through. It is a point-fit reconstruction check.”
+Answer: “Only in a carefully qualified relational sense. Their fitted high-volume event relationship became more compatible with the observed network pattern. We should not turn that into a claim about general diplomatic closeness.”
 
-Run `alliance-gof-summary` and display `alliance-gof-plot`. The fitted probabilities cover:
+Transition: “A compelling pair story still needs a whole-network check.”
 
-1. Annual density in 10 of 10 years.
-2. Variation in states’ alliance rates in 6 of 10 years.
-3. Global transitivity in 5 of 10 years.
+CHECK ANNUAL GOODNESS OF FIT
 
-The degree-variation misses occur from 1997 through 2000. Global transitivity misses in 1992 and again from 1997 through 2000. The later observed networks are more heterogeneous and more transitive than this one pooled rank-two surface usually generates.
+Walkthrough anchor: #sec-dynamic-gof
 
-Explain global transitivity as a descriptive fraction of closed connected triples in the undirected alliance network. Reproducing it does not identify a friend-of-a-friend alliance mechanism.
+Chunks: icews-dynamic-gof-summary, icews-dynamic-transition-plot
 
-Suggested language: “The model predicts complete held-out pairs extremely well and gets annual density right, but it misses important late-decade structure. One static coalition profile does not capture every change in the system.”
+Deck slides: The Annual Shape Is Mostly Right; Rank Two Gets Much Closer Over Time
 
-Likely question: “Should we raise the rank to fix the simulation checks?”
+Explain the simulation check. The code holds the fitted ALS solution fixed, simulates 500 complete panels, and compares each simulated panel with the observed one. It does not refit the model inside every GOF simulation and does not integrate over parameter uncertainty.
 
-Answer: “Not automatically. Rank three performs worse in held-pair validation. A dynamic factor model or a measured late-decade process may be more appropriate, but each would need a new validation target and new stability checks.”
+The rank-two model covers density, source-rate variation, and target-rate variation in all 13 years. It covers cyclic and transitive triadic dependence in 12 of 13 years. It covers reciprocity in only 6 of 13 years.
 
-Transition: “Before leaving the application, let’s make clear how an estimated surface could be used later and where leakage can enter.”
+Translate those statistics. Density asks whether the total amount of above-threshold relationship volume is right. Source- and target-rate variation ask whether involvement is as uneven across states as observed. Reciprocity asks whether opposite directions line up as often as observed. The triadic checks ask whether three-state relationship patterns are reproduced.
 
-Using a Latent Quantity Later
-=============================
+Suggested language: “The annual networks mostly have the right volume, unevenness, and three-state pattern. Reciprocity is the main annual weakness.”
 
-Walkthrough location: the subsection following `#sec-gof`
+Now show the transition plot. Black points are observed numbers of ordered pairs that changed threshold status. The line is the simulated median, and the ribbon contains the middle 95 percent of simulated counts.
 
-Use four rules:
+Rank zero covers only 2 of 12 observed transitions. Rank two covers 8 of 12. Rank two closes much of the temporal gap, but four transitions remain outside the interval.
 
-1. Carry forward an invariant quantity such as U Lambda U', UV', fitted probabilities, or distances derived from the surface.
-2. Carry first-stage uncertainty forward when inference depends on the estimated quantity.
-3. Avoid outcome leakage. If the later outcome helped estimate the surface, an in-sample relationship can be mechanical.
-4. Validate any substantive label with information outside the relationship matrix used for fitting.
+Suggested language: “The dynamic factors make the simulated movie much more realistic. They do not make it perfect. The model still understates the persistence or timing of some relationships.”
 
-Suggested language: “A posterior-mean factor score treated as observed data usually makes the second-stage result look more certain than it is. Cross-fitting or a joint model is safer when the second outcome overlaps with the first-stage network.”
+Likely question: “If annual GOF is good, why can transition GOF fail?”
 
-Transition: “The alliance fit is our complete classroom workflow. A published Nigerian conflict application shows how the directed version can reveal source, target, retaliation, and partner-role structure together.”
+Answer: “Two movies can contain similar still frames but arrange the changes differently. Annual checks inspect each network separately. The transition check inspects how one frame turns into the next.”
+
+Transition: “We now have enough evidence to state the result without overselling it.”
+
+THE RESULT IN ORDINARY LANGUAGE
+
+Walkthrough anchor: #sec-dynamic-after
+
+Deck slide: What We Can Actually Say
+
+Suggested full interpretation: “Across these 18 states, a dynamic rank-two AME captures broad changes in who appears often on the source and target sides and also captures changes in which particular ordered pairs repeatedly cross the event-volume threshold. The partner profiles improve held-pair prediction and reproduce much more of the observed year-to-year movement than additive effects alone. Iran-Syria and Syria-Iran illustrate why direction and timing matter. The remaining reciprocity and transition misses, along with the measurement limits of coded event volume, mean that we should treat the paths as a structured description of changing relationships rather than a causal account of conflict.”
+
+Give students the post-estimation checklist.
+
+First, check convergence and multiple starts.
+
+Second, define and inspect the held-out prediction target.
+
+Third, inspect annual structure and transitions.
+
+Fourth, interpret additive paths separately from partner-specific inner products.
+
+Fifth, use ab_plot(), uv_plot(), and latent_positions() as entry points, then return to fitted inner products and probabilities.
+
+Sixth, connect interesting paths to historical evidence and alternative outcome definitions.
+
+Transition: “The dynamic example shows what AME can represent well. It still does not solve omitted-variable bias by itself.”
 
 Published Illustration: Conflict in Nigeria
 ===========================================
@@ -783,7 +782,7 @@ Likely question: “Why is precision-recall AUC important here?”
 
 Answer: “Battles are rare among all possible directed organization pairs. Precision-recall performance focuses on how successfully the model concentrates actual battles among its highest-ranked predictions.”
 
-Transition: “Both applications improve our description of relational dependence, but neither makes a correlated omitted process disappear. That is the last major boundary for today.”
+Transition: “Both applications improve our description of relational dependence, but neither makes a correlated omitted process disappear. That is the last major boundary for Day 10.”
 
 What Latent Models Did Not Buy Us
 =================================
@@ -808,7 +807,7 @@ Suggested language: “If the omitted relationship pattern rises where X rises a
 
 Connect directly to the random-effects and AME context. The additive SRM treats actor effects as random quantities with a relationship to X specified by the model. AME adds a low-rank random relationship surface. Neither model automatically proves that those latent quantities are independent of the measured predictor.
 
-Use the alliance result. Joint democracy is highly aligned with coalition structure. The coefficient changes from 2.461 in rank zero to -0.116 in rank two. That movement shows sensitivity and overlap. It does not establish that the rank-two value is the direct effect of democracy.
+Use the ICEWS setup. Suppose unmeasured international news visibility raises coded event volume and is also associated with regime profile. The random source, target, and factor effects can represent part of that leftover pattern, but the same event records may still be unable to separate the Polity-gap association from the portion carried by visibility. The model’s ability to fit the relational pattern does not identify the direct effect of regime difference.
 
 Explain Minhas et al. (2022) in basic terms. When the omitted low-rank structure is independent of X, AME can absorb the patterned residual and recover the measured association much better than an independence model. When the omitted structure and X are correlated, the same network may not contain enough information to decide how much shared pattern belongs to X and how much belongs to the latent surface.
 
@@ -842,7 +841,7 @@ Give students a four-part reporting routine:
 
 Use this Gade summary: “For 31 Syrian armed organizations from July 2012 through June 2015, a two-dimensional distance model compresses the whole-period pattern of recorded joint operations into fitted pair distances. Networks simulated from the fit reproduce much of the observed weak transitivity. The map does not show ideological agreement, identify a closure mechanism, or give substantive meaning to its displayed axes.”
 
-Use this alliance summary: “In a 50-country defense-alliance panel from 1991 through 2000, a rank-two surface predicts complete held-out pair histories much better than an additive model. It fixes major pair-level errors, such as lowering Russia-United States from 81.0% to 1.1% and raising Russia-Uzbekistan from 0.5% to 82.1%. The four-chain MCMC fit does not support posterior coefficient intervals, and the pooled point fit misses some late-decade degree heterogeneity and transitivity.”
+Use this ICEWS summary: “Across 18 states from 2002 through 2014, a dynamic rank-two AME separates broad source-side and target-side movement from changing partner-specific fit. It improves hidden-pair prediction and covers eight of twelve observed transition counts, compared with two for the dynamic SRM. Iran-Syria and Syria-Iran illustrate why direction and timing matter. Reciprocity and four transition intervals remain weaknesses, and the event threshold measures coded volume rather than conflict initiation or severity.”
 
 Use this Nigeria summary: “Dorff, Gallop, and Minhas (2020) show that directed additive and multiplicative structure can separate broad initiators, broad targets, retaliation, and recurring opponent profiles. Their AME model improves out-of-sample battle prediction, but its post-2009 and civilian-targeting comparisons remain conditional associations.”
 
@@ -859,11 +858,11 @@ Walkthrough anchor: `#sec-exercises`
 
 For exercise 1, have students find the closest and farthest organizations in the Gade map, check whether the close pair has a recorded tie, and write one sentence that treats distance as a whole-network summary rather than proof of a shared ideology.
 
-For exercise 2, compare Russia-United States with Russia-Uzbekistan. Require the observed alliance history, additive fitted probability, rank-two fitted probability, and one sentence explaining the factor’s job without causal language.
+For exercise 2, compare Iran toward Syria with Syria toward Iran. Require the first threshold-crossing year in each direction, a description of the fitted probability paths, and one sentence explaining why direction should not be collapsed.
 
-For exercise 3, compare ranks zero through three. Require students to say that complete unordered state pairs across all ten years were held out and that the exercise tests unseen pairs among known states.
+For exercise 3, compare ranks zero through four. Require students to say that both directions and all 13 years for complete unordered state pairs were held out and that the exercise tests unseen relationships among known states.
 
-For exercise 4, use the simulation coverage table. Density is covered in all years; degree variation misses 1997 through 2000; transitivity misses 1992 and 1997 through 2000.
+For exercise 4, use both `gof_coverage` and `transition_plot_data`. The dynamic rank-two model covers annual density and source- and target-rate variation in all 13 years, both triadic summaries in 12 of 13 years, reciprocity in 6 of 13 years, and adjacent-year change counts in 8 of 12 transitions. Require students to identify reciprocity as the largest annual weakness and explain why annual fit does not guarantee transition fit.
 
 For exercise 5, fit the Gade distance model under a second seed and align the maps. Require students to distinguish arbitrary pose from remaining uncertainty or optimization differences.
 
@@ -895,12 +894,16 @@ Do not treat rank as a number of groups. Rank controls the dimension of a contin
 
 Do not call ALS coefficients posterior estimates or attach intervals to them.
 
-Do not pool the four alliance MCMC chains. Joint democracy has R-hat about 1.77, bulk effective sample size about 6, and one chain yields a different coalition surface.
+Do not treat complete-pair validation as future forecasting. It tests unseen ordered relationship histories among the same known states within 2002 through 2014.
 
-Do not treat complete-pair validation as future forecasting. It tests unseen pair histories among the same known states within 1991 through 2000.
+Do not treat a good prediction score as a causal result. The random effects and multiplicative surface adjust modeled dependence but do not establish exogeneity.
 
-Do not treat a good prediction score as a causal result. The joint-democracy movement is a sensitivity finding, not proof of correction.
+Do not read `ab_plot()` paths as conflict initiation or victimization. They are broad adjustments for a high coded event-volume outcome.
 
-Do not hide the negative evidence. The point fit misses later degree heterogeneity and transitivity even though it predicts held-out pairs well.
+Do not name raw `uv_plot()` axes. Align the paths, then interpret inner products and fitted probabilities.
+
+Do not hide the temporal evidence. Rank two improves the transition check substantially, but reciprocity and four transition intervals remain weak.
+
+Do not call the ALS smoothing values estimated persistence parameters. They are fixed tuning values derived from the prior settings.
 
 End with what the model reveals about relationships, not with the package name.
