@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Shahryar Minhas">
-<meta name="dcterms.date" content="2026-07-22">
+<meta name="dcterms.date" content="2026-07-24">
 
 <title>Day 13: Causal inference on networks</title>
 <style>
@@ -2404,7 +2404,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 22, 2026</p>
+      <p class="date">July 24, 2026</p>
     </div>
   </div>
   
@@ -2842,7 +2842,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Under unit randomization, 13% of units sit in a pure all-treated or all-control neighborhood; under cluster randomization it is 45% in this draw. That is the trade the design makes: much less interference bias, at the price of fewer effective units (you randomized 6 clusters, not 60 people). And that price is not rhetorical: with only 6 clusters we drew a <em>balanced</em> assignment above, because a fair coin per cluster puts every cluster in the same arm with probability <span class="math inline">\(2 \times 0.5^{6} = 3.1\%\)</span>, which would leave an experiment with no contrast at all. Notice the pleasant echo: the community-detection machinery from Day 9 just became a <em>causal design tool</em>. This is what Facebook-scale experiments actually do, and Eckles et al. (2017) show the bias reduction is large even when the clustering is imperfect.</p>
+<p>Under unit randomization, 13% of units sit in a pure all-treated or all-control neighborhood; under cluster randomization it is 45% in this draw. Cluster assignment therefore gives the design much better support for an all-treated-neighborhood versus all-control-neighborhood contrast. That can reduce bias for rollout contrasts when the exposure model is appropriate, but it does not guarantee less bias for every estimand. The price is fewer effective units because we randomized 6 clusters, not 60 people. And that price is not rhetorical: with only 6 clusters we drew a <em>balanced</em> assignment above, because a fair coin per cluster puts every cluster in the same arm with probability <span class="math inline">\(2 \times 0.5^{6} = 3.1\%\)</span>, which would leave an experiment with no contrast at all. Notice the useful echo: the community-detection machinery from Day 9 just became a causal design tool. This is the basic strategy used in large network experiments, and Eckles et al. (2017) show how clustering can reduce bias even when communities are imperfect.</p>
 <p>If you remember one sentence from this segment: <strong>randomization plus design choices can handle interference; none of these protections is available to a purely observational study.</strong> That is where most of you live, so the observational frontier comes next.</p>
 </section>
 <section id="sec-observational" class="level1" data-number="5">
@@ -2926,7 +2926,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p><span class="math inline">\(^\dagger\)</span> the dyadic cluster-robust variance adds estimated cross-dyad covariance terms. Positive member-sharing dependence often makes the corrected interval wider, but neither the sign nor the finite-sample result is guaranteed. Those terms can go the other way, and in a folded aside below you will watch one go the other way on real data). One scale note for the exactness-minded: the AME column above describes the directed model; today’s Gade fit is the symmetric version, <span class="math inline">\(a_i\)</span> and <span class="math inline">\(u_i^\top \Lambda u_j\)</span>.</p>
+<p><span class="math inline">\(^\dagger\)</span> The dyadic cluster-robust variance adds estimated cross-dyad covariance terms. Positive member-sharing dependence often makes the corrected interval wider, but neither the sign nor the finite-sample result is guaranteed. Those terms can go the other way, and a folded aside below shows one such case. One scale note for the exactness-minded: the AME column above describes the directed model; today’s Gade fit is the symmetric version, <span class="math inline">\(a_i\)</span> and <span class="math inline">\(u_i^\top \Lambda u_j\)</span>.</p>
 <p>Hold onto the two bold rows. They are the reason the two methods can reach different verdicts on the same coefficient, and the reason one of them can reach verdicts the other structurally <em>cannot</em>. And, the robust-inference camp replies before you get too impressed: DCR can also <em>refuse</em> verdicts the other cannot refuse. Every AME verdict is contingent on a latent specification being right. DCR avoids that latent specification, but it is still contingent on the regression target, member-sharing dependence structure, and large-cluster approximation.</p>
 <p>One more thing, because this is the causal day: <strong>DCR makes nothing causal.</strong> It is in this session because it makes fewer additional dependence-model commitments. State the sandwich estimator’s own assumptions, claim only what the design supports, and above all stop reporting uncertainty you do not have. It is the floor of honest practice, not a ceiling of ambition. This is not design-based causal inference in the <a href="#sec-exposure" class="quarto-xref">Section 3</a> sense. There is no randomization in DCR and no known assignment probabilities. Carlson et al. call the method what it is, cluster-robust variance estimation, and the estimand is still whatever your (possibly misspecified) regression targets.</p>
 </section>
@@ -3901,7 +3901,7 @@ window.Quarto = {
 #&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     
 #&gt; 
 #&gt; other attached packages:
-#&gt; [1] dcr_0.0.0.9000 igraph_2.2.2   lame_1.3.2     netify_1.5.3  
+#&gt; [1] dcr_0.0.0.9000 igraph_2.2.2   lame_1.3.4     netify_1.5.3  
 #&gt; 
 #&gt; loaded via a namespace (and not attached):
 #&gt;  [1] tensorA_0.36.2.1      sandwich_3.1-1        tidyr_1.3.2          
@@ -4736,7 +4736,7 @@ window.Quarto = {
 <span id="cb48-371"><a href="#cb48-371" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;cluster randomization&quot;</span>)</span>
 <span id="cb48-372"><a href="#cb48-372" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb48-373"><a href="#cb48-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-374"><a href="#cb48-374" aria-hidden="true" tabindex="-1"></a>Under unit randomization, <span class="in">`r round(100 * pure(z_unit, g2))`</span>% of units sit in a pure all-treated or all-control neighborhood; under cluster randomization it is <span class="in">`r round(100 * pure(z_clus, g2))`</span>% in this draw. That is the trade the design makes: much less interference bias, at the price of fewer effective units (you randomized <span class="in">`r max(memb)`</span> clusters, not <span class="in">`r n`</span> people). And that price is not rhetorical: with only <span class="in">`r max(memb)`</span> clusters we drew a *balanced* assignment above, because a fair coin per cluster puts every cluster in the same arm with probability $2 \times 0.5^{`r max(memb)`} = `r round(100 * 2 * 0.5^max(memb), 1)`\%$, which would leave an experiment with no contrast at all. Notice the pleasant echo: the community-detection machinery from Day 9 just became a *causal design tool*. This is what Facebook-scale experiments actually do, and Eckles et al. (2017) show the bias reduction is large even when the clustering is imperfect.</span>
+<span id="cb48-374"><a href="#cb48-374" aria-hidden="true" tabindex="-1"></a>Under unit randomization, <span class="in">`r round(100 * pure(z_unit, g2))`</span>% of units sit in a pure all-treated or all-control neighborhood; under cluster randomization it is <span class="in">`r round(100 * pure(z_clus, g2))`</span>% in this draw. Cluster assignment therefore gives the design much better support for an all-treated-neighborhood versus all-control-neighborhood contrast. That can reduce bias for rollout contrasts when the exposure model is appropriate, but it does not guarantee less bias for every estimand. The price is fewer effective units because we randomized <span class="in">`r max(memb)`</span> clusters, not <span class="in">`r n`</span> people. And that price is not rhetorical: with only <span class="in">`r max(memb)`</span> clusters we drew a *balanced* assignment above, because a fair coin per cluster puts every cluster in the same arm with probability $2 \times 0.5^{<span class="in">`r max(memb)`</span>} = <span class="in">`r round(100 * 2 * 0.5^max(memb), 1)`</span>\%$, which would leave an experiment with no contrast at all. Notice the useful echo: the community-detection machinery from Day 9 just became a causal design tool. This is the basic strategy used in large network experiments, and Eckles et al. (2017) show how clustering can reduce bias even when communities are imperfect.</span>
 <span id="cb48-375"><a href="#cb48-375" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-376"><a href="#cb48-376" aria-hidden="true" tabindex="-1"></a>If you remember one sentence from this segment: **randomization plus design choices can handle interference; none of these protections is available to a purely observational study.** That is where most of you live, so the observational frontier comes next.</span>
 <span id="cb48-377"><a href="#cb48-377" aria-hidden="true" tabindex="-1"></a></span>
@@ -4793,7 +4793,7 @@ window.Quarto = {
 <span id="cb48-428"><a href="#cb48-428" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Interval widths <span class="pp">|</span> Can widen **or narrow** | Often **widen**, but not guaranteed$^\dagger$ <span class="pp">|</span></span>
 <span id="cb48-429"><a href="#cb48-429" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> What you get out <span class="pp">|</span> Effects, random effects, latent geometry, prediction <span class="pp">|</span> Corrected standard errors, nothing else <span class="pp">|</span></span>
 <span id="cb48-430"><a href="#cb48-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-431"><a href="#cb48-431" aria-hidden="true" tabindex="-1"></a>$^\dagger$ the dyadic cluster-robust variance adds estimated cross-dyad covariance terms. Positive member-sharing dependence often makes the corrected interval wider, but neither the sign nor the finite-sample result is guaranteed. Those terms can go the other way, and in a folded aside below you will watch one go the other way on real data). One scale note for the exactness-minded: the AME column above describes the directed model; today&#39;s Gade fit is the symmetric version, $a_i$ and $u_i^\top \Lambda u_j$.</span>
+<span id="cb48-431"><a href="#cb48-431" aria-hidden="true" tabindex="-1"></a>$^\dagger$ The dyadic cluster-robust variance adds estimated cross-dyad covariance terms. Positive member-sharing dependence often makes the corrected interval wider, but neither the sign nor the finite-sample result is guaranteed. Those terms can go the other way, and a folded aside below shows one such case. One scale note for the exactness-minded: the AME column above describes the directed model; today&#39;s Gade fit is the symmetric version, $a_i$ and $u_i^\top \Lambda u_j$.</span>
 <span id="cb48-432"><a href="#cb48-432" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-433"><a href="#cb48-433" aria-hidden="true" tabindex="-1"></a>Hold onto the two bold rows. They are the reason the two methods can reach different verdicts on the same coefficient, and the reason one of them can reach verdicts the other structurally *cannot*. And, the robust-inference camp replies before you get too impressed: DCR can also *refuse* verdicts the other cannot refuse. Every AME verdict is contingent on a latent specification being right. DCR avoids that latent specification, but it is still contingent on the regression target, member-sharing dependence structure, and large-cluster approximation.</span>
 <span id="cb48-434"><a href="#cb48-434" aria-hidden="true" tabindex="-1"></a></span>

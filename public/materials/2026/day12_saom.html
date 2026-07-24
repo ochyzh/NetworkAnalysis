@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Shahryar Minhas">
-<meta name="dcterms.date" content="2026-07-22">
+<meta name="dcterms.date" content="2026-07-24">
 
 <title>Day 12: Stochastic Actor-Oriented Models</title>
 <style>
@@ -2434,7 +2434,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 22, 2026</p>
+      <p class="date">July 24, 2026</p>
     </div>
   </div>
   
@@ -2996,7 +2996,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>sienaAlgorithmCreate(seed = 6886)</code>. This is method of moments with simulation inside - without a seed you get different numbers every run and you cannot tell “my model is unstable” apart from “monte carlo noise.” Two seeded runs of this model differ by exactly zero. If you are re-running this alone next week, that is the difference between knowing you got it right and guessing.</p>
+<p><code>sienaAlgorithmCreate(seed = 6886)</code>. This is a method-of-moments estimator with simulation inside. Without a seed, you get different numbers every run and cannot tell “my model is unstable” apart from “Monte Carlo noise.” Two seeded runs of this model differ by exactly zero. If you are rerunning this alone next week, that is the difference between knowing you got it right and guessing.</p>
 <p><code>returnDeps = TRUE</code> is also not optional, it stores the simulated networks, and <a href="#c2">sienaGOF in C2</a> needs them. Asking for it after the fact means refitting.</p>
 </div>
 </div>
@@ -3697,8 +3697,8 @@ window.Quarto = {
 </div>
 <p>Two pass and one fails, which is a much better teaching outcome than three passes.</p>
 <ul>
-<li><strong>Indegree distribution</strong>, p = 0.589, the model reproduces who gets nominated how often. Good.</li>
-<li><strong>Behavior distribution</strong>, p = 0.912, it reproduces the marginal distribution of drinking. Good.</li>
+<li><strong>Indegree distribution</strong>, p = 0.589, the observed nomination counts are compatible with the simulated distribution. Good.</li>
+<li><strong>Behavior distribution</strong>, p = 0.912, the observed drinking distribution is compatible with the simulations. Good.</li>
 <li><strong>Triad census</strong>, p = 0.007, it does <strong>not</strong> reproduce the distribution of triad types. That’s a misfit.</li>
 </ul>
 <p>A low p-value here means the observed statistic is extreme relative to what the model simulates. So our model gets degree and behavior right and local triadic structure wrong, despite having <code>transTrip</code> and <code>cycle3</code> in it. (These three are not the whole GOF menu - <code>OutdegreeDistribution</code> and the numbers-behind-the-plot function <code>descriptives.sienaGOF()</code> are in <a href="#toolbox-c">the C3 toolbox</a>, along with the pointer for writing your own auxiliary.)</p>
@@ -3749,7 +3749,7 @@ window.Quarto = {
 </div>
 <div id="callout-20" class="callout-20-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>It’s a monte carlo test using the mahalanobis distance between the observed auxiliary statistic vector and the distribution of simulated ones, which handles the fact that the components (e.G. Counts of each triad type) are heavily correlated. <code>join = TRUE</code> pools across waves rather than testing each period separately.</p>
+<p>It is a Monte Carlo test using the Mahalanobis distance between the observed auxiliary-statistic vector and the distribution of simulated ones. That calculation accounts for the fact that components such as counts of different triad types are heavily correlated. <code>join = TRUE</code> pools across waves rather than testing each period separately.</p>
 <p>The reference is <strong>Lospinoso &amp; Snijders (2019), “Goodness of fit for stochastic actor-oriented models,” <em>Methodological Innovations</em> 12(3)</strong>. Worth reading if you plan to report GOF, because it’s specific about which auxiliary statistics are informative, and about the fact that with enough simulations you can reject any model, so the p-value is a guide rather than a verdict.</p>
 </div>
 </div>
@@ -4010,7 +4010,7 @@ window.Quarto = {
 <section id="wrap" class="level1">
 <h1>Wrap</h1>
 <p>Three days, one sentence: <strong>absorb it (Day 10) → test it (Day 11) → parameterize temporal mechanisms with time (Day 12, today).</strong></p>
-<p>Day 10’s latent factor models treat dependence as a nuisance to absorb so the covariate coefficients are trustworthy. Day 11’s ERGMs treat it as a hypothesis to parameterize and test. Today, SAOMs use repeated observation to go after something neither can get from one cross-section, the relative contribution of two mechanisms that are observationally identical in a single wave, and pay for it with a strong, untestable assumption about how change happens (one tie or one behaviour step at a time).</p>
+<p>Day 10’s latent factor models represent residual dependence so we can see how covariate estimates and predictions change after adding latent structure. They do not automatically make the coefficients trustworthy: if an omitted factor is correlated with an observed predictor, latent adjustment cannot recover a separate direct effect without additional assumptions. Day 11’s ERGMs treat dependence as a hypothesis to parameterize and test. Today, SAOMs use repeated observation to go after something neither can get from one cross-section, the relative contribution of two mechanisms that are observationally identical in a single wave, and pay for it with a strong, untestable assumption about how change happens (one tie or one behaviour step at a time).</p>
 <section id="sec-after-fit" class="level2">
 <h2 class="anchored" data-anchor-id="sec-after-fit">After the Model Runs: Describe the Political Change Process</h2>
 <p>A SAOM result should sound like an account of choices between observed waves, not like a cross-sectional regression with unfamiliar coefficients. Work through the fitted model in this order:</p>
@@ -4998,7 +4998,7 @@ window.Quarto = {
 <span id="cb52-385"><a href="#cb52-385" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb52-386"><a href="#cb52-386" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-387"><a href="#cb52-387" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;Set a seed on every fit. Every one.&quot;}</span>
-<span id="cb52-388"><a href="#cb52-388" aria-hidden="true" tabindex="-1"></a><span class="in">`sienaAlgorithmCreate(seed = 6886)`</span>. This is method of moments with simulation inside - without a seed you get different numbers every run and you cannot tell &quot;my model is unstable&quot; apart from &quot;monte carlo noise.&quot; Two seeded runs of this model differ by exactly zero. If you are re-running this alone next week, that is the difference between knowing you got it right and guessing.</span>
+<span id="cb52-388"><a href="#cb52-388" aria-hidden="true" tabindex="-1"></a><span class="in">`sienaAlgorithmCreate(seed = 6886)`</span>. This is a method-of-moments estimator with simulation inside. Without a seed, you get different numbers every run and cannot tell &quot;my model is unstable&quot; apart from &quot;Monte Carlo noise.&quot; Two seeded runs of this model differ by exactly zero. If you are rerunning this alone next week, that is the difference between knowing you got it right and guessing.</span>
 <span id="cb52-389"><a href="#cb52-389" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-390"><a href="#cb52-390" aria-hidden="true" tabindex="-1"></a><span class="in">`returnDeps = TRUE`</span> is also not optional, it stores the simulated networks, and <span class="co">[</span><span class="ot">sienaGOF in C2</span><span class="co">](#c2)</span> needs them. Asking for it after the fact means refitting.</span>
 <span id="cb52-391"><a href="#cb52-391" aria-hidden="true" tabindex="-1"></a>:::</span>
@@ -5505,8 +5505,8 @@ window.Quarto = {
 <span id="cb52-944"><a href="#cb52-944" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-945"><a href="#cb52-945" aria-hidden="true" tabindex="-1"></a>Two pass and one fails, which is a much better teaching outcome than three passes.</span>
 <span id="cb52-946"><a href="#cb52-946" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-947"><a href="#cb52-947" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Indegree distribution**, p = <span class="in">`r round(g_indeg[[1]]$p,3)`</span>, the model reproduces who gets nominated how often. Good.</span>
-<span id="cb52-948"><a href="#cb52-948" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Behavior distribution**, p = <span class="in">`r round(g_behav[[1]]$p,3)`</span>, it reproduces the marginal distribution of drinking. Good.</span>
+<span id="cb52-947"><a href="#cb52-947" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Indegree distribution**, p = <span class="in">`r round(g_indeg[[1]]$p,3)`</span>, the observed nomination counts are compatible with the simulated distribution. Good.</span>
+<span id="cb52-948"><a href="#cb52-948" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Behavior distribution**, p = <span class="in">`r round(g_behav[[1]]$p,3)`</span>, the observed drinking distribution is compatible with the simulations. Good.</span>
 <span id="cb52-949"><a href="#cb52-949" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Triad census**, p = `r round(g_triad[[1]]$p,3)`, it does **not** reproduce the distribution of triad types. That&#39;s a misfit.</span>
 <span id="cb52-950"><a href="#cb52-950" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-951"><a href="#cb52-951" aria-hidden="true" tabindex="-1"></a>A low p-value here means the observed statistic is extreme relative to what the model simulates. So our model gets degree and behavior right and local triadic structure wrong, despite having <span class="in">`transTrip`</span> and <span class="in">`cycle3`</span> in it. (These three are not the whole GOF menu - <span class="in">`OutdegreeDistribution`</span> and the numbers-behind-the-plot function <span class="in">`descriptives.sienaGOF()`</span> are in <span class="co">[</span><span class="ot">the C3 toolbox</span><span class="co">](#toolbox-c)</span>, along with the pointer for writing your own auxiliary.)</span>
@@ -5547,7 +5547,7 @@ window.Quarto = {
 <span id="cb52-990"><a href="#cb52-990" aria-hidden="true" tabindex="-1"></a>What you should *not* do is add effects until the p-value crosses 0.05 and then report that specification. That&#39;s the same pathology as stepwise regression, and with a triad census of 16 correlated statistics it will find something eventually.</span>
 <span id="cb52-991"><a href="#cb52-991" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-992"><a href="#cb52-992" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: What <span class="in">`sienaGOF()`</span> is actually doing&quot;}</span>
-<span id="cb52-993"><a href="#cb52-993" aria-hidden="true" tabindex="-1"></a>It&#39;s a monte carlo test using the mahalanobis distance between the observed auxiliary statistic vector and the distribution of simulated ones, which handles the fact that the components (e.G. Counts of each triad type) are heavily correlated. <span class="in">`join = TRUE`</span> pools across waves rather than testing each period separately.</span>
+<span id="cb52-993"><a href="#cb52-993" aria-hidden="true" tabindex="-1"></a>It is a Monte Carlo test using the Mahalanobis distance between the observed auxiliary-statistic vector and the distribution of simulated ones. That calculation accounts for the fact that components such as counts of different triad types are heavily correlated. <span class="in">`join = TRUE`</span> pools across waves rather than testing each period separately.</span>
 <span id="cb52-994"><a href="#cb52-994" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-995"><a href="#cb52-995" aria-hidden="true" tabindex="-1"></a>The reference is **Lospinoso &amp; Snijders (2019), &quot;Goodness of fit for stochastic actor-oriented models,&quot; *Methodological Innovations* 12(3)**. Worth reading if you plan to report GOF, because it&#39;s specific about which auxiliary statistics are informative, and about the fact that with enough simulations you can reject any model, so the p-value is a guide rather than a verdict.</span>
 <span id="cb52-996"><a href="#cb52-996" aria-hidden="true" tabindex="-1"></a>:::</span>
@@ -5691,7 +5691,7 @@ window.Quarto = {
 <span id="cb52-1152"><a href="#cb52-1152" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-1153"><a href="#cb52-1153" aria-hidden="true" tabindex="-1"></a>Three days, one sentence: **absorb it (Day 10) → test it (Day 11) → parameterize temporal mechanisms with time (Day 12, today).**</span>
 <span id="cb52-1154"><a href="#cb52-1154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-1155"><a href="#cb52-1155" aria-hidden="true" tabindex="-1"></a>Day 10&#39;s latent factor models treat dependence as a nuisance to absorb so the covariate coefficients are trustworthy. Day 11&#39;s ERGMs treat it as a hypothesis to parameterize and test. Today, SAOMs use repeated observation to go after something neither can get from one cross-section, the relative contribution of two mechanisms that are observationally identical in a single wave, and pay for it with a strong, untestable assumption about how change happens (one tie or one behaviour step at a time).</span>
+<span id="cb52-1155"><a href="#cb52-1155" aria-hidden="true" tabindex="-1"></a>Day 10&#39;s latent factor models represent residual dependence so we can see how covariate estimates and predictions change after adding latent structure. They do not automatically make the coefficients trustworthy: if an omitted factor is correlated with an observed predictor, latent adjustment cannot recover a separate direct effect without additional assumptions. Day 11&#39;s ERGMs treat dependence as a hypothesis to parameterize and test. Today, SAOMs use repeated observation to go after something neither can get from one cross-section, the relative contribution of two mechanisms that are observationally identical in a single wave, and pay for it with a strong, untestable assumption about how change happens (one tie or one behaviour step at a time).</span>
 <span id="cb52-1156"><a href="#cb52-1156" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-1157"><a href="#cb52-1157" aria-hidden="true" tabindex="-1"></a><span class="fu">## After the Model Runs: Describe the Political Change Process {#sec-after-fit}</span></span>
 <span id="cb52-1158"><a href="#cb52-1158" aria-hidden="true" tabindex="-1"></a></span>

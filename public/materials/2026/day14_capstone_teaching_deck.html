@@ -1068,7 +1068,7 @@ display:block!important;
 <p><a href="day14_capstone.html#sec-model-compass" class="walkthrough-link" target="_blank">Read the model-by-model human interpretations</a></p>
 </div>
 <aside class="notes">
-<p>The walkthrough completes these sentences for GLM with DCR, SRM, blocks, AME, ERGM, relational event, dynamic tensor, and influence models. I will use the same four prompts as we move through the lenses.</p>
+<p>The walkthrough completes these sentences for GLM with DCR, SRM, blocks, AME, ERGM, relational event, and influence models. I will use the same four prompts as we move through the lenses.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1457,34 +1457,6 @@ display:block!important;
 </div>
 <aside class="notes">
 <p>Day 8 connection: REM belongs here when event order and timing are part of the estimand rather than noise to pool away.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="tensor" class="slide level2">
-<h2>Dynamic Tensor Models Treat the Network as a Stack</h2>
-<p>When ties vary by sender, receiver, relation, and time, the outcome is no longer one matrix.</p>
-<p><span class="math display">\[Y_{ijrt}\quad\text{for sender }i,\text{ receiver }j,\text{ relation }r,\text{ and time }t\]</span></p>
-<p>Use dynamic Bayesian network or tensor approaches when the target includes:</p>
-<ul>
-<li>Cross-relation dependence</li>
-<li>Latent dynamics</li>
-<li>Forecasting future network slices</li>
-<li>Shock propagation across layers and time</li>
-</ul>
-<div class="slide-link">
-<p><a href="day14_capstone.html#sec-frontier-tensor" class="walkthrough-link" target="_blank">Open the tensor lane</a></p>
-</div>
-<aside class="notes">
-<p>Frontier orientation only. A longitudinal <code>netify</code> object supplies aligned arrays and covariates. The meaningful target is forecast performance, not one isolated factor.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
