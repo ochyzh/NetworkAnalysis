@@ -67,7 +67,6 @@ Homework assignments and supporting files are posted here as they become availab
     <thead>
       <tr>
         <th>Homework</th>
-        <th>Due Date</th>
         <th>Materials</th>
        </tr>
     </thead>
@@ -76,28 +75,24 @@ Homework assignments and supporting files are posted here as they become availab
         <td>
           <strong>Homework 1</strong>
         </td>
-        <td>Sunday, July 19</td>
         <td><a href="../materials/Homeworks/ICPSR2026_homework01.html" target="_blank">View assignment</a> | <a href="../materials/Homeworks/ICPSR2026_homework01.Rmd" download>R Markdown</a> | <a href="../materials/Homeworks/email%20headers.csv" download>Email data</a> | <a href="../materials/Homeworks/EmployeeRecords.csv" download>Employee data</a></td>
       </tr>
       <tr>
         <td>
           <strong>Homework 2</strong>
         </td>
-        <td>Wednesday, July 29</td>
         <td><a href="../materials/Homeworks/ICPSR2026_homework02.html" target="_blank">View assignment</a> | <a href="../materials/Homeworks/ICPSR2026_homework02.Rmd" download>R Markdown</a></td>
       </tr>
       <tr>
         <td>
           <strong>Homework 3: Social Relations Model</strong>
         </td>
-        <td>To be announced</td>
         <td><a href="../materials/Homeworks/ICPSR2026_homework03.html" target="_blank">View assignment</a> | <a href="../materials/Homeworks/ICPSR2026_homework03.zip" download>Download complete folder</a></td>
       </tr>
       <tr>
         <td>
           <strong>Homework 4: Stochastic Actor-Oriented Models</strong>
         </td>
-        <td>To be announced</td>
         <td><span class="homework-status">Materials coming soon</span></td>
       </tr>
       </tbody>
