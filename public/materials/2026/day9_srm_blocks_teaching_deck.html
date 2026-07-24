@@ -2089,13 +2089,13 @@ display:block!important;
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\alpha_t</annotation></semantics></math> gives each year its own baseline rate, while <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>𝐱</mi><mrow><mi>i</mi><mi>j</mi><mi>t</mi></mrow><mi>𝖳</mi></msubsup><mi>𝛃</mi></mrow><annotation encoding="application/x-tex">\mathbf{x}_{ijt}^{\mathsf T}\boldsymbol\beta</annotation></semantics></math> contains the measured dyad-year predictors.</li>
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">a_{it}</annotation></semantics></math> records how often state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> appears as the coded source in year <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> beyond those predictors.</li>
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mrow><mi>j</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">b_{jt}</annotation></semantics></math> records how often state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math> appears as the coded target in year <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> beyond those predictors.</li>
-<li><code>dynamic_ab = TRUE</code> smooths each trajectory through an AR(1) process.</li>
+<li><code>dynamic_ab = TRUE</code> links adjacent annual scores with an AR(1)-style smoothing penalty.</li>
 </ul>
 <div class="slide-link">
 <p><a href="day9_srm_blocks.html#sec-lame-long" class="walkthrough-link" target="_blank">Fit the binary longitudinal SRM</a></p>
 </div>
 <aside class="notes">
-<p>The AR(1) structure lets adjacent annual effects inform one another while allowing state positions to change. Source and target are ICEWS coding positions, so avoid stronger claims about battlefield initiation and victimization.</p>
+<p>The smoothing structure lets adjacent annual effects inform one another while allowing state positions to change. In this ALS fit, the smoothing value is fixed rather than estimated from the data. Source and target are ICEWS coding positions, so avoid stronger claims about battlefield initiation and victimization.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2124,7 +2124,7 @@ display:block!important;
 <p><a href="day9_srm_blocks.html#lame-long-fit" class="walkthrough-link" target="_blank">Read the estimator boundary</a></p>
 </div>
 <aside class="notes">
-<p>One-sentence preview only: ALS cycles through regression and actor-effect updates until the fitted values stabilize. The AR(1) penalty links neighboring annual actor effects. Save the detailed estimation explanation for Day 10.</p>
+<p>One-sentence preview only: ALS cycles through regression and actor-effect updates until the fitted values stabilize. The AR(1)-style penalty links neighboring annual actor effects, using a fixed smoothing value in this fit. Save the detailed estimation explanation for Day 10.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -2296,7 +2296,7 @@ display:block!important;
 </section>
 <section id="longitudinal-scope" class="slide level2">
 <h2>What This Dynamic SRM Does Not Show</h2>
-<p>The AR(1) process smooths adjacent annual actor effects. It does not identify the political mechanism that produced a rise or fall.</p>
+<p>The AR(1)-style penalty smooths adjacent annual actor effects. It does not identify the process that produced a rise or fall.</p>
 <p>The model does not give every state pair its own long-run baseline, include a lagged outcome, or show that a source-side change caused a target-side change.</p>
 <div class="bottom-line">
 <p>The trajectories describe changing adjusted positions in this selected coded-event panel, not changes in conflict severity or a causal response process.</p>
