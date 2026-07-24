@@ -235,14 +235,16 @@ Likely question: “Could more dimensions or another geometry fit this pattern?�
 
 Answer: “Possibly. More dimensions or a different manifold can represent more patterns, but that adds complexity and changes the assumptions. Our result is about the familiar two-dimensional Euclidean map.”
 
-Transition: “Before replacing distance with a factor model, we need to learn which parts of any latent map are actually identified.”
+Transition: “A distance map is still a map built under choices about dimension and geometry. We will keep that caution visible, then replace closeness with compatibility.”
 
-Identification and Procrustes Alignment
-=======================================
+Optional Walkthrough Box: Identification and Procrustes Alignment
+=================================================================
 
 Walkthrough anchor: `#sec-procrustes`
 
 Chunks: `rotate-demo`, `distances-identical`, `procrustes-fn`, `procrustes-recover`
+
+This material is no longer a deck stop. It appears in one collapsed optional-details box in the walkthrough. Leave it closed during the main presentation unless a student asks why two latent maps can face different directions or how independently estimated configurations are compared.
 
 State the identification result directly. The distance likelihood depends on pairwise distances. Translating, rotating, or reflecting the whole configuration leaves every distance and fitted probability unchanged.
 
@@ -268,7 +270,7 @@ Answer: “Only if the model actually estimates time-varying positions, aligns t
 
 Optional point: The optimal Procrustes rotation itself uses an SVD of the cross-product between centered configurations. This gives a natural preview of the next section.
 
-Transition to the break: “We now know what a distance model assumes, what it can reproduce, where it struggles, and why its displayed orientation is arbitrary. After the break, we replace closeness with compatibility.”
+If you open the box, close with: “The displayed orientation is arbitrary, so we interpret distances and fitted probabilities. Now we return to the main argument and replace closeness with compatibility.”
 
 Two Kinds of Similarity
 =======================
@@ -645,7 +647,7 @@ Chunk: icews-dynamic-uv-plot
 
 Deck slide: Then Look at Changing Partner Profiles
 
-The code first calls procrustes_align() and then uv_plot(). Alignment removes arbitrary rotations and reflections across years so those identification changes do not masquerade as movement.
+The code first calls align_directed_uv() and then uv_plot(). The helper stacks the source and target profiles, applies one common rotation, and verifies that every fitted source-target inner product remains unchanged. This keeps arbitrary changes in pose from masquerading as movement without changing the fitted relationship surface.
 
 Explain source and target profiles. A source point and target point that line up contribute a positive inner product. Points facing in opposing directions contribute a negative inner product. The exact contribution is u_it'v_jt.
 
