@@ -1031,7 +1031,7 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="political-question" class="slide level2">
-<h2>Political Treatments Travel Through Networks</h2>
+<h2>Interventions Travel Through Networks</h2>
 <p>Examples include:</p>
 <ul>
 <li>Campaign messages passed among voters</li>
@@ -1043,10 +1043,10 @@ display:block!important;
 <p>Define treatment, network exposure, and the causal contrast before choosing an estimator.</p>
 </div>
 <div class="slide-link">
-<p><a href="day13_causal.html#sec-political-question" class="walkthrough-link" target="_blank">Read the political science examples</a></p>
+<p><a href="day13_causal.html#sec-political-question" class="walkthrough-link" target="_blank">Read the applied examples</a></p>
 </div>
 <aside class="notes">
-<p>Four political examples, one discipline: treatment can move through ties. The exposure mapping defines the potential-outcome contrast.</p>
+<p>Across the examples, treatment can move through ties. The exposure mapping defines the potential-outcome contrast.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1099,7 +1099,7 @@ display:block!important;
 <p><a href="day13_causal.html#sec-model-compass" class="walkthrough-link" target="_blank">Use the applied method compass</a></p>
 </div>
 <aside class="notes">
-<p>I want one human sentence for each operation. HT supports an exposure contrast under a design. DCR can remove stars without changing the coefficient. AME can move the coefficient because it changes the conditional mean.</p>
+<p>I want one substantive sentence for each operation. HT supports an exposure contrast under a design. DCR can change an interval without changing the coefficient. AME can move the coefficient because it changes the conditional mean.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1368,6 +1368,30 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="dcr-estimation" class="slide level2">
+<h2>What the DCR Sandwich Estimates</h2>
+<p><span class="math display">\[
+\widehat{\operatorname{Var}}_{\mathrm{DCR}}(\hat\beta)
+=B^{-1}
+\left[
+\sum_{r,s}
+\mathbb{1}\{r,s\text{ share an actor}\}
+\hat\psi_r\hat\psi_s^{\mathsf T}
+\right]
+B^{-1}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\hat\psi_r\)</span> is one dyad row’s contribution to the regression score.</li>
+<li>The middle sum allows rows sharing either actor to move together.</li>
+<li>The outer information matrices put that covariance on the coefficient scale.</li>
+</ul>
+<div class="bottom-line">
+<p>Nothing is re-maximized. The original <span class="math inline">\(\hat\beta\)</span> stays fixed, and only its estimated covariance matrix is rebuilt.</p>
+</div>
+<div class="slide-link">
+<p><a href="day13_causal.html#sec-dcr-estimation" class="walkthrough-link" target="_blank">Follow the DCR Calculation</a></p>
+</div>
+</section>
 <section id="gade" class="slide level2">
 <h2>Count the Independent Network Objects Correctly</h2>
 <p>The Gade data contain 870 directed rows because each unordered pair appears in both directions.</p>
@@ -1394,25 +1418,25 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="run" class="slide level2">
-<h2>DCR Can Rewrite the Significance Story</h2>
+<h2>DCR Can Change How Certain the Result Looks</h2>
 <div class="comparison-row">
 <div class="comparison-card">
-<p><span class="card-title">Naive table</span></p>
-<p>Treats every dyad row as independent and can produce several narrow, apparently decisive intervals.</p>
+<p><span class="card-title">Naive uncertainty</span></p>
+<p>Treats every dyad row as independent and produces intervals that are too narrow when rows sharing organizations move together.</p>
 </div>
 <div class="comparison-card accent-card">
-<p><span class="card-title">DCR table</span></p>
-<p>Preserves the point estimates and recalibrates interval widths for shared-actor dependence. In this example, the consequential intervals become wider.</p>
+<p><span class="card-title">DCR uncertainty</span></p>
+<p>Preserves the point estimates and recalibrates interval widths for shared-organization dependence. In this example, shared location and organization size remain positive findings, while power difference remains a clear non-result.</p>
 </div>
 </div>
 <div class="big-question">
-<p>Which conclusions survive when the uncertainty is calibrated to the actor structure?</p>
+<p>Which conclusions survive when uncertainty is calibrated to the repeated organizations?</p>
 </div>
 <div class="slide-link">
 <p><a href="day13_causal.html#sec-run" class="walkthrough-link" target="_blank">Run the correction</a></p>
 </div>
 <aside class="notes">
-<p>Substantive verdicts, not star counts. Nodal covariates in dyadic costume are often especially vulnerable.</p>
+<p>Name the actors and action rather than counting stars. Here the outcome is whether two Syrian armed organizations recorded any cooperation.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1517,22 +1541,26 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="disagree" class="slide level2">
-<h2>Watch Which Terms Move and Why</h2>
-<p>When DCR and AME disagree, ask:</p>
+<h2>The Power-Difference Result Reveals the Difference</h2>
+<p>For power difference, DCR and AME disagree:</p>
+<ul>
+<li>The original logit estimate is near zero.</li>
+<li>DCR keeps that estimate and widens its uncertainty.</li>
+<li>AME re-estimates a negative association after adding organization effects and latent relational structure.</li>
+</ul>
+<p>Then ask:</p>
 <ol type="1">
 <li>Did the point estimate move, or only the interval?</li>
-<li>Is the predictor nodal, dyadic, or actor-compositional?</li>
-<li>Which latent additive or multiplicative component correlates with it?</li>
-<li>Does either model reproduce the network features relevant to the claim?</li>
+<li>Does either specification reproduce the actor and pair structure relevant to the claim?</li>
 </ol>
 <div class="room-prompt compact-prompt">
-<p>Is the disagreement evidence about uncertainty, omitted structure, or a different estimand conditional on different controls?</p>
+<p>Is the disagreement about uncertainty, omitted structure, or a different conditional estimand?</p>
 </div>
 <div class="slide-link">
 <p><a href="day13_causal.html#sec-disagree" class="walkthrough-link" target="_blank">Compare the verdicts</a></p>
 </div>
 <aside class="notes">
-<p>Focus on the verdict that changes under the small-sample DCR reference, then locate where AME’s latent terms alter the mean rather than merely the standard error.</p>
+<p>Use power difference because it exposes the estimators’ different jobs. The comparison does not identify which specification is true.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1546,7 +1574,7 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="claims" class="slide level2">
-<h2>What You Can Honestly Claim</h2>
+<h2>What Each Analysis Supports</h2>
 <p>Use language matched to the method:</p>
 <table class="caption-top">
 <colgroup>
@@ -1596,18 +1624,15 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="after-fit" class="slide level2">
-<h2>After the Analysis Runs, State the Verdict</h2>
+<h2>After the Analysis Runs, State the Target and Result</h2>
 <ol type="1">
 <li>Name the exposure contrast or conditional association.</li>
 <li>Say whether the estimate, interval, or both changed.</li>
-<li>Explain whether the political conclusion survives, weakens, or changes.</li>
+<li>Explain whether the substantive conclusion survives, weakens, or changes.</li>
 <li>State the causal or modeling assumption that remains.</li>
 </ol>
 <div class="say-it">
-<p>“After allowing dependence among dyads that share an armed group, the association remains positive but is too imprecise to support the original claim. The estimate stayed fixed; the evidence changed.”</p>
-</div>
-<div class="bottom-line">
-<p>DCR repairs an uncertainty calculation. AME changes the conditional mean. A randomized exposure design identifies a declared contrast under its assignment and exposure assumptions.</p>
+<p>“Among the 30 Syrian armed organizations, pairs operating in the same location are more likely to record cooperation, and that result remains after allowing dyads containing the same organization to be dependent. Power difference remains near zero under DCR but becomes negative under AME, so that conclusion depends on the conditional mean model.”</p>
 </div>
 <div class="slide-link">
 <p><a href="day13_causal.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the full interpretation guide</a></p>

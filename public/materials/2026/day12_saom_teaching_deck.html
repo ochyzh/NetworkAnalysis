@@ -1025,7 +1025,7 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="political-question" class="slide level2">
-<h2>The Political Science Version</h2>
+<h2>Where the Same Question Appears Elsewhere</h2>
 <p>The same selection-versus-influence problem appears when:</p>
 <ul>
 <li>States change alliances while security policies change</li>
@@ -1036,10 +1036,10 @@ display:block!important;
 <p>Time helps distinguish sequences, but selection and influence remain model-based under the assumed micro-step process.</p>
 </div>
 <div class="slide-link">
-<p><a href="day12_saom.html#sec-political-question" class="walkthrough-link" target="_blank">Read the political science translation</a></p>
+<p><a href="day12_saom.html#sec-political-question" class="walkthrough-link" target="_blank">Read the substantive translation</a></p>
 </div>
 <aside class="notes">
-<p>Political examples before <code>s50</code>. The core question is whether tie change and behavior change can be represented through plausible actor opportunities.</p>
+<p>Use these examples only to transfer the question. The fitted application remains the s50 friendship and drinking panel, so every reported result must return to those students and waves.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1064,7 +1064,7 @@ display:block!important;
 <tr class="header">
 <th>Specification</th>
 <th>Main question</th>
-<th>Human result</th>
+<th>What we should be able to say</th>
 </tr>
 </thead>
 <tbody>
@@ -1090,33 +1090,6 @@ display:block!important;
 </div>
 <aside class="notes">
 <p>The result must name a candidate micro-step for SAOMs. A positive evaluation parameter is not an unconditional probability that a friendship forms.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
-</section>
-<section id="estimation" class="slide level2">
-<h2>Estimation Simulates the Missing Path</h2>
-<ol type="1">
-<li>Estimate how often actors receive opportunities.</li>
-<li>Select an actor and score the available micro-steps.</li>
-<li>Turn objective-function scores into choice probabilities.</li>
-<li>Simulate a path from one observed wave to the next.</li>
-<li>Compare simulated and observed change statistics.</li>
-<li>Update parameters and repeat until discrepancies are small.</li>
-</ol>
-<div class="slide-link">
-<p><a href="day12_saom.html#sec-estimation-roadmap" class="walkthrough-link" target="_blank">Walk through SAOM estimation</a></p>
-</div>
-<aside class="notes">
-<p>The estimator is simulation-based method of moments. Convergence means the targeted simulated statistics align with the panel, not that the behavioral story has been proven.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1239,6 +1212,34 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="estimation" class="slide level2">
+<h2>Estimation Simulates the Missing Path</h2>
+<p>The panel shows the beginning and end of each interval, not the changes in between. RSiena therefore:</p>
+<ol type="1">
+<li>Uses the rate function to generate opportunities.</li>
+<li>Uses the evaluation function to assign probabilities to the available one-step changes.</li>
+<li>Simulates a complete path to the next observed wave.</li>
+<li>Checks whether that simulated path produces the kinds of changes seen in the panel.</li>
+<li>Revises the parameters and tries again.</li>
+</ol>
+<div class="bottom-line">
+<p>The estimator learns which rate and evaluation parameters make the observed changes typical under the assumed micro-step process.</p>
+</div>
+<div class="slide-link">
+<p><a href="day12_saom.html#sec-estimation-roadmap" class="walkthrough-link" target="_blank">Walk Through SAOM Estimation</a></p>
+</div>
+</section>
+<section id="moment-target" class="slide level2">
+<h2>What RSiena Is Solving</h2>
+<p>Let <span class="math inline">\(S_{\mathrm{obs}}\)</span> be the selected change statistics in the observed panel and <span class="math inline">\(S_{\mathrm{sim}}(\theta)\)</span> the same statistics after simulating paths with parameters <span class="math inline">\(\theta\)</span>.</p>
+<p><span class="math display">\[
+E_{\theta}\!\left[S_{\mathrm{sim}}(\theta)\right]-S_{\mathrm{obs}}=0
+\]</span></p>
+<p>Robbins-Monro stochastic approximation moves <span class="math inline">\(\theta\)</span> to reduce the simulated-minus-observed discrepancy. The final phase holds the estimate fixed and uses further simulations for standard errors and convergence checks.</p>
+<div class="mini-caution">
+<p>Default SAOM estimation is simulation-based method of moments. It is not maximizing a likelihood. Convergence means the targeted moments match within Monte Carlo error, not that the actor-oriented story has been proven.</p>
+</div>
+</section>
 <section id="first-fit" class="slide level2">
 <h2>Fit the Smallest Model That Answers the Question</h2>
 <p>Start with:</p>
@@ -1323,7 +1324,7 @@ display:block!important;
 </tbody>
 </table>
 <div class="say-it">
-<p>A positive coefficient favors candidate states with a larger value of that statistic, conditional on the other effects and on receiving an opportunity.</p>
+<p>A positive coefficient gives greater weight to candidate states with a larger value of that statistic, conditional on the other effects and on a modeled opportunity.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#b3" class="walkthrough-link" target="_blank">Interpret the fitted model</a></p>
@@ -1379,8 +1380,8 @@ display:block!important;
 <p>Does behavior change in relation to the behavior of network neighbors?</p>
 </div>
 </div>
-<div class="bottom-line">
-<p>Selection and influence are represented jointly, but they remain model-based mechanisms inferred from panel observations.</p>
+<div class="say-it">
+<p>In s50, greater drinking similarity receives positive weight in the friendship equation. The estimate for movement toward friends’ drinking is also positive, but its interval is wide enough to include no influence. Both mechanisms remain model-based.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#c1" class="walkthrough-link" target="_blank">Build the co-evolution model</a></p>
@@ -1573,24 +1574,21 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="after-fit" class="slide level2">
-<h2>After the Model Runs, Describe the Change Process</h2>
+<h2>After the Model Runs, Describe What Changed</h2>
 <ul>
 <li>Separate change opportunities in the <strong>rate function</strong> from preferences in the <strong>evaluation function</strong>.</li>
 <li>Interpret an evaluation effect as a comparison among candidate microsteps, not an unconditional tie probability.</li>
 <li>Keep selection in the network equation and influence in the behavior equation.</li>
-<li>Use convergence, repeated runs, and GOF before making the political claim.</li>
+<li>Use convergence, repeated runs, and GOF before stating the substantive conclusion.</li>
 </ul>
 <div class="say-it">
-<p>“The similarity effect is consistent with selection into friendships with similar peers. The influence estimate is imprecise, so these data do not support a confident influence claim.”</p>
-</div>
-<div class="bottom-line">
-<p>Jointly modeling selection and influence does not identify either one causally or rule out latent homophily.</p>
+<p>“Across three observations of 50 Scottish adolescents, the fitted friendship process gives greater weight to reciprocal and transitive friendship states. The drinking-similarity estimate is 1.44 with a standard error of 0.61, which is consistent with selection into friendships with similar peers. The peer-drinking influence estimate is 1.36 with a standard error of 0.95, so this panel does not distinguish the influence pattern from zero.”</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the full interpretation guide</a></p>
 </div>
 <aside class="notes">
-<p>Keep the output tied to the political change story: opportunity, candidate choice, selection, influence, diagnostic evidence, and remaining confounding.</p>
+<p>Keep the output tied to the observed actors and action: adolescents, friendship nominations, drinking, three waves, the fitted selection pattern, the uncertain influence pattern, diagnostics, and remaining confounding.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;

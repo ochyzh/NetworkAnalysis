@@ -1056,16 +1056,16 @@ display:block!important;
 <h2>Every Lens Must Earn Its Place</h2>
 <p>For each model, finish four sentences:</p>
 <ol type="1">
-<li><strong>The political question is…</strong></li>
+<li><strong>The substantive question is…</strong></li>
 <li><strong>This model helps because…</strong></li>
 <li><strong>It is distinct from the previous lens because…</strong></li>
 <li><strong>After fitting it, I can say…</strong></li>
 </ol>
 <div class="say-it">
-<p>If the fourth sentence still sounds like package documentation, the model has not yet produced a social science result.</p>
+<p>If the fourth sentence still sounds like package documentation, the model has not yet produced an applied result.</p>
 </div>
 <div class="slide-link">
-<p><a href="day14_capstone.html#sec-model-compass" class="walkthrough-link" target="_blank">Read the model-by-model human interpretations</a></p>
+<p><a href="day14_capstone.html#sec-model-compass" class="walkthrough-link" target="_blank">Read the model-by-model substantive interpretations</a></p>
 </div>
 <aside class="notes">
 <p>The walkthrough completes these sentences for GLM with DCR, SRM, blocks, AME, ERGM, relational event, and influence models. I will use the same four prompts as we move through the lenses.</p>
@@ -1082,34 +1082,38 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="estimation" class="slide level2">
-<h2>The Algorithms Learn Different Things</h2>
+<h2>The Same Network Becomes Different Evidence</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th>Lens</th>
-<th>What changes during estimation?</th>
+<th>Pattern the model tries to explain</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>GLM with DCR</td>
-<td>The covariance matrix, not the coefficients</td>
+<td>GLM</td>
+<td>Measured dyadic associations</td>
 </tr>
 <tr class="even">
 <td>SRM</td>
-<td>Coefficients, actor effects, reciprocity, and uncertainty</td>
+<td>Persistent differences in actors’ overall activity</td>
 </tr>
 <tr class="odd">
 <td>Blockmodel</td>
-<td>Membership probabilities and mixing probabilities</td>
+<td>A small set of recurring partner-list types</td>
 </tr>
 <tr class="even">
 <td>AME</td>
-<td>Additive effects and a low-rank relational surface</td>
+<td>Continuous pair-specific compatibility</td>
 </tr>
 <tr class="odd">
 <td>ERGM</td>
-<td>Coefficients updated through graph simulation</td>
+<td>Named graph configurations such as shared partners</td>
+</tr>
+<tr class="even">
+<td>DCR</td>
+<td>No new pattern; uncertainty around the existing GLM</td>
 </tr>
 </tbody>
 </table>
@@ -1133,15 +1137,58 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="estimation-targets" class="slide level2">
+<h2>What Each Procedure Actually Fits</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Lens</th>
+<th>Statistical target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GLM</td>
+<td>Maximize dyad-level Bernoulli log-likelihood</td>
+</tr>
+<tr class="even">
+<td>DCR</td>
+<td>Recompute a sandwich covariance; do not refit coefficients</td>
+</tr>
+<tr class="odd">
+<td>SRM and AME</td>
+<td>Sample a joint posterior distribution</td>
+</tr>
+<tr class="even">
+<td>Blockmodel</td>
+<td>Maximize a variational likelihood lower bound</td>
+</tr>
+<tr class="odd">
+<td>ERGM</td>
+<td>Maximize a graph likelihood using simulated network statistics</td>
+</tr>
+</tbody>
+</table>
+<div class="say-it">
+<p>The target says what counts as a better fit. MCMC, variational EM, and alternating updates are different ways of reaching or exploring that target.</p>
+</div>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-estimation-roadmap" class="walkthrough-link" target="_blank">Connect Every Algorithm to Its Target</a></p>
+</div>
+</section>
 <section id="data" class="slide level2">
 <h2>One Dataset Keeps the Comparison Honest</h2>
 <p>The rebel-cooperation network supplies:</p>
 <ul>
-<li>A binary relational outcome</li>
-<li>Actor-level covariates</li>
-<li>Dyad-level covariates</li>
-<li>Repeated actors and possible reciprocity</li>
-<li>Potential blocks, latent geometry, and closure</li>
+<li>30 armed organizations active in the Syrian civil war</li>
+<li>An undirected tie for at least one recorded cooperative action</li>
+<li>Organization ideology and size</li>
+<li>Pair-level ideological distance, power difference, shared location, and shared sponsor</li>
+<li>Strong differences in how many cooperation partners organizations have</li>
 </ul>
 <div class="say-it">
 <p>Every lens sees the same observed network, but each conditions on a different representation of its dependence.</p>
@@ -1150,7 +1197,7 @@ display:block!important;
 <p><a href="day14_capstone.html#sec-data" class="walkthrough-link" target="_blank">Inspect the common data</a></p>
 </div>
 <aside class="notes">
-<p>Rebuild the netify object and state the outcome, actor roster, direction, and missingness rule. Model comparison is meaningless if the methods are fitted to subtly different samples.</p>
+<p>Rebuild the netify object and state the outcome, actor roster, direction, and missingness rule. Emphasize that binarizing any cooperation is a different outcome from the original count of cooperative actions.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1196,20 +1243,22 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="srm" class="slide level2">
-<h2>Lens 1: SRM Locates Actor Dependence</h2>
-<p><span class="math display">\[\eta_{ij}=x_{ij}^{\mathsf T}\beta+a_i+b_j+\epsilon_{ij}\]</span></p>
-<p>The SRM asks:</p>
+<h2>Lens 1: SRM Locates Organization-Level Dependence</h2>
+<p><span class="math display">\[\eta_{ij}=x_{ij}^{\mathsf T}\beta+a_i+a_j+\epsilon_{ij}\]</span></p>
+<p>Because this cooperation network is undirected, the SRM asks:</p>
 <ul>
-<li>Who tends to send more than observed covariates predict?</li>
-<li>Who tends to receive more?</li>
-<li>Are sending and receiving propensities associated?</li>
-<li>Are the two directions of a dyad related?</li>
+<li>Which organizations cooperate with more partners than the measured covariates predict?</li>
+<li>How much of the network’s hub structure is organization-level heterogeneity?</li>
+<li>Which covariate results change after every organization receives an additive effect?</li>
 </ul>
+<div class="say-it">
+<p>ANF and ASIM have the largest fitted sociality effects. The SRM reproduces the observed spread in organizations’ numbers of partners without requiring a residual closure term.</p>
+</div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-srm" class="walkthrough-link" target="_blank">Fit the SRM lens</a></p>
 </div>
 <aside class="notes">
-<p>SRM lens: additive actor heterogeneity is substantively meaningful or needed as adjustment. Compare <span class="math inline">\(\beta\)</span> with DCR and locate whether disagreement comes from re-estimating the mean.</p>
+<p>The undirected application has one additive sociality effect per organization, not separate sender and receiver effects. Compare the covariate results with DCR and locate whether disagreement comes from re-estimating the mean.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1226,15 +1275,33 @@ display:block!important;
 <h2>Lens 2: Blockmodels Ask Whether Actors Come in Kinds</h2>
 <p><span class="math display">\[\Pr(Y_{ij}=1\mid z_i,z_j)=\theta_{z_i z_j}\]</span></p>
 <div class="room-prompt compact-prompt">
-<p>Can a small number of relational types compress the network into interpretable sending and receiving profiles?</p>
+<p>Can a small number of relational roles summarize which organizations cooperate?</p>
 </div>
-<p>Read:</p>
-<ul>
-<li>Membership uncertainty</li>
-<li>The whole block-to-block mixing matrix</li>
-<li>Stability across candidate <span class="math inline">\(K\)</span></li>
-<li>Simulated network fit</li>
-</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Role Pair</th>
+<th style="text-align: right;">Fitted Cooperation Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Core with core</td>
+<td style="text-align: right;">0.96</td>
+</tr>
+<tr class="even">
+<td>Core with periphery</td>
+<td style="text-align: right;">0.74</td>
+</tr>
+<tr class="odd">
+<td>Periphery with periphery</td>
+<td style="text-align: right;">0.11</td>
+</tr>
+</tbody>
+</table>
+<div class="say-it">
+<p>ANF and ASIM form the two-organization core. The other 28 organizations are compressed into one heterogeneous periphery. This is not evidence of two coalition communities.</p>
+</div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-blocks" class="walkthrough-link" target="_blank">Fit the blockmodel lens</a></p>
 </div>
@@ -1267,7 +1334,7 @@ display:block!important;
 <p><a href="day14_capstone.html#sec-ame" class="walkthrough-link" target="_blank">Fit the AME lens</a></p>
 </div>
 <aside class="notes">
-<p>AME check: how does the covariate verdict change after latent adjustment, and does the fitted surface reproduce actor, dyad, and triadic features? Keep coordinates separate from invariant fitted quantities.</p>
+<p>Shared location remains positive and power difference remains negative. Ideological distance becomes uncertain once the latent surface competes to explain the same pairs. Keep coordinates separate from invariant fitted quantities.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1311,15 +1378,15 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="reconcile" class="slide level2">
-<h2>Answers Conflict Less Often Than Specifications Do</h2>
+<h2>The Closure Result Changes When Organizations Get Their Own Effects</h2>
 <div class="comparison-row">
 <div class="comparison-card">
-<p><span class="card-title">Initial comparison</span></p>
-<p>An ERGM without actor heterogeneity may assign residual closure to GWESP while AME absorbs it through additive and latent terms.</p>
+<p><span class="card-title">Initial ERGM</span></p>
+<p>Without organization-level sociality, the GWESP estimate is 1.38 and looks like strong closure.</p>
 </div>
 <div class="comparison-card accent-card">
-<p><span class="card-title">Revised comparison</span></p>
-<p>After adding ERGM sociality effects, the residual closure estimate can collapse and both models tell a similar substantive story.</p>
+<p><span class="card-title">ERGM with sociality</span></p>
+<p>After adding one sociality term per organization, GWESP falls to 0.18 and becomes imprecise. The simulations then reproduce both actor heterogeneity and transitivity.</p>
 </div>
 </div>
 <div class="say-it">
@@ -1469,6 +1536,23 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="rem-estimation" class="slide level2">
+<h2>What the Ordinal REM Maximizes</h2>
+<p>For event <span class="math inline">\(m\)</span>, compare the observed dyad <span class="math inline">\((i_m,j_m)\)</span> with every eligible dyad in risk set <span class="math inline">\(\mathcal{R}_m\)</span>:</p>
+<p><span class="math display">\[
+\Pr(i_m,j_m\mid\mathcal{H}_{m-1})
+=
+\frac{\exp(\eta_{i_mj_m,m})}
+{\sum_{(i,j)\in\mathcal{R}_m}\exp(\eta_{ij,m})}.
+\]</span></p>
+<p>The log-likelihood adds the log of that probability across events. Recency, reciprocity, and participation-shift statistics are recalculated from the history before each event.</p>
+<div class="bottom-line">
+<p>The estimator learns which features distinguish the dyad that acted next from the dyads that could have acted next. An ordinal fit uses event order, not waiting-time duration.</p>
+</div>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-rem" class="walkthrough-link" target="_blank">Follow the REM Risk-Set Likelihood</a></p>
+</div>
+</section>
 <section id="sir" class="slide level2">
 <h2>Influence Models Ask Who Moves Whom</h2>
 <div class="comparison-row">
@@ -1500,6 +1584,28 @@ width: 1px!important;
 overflow: hidden!important;
 display:block!important;
 }</style></aside>
+</section>
+<section id="sir-estimation" class="slide level2">
+<h2>What SIR Maximizes</h2>
+<p>For the Poisson application:</p>
+<p><span class="math display">\[
+\eta_{ijt}=z_{ijt}^{\mathsf T}\theta+(A X_t B^{\mathsf T})_{ij},
+\qquad
+\ell=\sum_{t,i\ne j}
+\left[Y_{ijt}\eta_{ijt}-\exp(\eta_{ijt})-\log(Y_{ijt}!)\right].
+\]</span></p>
+<p>The default engine alternates two familiar GLM jobs:</p>
+<ol type="1">
+<li>Hold receiver-side influence fixed and update sender-side coefficients.</li>
+<li>Hold sender-side influence fixed and update receiver-side coefficients.</li>
+<li>Repeat until the likelihood and coefficients stabilize.</li>
+</ol>
+<div class="mini-caution">
+<p>The constraint <span class="math inline">\(\alpha_1=1\)</span> fixes the bilinear scale. Cluster-robust uncertainty is calculated after fitting and does not change the maximum-likelihood point estimate.</p>
+</div>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-sir-estimation" class="walkthrough-link" target="_blank">See How SIR Is Estimated</a></p>
+</div>
 </section>
 <section id="layers" class="slide level2">
 <h2>Multilayer and Bipartite Networks Change the Unit</h2>
@@ -1633,18 +1739,10 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="after-fit" class="slide level2">
-<h2>After the Models Run, Write the Political Paragraph</h2>
-<ol type="1">
-<li>State the political question and estimand.</li>
-<li>Explain why the model represents the dependence that matters.</li>
-<li>Give the substantive result, not a coefficient tour.</li>
-<li>Name the diagnostic, limitation, and result that would change the choice.</li>
-</ol>
+<h2>After the Models Run, Write the Substantive Paragraph</h2>
+<p>Include the question, model choice, substantive result, diagnostic, limit, and the finding that would change the model choice.</p>
 <div class="say-it">
-<p>“The apparent closure in rebel cooperation weakens once group-level sociality is represented. That shifts the interpretation from a generic triangle mechanism toward persistent differences among groups.”</p>
-</div>
-<div class="bottom-line">
-<p>Model choice is an argument with a flip condition, not a ranking. Advanced methods should sharpen the political claim and its limits.</p>
+<p>“ANF and ASIM cooperate with far more organizations than the rest. Once every organization receives its own sociality term, the ERGM closure estimate falls from 1.38 to 0.18 and becomes imprecise. Persistent differences in organizations’ overall activity explain this network more clearly than a general tendency to cooperate with partners’ partners.”</p>
 </div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-after-fit" class="walkthrough-link" target="_blank">Read the full interpretation guide</a></p>

@@ -1124,8 +1124,27 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="ergm-objective" class="slide level2">
+<h2>What MCMLE Is Maximizing</h2>
+<p><span class="math display">\[
+\ell(\theta;y_{\mathrm{obs}})
+=\theta^{\mathsf T}g(y_{\mathrm{obs}})
+-\log\kappa(\theta)
+\]</span></p>
+<p>The first term rewards parameters that favor the observed statistics. The normalizing term compares that fit with every graph the model permits.</p>
+<p><span class="math display">\[
+\nabla\ell(\theta)
+=g(y_{\mathrm{obs}})-E_{\theta}[g(Y)]
+\]</span></p>
+<div class="bottom-line">
+<p>Matching simulated and observed statistics is the maximum-likelihood score condition. MCMC makes that comparison computationally possible.</p>
+</div>
+<div class="slide-link">
+<p><a href="day11_ergm.html#sec-estimation-roadmap" class="walkthrough-link" target="_blank">Connect the Likelihood to the Update Loop</a></p>
+</div>
+</section>
 <section id="social-science-payoff" class="slide level2">
-<h2>Why Social Scientists Care</h2>
+<h2>Why the Extra Machinery Is Worth It</h2>
 <p>Social relationships can be self-organizing:</p>
 <ul>
 <li>Alliances are shaped by existing partners and threats.</li>
@@ -1134,7 +1153,7 @@ display:block!important;
 <li>Segregation can emerge from many local relational choices.</li>
 </ul>
 <div class="say-it">
-<p>Dependence may be part of the social process, not merely a nuisance in the standard errors.</p>
+<p>Dependence may be part of the process we want to understand, not merely a nuisance in the standard errors.</p>
 </div>
 <p>ERGMs let us put those competing processes into one declared graph model and ask which stories remain compatible with the data.</p>
 <div class="slide-link">
@@ -1166,7 +1185,7 @@ display:block!important;
 <tr class="header">
 <th>Model</th>
 <th>Main question</th>
-<th>Human result</th>
+<th>What we should be able to say</th>
 </tr>
 </thead>
 <tbody>
@@ -1212,8 +1231,8 @@ display:block!important;
 <section id="route" class="slide level2">
 <h2>Where We Are Going</h2>
 <ol type="1">
-<li>Decide what political mechanism a structural term can actually represent.</li>
-<li>Put fitted results into units a human can understand.</li>
+<li>Decide what process a structural term can actually represent.</li>
+<li>Put fitted results into units tied to the observed action.</li>
 <li>Separate data, estimation, degeneracy, and fit problems.</li>
 <li>Define the outcome and risk set in a network panel.</li>
 <li>Distinguish stability, formation, persistence, and sequence.</li>
@@ -1237,7 +1256,7 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="political-question" class="slide level2">
-<h2>A Triangle Is Not Yet a Political Mechanism</h2>
+<h2>A Triangle Is Not Yet a Mechanism</h2>
 <p>Triangles in an alliance, cosponsorship, or rebel-cooperation network could reflect:</p>
 <ul>
 <li>Partners introducing partners</li>
@@ -1252,7 +1271,7 @@ display:block!important;
 <p><a href="day11_ergm.html#sec-political-question" class="walkthrough-link" target="_blank">Work through the specification dispute</a></p>
 </div>
 <aside class="notes">
-<p>The statistic is exact, but its political interpretation is not automatic. A positive closure parameter is evidence about this specification, not a behavioral label attached to every triangle.</p>
+<p>The statistic is exact, but its substantive interpretation is not automatic. A positive closure parameter is evidence about this specification, not a behavioral label attached to every triangle.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1266,7 +1285,7 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="nulls" class="slide level2">
-<h2>Two Nulls Tell Two Political Stories</h2>
+<h2>Two Nulls Tell Two Different Stories</h2>
 <div class="comparison-row">
 <div class="comparison-card">
 <p><span class="card-title">Density Baseline</span></p>
@@ -1278,13 +1297,13 @@ display:block!important;
 </div>
 </div>
 <div class="bottom-line">
-<p>The same observed triangle count can be surprising under one null and ordinary under the other.</p>
+<p>In the Mesa friendship network, observed transitivity is about 27 times the Erdős-Rényi expectation and about 12 times the degree-preserving expectation. Preserving each student’s number of friends explains part of the clustering, but not all of it.</p>
 </div>
 <div class="slide-link">
 <p><a href="day11_ergm.html#sec-null-models" class="walkthrough-link" target="_blank">Compare the two null models</a></p>
 </div>
 <aside class="notes">
-<p>This is the first place I want students to argue. The null is not a neutral technical choice. It decides which rival political process the comparison preserves.</p>
+<p>This is the first place I want students to argue. The null is not a neutral technical choice. It decides which rival process the comparison preserves.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1297,17 +1316,17 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="human-scale" class="slide level2">
-<h2>Put Effects on a Human Scale</h2>
+<section id="friendship-scale" class="slide level2">
+<h2>Put Effects on the Friendship Scale</h2>
 <p>For a proposed tie toggle, move through four steps:</p>
 <ol type="1">
 <li>Calculate the change statistics.</li>
 <li>Construct the conditional log-odds.</li>
 <li>Convert them to a probability.</li>
-<li>Average or contrast over configurations that matter politically.</li>
+<li>Average or contrast over configurations that matter for the application.</li>
 </ol>
 <div class="say-it">
-<p>An odds ratio is sometimes useful. A probability difference for recognizable actors and network settings is usually easier to understand.</p>
+<p>Fewer than 1 in 100 possible student pairs are friends in Mesa. Same-grade status raises the fitted friendship probability by about 2.8 percentage points, roughly three times the 0.97 percent baseline density.</p>
 </div>
 <div class="slide-link">
 <p><a href="day11_ergm.html#b2" class="walkthrough-link" target="_blank">Translate the fitted model</a></p>
@@ -1384,7 +1403,7 @@ display:block!important;
 </tr>
 <tr class="even">
 <td>Substantive fit</td>
-<td>Do simulated graphs reproduce features the political claim needs?</td>
+<td>Do simulated graphs reproduce features the argument needs?</td>
 </tr>
 </tbody>
 </table>
@@ -1442,7 +1461,7 @@ display:block!important;
 <li>The particular structure needed for the substantive claim</li>
 </ul>
 <div class="room-prompt compact-prompt">
-<p>What observed feature would make us withdraw the political conclusion if the fitted model consistently missed it?</p>
+<p>What observed feature would make us withdraw the conclusion if the fitted model consistently missed it?</p>
 </div>
 <div class="slide-link">
 <p><a href="day11_ergm.html#c2" class="walkthrough-link" target="_blank">Inspect goodness of fit and simulation</a></p>
@@ -1510,7 +1529,7 @@ display:block!important;
 <p><a href="day11_ergm.html#c4" class="walkthrough-link" target="_blank">Begin the temporal model</a></p>
 </div>
 <aside class="notes">
-<p>This is the transition into the main new material. I will use alliances first because formation, survival, and eligibility are immediately political rather than abstract.</p>
+<p>This is the transition into the main new material. I will briefly use alliances to clarify formation, survival, and eligibility, then return to the fitted friendship panel.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1560,7 +1579,7 @@ display:block!important;
 <li>Is each dyad an observed zero, missing, or structurally impossible?</li>
 <li>Are actor labels and tie direction aligned across waves?</li>
 <li>Which version of a time-varying covariate predicts each transition?</li>
-<li>Are the observation intervals politically comparable?</li>
+<li>Are the observation intervals substantively comparable?</li>
 <li>How many transitions do the waves actually provide?</li>
 </ol>
 <div class="slide-link">
@@ -1692,7 +1711,7 @@ display:block!important;
 <p><span class="math display">\[T\text{ waves}=T-1\text{ transitions}\]</span></p>
 <p>The first wave conditions the first transition. It is not another transition outcome.</p>
 <div class="big-question">
-<p>Can resampling two transitions tell us how a political process varies over time?</p>
+<p>Can resampling two transitions tell us how a change process varies over time?</p>
 </div>
 <div class="bottom-line">
 <p>This dataset is useful for learning the workflow. It is not a foundation for publication-grade temporal uncertainty.</p>
@@ -1763,6 +1782,29 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
+<section id="btergm-objective" class="slide level2">
+<h2>What <code>btergm()</code> Fits in This Example</h2>
+<p><span class="math display">\[
+\widetilde\ell(\theta)
+=\sum_{t=2}^{T}\sum_{i\ne j}
+\left[
+y_{ijt}\log\widetilde p_{ijt}
++(1-y_{ijt})\log(1-\widetilde p_{ijt})
+\right]
+\]</span></p>
+<ul>
+<li>The point estimate maximizes a pooled conditional tie pseudolikelihood.</li>
+<li>Lagged terms carry information from the preceding network into each transition.</li>
+<li>Current-wave dependence terms condition on the other current dyads.</li>
+<li>The bootstrap resamples observed transitions and refits the same objective.</li>
+</ul>
+<div class="mini-caution">
+<p>This is not the full transition likelihood. With only two transitions, the bootstrap cannot create the missing temporal replication.</p>
+</div>
+<div class="slide-link">
+<p><a href="day11_ergm.html#sec-tergm-estimation" class="walkthrough-link" target="_blank">See the Pseudolikelihood and Bootstrap Target</a></p>
+</div>
+</section>
 <section id="stergm" class="slide level2">
 <h2>Formation and Persistence Need Different Risk Sets</h2>
 <div class="comparison-row">
@@ -1784,7 +1826,7 @@ display:block!important;
 <p><a href="day11_ergm.html#sec-stergm" class="walkthrough-link" target="_blank">See the separable model</a></p>
 </div>
 <aside class="notes">
-<p>Statnet uses <code>Form()</code> and <code>Persist()</code>. Positive <code>Persist()</code> means less dissolution, while <code>Diss()</code> reverses the statistic and sign interpretation. I will emphasize the risk sets before the syntax because that is where the political question lives.</p>
+<p>Statnet uses <code>Form()</code> and <code>Persist()</code>. Positive <code>Persist()</code> means less dissolution, while <code>Diss()</code> reverses the statistic and sign interpretation. I will emphasize the risk sets before the syntax because that is where the substantive question lives.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1844,7 +1886,7 @@ display:block!important;
 <p><a href="day11_ergm.html#sec-tergm-target" class="walkthrough-link" target="_blank">Return to the temporal estimand</a></p>
 </div>
 <aside class="notes">
-<p>Lagging a variable can clarify temporal order without solving confounding or simultaneity. I want the final political sentence to match the design we actually have.</p>
+<p>Lagging a variable can clarify temporal order without solving confounding or simultaneity. I want the final sentence to match the design we actually have.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1893,19 +1935,19 @@ display:block!important;
 <h2>After the Model Runs</h2>
 <ol type="1">
 <li>Name the outcome, transition, and eligible dyads.</li>
-<li>Translate terms into before-and-after political configurations.</li>
+<li>Translate terms into before-and-after configurations involving the observed actors and ties.</li>
 <li>Report probabilities or first differences for recognizable cases.</li>
 <li>Simulate the structures and changes the argument needs.</li>
 <li>State what the model does not identify.</li>
 </ol>
 <div class="say-it">
-<p>“Among eligible non-allied dyads, a common threat is associated with a higher probability of alliance formation in the next interval. The fitted model reproduces observed formation rates and degree patterns, but the association is not by itself causal.”</p>
+<p>“Among these 50 adolescents, pairs that were in the same tie state at the preceding wave receive greater conditional weight to remain in that state at the next wave. The memory estimate is large, but the panel supplies only two transitions, so this is a worked demonstration rather than a stable population estimate.”</p>
 </div>
 <div class="slide-link">
 <p><a href="day11_ergm.html#sec-after-fit" class="walkthrough-link" target="_blank">Use the interpretation guide</a></p>
 </div>
 <aside class="notes">
-<p>This is the paragraph I want after the coefficient table. The point is to recover a political result while keeping the estimand and inferential limits visible.</p>
+<p>This is the paragraph I want after the coefficient table. It names the adolescents, the friendship state, the transition, the fitted pattern, and the limit created by only two transitions.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1921,14 +1963,14 @@ display:block!important;
 <section id="close" class="slide level2">
 <h2>What to Carry Into Day 12</h2>
 <ol type="1">
-<li>A structural statistic has an exact mathematical definition but not an automatic political mechanism.</li>
-<li>Human-scale comparisons are more useful than an isolated log-odds coefficient.</li>
+<li>A structural statistic has an exact mathematical definition but not an automatic substantive mechanism.</li>
+<li>Comparisons tied to actors and actions are more useful than an isolated log-odds coefficient.</li>
 <li>Data support, estimation, degeneracy, and substantive fit are different problems.</li>
 <li>Temporal models require an explicit risk set, lag structure, and transition estimand.</li>
 <li>Formation, persistence, and actor-oriented change are related but distinct questions.</li>
 </ol>
 <div class="final-claim">
-<p>The model becomes useful when the political story, the risk set, the statistic, and the interpretation all describe the same process.</p>
+<p>The model becomes useful when the substantive story, the risk set, the statistic, and the interpretation all describe the same process.</p>
 </div>
 <aside class="notes">
 <p>I will close by asking students to name one sentence they would now rewrite in a network paper. That makes the takeaway about claims, not software.</p>

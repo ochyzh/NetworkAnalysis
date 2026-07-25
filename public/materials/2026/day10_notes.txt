@@ -1,9 +1,9 @@
 Purpose of the Day
 ==================
 
-Day 9 separated broad actor tendencies from discrete relational roles. Day 10 asks what we gain when recurring relationship patterns are represented with continuous geometry. The class begins with a latent distance model because the map is intuitive, puts that map under pressure with a complementary-role network, builds the factor idea through a movie preference matrix and its singular value decomposition, and then applies a dynamic rank-two AME to changing ICEWS state-pair relationships.
+Day 9 separated broad actor tendencies from discrete relational roles. Day 10 asks what we gain when recurring relationship patterns are represented with continuous geometry. The class begins with a latent distance model because the map is intuitive, puts that map under pressure with a complementary-role network, derives the factor model from an ordinary regression interaction, makes the factor idea concrete through a movie preference matrix and its singular value decomposition, and then applies a dynamic rank-two AME to changing ICEWS state-pair relationships.
 
-The central distinction is between broad activity and pair-specific fit. An additive effect can tell us that a state appears often across many high-volume relationships. A multiplicative term can tell us that one particular ordered pair fits together much better or worse than broad activity and measured characteristics would suggest.
+The central distinction is between broad partner counts and exact ordered pairs. An additive effect can tell us that a state appears in high-volume relationships with many partners. A multiplicative term can tell us that one particular ordered pair is much more or less likely than those broad patterns and the measured characteristics would suggest.
 
 The final application uses 13 annual directed networks with 462 observed relationship changes. Rank two improves complete-pair prediction and reproduces much more year-to-year movement than the dynamic SRM. It also misses reciprocity in several years and four of twelve transition intervals. The class therefore gets a model that is substantively useful without pretending that a good application must fit every feature perfectly.
 
@@ -23,7 +23,7 @@ Opening: Where Geometry Enters
 
 Walkthrough anchor: `#sec-where`
 
-Suggested opening: “Day 9 gave us source-side and target-side effects in the SRM, then discrete roles in blockmodels. We stopped before adding multiplicative effects. Day 10 builds that missing piece and asks when a continuous relationship profile tells us something that broad actor activity and a small set of blocks cannot.”
+Suggested opening: “Day 9 showed that some organizations work with many partners and that cooperation can center on a small tactical core. Today we ask what those summaries still miss. When a state appears in many high-volume relationships, do all of its relationships move together, or can one directed state pair have its own history?”
 
 Put the general linear predictor on the screen:
 
@@ -46,7 +46,7 @@ What the Missing Pattern Could Represent
 
 Walkthrough anchor: `#sec-political-question`
 
-Use the two applications to keep the discussion concrete. Some Syrian armed organizations repeatedly took part in recorded joint operations together. In the ICEWS panel, some ordered state pairs repeatedly crossed a high event-volume threshold and those patterns changed across years. In both settings, observed variables and broad actor activity can leave an organized pair pattern behind.
+Use the two applications to keep the discussion concrete. For the Syrian organizations, ask whether tactical cooperation was scattered or concentrated among organizations with overlapping partner lists. For ICEWS, ask whether states became more involved across many high-volume relationships or whether particular directed relationships changed in their own ways.
 
 Keep four possible uses separate:
 
@@ -68,41 +68,45 @@ The Applied Model Compass
 
 Walkthrough anchor: `#sec-model-compass`
 
-For the additive SRM, say: “This model asks whether broad actor tendencies and reciprocity are enough. It has no continuous term for which particular partners line up.”
+For the additive SRM, say: “This model asks whether some actors appear across many relationships, regardless of partner. It cannot give one particular bilateral relationship its own history.”
 
-For the latent distance model, say: “This model asks whether unmeasured proximity summarizes who connects. Nearby actors receive higher fitted tie probabilities. That is a natural language for latent homophily.”
+For the latent distance model, say: “This model asks whether cooperation is concentrated among organizations with overlapping partner lists. Organizations with similar overall cooperation patterns are placed near one another.”
 
 For the factor or eigenmodel, say: “This model asks whether similar roles and complementary roles both matter. It can represent actors that connect to the same partners even when they do not connect to one another.”
 
-For AME, say: “This model estimates measured associations, additive actor effects, and a multiplicative relationship surface together. In a directed network, it can also represent reciprocal residual dependence.”
+For AME, say: “This model separates broad state involvement from the history of a particular directed pair, while also estimating the measured associations and connection between the two directions.”
 
 Likely question: “Is the most flexible model automatically the best one?”
 
 Answer: “No. More flexibility can improve training fit while making the result unstable or worse on held-out data. We choose complexity using the relationship question, computation, fit checks, and a clearly defined validation target.”
 
-Transition: “The code hides a lot of iteration, so before drawing a map we should make the estimation loop visible.”
+Transition: “Let’s build the distance model before discussing its estimator.”
 
-How Latent Models Are Estimated
-===============================
+How the Distance Model Is Estimated
+===================================
 
 Walkthrough anchor: `#sec-estimation-roadmap`
 
-Suggested language: “Both model families run a generative story backward. We specify how positions or factor profiles would produce relationship probabilities, then use the observed network to learn which coefficients and latent quantities make those relationships plausible.”
+Use this section only after the distance claim, equation, and likelihood have been explained.
 
-For the latent distance model, walk through the sequence: choose the tie model and dimension, initialize coefficients and positions, update coefficients conditional on positions, update positions conditional on coefficients, align equivalent orientations, and inspect sampling plus reproduced network features.
+Suggested language: “We have already said what the model assumes: nearby pairs receive higher tie probabilities. Estimation now runs that story backward. The network goes in, and the model looks for coefficients and positions that make all of the ties and non-ties plausible together.”
 
-For the factor model, walk through the sequence: choose additive and multiplicative pieces, choose candidate rank, initialize coefficients and factor profiles, alternate conditional updates, interpret the fitted surface before raw factors, and compare ranks and seeds.
+Walk through the sequence: choose the tie model and dimension, initialize coefficients and positions, update coefficients conditional on positions, update positions conditional on coefficients, align equivalent orientations, and inspect sampling plus reproduced network features.
 
-Emphasize that dimension and rank are restrictions chosen before estimation. A two-dimensional picture is readable, but readability does not make two the true dimension.
+Emphasize that dimension is a restriction chosen before estimation. A two-dimensional picture is readable, but readability does not make two the true dimension.
 
-Transition: “MCMC is one way to carry uncertainty through that joint estimation. Let’s make its basic mechanics less mysterious.”
+State the target before the update sequence. The likelihood rewards observed ties with high fitted probabilities and observed non-ties with low fitted probabilities. The posterior combines that likelihood with priors on the coefficients, positions, and position variance.
 
-Baby MCMC for Latent Models
-===========================
+Make the distinction explicit: the posterior says what is being learned, while MCMC says how the computer explores it. The factor and AME model get their own estimation explanation after their substantive and regression intuition.
 
-Walkthrough anchor: `#sec-baby-mcmc`
+Transition: “MCMC is one way to carry uncertainty through that joint estimation. Let’s make its mechanics concrete.”
 
-Use the seating-chart analogy. We observe who interacts but not the arrangement, broad actor tendencies, or coefficient values. The sampler begins with a provisional account of all of them, then updates one part while holding the others at their current values.
+How MCMC Represents Uncertainty in the Distance Model
+=====================================================
+
+Walkthrough anchor: `#sec-latent-mcmc`
+
+Use the seating-chart analogy. We observe who interacts but not the arrangement or coefficient values. The sampler begins with a provisional account of both, then updates one part while holding the other at its current value. Each complete state is weighted by both its fit to the network and the prior structure.
 
 Suggested language: “One completed round gives us one plausible state of the model. A sequence of those states is a chain. The chain is not collecting new networks. It is revisiting plausible explanations of the same observed network.”
 
@@ -177,6 +181,8 @@ Set up the case before running code. The data come from Gade et al. (2019) and c
 
 State the measurement limits immediately. This is a binary whole-period teaching reanalysis, not a replication of the article’s square-root count model. A tie records tactical cooperation, not ideological agreement, friendship, or a permanent coalition. When an operation involved more than two organizations, the projection records every pair, so one operation can mechanically create several ties and a triangle.
 
+State the question before the fit: “Was tactical cooperation scattered across unrelated pairs, or concentrated among organizations with overlapping sets of partners?” Also state the limited purpose: this map is here to make distance-model reasoning visible. It should not be sold as a new explanation of the Syrian conflict.
+
 Run `load-data`. The network has 31 organizations, 86 cooperative pairs, density 0.185, and weak transitivity 0.357.
 
 Suggested language: “The weak transitivity value is a descriptive feature of this binary network. It is not evidence that one organization’s partnership caused another partnership.”
@@ -187,7 +193,7 @@ Display `mcmc-2d`. Read the traces as computational checks. The plot focuses on 
 
 Display `plot-2d`. Use a disciplined reading routine:
 
-1. Find one close pair and describe it as receiving a higher fitted cooperation probability under the model.
+1. Point out that Al-Nusrah Front and Ahrar al-Sham Islamic Movement sit in the same tightly connected part of the map. They recorded an operation with one another, and each also recorded operations with 18 of the same other organizations.
 2. Find one distant pair and describe it as receiving a lower fitted probability.
 3. Refuse to name the horizontal or vertical axis.
 4. Check outside histories before assigning a substantive label to proximity.
@@ -197,6 +203,8 @@ Display `summary-2d`. The posterior mean intercept is about 1.00. Explain that t
 Run `cameo-transitivity`. An independent-tie baseline at the observed density is about 0.185. Simulated networks from the distance fit average 0.287 on weak transitivity, compared with 0.357 in the observed network; the simulation interval is about 0.174 to 0.390.
 
 Suggested language: “The fitted geometry moves the replicated networks toward the clustering we observe, and the observed value lies inside the simulated range. That means the model can reproduce much of this summary. It does not show that closure caused the joint operations.”
+
+Then say: “This mostly reinforces the tactical-core result from Day 9. It does not give us a substantively new explanation, so we use it to understand the distance model and move on.”
 
 Likely question: “If two organizations appear close, were they allies?”
 
@@ -295,7 +303,64 @@ Likely question: “Does stochastic equivalence mean the actors are substantivel
 
 Answer: “It means their relationship profiles are similar under the model. Whether they share an ideology, institution, strategy, or something else requires outside evidence.”
 
-Transition: “The easiest place to see a continuous row-column profile is not a network at all. It is a small movie preference matrix.”
+Transition: “Before we use a matrix decomposition, let’s build the factor model from the regression language we already know.”
+
+Building the Factor Model From a Regression
+===========================================
+
+Walkthrough anchor: `#sec-regression-bridge`
+
+Deck slides: Start With the Regression We Already Know; The SRM Adds Broad Source and Target Differences; A Factor Is an Interaction With Unknown Inputs; One Source Can Fit Two Targets Differently; Rank Is the Number of Latent Interactions
+
+Begin with the ordinary dyadic regression:
+
+g(E[Y_ij]) = eta_ij = beta_0 + x_ij' beta
+
+Suggested language: “Nothing about the outcome or link function changes when we move to a factor model. We still have a relationship outcome, a linear predictor, an intercept, and measured covariates.”
+
+Add the source and target terms from Day 9:
+
+eta_ij = beta_0 + x_ij' beta + a_i + b_j
+
+Say exactly what the additive terms can and cannot do. The source effect moves every relationship beginning with actor i. The target effect moves every relationship aimed at actor j. They can explain broadly high rows and columns, but not why one particular source-target combination is high while another combination involving the same source is low.
+
+Now introduce a measured interaction. Let c_i be a measured source characteristic such as military capability and r_j a measured target characteristic such as vulnerability. State that their separate main effects are already included in x_ij:
+
+eta_ij = beta_0 + x_ij' beta + a_i + b_j + delta c_i r_j
+
+Suggested language: “This is ordinary regression. We multiply two observed characteristics, put the product in the design matrix, and estimate its coefficient. The same source characteristic can matter differently across targets because it is multiplied by the target characteristic.”
+
+Then replace the observed inputs with latent inputs:
+
+eta_ij = beta_0 + x_ij' beta + a_i + b_j + delta u_i v_j
+
+Suggested language: “The multiplication is unchanged. What changes is that u and v are not columns in our dataset. The model has to learn them from repeated patterns across the whole relationship matrix.”
+
+Work through the numerical example slowly. With u_A = 2, u_B = -1, v_C = 1.5, v_D = -2, and delta = 1, the contributions are A to C = 3, A to D = -4, B to C = -1.5, and B to D = 2.
+
+Ask: “Does A have a generally positive factor effect?” The answer is no. A’s contribution is positive with C and negative with D. The factor term describes pair-specific fit, not general source activity.
+
+Move from rank one to rank R:
+
+eta_ij = beta_0 + x_ij' beta + a_i + b_j + sum_r delta_r u_ir v_jr
+
+Suggested language: “Rank is simply the number of latent interactions. Rank one gives us one hidden source-target pairing. Rank two gives us two. The model adds their contributions to obtain one score for the relationship.”
+
+Explain the directed parameterization. We can write the weights as a diagonal D in u_i' D v_j, or absorb them into the scale of U or V and write u_i' v_j. These are equivalent directed factorizations. In the symmetric eigenmodel, retaining the diagonal weights makes their positive and negative signs useful for distinguishing assortative and disassortative components.
+
+Connect this to estimation. The probability model must learn beta, a, b, U, V, reciprocity, and variance quantities jointly. In a probit AME fit, the sampler first represents each observed zero or one with a latent continuous score on the appropriate side of zero. Conditional on those scores, it updates the regression and additive terms, then U given V, then V given U, then the variance and reciprocity quantities.
+
+If V were known, estimating U would look like a regression problem. If U were known, estimating V would look like a regression problem. ALS alternates between those two jobs and updates the other parameters. MCMC samples the unknown blocks conditional on their current values. The target for the MCMC fit is the joint posterior, not the squared reconstruction error from one SVD.
+
+Likely question: “Is this just an interaction model?”
+
+Answer: “Algebraically, yes, it is a small set of multiplicative interactions. Statistically, it is harder because both sides of every interaction are latent and estimated from the same relationship matrix.”
+
+Likely question: “Can I call the first factor ideology?”
+
+Answer: “Not from the network alone. A latent direction can mix several processes, and its orientation is not uniquely identified. Give it a substantive name only after comparing it with outside information.”
+
+Transition: “Now the movie matrix will show how repeated row-column patterns can reveal those unknown profiles.”
 
 Movie Preferences and the SVD
 =============================
@@ -430,8 +495,8 @@ Answer: “No. Rank two means two continuous profile directions. It does not imp
 
 Transition: “We now put the factor together with the additive terms and let all three relationship pieces move across the ICEWS panel.”
 
-From Additive Effects to Changing Partner Profiles
-==================================================
+From Broad State Involvement to Particular Directed Relationships
+==================================================================
 
 Walkthrough anchor: `#sec-fits`
 
@@ -457,13 +522,13 @@ Walkthrough anchor: #sec-fits
 
 Deck slide: Same Data, A More Specific Question
 
-Set up the bridge from Day 9 before showing the new equation. Say: “Yesterday we let every state have a changing source-side score and a changing target-side score. Those scores told us whether a state appeared broadly often across many relationships. They still could not tell us whether the particular partners associated with a state changed. That is the job of the multiplicative term.”
+Set up the bridge from Day 9 before showing the new equation. Say: “Yesterday we tracked whether ICEWS coded events from or toward each state across many partners. Those summaries could not tell us which bilateral relationships were driving the change. Today we let each directed state pair have its own path after accounting for those broad state patterns.”
 
 Ask: “If I know that Iran and Syria each appear in many high-volume relationships, do I yet know whether Iran toward Syria crosses the threshold?”
 
 Expected answer: No. Broad involvement is not the same thing as the fit of one ordered pair.
 
-State the question in one clean sentence: “After broad state involvement enters, do the particular source-target combinations that cross a high ICEWS event-volume threshold change across years?”
+State the question in one clean sentence: “After accounting for states that appear with many partners, does the chance of a high-volume relationship change for particular ordered pairs?”
 
 Keep the outcome wording precise. A one means that ICEWS contains more than 20 coded material-conflict events from one state toward another in a year. It does not mean that the source initiated a war, that the target suffered more harm, or that the relationship was more severe. It is a high coded event-volume relationship.
 
@@ -481,9 +546,9 @@ Y*ijt = alpha_t + x'ijt beta + a_it + b_jt + u'it v_jt + e_ijt
 
 Yijt = 1(Y*ijt > 0)
 
-Read from left to right. Alpha_t is the baseline for the whole network in year t. The x-beta term contains Polity gap and same region. The a_it term is state i’s broad source-side adjustment in year t. The b_jt term is state j’s broad target-side adjustment. The u-v inner product is the source-target compatibility adjustment for this exact ordered pair in this exact year.
+Read from left to right. Alpha_t is the baseline for the whole network in year t. The x-beta term contains Polity gap and same region. The a_it term adjusts for source states that appear with many partners in year t. The b_jt term does the same for target states. The u-v inner product adjusts this exact ordered pair beyond those broad partner counts.
 
-Suggested language: “The additive paths tell us whether a state appears in many relationships. The multiplicative surface tells us which particular relationships are more or less likely than that broad activity would suggest.”
+Suggested language: “The broad paths tell us whether ICEWS records events from or toward a state across many partners. The pair-specific part tells us whether one directed state relationship has a different history than those broad patterns would suggest.”
 
 Likely question: “Are u and v positions?”
 
@@ -569,25 +634,29 @@ HOW DYNAMIC ALS WORKS
 
 Walkthrough anchor: #sec-dynamic-als
 
-Deck slide: Dynamic ALS Updates One Piece at a Time
+Deck slides: What Dynamic ALS Is Trying to Do and What Dynamic ALS Minimizes
 
-Walk students through six steps.
+Begin with the two jobs. The fit should reconstruct which state-pair-years cross the event threshold, and it should keep neighboring years connected unless the observations support a sustained movement.
+
+Show the simplified objective. The first term is weighted squared error between a binary-response working score and the fitted predictor. The other terms penalize large year-to-year changes in the actor paths, factor paths, and intercept. The lambda values say how expensive those jumps are.
+
+Walk students through the update sequence.
 
 First, begin with provisional fitted probabilities for every ordered pair-year.
 
-Second, update the yearly baseline and the two measured coefficients while holding the actor and factor paths fixed.
+Second, turn those probabilities into a working response and weights.
 
-Third, update the broad source and target paths.
+Third, update the yearly baseline and the two measured coefficients while holding the actor and factor paths fixed.
 
-Fourth, update the changing source and target factor profiles, which changes the pair-specific surface.
+Fourth, update the broad source and target paths.
 
-Fifth, apply the smoothing penalties so adjacent years borrow information.
+Fifth, update the changing source and target factor profiles, using low-rank matrix updates to revise the pair-specific surface.
 
-Sixth, repeat until another pass barely changes the fitted surface.
+Sixth, recalculate the probabilities and repeat until the objective and fitted surface barely change.
 
 Suggested language: “It is a coordinated back-and-forth. Each step solves an easier problem while treating the other pieces as temporarily known. The cycle continues until the pieces agree.”
 
-Distinguish ALS from MCMC. ALS returns one penalized point estimate. MCMC would return draws from a posterior distribution. The parametric bootstrap later repeatedly simulates and refits the ALS model to quantify one form of model-based uncertainty.
+Distinguish ALS from MCMC. For a binary model, ALS solves a sequence of weighted least-squares approximations and returns one penalized point estimate. It does not directly maximize the exact Bernoulli likelihood in one step. With rank greater than zero, the problem is nonconvex, so multiple starts matter. MCMC would return draws from a posterior distribution. The parametric bootstrap later repeatedly simulates and refits the ALS model to quantify one form of model-based uncertainty.
 
 Likely question: “Does fast mean approximate or bad?”
 
@@ -631,7 +700,7 @@ Then read the target-side plot. A higher line means the model needs a larger bro
 
 Do not say that a higher source effect means a state started more conflicts. Do not say that a higher target effect means a state was a greater victim. The outcome is high coded event volume, and the additive scores pool across all partners.
 
-Suggested language: “These paths tell us where the model needs a broad state-level correction. They do not identify which partner is responsible. That is exactly why we still need the multiplicative surface.”
+Suggested language: “These paths tell us whether events are coded from or toward a state across many different partners. They do not identify which bilateral relationship accounts for the pattern. That is the next question.”
 
 Likely question: “Where are the uncertainty intervals?”
 
@@ -645,7 +714,7 @@ Walkthrough anchor: #sec-dynamic-uv
 
 Chunk: icews-dynamic-uv-plot
 
-Deck slide: Then Look at Changing Partner Profiles
+Deck slide: Then Ask Which Directed Relationships Changed
 
 The code first calls align_directed_uv() and then uv_plot(). The helper stacks the source and target profiles, applies one common rotation, and verifies that every fitted source-target inner product remains unchanged. This keeps arbitrary changes in pose from masquerading as movement without changing the fitted relationship surface.
 
@@ -689,13 +758,13 @@ Deck slide: Direction and Timing Matter
 
 Explain the symbols before interpreting the lines. The line is the estimated probability of crossing the threshold. A filled point means the observed relationship crossed the threshold in that year. An open point means it did not.
 
-Iran toward Syria remains below the threshold through 2011 and crosses it in 2012, 2013, and 2014. The fitted probability rises sharply in those final years.
+Iran toward Syria remains below the threshold through 2011 and crosses it in 2012, 2013, and 2014. Its fitted probability rises from about 2 percent in 2002 to 92 percent in 2012. The 2012 bootstrap interval is roughly 57 to 98 percent.
 
-Syria toward Iran crosses the threshold in 2011 and stays above it through 2014. The model gives the two directions separate paths because the observed directed relationships differ.
+Syria toward Iran crosses the threshold in 2011 and stays above it through 2014. Its fitted probability rises from about 1 percent in 2002 to 69 percent in 2011. The 2011 bootstrap interval is roughly 27 to 83 percent. The model gives the two directions separate paths because the observed directed relationships differ.
 
 The United States toward Syria crosses the threshold in nearly every year after 2002 and receives a consistently high fitted probability. Syria toward the United States is more irregular early and becomes consistently above the threshold later.
 
-Suggested language: “This is what the multiplicative surface buys us. It distinguishes exact ordered relationships that broad state involvement alone would treat too similarly.”
+Suggested language: “The rise involving Iran and Syria is not simply a uniform increase across every relationship involving either state. Iran toward Syria and Syria toward Iran follow different paths.”
 
 Keep the causal boundary visible. The paths can be connected to dated events in a research project, but the fitted movement does not identify why the coded event relationship changed.
 
@@ -733,13 +802,13 @@ Answer: “Two movies can contain similar still frames but arrange the changes d
 
 Transition: “We now have enough evidence to state the result without overselling it.”
 
-THE RESULT IN ORDINARY LANGUAGE
+WHAT THE CODED EVENT RECORDS SHOW
 
 Walkthrough anchor: #sec-dynamic-after
 
-Deck slide: What We Can Actually Say
+Deck slide: What the Iran-Syria Paths Show
 
-Suggested full interpretation: “Across these 18 states, a dynamic rank-two AME captures broad changes in who appears often on the source and target sides and also captures changes in which particular ordered pairs repeatedly cross the event-volume threshold. The partner profiles improve held-pair prediction and reproduce much more of the observed year-to-year movement than additive effects alone. Iran-Syria and Syria-Iran illustrate why direction and timing matter. The remaining reciprocity and transition misses, along with the measurement limits of coded event volume, mean that we should treat the paths as a structured description of changing relationships rather than a causal account of conflict.”
+Suggested full interpretation: “Across these 18 states, the model separates a general rise in how often a state appears in above-threshold relationships from a rise concentrated in one directed pair. The estimated chance for Iran toward Syria rises from about 2 percent in 2002 to 92 percent in 2012. Syria toward Iran rises on a different timetable and reaches about 69 percent in 2011. These changes occur around the escalation of the Syrian conflict, but the event records and model do not establish why they occurred or measure battlefield severity. The richer model reproduces much more of the observed year-to-year change than the broad state-level model, although it still misses reciprocity in several years and four annual transitions.”
 
 Give students the post-estimation checklist.
 
@@ -841,9 +910,9 @@ Give students a four-part reporting routine:
 3. State what the latent term could contain, including institutions, strategy, history, geography, measurement, and shared exposure.
 4. Report whether the model earned the interpretation through computation, simulation checks, a clearly defined held-out target, rank sensitivity, and visible failures.
 
-Use this Gade summary: “For 31 Syrian armed organizations from July 2012 through June 2015, a two-dimensional distance model compresses the whole-period pattern of recorded joint operations into fitted pair distances. Networks simulated from the fit reproduce much of the observed weak transitivity. The map does not show ideological agreement, identify a closure mechanism, or give substantive meaning to its displayed axes.”
+Use this Gade summary: “Al-Nusrah Front and Ahrar al-Sham Islamic Movement sit in the same tightly connected part of the fitted map. They recorded an operation with one another, and each also recorded operations with 18 of the same other organizations. Simulated networks from the model reproduce much of the observed clustering. This mostly reinforces the tactical-core result from Day 9. It does not explain why the organizations cooperated or give substantive meaning to the displayed axes.”
 
-Use this ICEWS summary: “Across 18 states from 2002 through 2014, a dynamic rank-two AME separates broad source-side and target-side movement from changing partner-specific fit. It improves hidden-pair prediction and covers eight of twelve observed transition counts, compared with two for the dynamic SRM. Iran-Syria and Syria-Iran illustrate why direction and timing matter. Reciprocity and four transition intervals remain weaknesses, and the event threshold measures coded volume rather than conflict initiation or severity.”
+Use this ICEWS summary: “Across 18 states from 2002 through 2014, the model separates a general rise in how often a state appears in above-threshold relationships from a rise concentrated in one directed pair. Iran toward Syria rises from about 2 percent in 2002 to 92 percent in 2012, while Syria toward Iran rises on a different timetable and reaches about 69 percent in 2011. The richer model reproduces much more of the observed year-to-year movement than the broad state-level model, but reciprocity and four transition intervals remain weaknesses. The event threshold measures coded volume rather than conflict initiation or severity.”
 
 Use this Nigeria summary: “Dorff, Gallop, and Minhas (2020) show that directed additive and multiplicative structure can separate broad initiators, broad targets, retaliation, and recurring opponent profiles. Their AME model improves out-of-sample battle prediction, but its post-2009 and civilian-targeting comparisons remain conditional associations.”
 
