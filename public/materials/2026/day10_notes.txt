@@ -185,6 +185,8 @@ State the question before the fit: “Was tactical cooperation scattered across 
 
 Run `load-data`. The network has 31 organizations, 86 cooperative pairs, density 0.185, and weak transitivity 0.357.
 
+Point out the consistent data handoff. `netify()` checks the labels, symmetry, diagonal, and missingness; `binarize()` records the change from operation counts to any operation; and `to_statnet()` supplies the `network` object that `latentnet` requires.
+
 Suggested language: “The weak transitivity value is a descriptive feature of this binary network. It is not evidence that one organization’s partnership caused another partnership.”
 
 Run or load `fit-2d`. Point out that `d = 2` makes a readable map but imposes a two-dimensional Euclidean representation. The intercept and positions are learned jointly. There are no measured covariates and no separate organization-activity effect in this deliberately simple fit.
