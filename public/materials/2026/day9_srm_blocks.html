@@ -2370,7 +2370,7 @@ vertical-align: -.125em;
 <p>After either route, verify the installation:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lame)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">&quot;lame&quot;</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;lame&quot;</span>) <span class="sc">&gt;=</span> <span class="st">&quot;1.3.4&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;lame&quot;</span>) <span class="sc">&gt;=</span> <span class="st">&quot;1.3.5&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </div>
 </div>
@@ -4904,8 +4904,8 @@ Y_{ijt}\mid g_{ijt},h_{ijt}\sim\operatorname{Bernoulli}(\theta_{g_{ijt},h_{ijt}}
 <span id="cb81-38"><a href="#cb81-38" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
 <span id="cb81-39"><a href="#cb81-39" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;_setup.R&quot;</span>)</span>
 <span id="cb81-40"><a href="#cb81-40" aria-hidden="true" tabindex="-1"></a><span class="fu">require_pkgs</span>(<span class="fu">c</span>(<span class="st">&quot;lame&quot;</span>, <span class="st">&quot;netify&quot;</span>, <span class="st">&quot;blockmodels&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;NetMix&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;reshape2&quot;</span>, <span class="st">&quot;patchwork&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;coda&quot;</span>, <span class="st">&quot;digest&quot;</span>, <span class="st">&quot;scales&quot;</span>))</span>
-<span id="cb81-41"><a href="#cb81-41" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (utils<span class="sc">::</span><span class="fu">packageVersion</span>(<span class="st">&quot;lame&quot;</span>) <span class="sc">&lt;</span> <span class="st">&quot;1.3.4&quot;</span>) {</span>
-<span id="cb81-42"><a href="#cb81-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">&quot;Day 9 requires lame 1.3.4 or later. Reinstall lame from GitHub, restart R, and render again.&quot;</span>, <span class="at">call. =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb81-41"><a href="#cb81-41" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (utils<span class="sc">::</span><span class="fu">packageVersion</span>(<span class="st">&quot;lame&quot;</span>) <span class="sc">&lt;</span> <span class="st">&quot;1.3.5&quot;</span>) {</span>
+<span id="cb81-42"><a href="#cb81-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">&quot;Day 9 requires lame 1.3.5 or later. Reinstall lame from GitHub, restart R, and render again.&quot;</span>, <span class="at">call. =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb81-43"><a href="#cb81-43" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb81-44"><a href="#cb81-44" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lame)</span>
 <span id="cb81-45"><a href="#cb81-45" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(netify)</span>
@@ -4988,7 +4988,7 @@ Y_{ijt}\mid g_{ijt},h_{ijt}\sim\operatorname{Bernoulli}(\theta_{g_{ijt},h_{ijt}}
 <span id="cb81-122"><a href="#cb81-122" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
 <span id="cb81-123"><a href="#cb81-123" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lame)</span>
 <span id="cb81-124"><a href="#cb81-124" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">&quot;lame&quot;</span>)</span>
-<span id="cb81-125"><a href="#cb81-125" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;lame&quot;</span>) <span class="sc">&gt;=</span> <span class="st">&quot;1.3.4&quot;</span>)</span>
+<span id="cb81-125"><a href="#cb81-125" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;lame&quot;</span>) <span class="sc">&gt;=</span> <span class="st">&quot;1.3.5&quot;</span>)</span>
 <span id="cb81-126"><a href="#cb81-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb81-127"><a href="#cb81-127" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb81-128"><a href="#cb81-128" aria-hidden="true" tabindex="-1"></a></span>
