@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Shahryar Minhas">
-<meta name="dcterms.date" content="2026-07-25">
+<meta name="dcterms.date" content="2026-07-27">
 
 <title>Day 13: Causal Inference on Networks</title>
 <style>
@@ -2404,7 +2404,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 25, 2026</p>
+      <p class="date">July 27, 2026</p>
     </div>
   </div>
   
@@ -2519,7 +2519,7 @@ window.Quarto = {
 <p>This day is the long version of the answer. The short version has three parts, and I will say it now so you can hear the whole arc before we build it:</p>
 <ol type="1">
 <li><strong>On a network, “causal” is harder than it is anywhere else</strong>, not just because of confounding, which you know about, but because of <em>interference</em>: one unit’s treatment can land in another unit’s outcome, and that breaks the assumption underneath almost every causal estimator you have ever used. We will make that failure vivid in code early in the document.</li>
-<li><strong>Methods exist for the randomized world, and a frontier exists for the observational world</strong>, and for most of the data this room works with, the honest sentence is <em>“we cannot defend the assumptions,”</em> which is a different and better sentence than <em>“no method exists.”</em></li>
+<li><strong>Methods exist for the randomized world, and a frontier exists for the observational world</strong>, and for many observational network datasets, the honest sentence is <em>“we cannot defend the assumptions,”</em> which is a different and better sentence than <em>“no method exists.”</em></li>
 <li><strong>There is one thing you can run today</strong>, on the regression you already have: dyadic cluster-robust standard errors. It does not make anything causal. It makes your <em>uncertainty</em> honest, and there is a published census showing exactly how dishonest the field’s uncertainty has been.</li>
 </ol>
 <section id="sec-political-question" class="level2" data-number="1.1">
@@ -4496,7 +4496,7 @@ B^{-1},
 <span id="cb48-102"><a href="#cb48-102" aria-hidden="true" tabindex="-1"></a>This day is the long version of the answer. The short version has three parts, and I will say it now so you can hear the whole arc before we build it:</span>
 <span id="cb48-103"><a href="#cb48-103" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-104"><a href="#cb48-104" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**On a network, &quot;causal&quot; is harder than it is anywhere else**, not just because of confounding, which you know about, but because of *interference*: one unit&#39;s treatment can land in another unit&#39;s outcome, and that breaks the assumption underneath almost every causal estimator you have ever used. We will make that failure vivid in code early in the document.</span>
-<span id="cb48-105"><a href="#cb48-105" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Methods exist for the randomized world, and a frontier exists for the observational world**, and for most of the data this room works with, the honest sentence is *&quot;we cannot defend the assumptions,&quot;* which is a different and better sentence than *&quot;no method exists.&quot;*</span>
+<span id="cb48-105"><a href="#cb48-105" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Methods exist for the randomized world, and a frontier exists for the observational world**, and for many observational network datasets, the honest sentence is *&quot;we cannot defend the assumptions,&quot;* which is a different and better sentence than *&quot;no method exists.&quot;*</span>
 <span id="cb48-106"><a href="#cb48-106" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**There is one thing you can run today**, on the regression you already have: dyadic cluster-robust standard errors. It does not make anything causal. It makes your *uncertainty* honest, and there is a published census showing exactly how dishonest the field&#39;s uncertainty has been.</span>
 <span id="cb48-107"><a href="#cb48-107" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-108"><a href="#cb48-108" aria-hidden="true" tabindex="-1"></a><span class="fu">## Questions That Create Interference {#sec-political-question}</span></span>

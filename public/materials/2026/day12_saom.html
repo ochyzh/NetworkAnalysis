@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Shahryar Minhas">
-<meta name="dcterms.date" content="2026-07-25">
+<meta name="dcterms.date" content="2026-07-27">
 
 <title>Day 12: Stochastic Actor-Oriented Models</title>
 <style>
@@ -2434,7 +2434,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 25, 2026</p>
+      <p class="date">July 27, 2026</p>
     </div>
   </div>
   
@@ -2712,7 +2712,7 @@ window.Quarto = {
 <section id="a2" class="level2">
 <h2 class="anchored" data-anchor-id="a2">A2 · Pre-flight: Do not fit before you check this</h2>
 <p>Olga’s habit all last week was <em>diagnose before you fit</em>. This is that habit, applied to SAOMs, and it is the single most common thing people get wrong. A lot of published SAOMs are fitted to data the model does not apply to, and nobody checked.</p>
-<p>The data: <strong>s50</strong>, the “teenage friends and lifestyle study”, 50 Scottish girls, three waves, with friendship, alcohol and smoking measured at each wave. It ships with RSiena, so there are no files to download and nothing to install. It is also, deliberately, not international relations data: half this room isn’t political science, and a classroom friendship network needs no translation.</p>
+<p>The data: <strong>s50</strong>, the “teenage friends and lifestyle study”, 50 Scottish girls, three waves, with friendship, alcohol and smoking measured at each wave. It ships with RSiena, so there are no files to download and nothing to install. I use it because friendship nominations and behavior changes require little background knowledge, which lets us concentrate on the model’s assumptions and interpretation.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># These objects are lazy-loaded by RSiena; no data() call is needed, and</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># data(s50) will actually warn at you, because the objects are named individually</span></span>
@@ -4825,7 +4825,7 @@ E_{\theta}\!\left[S_{\mathrm{sim}}(\theta)\right]-S_{\mathrm{obs}}=0.
 <span id="cb52-171"><a href="#cb52-171" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-172"><a href="#cb52-172" aria-hidden="true" tabindex="-1"></a>Olga&#39;s habit all last week was *diagnose before you fit*. This is that habit, applied to SAOMs, and it is the single most common thing people get wrong. A lot of published SAOMs are fitted to data the model does not apply to, and nobody checked.</span>
 <span id="cb52-173"><a href="#cb52-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-174"><a href="#cb52-174" aria-hidden="true" tabindex="-1"></a>The data: **s50**, the &quot;teenage friends and lifestyle study&quot;, 50 Scottish girls, three waves, with friendship, alcohol and smoking measured at each wave. It ships with RSiena, so there are no files to download and nothing to install. It is also, deliberately, not international relations data: half this room isn&#39;t political science, and a classroom friendship network needs no translation.</span>
+<span id="cb52-174"><a href="#cb52-174" aria-hidden="true" tabindex="-1"></a>The data: **s50**, the &quot;teenage friends and lifestyle study&quot;, 50 Scottish girls, three waves, with friendship, alcohol and smoking measured at each wave. It ships with RSiena, so there are no files to download and nothing to install. I use it because friendship nominations and behavior changes require little background knowledge, which lets us concentrate on the model&#39;s assumptions and interpretation.</span>
 <span id="cb52-175"><a href="#cb52-175" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-178"><a href="#cb52-178" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb52-179"><a href="#cb52-179" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: a2-data</span></span>

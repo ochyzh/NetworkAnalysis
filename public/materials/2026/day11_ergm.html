@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Shahryar Minhas">
-<meta name="dcterms.date" content="2026-07-25">
+<meta name="dcterms.date" content="2026-07-27">
 
 <title>Day 11: Advanced ERGM Specification and Temporal ERGMs</title>
 <style>
@@ -2408,7 +2408,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 25, 2026</p>
+      <p class="date">July 27, 2026</p>
     </div>
   </div>
   
@@ -2777,7 +2777,7 @@ window.Quarto = {
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; No edge attributes</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is <code>faux.mesa.high</code>, a simulated-but-realistic adolescent friendship network built to match an Add Health school in Mesa, Arizona. 205 students, 203 friendships, undirected. Every student has a <code>Grade</code> (7–12), a <code>Sex</code>, and a <code>Race</code>.</p>
-<p>I picked a school on purpose. This room is 18 political scientists and 19 people who are not: sociology, public administration, education, psychology, communication, public health, medicine, economics, history, global affairs. Adolescent friendship is a network that essentially everybody here can read without translation, and political scientists read add health fluently anyway. You will not spend any of today decoding what the nodes are.</p>
+<p>I picked a school example because the actors and relationship are easy to identify: students and friendships. That lets us spend our time on the model rather than first learning an unfamiliar institutional setting. The example also gives us recognizable actor attributes, including grade, sex, and race, so we can ask concrete questions about homophily, unequal levels of social activity, and clustering while remaining careful about what this simulated network can establish.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6886</span>)</span>
@@ -3426,7 +3426,7 @@ window.Quarto = {
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; gwdeg.fixed.0.5 </span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        199.5657</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Dyadic covariates: the one this box exists for.</strong> Half of this room is IR, and every gravity-style question, from whether trade follows alliances to whether wave-1 ties predict wave-3 ties, is a <em>dyadic covariate</em> question. <code>edgecov(x)</code> puts an entire matrix on the right-hand side: its change statistic for dyad <span class="math inline">\(ij\)</span> is simply <span class="math inline">\(x_{ij}\)</span>. Sampson’s three waves make a clean demonstration. We will predict wave 3 from wave 1:</p>
+<p><strong>Dyadic covariates: the one this box exists for.</strong> Many familiar network questions, from whether trade follows alliances to whether wave-1 ties predict wave-3 ties, are <em>dyadic covariate</em> questions. <code>edgecov(x)</code> puts an entire matrix on the right-hand side: its change statistic for dyad <span class="math inline">\(ij\)</span> is simply <span class="math inline">\(x_{ij}\)</span>. Sampson’s three waves make a clean demonstration. We will predict wave 3 from wave 1:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(samplk)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>ec <span class="ot">&lt;-</span> <span class="fu">fit_or_load</span>(<span class="st">&quot;tb_edgecov&quot;</span>,</span>
@@ -4487,7 +4487,7 @@ y_{ijt}\log\widetilde p_{ijt}(\theta)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Realistically most of this room will read more ERGMs than you fit. So here is the checklist today built, and it is the deliverable:</p>
+<p>Researchers often read more ERGMs than they fit. So here is the checklist today built, and it is the deliverable:</p>
 <ol type="1">
 <li><strong>Is dependence modelled or absorbed?</strong> And does the paper say which?</li>
 <li><strong>Which structural terms, and why?</strong> Justified substantively, or reverse-engineered from fit?</li>
@@ -4600,7 +4600,7 @@ y_{ijt}\log\widetilde p_{ijt}(\theta)
 <li><strong><code>bigergm</code></strong> (CRAN): hierarchical ERGM, successor to <code>hergm</code>/<code>lighthergm</code>. It recovers blocks first, then estimates within- and between-block effects, permitting dependence only <em>within</em> blocks (local dependence in the Schweinberger–Handcock sense).</li>
 <li><strong><code>ergm.multi</code></strong> (CRAN, installed here), not one big network but <em>many</em> networks. This is also the practical route to estimating decay properly, per the tension in <a href="#c1">C1</a>.</li>
 </ul>
-<p>I have not run <code>bigergm</code> for you, so treat that row as documentation rather than a recommendation. I mention all three because there are people in this room with data far larger than Mesa, and leaving you to discover that <code>ergm()</code> will not just work is a disservice.</p>
+<p>I have not run <code>bigergm</code> for you, so treat that row as documentation rather than a recommendation. I mention all three because many applied networks are far larger than Mesa, and it is important to know that the same <code>ergm()</code> workflow will not simply scale without adjustment.</p>
 </div>
 </div>
 </div>
@@ -5453,7 +5453,7 @@ y_{ijt}\log\widetilde p_{ijt}(\theta)
 <span id="cb76-277"><a href="#cb76-277" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-278"><a href="#cb76-278" aria-hidden="true" tabindex="-1"></a>This is <span class="in">`faux.mesa.high`</span>, a simulated-but-realistic adolescent friendship network built to match an Add Health school in Mesa, Arizona. <span class="in">`r network.size(mesa)`</span> students, <span class="in">`r network.edgecount(mesa)`</span> friendships, undirected. Every student has a <span class="in">`Grade`</span> (7–12), a <span class="in">`Sex`</span>, and a <span class="in">`Race`</span>.</span>
 <span id="cb76-279"><a href="#cb76-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-280"><a href="#cb76-280" aria-hidden="true" tabindex="-1"></a>I picked a school on purpose. This room is 18 political scientists and 19 people who are not: sociology, public administration, education, psychology, communication, public health, medicine, economics, history, global affairs. Adolescent friendship is a network that essentially everybody here can read without translation, and political scientists read add health fluently anyway. You will not spend any of today decoding what the nodes are.</span>
+<span id="cb76-280"><a href="#cb76-280" aria-hidden="true" tabindex="-1"></a>I picked a school example because the actors and relationship are easy to identify: students and friendships. That lets us spend our time on the model rather than first learning an unfamiliar institutional setting. The example also gives us recognizable actor attributes, including grade, sex, and race, so we can ask concrete questions about homophily, unequal levels of social activity, and clustering while remaining careful about what this simulated network can establish.</span>
 <span id="cb76-281"><a href="#cb76-281" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-284"><a href="#cb76-284" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb76-285"><a href="#cb76-285" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: a1-plot</span></span>
@@ -6044,7 +6044,7 @@ y_{ijt}\log\widetilde p_{ijt}(\theta)
 <span id="cb76-942"><a href="#cb76-942" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mesa <span class="sc">~</span> <span class="fu">gwdegree</span>(<span class="fl">0.5</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb76-943"><a href="#cb76-943" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb76-944"><a href="#cb76-944" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-945"><a href="#cb76-945" aria-hidden="true" tabindex="-1"></a>**Dyadic covariates: the one this box exists for.** Half of this room is IR, and every gravity-style question, from whether trade follows alliances to whether wave-1 ties predict wave-3 ties, is a *dyadic covariate* question. <span class="in">`edgecov(x)`</span> puts an entire matrix on the right-hand side: its change statistic for dyad $ij$ is simply $x_{ij}$. Sampson&#39;s three waves make a clean demonstration. We will predict wave 3 from wave 1:</span>
+<span id="cb76-945"><a href="#cb76-945" aria-hidden="true" tabindex="-1"></a>**Dyadic covariates: the one this box exists for.** Many familiar network questions, from whether trade follows alliances to whether wave-1 ties predict wave-3 ties, are *dyadic covariate* questions. <span class="in">`edgecov(x)`</span> puts an entire matrix on the right-hand side: its change statistic for dyad $ij$ is simply $x_{ij}$. Sampson&#39;s three waves make a clean demonstration. We will predict wave 3 from wave 1:</span>
 <span id="cb76-946"><a href="#cb76-946" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-949"><a href="#cb76-949" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb76-950"><a href="#cb76-950" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tb-spec-edgecov</span></span>
@@ -6743,7 +6743,7 @@ y_{ijt}\log\widetilde p_{ijt}(\theta)
 <span id="cb76-1709"><a href="#cb76-1709" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb76-1710"><a href="#cb76-1710" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-1711"><a href="#cb76-1711" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title=&quot;The referee checklist: the actual takeaway for most of you&quot;}</span>
-<span id="cb76-1712"><a href="#cb76-1712" aria-hidden="true" tabindex="-1"></a>Realistically most of this room will read more ERGMs than you fit. So here is the checklist today built, and it is the deliverable:</span>
+<span id="cb76-1712"><a href="#cb76-1712" aria-hidden="true" tabindex="-1"></a>Researchers often read more ERGMs than they fit. So here is the checklist today built, and it is the deliverable:</span>
 <span id="cb76-1713"><a href="#cb76-1713" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-1714"><a href="#cb76-1714" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Is dependence modelled or absorbed?** And does the paper say which?</span>
 <span id="cb76-1715"><a href="#cb76-1715" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Which structural terms, and why?** Justified substantively, or reverse-engineered from fit?</span>
@@ -6811,7 +6811,7 @@ y_{ijt}\log\widetilde p_{ijt}(\theta)
 <span id="cb76-1777"><a href="#cb76-1777" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**`bigergm`** (CRAN): hierarchical ERGM, successor to <span class="in">`hergm`</span>/<span class="in">`lighthergm`</span>. It recovers blocks first, then estimates within- and between-block effects, permitting dependence only *within* blocks (local dependence in the Schweinberger–Handcock sense).</span>
 <span id="cb76-1778"><a href="#cb76-1778" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**`ergm.multi`** (CRAN, installed here), not one big network but *many* networks. This is also the practical route to estimating decay properly, per the tension in <span class="co">[</span><span class="ot">C1</span><span class="co">](#c1)</span>.</span>
 <span id="cb76-1779"><a href="#cb76-1779" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-1780"><a href="#cb76-1780" aria-hidden="true" tabindex="-1"></a>I have not run <span class="in">`bigergm`</span> for you, so treat that row as documentation rather than a recommendation. I mention all three because there are people in this room with data far larger than Mesa, and leaving you to discover that <span class="in">`ergm()`</span> will not just work is a disservice.</span>
+<span id="cb76-1780"><a href="#cb76-1780" aria-hidden="true" tabindex="-1"></a>I have not run <span class="in">`bigergm`</span> for you, so treat that row as documentation rather than a recommendation. I mention all three because many applied networks are far larger than Mesa, and it is important to know that the same <span class="in">`ergm()`</span> workflow will not simply scale without adjustment.</span>
 <span id="cb76-1781"><a href="#cb76-1781" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb76-1782"><a href="#cb76-1782" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-1783"><a href="#cb76-1783" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;A netify handoff, if your data does not start as a network object&quot;}</span>
