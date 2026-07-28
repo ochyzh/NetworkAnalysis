@@ -1356,53 +1356,53 @@ display:block!important;
 </section>
 <section id="first-fit-results" class="slide level2">
 <h2>The First Fit in One Table</h2>
-<p>The estimates enter a multinomial-logit score. To make the scale tangible, the final column imagines only two otherwise comparable actions.</p>
+<p>Interpret each estimate as a contribution to the score of one proposed micro-change.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 27%">
-<col style="width: 36%">
-<col style="width: 36%">
+<col style="width: 30%">
+<col style="width: 40%">
+<col style="width: 30%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Friendship feature</th>
 <th style="text-align: right;">Estimate (SE)</th>
-<th style="text-align: right;">Two-option illustration</th>
+<th>What the sign says</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>One more outgoing nomination</td>
 <td style="text-align: right;"><span class="math inline">\(-2.78\ (0.16)\)</span></td>
-<td style="text-align: right;">Add tie: <strong>6%</strong>; no change: 94%</td>
+<td>Additional nominations are less attractive</td>
 </tr>
 <tr class="even">
 <td>Return a nomination</td>
 <td style="text-align: right;"><span class="math inline">\(2.48\ (0.22)\)</span></td>
-<td style="text-align: right;">Return it: <strong>92%</strong>; do not: 8%</td>
+<td>Returning a nomination is more attractive</td>
 </tr>
 <tr class="odd">
 <td>Close one friend-of-friend path</td>
 <td style="text-align: right;"><span class="math inline">\(0.66\ (0.15)\)</span></td>
-<td style="text-align: right;">Close it: <strong>66%</strong>; do not: 34%</td>
+<td>Closing a path is more attractive</td>
 </tr>
 <tr class="even">
 <td>Create one three-cycle</td>
 <td style="text-align: right;"><span class="math inline">\(-0.09\ (0.29)\)</span></td>
-<td style="text-align: right;">Cycle: 48%; no cycle: 52%</td>
+<td>Little evidence of a separate cycle pattern</td>
 </tr>
 <tr class="odd">
 <td>Choose someone with the same baseline smoking</td>
 <td style="text-align: right;"><span class="math inline">\(0.14\ (0.15)\)</span></td>
-<td style="text-align: right;">Same: 53%; different: 47%</td>
+<td>Little evidence of a smoking-similarity pattern</td>
 </tr>
 </tbody>
 </table>
-<div class="bottom-line">
-<p>These are teaching comparisons, not fitted friendship probabilities. Real micro-steps include every eligible addition, removal, and no change in the denominator. The overall convergence ratio is <strong>0.063</strong>.</p>
+<div class="mini-caution">
+<p>Start with the sign and describe the proposed change. Say: “Holding the other modeled features constant, this feature makes the proposed change more or less attractive.” Exponentiate only if the relative weight helps.</p>
 </div>
 <aside class="notes">
-<p>Estimate divided by standard error is a rough uncertainty check. Outdegree, reciprocity, and transitive triplets are clearly separated from zero. Three-cycles and same baseline smoking are not. The convergence t-ratios are estimation diagnostics, not hypothesis tests.</p>
+<p>The overall convergence ratio is 0.063. Estimate divided by standard error is a rough uncertainty check. Outdegree, reciprocity, and transitive triplets are clearly separated from zero. Three-cycles and same baseline smoking are not.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1428,14 +1428,11 @@ display:block!important;
 <p>Adding <span class="math inline">\(i\rightarrow j\)</span> returns the nomination and creates reciprocity.</p>
 </div>
 </div>
-<p>If these were the only two otherwise comparable choices,</p>
 <p><span class="math display">\[
-\Pr(\text{return nomination})
-=\frac{\exp(2.48)}{1+\exp(2.48)}
-\approx .92.
+\exp(2.48)\approx 11.9
 \]</span></p>
 <div class="bottom-line">
-<p>In the two-option illustration, about 92 percent of the probability goes to returning the nomination and 8 percent to the otherwise comparable alternative. With the full choice set, those probabilities change, although their 11.9-to-1 relative weight remains.</p>
+<p>Holding the other modeled features constant, a proposed nomination that returns an existing nomination receives about twelve times the choice weight of an otherwise comparable nomination that does not.</p>
 </div>
 <aside class="notes">
 <p>Do not say that students are twelve times more likely to be friends. The actual probability depends on every available action and every included statistic. The comparison is between two candidate micro-steps that differ by one unit of reciprocity.</p>
@@ -1463,14 +1460,11 @@ display:block!important;
 <p><span class="math display">\[
 \text{Alice}\rightarrow\text{Cara}.
 \]</span></p>
-<p>If Alice chooses only between this move and an otherwise comparable move that closes no path,</p>
 <p><span class="math display">\[
-\Pr(\text{close one path})
-=\frac{\exp(0.66)}{1+\exp(0.66)}
-\approx .66.
+\exp(0.66)\approx 1.94
 \]</span></p>
 <div class="bottom-line">
-<p>In this two-option illustration, about 66 percent of the probability goes to the path-closing move. The full fitted probability also depends on every other available action. If one nomination closes several paths, their contributions accumulate.</p>
+<p>Holding the other modeled features constant, closing one friend-of-friend path nearly doubles the choice weight of the proposed nomination. Closing three paths contributes <span class="math inline">\(3(0.66)=1.98\)</span> to its score.</p>
 </div>
 <aside class="notes">
 <p>This is the fitted transitive-closure pattern. It describes which candidate changes receive more weight under the model. It does not prove that students consciously searched through friends’ friendship lists.</p>
@@ -1519,7 +1513,15 @@ display:block!important;
 </section>
 <section id="coefficient" class="slide level2">
 <h2>One Proposed Nomination Changes Several Statistics</h2>
-<p>Suppose Alice considers nominating Cara. Cara already nominates Alice, and the new nomination would close two friend-of-friend paths.</p>
+<p>Before Alice’s decision:</p>
+<p><span class="math display">\[
+\text{Alice}\rightarrow\text{Ben}\rightarrow\text{Cara},
+\qquad
+\text{Alice}\rightarrow\text{Elena}\rightarrow\text{Cara},
+\qquad
+\text{Cara}\rightarrow\text{Alice}.
+\]</span></p>
+<p>Adding <span class="math inline">\(\text{Alice}\rightarrow\text{Cara}\)</span> produces:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1556,17 +1558,14 @@ display:block!important;
 </tr>
 </tbody>
 </table>
-<p><span class="math display">\[
-\exp(1.02)\approx 2.77
-\]</span></p>
 <div class="mini-caution">
-<p>This is 2.77 times the relative choice weight of making no change, not a tie probability. The model separates reciprocity and closure as conditional contributions to its score. It does not tell us which one was Alice’s reason for the nomination.</p>
+<p>A total of 1.02 means 2.77 times the weight of making no change, not a tie probability. The model separates contributions to its score, not Alice’s reason for the nomination.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#b3" class="walkthrough-link" target="_blank">Work through the combined calculation</a></p>
 </div>
 <aside class="notes">
-<p>This slide now completes the interpretation sequence after the separate reciprocity and transitivity examples. If the two patterns nearly always occur together, their separate estimates will be less precise.</p>
+<p>This slide completes the interpretation sequence after the separate reciprocity and transitivity examples. If the two patterns nearly always occur together, their separate estimates will be less precise.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1579,52 +1578,43 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="microstep-probability" class="slide level2">
-<h2>Turning Choice Weights Into a Micro-Step Probability</h2>
-<p>To see the denominator, imagine Alice temporarily has only three options:</p>
+<section id="simulated-first-difference" class="slide level2">
+<h2>For Substantive Magnitude, Simulate the Process</h2>
+<p>The coefficient and a simulation-based first difference answer different questions.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 27%">
-<col style="width: 36%">
-<col style="width: 36%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Candidate action</th>
-<th style="text-align: right;">Score change</th>
-<th style="text-align: right;">Weight</th>
+<th>Local mechanism</th>
+<th>Outcome after the process unfolds</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Make no change</td>
-<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
-<td style="text-align: right;"><span class="math inline">\(\exp(0)=1.00\)</span></td>
+<td>How does a feature change the score of one proposed micro-step?</td>
+<td>How does a defined change alter friendship formation, degree, or behavior by the next wave?</td>
 </tr>
 <tr class="even">
-<td>Nominate Cara</td>
-<td style="text-align: right;"><span class="math inline">\(1.02\)</span></td>
-<td style="text-align: right;"><span class="math inline">\(\exp(1.02)=2.77\)</span></td>
+<td>Read the sign and describe the candidate action</td>
+<td>Simulate a baseline and a counterfactual from the same starting state</td>
 </tr>
 <tr class="odd">
-<td>Nominate Dana, with no other pattern created</td>
-<td style="text-align: right;"><span class="math inline">\(-2.78\)</span></td>
-<td style="text-align: right;"><span class="math inline">\(\exp(-2.78)=0.06\)</span></td>
+<td>Exponentiate only if relative weight helps</td>
+<td>Compare outcomes and average over the actors or dyads that answer the question</td>
 </tr>
 </tbody>
 </table>
-<p><span class="math display">\[
-\Pr(\text{nominate Cara}\mid\text{these three options})
-=\frac{2.77}{1.00+2.77+0.06}\approx .72
-\]</span></p>
 <div class="bottom-line">
-<p>The 72 percent belongs only to this simplified three-option choice set at one modeled opportunity. In the fitted SAOM, Alice can have many possible additions, removals, and no change. Their weights all enter the denominator, so 2.77 alone is not a probability.</p>
+<p>Example: among ties absent at the start of an interval, how much does a defensible similarity contrast change friendship formation by the next wave? This model-based first difference is not automatically causal.</p>
 </div>
 <div class="slide-link">
-<p><a href="day12_saom.html#b3" class="walkthrough-link" target="_blank">Calculate the normalized probability</a></p>
+<p><a href="day12_saom.html#saom-first-differences" class="walkthrough-link" target="_blank">Define and interpret a simulated first difference</a></p>
 </div>
 <aside class="notes">
-<p>This is the probability conditional on Alice receiving an opportunity and on the stated candidate set. It is not the probability that the tie exists at the next observed wave.</p>
+<p>Do not invent a numerical first difference from the coefficient table. It requires paired simulations under a clearly defined contrast. Common random-number streams reduce Monte Carlo noise, and parameter draws are needed for uncertainty.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
