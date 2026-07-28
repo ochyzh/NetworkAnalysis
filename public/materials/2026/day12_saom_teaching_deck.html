@@ -1579,42 +1579,45 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="simulated-first-difference" class="slide level2">
-<h2>For Substantive Magnitude, Simulate the Process</h2>
-<p>The coefficient and a simulation-based first difference answer different questions.</p>
+<h2>A Simple Model-Based Summary for Smoking Similarity</h2>
+<p>Hold the starting networks and all other fitted coefficients fixed. Simulate the process twice: once with the fitted same-smoking coefficient and once with that coefficient set to zero.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 42%">
+<col style="width: 57%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Local mechanism</th>
-<th>Outcome after the process unfolds</th>
+<th>Initially absent same-smoking nominations</th>
+<th style="text-align: right;">Predicted next-wave formation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>How does a feature change the score of one proposed micro-step?</td>
-<td>How does a defined change alter friendship formation, degree, or behavior by the next wave?</td>
+<td>Smoking-similarity term set to zero</td>
+<td style="text-align: right;"><strong>2.15%</strong></td>
 </tr>
 <tr class="even">
-<td>Read the sign and describe the candidate action</td>
-<td>Simulate a baseline and a counterfactual from the same starting state</td>
+<td>Fitted smoking-similarity term included</td>
+<td style="text-align: right;"><strong>2.73%</strong></td>
 </tr>
 <tr class="odd">
-<td>Exponentiate only if relative weight helps</td>
-<td>Compare outcomes and average over the actors or dyads that answer the question</td>
+<td><strong>Model-based first difference</strong></td>
+<td style="text-align: right;"><strong>+0.58 percentage points</strong></td>
 </tr>
 </tbody>
 </table>
 <div class="bottom-line">
-<p>Example: among ties absent at the start of an interval, how much does a defensible similarity contrast change friendship formation by the next wave? This model-based first difference is not automatically causal.</p>
+<p>At the point estimates, the fitted same-smoking term raises the model-implied probability that an initially absent same-smoking nomination exists at the next wave by about 0.6 percentage points.</p>
+</div>
+<div class="mini-caution">
+<p>This is a small point-estimate summary. The coefficient is 0.14 with SE 0.15, so the data do not show a clear smoking-similarity pattern.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#saom-first-differences" class="walkthrough-link" target="_blank">Define and interpret a simulated first difference</a></p>
 </div>
 <aside class="notes">
-<p>Do not invent a numerical first difference from the coefficient table. It requires paired simulations under a clearly defined contrast. Common random-number streams reduce Monte Carlo noise, and parameter draws are needed for uncertainty.</p>
+<p>This contrast removes the fitted similarity mechanism; it does not change anyone’s observed smoking category. Both scenarios use 1,000 unconditional simulations, the fitted rate parameters, and the same seed. The walkthrough shows the code.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1684,6 +1687,63 @@ display:block!important;
 </div>
 <aside class="notes">
 <p>Equation check: name the dependent variable. Selection effects belong in the network objective; influence effects belong in the behavior objective.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="saved-simulation-probabilities" class="slide level2">
+<h2>What the Fitted Process Predicts by the Next Wave</h2>
+<p>The fitted object contains 1,000 simulated end-of-interval networks.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Starting condition</th>
+<th style="text-align: right;">Waves 1 to 2</th>
+<th style="text-align: right;">Waves 2 to 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Absent nomination exists at next wave</td>
+<td style="text-align: right;"><strong>2.6%</strong> predicted; 2.5% observed</td>
+<td style="text-align: right;"><strong>2.3%</strong> predicted; 2.4% observed</td>
+</tr>
+<tr class="even">
+<td>Existing nomination remains at next wave</td>
+<td style="text-align: right;"><strong>51.9%</strong> predicted; 50.4% observed</td>
+<td style="text-align: right;"><strong>55.7%</strong> predicted; 56.9% observed</td>
+</tr>
+<tr class="odd">
+<td>Student reports higher drinking</td>
+<td style="text-align: right;"><strong>33.0%</strong> predicted; 32.0% observed</td>
+<td style="text-align: right;"><strong>35.6%</strong> predicted; 36.0% observed</td>
+</tr>
+</tbody>
+</table>
+<div class="bottom-line">
+<p>For each initially absent nomination, its predicted formation probability is the proportion of simulated next-wave networks in which that nomination exists. Persistence is calculated separately for nominations already present.</p>
+</div>
+<div class="mini-caution">
+<p>These are in-sample, model-implied probabilities. They summarize the whole fitted process and are neither holdout forecasts nor causal effects of one coefficient.</p>
+</div>
+<div class="slide-link">
+<p><a href="day12_saom.html#saved-predictions" class="walkthrough-link" target="_blank">Extract and interpret the saved simulations</a></p>
+</div>
+<aside class="notes">
+<p>The close observed-predicted averages are a calibration summary, not a complete GOF test. The next section checks richer distributions and triadic structure.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
