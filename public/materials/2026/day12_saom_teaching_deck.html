@@ -1025,21 +1025,21 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="political-question" class="slide level2">
-<h2>Where the Same Question Appears Elsewhere</h2>
-<p>The same selection-versus-influence problem appears when:</p>
+<h2>Did Similarity Produce the Relationship?</h2>
+<p>Or did the relationship make the actors more similar?</p>
 <ul>
-<li>States change alliances while security policies change</li>
-<li>Legislators change collaborators while policy positions evolve</li>
-<li>Armed groups change cooperation ties while strategies change</li>
+<li><strong>States:</strong> Do states ally because their security policies already align, or do alliances bring their policies closer?</li>
+<li><strong>Legislators:</strong> Do legislators collaborate because they already hold similar positions, or does collaboration bring their positions closer?</li>
+<li><strong>Armed groups:</strong> Do groups cooperate because their strategies already align, or does cooperation lead their strategies to converge?</li>
 </ul>
 <div class="bottom-line">
-<p>Time helps distinguish sequences, but selection and influence remain model-based under the assumed micro-step process.</p>
+<p>Repeated observations help us see what changed first. They do not record every change between waves, so the model shows patterns consistent with selection or influence rather than proving either process.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#sec-political-question" class="walkthrough-link" target="_blank">Read the substantive translation</a></p>
 </div>
 <aside class="notes">
-<p>Use these examples only to transfer the question. The fitted application remains the s50 friendship and drinking panel, so every reported result must return to those students and waves.</p>
+<p>The key question is whether similarity led actors to form a relationship or whether the relationship led them to become more similar. Time provides useful ordering, but the SAOM still fills in the unobserved changes between waves using its actor-oriented micro-step assumptions. The fitted application remains the s50 friendship and drinking panel, so every reported result must return to those students and waves.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1299,39 +1299,24 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="coefficient" class="slide level2">
-<h2>Read a Coefficient Through a Specific Micro-Step</h2>
-<p>Suppose actor <span class="math inline">\(i\)</span> considers adding <span class="math inline">\(i\rightarrow j\)</span>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Effect</th>
-<th>Change produced by the toggle</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Outdegree</td>
-<td>Always increases by 1</td>
-</tr>
-<tr class="even">
-<td>Reciprocity</td>
-<td>Increases by 1 if <span class="math inline">\(j\rightarrow i\)</span> exists</td>
-</tr>
-<tr class="odd">
-<td>Transitive triplets</td>
-<td>Increases for two-paths closed by the new tie</td>
-</tr>
-</tbody>
-</table>
-<div class="say-it">
-<p>A positive coefficient gives greater weight to candidate states with a larger value of that statistic, conditional on the other effects and on a modeled opportunity.</p>
+<section id="first-fit-process" class="slide level2">
+<h2>What the First Fit Is Describing</h2>
+<p>Between observed waves, the model represents students as receiving opportunities to reconsider one outgoing friendship nomination. At each opportunity, one nomination can be added, removed, or left unchanged.</p>
+<div class="comparison-row">
+<div class="comparison-card" style="min-height: 4.6em; padding: 0.55em;">
+<p><span class="card-title">Waves 1 to 2</span></p>
+<p>About <strong>6.52</strong> opportunities per student</p>
 </div>
-<div class="slide-link">
-<p><a href="day12_saom.html#b3" class="walkthrough-link" target="_blank">Interpret the fitted model</a></p>
+<div class="comparison-card accent-card" style="min-height: 4.6em; padding: 0.55em;">
+<p><span class="card-title">Waves 2 to 3</span></p>
+<p>About <strong>5.21</strong> opportunities per student</p>
+</div>
+</div>
+<div class="bottom-line">
+<p>These rates describe opportunities in the fitted process, not the number of friendships each student changed. An opportunity can produce no change, and the same tie can be reconsidered more than once.</p>
 </div>
 <aside class="notes">
-<p>Interpretation guardrail: a coefficient is not the probability of a tie. Compare two candidate micro-steps through the change in the evaluation function.</p>
+<p>The first fit models friendship change only. Smoking enters as a fixed wave-1 covariate. The rates suggest somewhat more activity in the first interval, but they are not preference effects like reciprocity or transitivity.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1344,19 +1329,216 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="competition" class="slide level2">
-<h2>Reciprocity and Closure Can Compete</h2>
-<div class="big-question">
-<p>If a proposed tie is both reciprocating and transitive, which effect caused it?</p>
+<section id="first-fit-results" class="slide level2">
+<h2>The First Fit in One Table</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Friendship feature</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">SE</th>
+<th>Reading</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Outdegree</td>
+<td style="text-align: right;">-2.78</td>
+<td style="text-align: right;">0.16</td>
+<td>Fewer additional nominations</td>
+</tr>
+<tr class="even">
+<td>Reciprocity</td>
+<td style="text-align: right;">2.48</td>
+<td style="text-align: right;">0.22</td>
+<td>Strong returned nominations</td>
+</tr>
+<tr class="odd">
+<td>Transitive triplets</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">0.15</td>
+<td>Friend-of-friend closure</td>
+</tr>
+<tr class="even">
+<td>Three-cycles</td>
+<td style="text-align: right;">-0.09</td>
+<td style="text-align: right;">0.29</td>
+<td>No clear cycle pattern</td>
+</tr>
+<tr class="odd">
+<td>Same baseline smoking</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.15</td>
+<td>No clear smoking pattern</td>
+</tr>
+</tbody>
+</table>
+<div class="bottom-line">
+<p>The overall convergence ratio is <strong>0.063</strong>, well below 0.25. The targeted statistics match closely enough to interpret the coefficients, but convergence does not establish that the model is correct or causal.</p>
 </div>
-<p>The model answers conditionally:</p>
-<ul>
-<li>Reciprocity compares otherwise similar opportunities that differ in the reverse tie.</li>
-<li>Transitivity compares opportunities that differ in shared partners.</li>
-<li>Collinearity and sparse configurations can make the effects difficult to distinguish.</li>
-</ul>
 <aside class="notes">
-<p>Quick exercise: calculate changes for several candidate ties. Conditional interpretation becomes more concrete than a coefficient table alone.</p>
+<p>Estimate divided by standard error is a rough uncertainty check. Outdegree, reciprocity, and transitive triplets are clearly separated from zero. Three-cycles and same baseline smoking are not. The convergence t-ratios are estimation diagnostics, not hypothesis tests.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="first-fit-reciprocity" class="slide level2">
+<h2>Returned Friendships Carry the Strongest Signal</h2>
+<p>Suppose student <span class="math inline">\(i\)</span> is considering nominating student <span class="math inline">\(j\)</span>.</p>
+<div class="comparison-row">
+<div class="comparison-card" style="min-height: 5.2em; padding: 0.6em;">
+<p><span class="card-title"><span class="math inline">\(j\)</span> Does Not Nominate <span class="math inline">\(i\)</span></span></p>
+<p>Adding <span class="math inline">\(i\rightarrow j\)</span> creates another outgoing nomination but does not create reciprocity.</p>
+</div>
+<div class="comparison-card accent-card" style="min-height: 5.2em; padding: 0.6em;">
+<p><span class="card-title"><span class="math inline">\(j\)</span> Already Nominates <span class="math inline">\(i\)</span></span></p>
+<p>Adding <span class="math inline">\(i\rightarrow j\)</span> returns the nomination and creates reciprocity.</p>
+</div>
+</div>
+<p><span class="math display">\[
+\frac{\text{relative weight of reciprocating move}}
+{\text{relative weight of otherwise comparable move}}
+=\exp(2.48)\approx 11.9
+\]</span></p>
+<div class="bottom-line">
+<p>A move that returns an existing nomination receives about twelve times the relative choice weight of an otherwise comparable nonreciprocating move.</p>
+</div>
+<aside class="notes">
+<p>Do not say that students are twelve times more likely to be friends. The actual probability depends on every available action and every included statistic. The comparison is between two candidate micro-steps that differ by one unit of reciprocity.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="first-fit-transitivity" class="slide level2">
+<h2>Friends of Friends Are More Attractive Candidates</h2>
+<p>Start with:</p>
+<p><span class="math display">\[
+\text{Alice}\rightarrow\text{Ben}
+\qquad\text{and}\qquad
+\text{Ben}\rightarrow\text{Cara}.
+\]</span></p>
+<p>If Alice adds a nomination to Cara, the move closes one transitive path:</p>
+<p><span class="math display">\[
+\text{Alice}\rightarrow\text{Cara}.
+\]</span></p>
+<p>For each additional transitive triplet created by a proposed nomination,</p>
+<p><span class="math display">\[
+\exp(0.66)\approx 1.94.
+\]</span></p>
+<div class="bottom-line">
+<p>A move that closes one friend-of-a-friend path receives about twice the relative weight of an otherwise comparable move that closes none. If one nomination closes several paths, their contributions accumulate.</p>
+</div>
+<aside class="notes">
+<p>This is the fitted transitive-closure pattern. It describes which candidate changes receive more weight under the model. It does not prove that students consciously searched through friends’ friendship lists.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="first-fit-limits" class="slide level2">
+<h2>What the First Fit Does Not Show</h2>
+<div class="comparison-row">
+<div class="comparison-card" style="min-height: 5.4em; padding: 0.6em;">
+<p><span class="card-title">Three-Cycles</span></p>
+<p>Estimate: <strong>-0.09</strong>, SE: <strong>0.29</strong></p>
+<p>No clear evidence of a separate circular pattern such as <span class="math inline">\(i\rightarrow j\rightarrow k\rightarrow i\)</span> after reciprocity and transitivity are included.</p>
+</div>
+<div class="comparison-card accent-card" style="min-height: 5.4em; padding: 0.6em;">
+<p><span class="card-title">Same Baseline Smoking</span></p>
+<p>Estimate: <strong>0.14</strong>, SE: <strong>0.15</strong></p>
+<p>No clear evidence that students with the same wave-1 smoking status receive more weight as friendship choices after accounting for the network terms.</p>
+</div>
+</div>
+<div class="bottom-line">
+<p>Friendships tend to be returned, and friends of friends tend to become connected. Baseline smoking similarity adds little in this specification. Because smoking is treated as a fixed wave-1 covariate, this model cannot study whether smoking changes with friendships. That requires the co-evolution model next.</p>
+</div>
+<aside class="notes">
+<p>Do not conclude that smoking and friendship are unrelated. This model uses only baseline smoking as a fixed predictor. It does not represent later smoking changes or estimate peer influence.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="coefficient" class="slide level2">
+<h2>One Proposed Nomination Changes Several Statistics</h2>
+<p>Suppose Alice considers nominating Cara. Cara already nominates Alice, and the new nomination would close two friend-of-friend paths.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th style="text-align: right;">Change</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Contribution to Alice’s score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>One more outgoing nomination</td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-2.78\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-2.78\)</span></td>
+</tr>
+<tr class="even">
+<td>Returned nomination</td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2.48\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+2.48\)</span></td>
+</tr>
+<tr class="odd">
+<td>Friend-of-friend paths closed</td>
+<td style="text-align: right;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.66\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+1.32\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Combined change</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><strong><span class="math inline">\(+1.02\)</span></strong></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[
+\exp(1.02)\approx 2.77
+\]</span></p>
+<div class="mini-caution">
+<p>This is 2.77 times the relative choice weight of making no change, not a tie probability. The model separates reciprocity and closure as conditional contributions to its score. It does not tell us which one was Alice’s reason for the nomination.</p>
+</div>
+<div class="slide-link">
+<p><a href="day12_saom.html#b3" class="walkthrough-link" target="_blank">Work through the combined calculation</a></p>
+</div>
+<aside class="notes">
+<p>This slide now completes the interpretation sequence after the separate reciprocity and transitivity examples. If the two patterns nearly always occur together, their separate estimates will be less precise.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1370,19 +1552,56 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="coevolution" class="slide level2">
-<h2>Co-Evolution Separates Two Equations</h2>
+<h2>One Pattern, Two Possible Histories</h2>
+<p>At the final wave, Alice and Cara are friends and report similar drinking. That endpoint alone does not tell us how they got there.</p>
 <div class="comparison-row">
 <div class="comparison-card">
-<p><span class="card-title">Network equation</span></p>
-<p>Do actors select ties based on their own and others’ behavior?</p>
+<p><span class="card-title">Selection</span></p>
+<p>They reported similar drinking first, and the friendship appeared later.</p>
 </div>
 <div class="comparison-card accent-card">
-<p><span class="card-title">Behavior equation</span></p>
-<p>Does behavior change in relation to the behavior of network neighbors?</p>
+<p><span class="card-title">Influence</span></p>
+<p>They were friends first, and their reported drinking became more similar later.</p>
 </div>
 </div>
+<div class="bottom-line">
+<p>Several waves give us information about sequence, but we still do not observe every friendship and behavior change between interviews. The model supplies a particular account of that missing path.</p>
+</div>
+</section>
+<section id="coevolution-equations" class="slide level2">
+<h2>The Model Fits Two Connected Equations</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Equation</th>
+<th>What changes?</th>
+<th>Focal comparison</th>
+<th style="text-align: right;">Estimate (SE)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Friendship</td>
+<td>A nomination</td>
+<td>Are students with more similar drinking more attractive friendship choices?</td>
+<td style="text-align: right;"><span class="math inline">\(1.44\ (0.61)\)</span></td>
+</tr>
+<tr class="even">
+<td>Drinking</td>
+<td>A student’s reported level</td>
+<td>Does a student’s drinking move toward the average among current friends?</td>
+<td style="text-align: right;"><span class="math inline">\(1.36\ (0.95)\)</span></td>
+</tr>
+</tbody>
+</table>
 <div class="say-it">
-<p>In s50, greater drinking similarity receives positive weight in the friendship equation. The estimate for movement toward friends’ drinking is also positive, but its interval is wide enough to include no influence. Both mechanisms remain model-based.</p>
+<p>The friendship result is consistent with selection on drinking similarity. The influence estimate is positive but too uncertain to distinguish from no influence. That is not evidence that influence is absent.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#c1" class="walkthrough-link" target="_blank">Build the co-evolution model</a></p>
@@ -1402,17 +1621,39 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="honest" class="slide level2">
-<h2>What Co-Evolution Does Not Buy Automatically</h2>
-<p>Joint modeling does not by itself guarantee:</p>
-<ul>
-<li>No unmeasured homophily</li>
-<li>No common shocks</li>
-<li>Correct timing within the intervals</li>
-<li>A valid causal peer-effect estimate</li>
-<li>Robustness to network measurement error</li>
-</ul>
-<div class="say-it">
-<p>The model separates mechanisms under its assumptions. The assumptions still need a design and a substantive defense.</p>
+<h2>Separate Equations Are Not Automatic Proof</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Possible problem</th>
+<th>What it could look like here</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>An omitted common cause</td>
+<td>A new peer group or family change affects both friendship and drinking</td>
+</tr>
+<tr class="even">
+<td>Unknown ordering within a wave interval</td>
+<td>A friendship and drinking change both occur between interviews</td>
+</tr>
+<tr class="odd">
+<td>Measurement error</td>
+<td>A student omits a friendship nomination or reports drinking imprecisely</td>
+</tr>
+<tr class="even">
+<td>A poor timing model</td>
+<td>The meaningful changes happen much faster or more slowly than the interview spacing</td>
+</tr>
+</tbody>
+</table>
+<div class="bottom-line">
+<p>The two equations let us represent selection and influence separately. A causal claim still requires a defensible design, timing assumptions, measurement, and model specification.</p>
 </div>
 <aside class="notes">
 <p>Causal guardrail before interpretation: a SAOM is not an automatic solution to the reflection problem or latent homophily.</p>
@@ -1429,20 +1670,72 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="gof" class="slide level2">
-<h2>Goodness-of-Fit Uses Features Not Directly Targeted</h2>
-<p>Compare observed networks with simulations on statistics such as:</p>
-<ul>
-<li>In-degree and out-degree distributions</li>
-<li>Geodesic distances</li>
-<li>Triad census</li>
-<li>Behavior distributions</li>
-<li>Substantively important mixing patterns</li>
-</ul>
-<div class="room-prompt compact-prompt">
-<p>Which miss suggests a missing effect, and which suggests the micro-step story itself is implausible?</p>
+<h2>Goodness-of-Fit Asks What the Model Missed</h2>
+<p>After fitting, simulate friendship and drinking histories from the model and compare features that were not directly forced to match.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Check</th>
+<th>What a miss would point toward</th>
+<th style="text-align: right;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Number of nominations received</td>
+<td>Missing differences in popularity</td>
+<td style="text-align: right;"><span class="math inline">\(p=.589\)</span></td>
+</tr>
+<tr class="even">
+<td>Distribution of drinking</td>
+<td>A poor model of behavior change</td>
+<td style="text-align: right;"><span class="math inline">\(p=.912\)</span></td>
+</tr>
+<tr class="odd">
+<td>Types of three-person configurations</td>
+<td>Missing closure, cycles, or subgroup structure</td>
+<td style="text-align: right;"><strong><span class="math inline">\(p=.007\)</span></strong></td>
+</tr>
+</tbody>
+</table>
+<div class="bottom-line">
+<p>The model reproduces the broad popularity and drinking distributions, but not the local three-person patterns. Convergence told us estimation finished. This comparison tells us the fitted model still leaves important network structure unexplained.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#c2" class="walkthrough-link" target="_blank">Run the goodness-of-fit checks</a></p>
+</div>
+</section>
+<section id="gof-revision" class="slide level2">
+<h2>A Failed Check Suggests a Revision, Not a Fishing Expedition</h2>
+<p>We tried adding degree-based popularity because unequal popularity can create local clustering.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Specification</th>
+<th style="text-align: right;">Overall convergence</th>
+<th style="text-align: right;">Triad-census GOF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Original co-evolution model</td>
+<td style="text-align: right;"><span class="math inline">\(0.163\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(p=.007\)</span></td>
+</tr>
+<tr class="even">
+<td>Added popularity effect</td>
+<td style="text-align: right;"><span class="math inline">\(0.266\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(p=.004\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="bottom-line">
+<p>The revised fit did not converge adequately and did not improve the triad check. We cannot call it a successful repair. The next step is to obtain convergence, rerun the check, and consider a theoretically motivated alternative. It is not to keep adding effects until one p-value exceeds .05.</p>
 </div>
 <aside class="notes">
 <p>GOF question: does the fitted process reproduce claim-relevant network features beyond the statistics used in estimation?</p>
