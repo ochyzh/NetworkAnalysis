@@ -1338,7 +1338,7 @@ display:block!important;
 </div>
 </div>
 <div class="bottom-line">
-<p>These rates describe opportunities in the fitted process, not the number of friendships each student changed. An opportunity can produce no change, and the same tie can be reconsidered more than once.</p>
+<p>These rates are not log odds. They describe opportunities in the fitted process, not the number of friendships each student changed. An opportunity can produce no change, and the same tie can be reconsidered more than once.</p>
 </div>
 <aside class="notes">
 <p>The first fit models friendship change only. Smoking enters as a fixed wave-1 covariate. The rates suggest somewhat more activity in the first interval, but they are not preference effects like reciprocity or transitivity.</p>
@@ -1356,50 +1356,50 @@ display:block!important;
 </section>
 <section id="first-fit-results" class="slide level2">
 <h2>The First Fit in One Table</h2>
+<p>The estimates enter a multinomial-logit score. To make the scale tangible, the final column imagines only two otherwise comparable actions.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Friendship feature</th>
-<th style="text-align: right;">Estimate</th>
-<th style="text-align: right;">SE</th>
-<th>Reading</th>
+<th style="text-align: right;">Estimate (SE)</th>
+<th style="text-align: right;">Two-option illustration</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Outdegree</td>
-<td style="text-align: right;">-2.78</td>
-<td style="text-align: right;">0.16</td>
-<td>Fewer additional nominations</td>
+<td>One more outgoing nomination</td>
+<td style="text-align: right;"><span class="math inline">\(-2.78\ (0.16)\)</span></td>
+<td style="text-align: right;">Add tie: <strong>6%</strong>; no change: 94%</td>
 </tr>
 <tr class="even">
-<td>Reciprocity</td>
-<td style="text-align: right;">2.48</td>
-<td style="text-align: right;">0.22</td>
-<td>Strong returned nominations</td>
+<td>Return a nomination</td>
+<td style="text-align: right;"><span class="math inline">\(2.48\ (0.22)\)</span></td>
+<td style="text-align: right;">Return it: <strong>92%</strong>; do not: 8%</td>
 </tr>
 <tr class="odd">
-<td>Transitive triplets</td>
-<td style="text-align: right;">0.66</td>
-<td style="text-align: right;">0.15</td>
-<td>Friend-of-friend closure</td>
+<td>Close one friend-of-friend path</td>
+<td style="text-align: right;"><span class="math inline">\(0.66\ (0.15)\)</span></td>
+<td style="text-align: right;">Close it: <strong>66%</strong>; do not: 34%</td>
 </tr>
 <tr class="even">
-<td>Three-cycles</td>
-<td style="text-align: right;">-0.09</td>
-<td style="text-align: right;">0.29</td>
-<td>No clear cycle pattern</td>
+<td>Create one three-cycle</td>
+<td style="text-align: right;"><span class="math inline">\(-0.09\ (0.29)\)</span></td>
+<td style="text-align: right;">Cycle: 48%; no cycle: 52%</td>
 </tr>
 <tr class="odd">
-<td>Same baseline smoking</td>
-<td style="text-align: right;">0.14</td>
-<td style="text-align: right;">0.15</td>
-<td>No clear smoking pattern</td>
+<td>Choose someone with the same baseline smoking</td>
+<td style="text-align: right;"><span class="math inline">\(0.14\ (0.15)\)</span></td>
+<td style="text-align: right;">Same: 53%; different: 47%</td>
 </tr>
 </tbody>
 </table>
 <div class="bottom-line">
-<p>The overall convergence ratio is <strong>0.063</strong>, well below 0.25. The targeted statistics match closely enough to interpret the coefficients, but convergence does not establish that the model is correct or causal.</p>
+<p>These are teaching comparisons, not fitted friendship probabilities. Real micro-steps include every eligible addition, removal, and no change in the denominator. The overall convergence ratio is <strong>0.063</strong>.</p>
 </div>
 <aside class="notes">
 <p>Estimate divided by standard error is a rough uncertainty check. Outdegree, reciprocity, and transitive triplets are clearly separated from zero. Three-cycles and same baseline smoking are not. The convergence t-ratios are estimation diagnostics, not hypothesis tests.</p>
@@ -1428,13 +1428,14 @@ display:block!important;
 <p>Adding <span class="math inline">\(i\rightarrow j\)</span> returns the nomination and creates reciprocity.</p>
 </div>
 </div>
+<p>If these were the only two otherwise comparable choices,</p>
 <p><span class="math display">\[
-\frac{\text{relative weight of reciprocating move}}
-{\text{relative weight of otherwise comparable move}}
-=\exp(2.48)\approx 11.9
+\Pr(\text{return nomination})
+=\frac{\exp(2.48)}{1+\exp(2.48)}
+\approx .92.
 \]</span></p>
 <div class="bottom-line">
-<p>A move that returns an existing nomination receives about twelve times the relative choice weight of an otherwise comparable nonreciprocating move.</p>
+<p>In the two-option illustration, about 92 percent of the probability goes to returning the nomination and 8 percent to the otherwise comparable alternative. With the full choice set, those probabilities change, although their 11.9-to-1 relative weight remains.</p>
 </div>
 <aside class="notes">
 <p>Do not say that students are twelve times more likely to be friends. The actual probability depends on every available action and every included statistic. The comparison is between two candidate micro-steps that differ by one unit of reciprocity.</p>
@@ -1462,12 +1463,14 @@ display:block!important;
 <p><span class="math display">\[
 \text{Alice}\rightarrow\text{Cara}.
 \]</span></p>
-<p>For each additional transitive triplet created by a proposed nomination,</p>
+<p>If Alice chooses only between this move and an otherwise comparable move that closes no path,</p>
 <p><span class="math display">\[
-\exp(0.66)\approx 1.94.
+\Pr(\text{close one path})
+=\frac{\exp(0.66)}{1+\exp(0.66)}
+\approx .66.
 \]</span></p>
 <div class="bottom-line">
-<p>A move that closes one friend-of-a-friend path receives about twice the relative weight of an otherwise comparable move that closes none. If one nomination closes several paths, their contributions accumulate.</p>
+<p>In this two-option illustration, about 66 percent of the probability goes to the path-closing move. The full fitted probability also depends on every other available action. If one nomination closes several paths, their contributions accumulate.</p>
 </div>
 <aside class="notes">
 <p>This is the fitted transitive-closure pattern. It describes which candidate changes receive more weight under the model. It does not prove that students consciously searched through friends’ friendship lists.</p>
@@ -1564,6 +1567,64 @@ display:block!important;
 </div>
 <aside class="notes">
 <p>This slide now completes the interpretation sequence after the separate reciprocity and transitivity examples. If the two patterns nearly always occur together, their separate estimates will be less precise.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="microstep-probability" class="slide level2">
+<h2>Turning Choice Weights Into a Micro-Step Probability</h2>
+<p>To see the denominator, imagine Alice temporarily has only three options:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Candidate action</th>
+<th style="text-align: right;">Score change</th>
+<th style="text-align: right;">Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Make no change</td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\exp(0)=1.00\)</span></td>
+</tr>
+<tr class="even">
+<td>Nominate Cara</td>
+<td style="text-align: right;"><span class="math inline">\(1.02\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\exp(1.02)=2.77\)</span></td>
+</tr>
+<tr class="odd">
+<td>Nominate Dana, with no other pattern created</td>
+<td style="text-align: right;"><span class="math inline">\(-2.78\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\exp(-2.78)=0.06\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[
+\Pr(\text{nominate Cara}\mid\text{these three options})
+=\frac{2.77}{1.00+2.77+0.06}\approx .72
+\]</span></p>
+<div class="bottom-line">
+<p>The 72 percent belongs only to this simplified three-option choice set at one modeled opportunity. In the fitted SAOM, Alice can have many possible additions, removals, and no change. Their weights all enter the denominator, so 2.77 alone is not a probability.</p>
+</div>
+<div class="slide-link">
+<p><a href="day12_saom.html#b3" class="walkthrough-link" target="_blank">Calculate the normalized probability</a></p>
+</div>
+<aside class="notes">
+<p>This is the probability conditional on Alice receiving an opportunity and on the stated candidate set. It is not the probability that the tie exists at the next observed wave.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
