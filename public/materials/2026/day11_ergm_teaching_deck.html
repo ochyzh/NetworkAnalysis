@@ -1648,24 +1648,27 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="stability-coding" class="slide level2">
-<h2>Stability Uses a Two-Unit Contrast</h2>
-<p>For <code>memory(type = &quot;stability&quot;)</code>:</p>
+<h2>Stability Favors Keeping the Previous Dyadic State</h2>
+<p>Compare two otherwise similar student pairs, one previously friends and one previously not.</p>
 <div class="comparison-row">
-<div class="comparison-card">
-<p><span class="card-title">Lagged Tie Present</span></p>
-<p>Current-tie log-odds contribution: <span class="math inline">\(+\theta\)</span></p>
+<div class="comparison-card" style="min-height: 6.2em; padding: 0.6em;">
+<p><span class="card-title">Previously Friends</span></p>
+<p>If they are friends now, the pair remains in the same state.</p>
+<p>Current-friendship contribution: <span class="math inline">\(+\theta\)</span></p>
 </div>
-<div class="comparison-card accent-card">
-<p><span class="card-title">Lagged Tie Absent</span></p>
-<p>Current-tie log-odds contribution: <span class="math inline">\(-\theta\)</span></p>
+<div class="comparison-card accent-card" style="min-height: 6.2em; padding: 0.6em;">
+<p><span class="card-title">Previously Not Friends</span></p>
+<p>If they are friends now, the pair changes from its previous state.</p>
+<p>Current-friendship contribution: <span class="math inline">\(-\theta\)</span></p>
 </div>
 </div>
-<p><span class="math display">\[\text{Previously tied versus previously untied}=2\theta\]</span></p>
+<p><span class="math display">\[\text{Difference in current-friendship log-odds}=\theta-(-\theta)=2\theta\]</span></p>
+<p>The corresponding odds ratio is <span class="math inline">\(\exp(2\theta)\)</span>.</p>
 <div class="bottom-line">
-<p>Stability combines persistence of ties and persistence of non-ties. It is not a tie-survival coefficient by itself.</p>
+<p>A positive <span class="math inline">\(\theta\)</span> makes existing friendships more likely to remain and previously absent friendships less likely to form. Stability captures resistance to both kinds of change, not only friendship survival.</p>
 </div>
 <aside class="notes">
-<p>This coding is easy to misread. I will stop here and calculate the two linear predictors explicitly before showing the fitted model.</p>
+<p>The comparison is between two possible student pairs, not between two coefficients. Every other term is held fixed. The stability term contributes positively when the current friendship matches the previous state and negatively when it changes that state. Absolute probabilities still depend on the rest of the model.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
