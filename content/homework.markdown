@@ -91,9 +91,9 @@ Homework assignments and supporting files are posted here as they become availab
       </tr>
       <tr>
         <td>
-          <strong>Homework 4: Stochastic Actor-Oriented Models</strong>
+          <strong>Homework 4: Longitudinal Networks or a Research Conversation</strong>
         </td>
-        <td><span class="homework-status">Materials coming soon</span></td>
+        <td><a href="../materials/2026/hw4_saom.html" target="_blank">View assignment</a> | <a href="../materials/2026/hw4_saom.zip" download>Download assignment files</a></td>
       </tr>
       </tbody>
   </table>
