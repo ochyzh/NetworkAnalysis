@@ -1223,13 +1223,13 @@ display:block!important;
 </div>
 </div>
 <div class="bottom-line">
-<p>Use this lens when the coefficient definition is the target and dependence is primarily an uncertainty problem you can defend with robust asymptotics.</p>
+<p>Here, same location, ideological similarity, and combined group size remain clearly associated with cooperation. DCR leaves the estimates fixed and changes the intervals, which can widen or narrow by term.</p>
 </div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-glm" class="walkthrough-link" target="_blank">Fit the GLM and DCR lens</a></p>
 </div>
 <aside class="notes">
-<p>Naive and DCR intervals side by side. Name the source of uncertainty and the small-actor limitation. This is the least invasive lens because it leaves the conditional mean unchanged.</p>
+<p>The GLM uses one row per unordered pair and sums actor covariates across both endpoints, matching the symmetric models. Put naive and DCR intervals side by side. The power-difference interval widens across zero, while several other intervals narrow. Name the shared-actor source of uncertainty and the 30-actor limitation. DCR leaves the conditional mean unchanged.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1244,7 +1244,7 @@ display:block!important;
 </section>
 <section id="srm" class="slide level2">
 <h2>Lens 1: SRM Locates Organization-Level Dependence</h2>
-<p><span class="math display">\[\eta_{ij}=x_{ij}^{\mathsf T}\beta+a_i+a_j+\epsilon_{ij}\]</span></p>
+<p><span class="math display">\[\eta_{ij}=x_{ij}^{\mathsf T}\beta+a_i+a_j\]</span></p>
 <p>Because this cooperation network is undirected, the SRM asks:</p>
 <ul>
 <li>Which organizations cooperate with more partners than the measured covariates predict?</li>
@@ -1300,7 +1300,7 @@ display:block!important;
 </tbody>
 </table>
 <div class="say-it">
-<p>ANF and ASIM form the two-organization core. The other 28 organizations are compressed into one heterogeneous periphery. This is not evidence of two coalition communities.</p>
+<p>ANF and ASIM form a two-organization core, so 0.96 rests on one possible dyad and is highly unstable. The other 28 organizations form one heterogeneous periphery. This is a hub-versus-periphery summary, not two coalition communities.</p>
 </div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-blocks" class="walkthrough-link" target="_blank">Fit the blockmodel lens</a></p>
@@ -1321,7 +1321,7 @@ display:block!important;
 </section>
 <section id="ame" class="slide level2">
 <h2>Lens 3: AME Adds a Relational Surface</h2>
-<p><span class="math display">\[\eta_{ij}=x_{ij}^{\mathsf T}\beta+a_i+b_j+u_i^{\mathsf T}v_j\]</span></p>
+<p><span class="math display">\[\eta_{ij}=x_{ij}^{\mathsf T}\beta+a_i+a_j+u_i^{\mathsf T}\Lambda u_j\]</span></p>
 <div class="columns">
 <div class="column" style="width:48%;">
 <p><span class="card-title">Adjustment use</span></p>
@@ -1334,7 +1334,7 @@ display:block!important;
 <p><a href="day14_capstone.html#sec-ame" class="walkthrough-link" target="_blank">Fit the AME lens</a></p>
 </div>
 <aside class="notes">
-<p>Shared location remains positive and power difference remains negative. Ideological distance becomes uncertain once the latent surface competes to explain the same pairs. Keep coordinates separate from invariant fitted quantities.</p>
+<p>Shared location remains positive and power difference remains negative. Ideological distance becomes uncertain once the latent surface competes to explain the same pairs. The walkthrough displays coefficient effective sample sizes from the longer teaching chain. Keep coordinates separate from invariant fitted quantities, and use independently initialized chains for research.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1351,13 +1351,12 @@ display:block!important;
 <h2>Lens 4: ERGM Makes Configurations Explicit</h2>
 <p><span class="math display">\[\Pr(Y=y)\propto\exp\{\theta^{\mathsf T}g(y)\}\]</span></p>
 <div class="big-question">
-<p>Is closure itself the feature we need to parameterize, or is it a pattern that actor effects and latent similarity already explain?</p>
+<p>Does a shared-partner statistic retain a conditional association after actor heterogeneity is represented?</p>
 </div>
 <p>Use change statistics and simulation to interpret:</p>
 <ul>
 <li>Edges and covariates</li>
-<li>Reciprocity</li>
-<li>Degree-related terms</li>
+<li>Actor sociality and degree-related terms</li>
 <li>Geometrically weighted closure</li>
 </ul>
 <div class="slide-link">
@@ -1382,7 +1381,7 @@ display:block!important;
 <div class="comparison-row">
 <div class="comparison-card">
 <p><span class="card-title">Initial ERGM</span></p>
-<p>Without organization-level sociality, the GWESP estimate is 1.38 and looks like strong closure.</p>
+<p>Without organization-level sociality, the GWESP estimate is 1.38 and looks like a strong shared-partner association.</p>
 </div>
 <div class="comparison-card accent-card">
 <p><span class="card-title">ERGM with sociality</span></p>
@@ -1420,14 +1419,11 @@ display:block!important;
 <div class="bottom-line">
 <p>Predictive fit is one column in the table. It is not a universal ranking of models with different targets.</p>
 </div>
-<div class="say-it">
-<p>An ERGM statistic can represent a hypothesized dependence process, but an estimated coefficient and good simulation fit do not by themselves prove that behavioral mechanism.</p>
-</div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-payoff" class="walkthrough-link" target="_blank">Read the payoff table</a></p>
 </div>
 <aside class="notes">
-<p>Payoff table: one covariate row and one dependence feature. Question: why should coefficient magnitudes differ when conditioning sets differ?</p>
+<p>Payoff table: one covariate row and one dependence feature. Question: why should coefficient magnitudes differ when conditioning sets differ? Remind students that an ERGM statistic can represent a hypothesized process, but an estimated coefficient and good simulation fit do not prove that behavioral mechanism.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1441,7 +1437,7 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="framework" class="slide level2">
-<h2>The Decision Framework Begins With Data Structure</h2>
+<h2>After Naming the Target, Preserve the Data Structure</h2>
 <div class="metric-row">
 <div class="metric-card">
 <p><span class="metric-label">One snapshot</span></p>
@@ -1468,7 +1464,7 @@ display:block!important;
 <p><a href="day14_capstone.html#sec-framework" class="walkthrough-link" target="_blank">Use the decision framework</a></p>
 </div>
 <aside class="notes">
-<p>Start with what was observed, not what can be coerced into a familiar matrix. Pooling an event stream into a snapshot can remove the temporal question before modeling begins.</p>
+<p>The estimand comes first. Next, preserve what was observed rather than coercing it into a familiar matrix. Pooling an event stream into a snapshot can remove the temporal question before modeling begins.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1508,15 +1504,15 @@ display:block!important;
 </section>
 <section id="rem" class="slide level2">
 <h2>Relational Event Models Keep the Event Stream</h2>
-<p>Rather than aggregating events into panel waves, a relational event model asks which dyad experiences the next event and when.</p>
+<p>Rather than aggregating events into panel waves, a relational event model keeps the event sequence. The ordinal model used here asks which eligible dyad produces the next event and does not use the waiting times.</p>
 <div class="comparison-row">
 <div class="comparison-card">
 <p><span class="card-title">Risk set</span></p>
-<p>Which dyads could experience an event at each instant?</p>
+<p>Which dyads could produce the next event?</p>
 </div>
 <div class="comparison-card accent-card">
 <p><span class="card-title">Event history</span></p>
-<p>How do recency, repetition, reciprocity, and participation shifts alter the hazard?</p>
+<p>How do recency, repetition, reciprocity, and participation shifts alter the relative chance of being next?</p>
 </div>
 </div>
 <div class="slide-link">
@@ -1562,7 +1558,7 @@ display:block!important;
 </div>
 <div class="comparison-card accent-card">
 <p><span class="card-title">Directed influence</span></p>
-<p>Changes in actor <span class="math inline">\(k\)</span> predict later changes in actor <span class="math inline">\(i\)</span> after accounting for the dynamic model.</p>
+<p>Actor <span class="math inline">\(k\)</span>’s prior activity predicts actor <span class="math inline">\(i\)</span>’s later activity after accounting for the dynamic model.</p>
 </div>
 </div>
 <div class="bottom-line">
@@ -1592,7 +1588,7 @@ display:block!important;
 \eta_{ijt}=z_{ijt}^{\mathsf T}\theta+(A X_t B^{\mathsf T})_{ij},
 \qquad
 \ell=\sum_{t,i\ne j}
-\left[Y_{ijt}\eta_{ijt}-\exp(\eta_{ijt})-\log(Y_{ijt}!)\right].
+\left[Y_{ijt}\eta_{ijt}-\exp(\eta_{ijt})\right]+\text{constant in }Y.
 \]</span></p>
 <p>The default engine alternates two familiar GLM jobs:</p>
 <ol type="1">
@@ -1601,32 +1597,284 @@ display:block!important;
 <li>Repeat until the likelihood and coefficients stabilize.</li>
 </ol>
 <div class="mini-caution">
-<p>The constraint <span class="math inline">\(\alpha_1=1\)</span> fixes the bilinear scale. Cluster-robust uncertainty is calculated after fitting and does not change the maximum-likelihood point estimate.</p>
+<p>The reported coordinates use <span class="math inline">\(\alpha_1=1\)</span>. The invariant target is <span class="math inline">\(C=\alpha\beta^{\mathsf T}\)</span> and the fitted means. Actor-clustered uncertainty stacks each dyad-period score onto both endpoint actors and does not change the maximum-likelihood point estimate.</p>
 </div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-sir-estimation" class="walkthrough-link" target="_blank">See How SIR Is Estimated</a></p>
 </div>
+<aside class="notes">
+<p>The displayed likelihood omits the additive term that depends only on the observed counts. The alternating engine normalizes to alpha-1 equals 1 for reporting, while the channel matrix C and fitted means stay invariant. The default sandwich clusters score contributions by both endpoint actors, not by time period.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
-<section id="layers" class="slide level2">
-<h2>Multilayer and Bipartite Networks Change the Unit</h2>
-<p>Examples:</p>
-<ul>
-<li>People connected through organizations</li>
-<li>States linked by trade, conflict, and alliances</li>
-<li>Authors connected to papers</li>
-<li>Legislators connected to bills</li>
-</ul>
-<div class="room-prompt compact-prompt">
-<p>Is a projected one-mode network the outcome of interest, or did projection discard the actors and events that generate the relation?</p>
+<section id="layer-index" class="slide level2">
+<h2>Layers and Modes Add Different Indices</h2>
+<div class="comparison-row">
+<div class="comparison-card">
+<p><span class="card-title">Multilayer tensor</span></p>
+<p><span class="math display">\[Y_{ij\ell}\]</span></p>
+<p>The same source <span class="math inline">\(i\)</span> and target <span class="math inline">\(j\)</span>, with relation type <span class="math inline">\(\ell\)</span> kept visible.</p>
 </div>
+<div class="comparison-card accent-card">
+<p><span class="card-title">Bipartite matrix</span></p>
+<p><span class="math display">\[B_{ia}\]</span></p>
+<p>Actor <span class="math inline">\(i\)</span> linked to a different kind of unit <span class="math inline">\(a\)</span>, such as an event, treaty, or organization.</p>
+</div>
+</div>
+<p>With repeated years, a multilayer panel becomes <span class="math inline">\(Y_{ij\ell t}\)</span>.</p>
 <div class="bottom-line">
-<p>Preserve modes and layers when they are part of the theory. Projection is a measurement decision, not a harmless preprocessing step.</p>
+<p>A layer label distinguishes relations. A bipartite mode distinguishes kinds of units.</p>
 </div>
 <div class="slide-link">
-<p><a href="day14_capstone.html#sec-layers" class="walkthrough-link" target="_blank">Open the multilayer lane</a></p>
+<p><a href="day14_capstone.html#sec-layer-index" class="walkthrough-link" target="_blank">Keep the extra index visible</a></p>
 </div>
 <aside class="notes">
-<p>Day 8 two-mode connection. Question: what information and dependence does projection create, especially when popular events connect many actors mechanically?</p>
+<p>This is the new move beyond a stack of separate matrices. Ask what a layer means in the data, then contrast it with a true actor-by-event matrix.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="layer-measurement" class="slide level2">
+<h2>Do Not Flatten Away the Question</h2>
+<p>Collapsing verbal cooperation, material cooperation, verbal conflict, and material conflict into “any interaction” changes the outcome.</p>
+<p>Fitting four separate networks preserves the outcomes but cannot estimate:</p>
+<ul>
+<li>A source profile shared across relations</li>
+<li>A target profile shared across relations</li>
+<li>Which layers express the same relational component</li>
+<li>Residual dependence between layers</li>
+</ul>
+<div class="say-it">
+<p>Keep the layer index when the question concerns whether the same dyadic pattern appears in several kinds of interaction.</p>
+</div>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-layer-index" class="walkthrough-link" target="_blank">See the four ICEWS layers</a></p>
+</div>
+<aside class="notes">
+<p>Flattening answers whether any recorded interaction occurred. That may be a legitimate outcome, but it cannot answer whether cooperation and conflict share a dyadic profile. Separate fits preserve the labels but do not estimate cross-layer dependence.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="tensor-model" class="slide level2">
+<h2>A Joint Multilinear Model Shares Actor Profiles</h2>
+<p><span class="math display">\[
+\eta_{ij\ell}
+=x_{ij\ell}^{\mathsf T}\beta_\ell
++a_{i\ell}+b_{j\ell}
++\sum_{r=1}^{R}u_{ir}v_{jr}w_{\ell r}.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\beta_\ell\)</span>: relation-specific measured associations</li>
+<li><span class="math inline">\(a_{i\ell},b_{j\ell}\)</span>: layer-specific source activity and target exposure</li>
+<li><span class="math inline">\(u_{ir},v_{jr}\)</span>: source and target profiles shared across layers</li>
+<li><span class="math inline">\(w_{\ell r}\)</span>: how strongly layer <span class="math inline">\(\ell\)</span> expresses component <span class="math inline">\(r\)</span></li>
+</ul>
+<div class="bottom-line">
+<p>Separate fits have no <span class="math inline">\(w_{\ell r}\)</span> and therefore cannot estimate what the layers share.</p>
+</div>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-tensor-model" class="walkthrough-link" target="_blank">Read the joint model</a></p>
+</div>
+<aside class="notes">
+<p>Walk left to right. The measured associations and additive effects are layer-specific. The shared U and V profiles connect the actor pairs across layers, while W says where each profile appears. The layer loading is what separate models cannot estimate.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="tensor-estimation" class="slide level2">
+<h2>What the Tensor Estimator Optimizes</h2>
+<p>For the Gaussian working model:</p>
+<p><span class="math display">\[
+\min \sum_{i\ne j,\ell}
+\left(Y^*_{ij\ell}-\eta_{ij\ell}\right)^2.
+\]</span></p>
+<p>Alternating least squares:</p>
+<ol type="1">
+<li>Hold <span class="math inline">\(V\)</span> and <span class="math inline">\(W\)</span> fixed, then update <span class="math inline">\(U\)</span>.</li>
+<li>Hold <span class="math inline">\(U\)</span> and <span class="math inline">\(W\)</span> fixed, then update <span class="math inline">\(V\)</span>.</li>
+<li>Hold <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> fixed, then update <span class="math inline">\(W\)</span> and the additive effects.</li>
+<li>Repeat from several starts until the objective stops improving.</li>
+</ol>
+<div class="mini-caution">
+<p>Binary and count versions change the likelihood and updates. Components can switch order, sign, and scale, so interpret the fitted surface and normalized layer loadings.</p>
+</div>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-tensor-result" class="walkthrough-link" target="_blank">Open the reproducible rank-2 fit</a></p>
+</div>
+<aside class="notes">
+<p>Name the objective before the algorithm. For this transformed Gaussian example, the fit minimizes joint squared error. Alternating updates make each subproblem familiar, but the full objective is not jointly convex, so starts and held-out rank comparisons matter.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="layer-overlap" class="slide level2">
+<h2>Overlap Needs a Density Benchmark</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer Pair</th>
+<th style="text-align: right;">Threshold</th>
+<th style="text-align: right;">Jaccard</th>
+<th style="text-align: right;">Overlap Lift</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Verbal conflict with material conflict</td>
+<td style="text-align: right;">At least 1 event</td>
+<td style="text-align: right;">0.385</td>
+<td style="text-align: right;">4.91</td>
+</tr>
+<tr class="even">
+<td>Verbal conflict with material conflict</td>
+<td style="text-align: right;">At least 5 events</td>
+<td style="text-align: right;">0.402</td>
+<td style="text-align: right;">16.39</td>
+</tr>
+</tbody>
+</table>
+<p>Overlap lift compares the observed joint-tie rate with the rate expected from the two layer densities under independence.</p>
+<div class="say-it">
+<p>The same dyads record verbal and material conflict much more often than density alone predicts. That can reflect escalation, common attention, or persistent high-activity pairs. It is not a causal sequence.</p>
+</div>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-layer-overlap" class="walkthrough-link" target="_blank">Reproduce the threshold-aware benchmark</a></p>
+</div>
+<aside class="notes">
+<p>Jaccard answers how much two binary layers overlap. Lift asks whether that overlap exceeds what their densities alone would generate under dyad-level independence. The result survives a five-event threshold, but it still cannot distinguish escalation from attention and measurement.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="tensor-result" class="slide level2">
+<h2>The Joint Fit Finds Shared Dyadic Profiles</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th style="text-align: right;">Component 1</th>
+<th style="text-align: right;">Component 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Verbal cooperation</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">0.86</td>
+</tr>
+<tr class="even">
+<td>Material cooperation</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">0.86</td>
+</tr>
+<tr class="odd">
+<td>Verbal conflict</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.98</td>
+</tr>
+<tr class="even">
+<td>Material conflict</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+<p>The rank-2 surface accounts for about 23% of transformed variation left after layer-specific source and target effects.</p>
+<ul>
+<li>Component 1 centers on high-activity dyads involving the United States.</li>
+<li>Component 2 centers on dyads involving Iran, Israel, Lebanon, Egypt, and Iraq.</li>
+<li>Both profiles appear across cooperation and conflict rather than forming a clean cooperation-versus-conflict axis.</li>
+</ul>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-tensor-result" class="walkthrough-link" target="_blank">Inspect the fitted component surface</a></p>
+</div>
+<aside class="notes">
+<p>The useful result is the absence of a neat cooperation-versus-conflict axis. The same high-activity and Middle East-centered pair profiles recur across relation types. Keep the result descriptive because this is a rank-2 in-sample approximation without parameter intervals.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="bipartite" class="slide level2">
+<h2>Bipartite Data Preserve Who Joined What</h2>
+<p>For <span class="math inline">\(B_{ia}=1\)</span>, actor <span class="math inline">\(i\)</span> participated in event or affiliation <span class="math inline">\(a\)</span>.</p>
+<p>The projection</p>
+<p><span class="math display">\[BB^{\mathsf T}\]</span></p>
+<p>counts shared events between actors. One event with many participants mechanically creates a clique in the projected actor network.</p>
+<div class="room-prompt compact-prompt">
+<p>Is participation in events the outcome, or is an independently defined actor-to-actor relation the outcome?</p>
+</div>
+<div class="bottom-line">
+<p>Use a native bipartite model when participation is the question. Projection is a new outcome, not harmless preprocessing.</p>
+</div>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-bipartite" class="walkthrough-link" target="_blank">Keep the bipartite unit</a></p>
+</div>
+<aside class="notes">
+<p>Return to the unit. If the observation is group participation in an operation, B is the observed network. BB-transpose is a derived shared-event count. A large event creates every pair in its projected clique, so triangles there are partly arithmetic.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1650,13 +1898,13 @@ display:block!important;
 <li>Is prediction more realistic than full structural interpretation?</li>
 </ul>
 <div class="say-it">
-<p>Computational shortcuts also encode statistical approximations. Name what dependence they discard.</p>
+<p>There is no universal maximum network size. Every computational shortcut makes a statistical approximation, so say what dependence it discards.</p>
 </div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-scale" class="walkthrough-link" target="_blank">Open the scale discussion</a></p>
 </div>
 <aside class="notes">
-<p>Brief mention of adjacent network econometrics and machine learning. The focus remains on estimands and asymptotic units, not a reading-list detour.</p>
+<p>For scale, name the object that grows and what an approximation discards. In the adjacent literatures, separate conditional-mean choices such as fixed effects from uncertainty choices such as actor clustering. Prediction tools and inferential models have different usual objectives, but neither family is automatically identified or uninterpretable.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;

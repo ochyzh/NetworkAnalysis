@@ -1589,7 +1589,7 @@ display:block!important;
 <thead>
 <tr class="header">
 <th>Initially absent same-smoking nominations</th>
-<th style="text-align: right;">Predicted next-wave formation</th>
+<th style="text-align: right;">Probability present at next wave</th>
 </tr>
 </thead>
 <tbody>
@@ -1608,10 +1608,7 @@ display:block!important;
 </tbody>
 </table>
 <div class="bottom-line">
-<p>At the point estimates, the fitted same-smoking term raises the model-implied probability that an initially absent same-smoking nomination exists at the next wave by about 0.6 percentage points.</p>
-</div>
-<div class="mini-caution">
-<p>This is a small point-estimate summary. The coefficient is 0.14 with SE 0.15, so the data do not show a clear smoking-similarity pattern.</p>
+<p>At the point estimates, including the same-smoking term raises the probability that an initially absent nomination is present at the next wave by 0.58 percentage points. Its estimate is 0.14 with SE 0.15, so the data do not show a clear smoking-similarity pattern.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#saom-first-differences" class="walkthrough-link" target="_blank">Define and interpret a simulated first difference</a></p>
@@ -1699,51 +1696,89 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="saved-simulation-probabilities" class="slide level2">
-<h2>What the Fitted Process Predicts by the Next Wave</h2>
-<p>The fitted object contains 1,000 simulated end-of-interval networks.</p>
+<section id="average-first-differences" class="slide level2">
+<h2>Put the Selection Result on a Probability Scale</h2>
+<p>Simulate the fitted model, then simulate it again with only the drinking-similarity selection term set to zero.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 27%">
-<col style="width: 36%">
-<col style="width: 36%">
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Starting condition</th>
-<th style="text-align: right;">Waves 1 to 2</th>
-<th style="text-align: right;">Waves 2 to 3</th>
+<th>Starting pair, among absent nominations</th>
+<th style="text-align: right;">Selection term set to zero</th>
+<th style="text-align: right;">Fitted model</th>
+<th style="text-align: right;">Average change</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Absent nomination exists at next wave</td>
-<td style="text-align: right;"><strong>2.6%</strong> predicted; 2.5% observed</td>
-<td style="text-align: right;"><strong>2.3%</strong> predicted; 2.4% observed</td>
+<td>Same reported drinking level</td>
+<td style="text-align: right;">2.04%</td>
+<td style="text-align: right;">3.42%</td>
+<td style="text-align: right;"><strong>+1.38 percentage points</strong></td>
 </tr>
 <tr class="even">
-<td>Existing nomination remains at next wave</td>
-<td style="text-align: right;"><strong>51.9%</strong> predicted; 50.4% observed</td>
-<td style="text-align: right;"><strong>55.7%</strong> predicted; 56.9% observed</td>
-</tr>
-<tr class="odd">
-<td>Student reports higher drinking</td>
-<td style="text-align: right;"><strong>33.0%</strong> predicted; 32.0% observed</td>
-<td style="text-align: right;"><strong>35.6%</strong> predicted; 36.0% observed</td>
+<td>At least two categories apart</td>
+<td style="text-align: right;">1.82%</td>
+<td style="text-align: right;">1.55%</td>
+<td style="text-align: right;"><strong>−0.27 percentage points</strong></td>
 </tr>
 </tbody>
 </table>
 <div class="bottom-line">
-<p>For each initially absent nomination, its predicted formation probability is the proportion of simulated next-wave networks in which that nomination exists. Persistence is calculated separately for nominations already present.</p>
-</div>
-<div class="mini-caution">
-<p>These are in-sample, model-implied probabilities. They summarize the whole fitted process and are neither holdout forecasts nor causal effects of one coefficient.</p>
+<p>At the fitted point estimates, including the selection term raises next-wave presence for nominations between students reporting the same drinking level and lowers it for students at least two categories apart. These are model-based average first differences, not causal effects.</p>
 </div>
 <div class="slide-link">
-<p><a href="day12_saom.html#saved-predictions" class="walkthrough-link" target="_blank">Extract and interpret the saved simulations</a></p>
+<p><a href="day12_saom.html#average-first-differences" class="walkthrough-link" target="_blank">See exactly how the average first differences are simulated</a></p>
 </div>
 <aside class="notes">
-<p>The close observed-predicted averages are a calibration summary, not a complete GOF test. The next section checks richer distributions and triadic structure.</p>
+<p>Both scenarios begin from the same observed waves, retain the fitted rates and all other coefficients, and use 1,000 unconditional simulations. Do not average over all absent nominations because the centered similarity term raises formation for similar candidates and lowers it for dissimilar candidates. Those changes can cancel in a single pooled average.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="influence-first-difference" class="slide level2">
+<h2>Put the Influence Result on the Drinking Scale</h2>
+<p>For students who start with at least one friend and differ from their friends’ average, ask how far their simulated next-wave drinking ends from where those friends began. A smaller distance means closer.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Influence term set to zero</th>
+<th style="text-align: right;">Fitted model</th>
+<th style="text-align: right;">Average change</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.88 categories</td>
+<td style="text-align: right;">0.82 categories</td>
+<td style="text-align: right;"><strong>−0.06 categories</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="bottom-line">
+<p>Including the fitted influence term reduces the simulated distance to current friends’ starting average by about 0.06 response categories.</p>
+</div>
+<div class="mini-caution">
+<p>The influence estimate is 1.36 with SE 0.95. This small point-estimate contrast is not clear evidence of influence.</p>
+</div>
+<div class="slide-link">
+<p><a href="day12_saom.html#average-first-differences" class="walkthrough-link" target="_blank">See the outcome definition and simulation code</a></p>
+</div>
+<aside class="notes">
+<p>“Reports higher drinking” is the wrong outcome because movement toward friends can run upward or downward. This distance measure respects both directions. It is the SAOM analogue of a model-based outcome contrast, but it remains a term-ablation summary rather than a causal effect. Parameter uncertainty is not included on this slide.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
