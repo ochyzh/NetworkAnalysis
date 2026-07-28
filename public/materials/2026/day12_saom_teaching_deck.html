@@ -1104,20 +1104,45 @@ display:block!important;
 </section>
 <section id="preflight" class="slide level2">
 <h2>Pre-Flight Checks Come Before Fitting</h2>
-<p>Check:</p>
-<ol type="1">
-<li>The same actor population or a defensible composition rule across waves.</li>
-<li>Enough change between consecutive networks to estimate a process.</li>
-<li>No unexplained structural zeros, missing waves, or changing tie definitions.</li>
-<li>Behavior variables have valid ranges and enough movement.</li>
-<li>The network direction matches who is assumed to act.</li>
-</ol>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Data feature</th>
+<th>Question to settle before fitting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Actor composition</td>
+<td>Who was actually present and eligible during each interval?</td>
+</tr>
+<tr class="even">
+<td>Structural zero</td>
+<td>Which particular ties were genuinely impossible, not merely absent?</td>
+</tr>
+<tr class="odd">
+<td>Network change</td>
+<td>Is there enough continuity and change to estimate a process?</td>
+</tr>
+<tr class="even">
+<td>Measurement</td>
+<td>Are missingness, behavior ranges, direction, and tie definitions defensible?</td>
+</tr>
+</tbody>
+</table>
 <p><code>netify</code> verifies actor order, direction, and dimensions across the friendship waves before the RSiena array is created.</p>
+<div class="bottom-line">
+<p>A structural zero removes a particular tie from the possible choices. A composition-change object determines when an actor belongs to the modeled population. Joining or leaving is not a control variable.</p>
+</div>
 <div class="slide-link">
 <p><a href="day12_saom.html#a2" class="walkthrough-link" target="_blank">Run the data checks</a></p>
 </div>
 <aside class="notes">
-<p>Before the Siena object: inspect <code>s50</code> and the change statistics. The model cannot distinguish no opportunity, no observation, and a deliberate non-tie unless the data construction does.</p>
+<p>Use 10 only for a genuinely impossible dyad. Use sienaCompositionChange() for joiners and leavers. The latter changes the risk set across both network and behavior processes.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
