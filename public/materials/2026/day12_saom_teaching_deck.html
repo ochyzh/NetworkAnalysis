@@ -1752,23 +1752,64 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="score" class="slide level2">
-<h2>Score Tests Ask Whether an Omitted Effect Matters</h2>
-<div class="columns">
-<div class="column" style="width:48%;">
-<p><span class="card-title">Full refit</span></p>
-<p>Add the effect, estimate the expanded model, and reassess convergence and fit.</p>
-</div><div class="column" style="width:48%;">
-<p><span class="card-title">Score-type test</span></p>
-<p>Evaluate whether the omitted effect would improve the moment match near the restricted fit.</p>
-</div></div>
+<h2>A Score Test Temporarily Pins the New Effect at Zero</h2>
+<p>We want to know whether indegree popularity belongs in the model. The score test includes that statistic in the calculations but imposes</p>
+<p><span class="math display">\[
+\beta_{\text{popularity}}=0.
+\]</span></p>
+<div class="code-focus">
+<p><code>fix = TRUE</code> keeps the coefficient at zero.<br>
+<code>initialValue = 0</code> states the restricted value.<br>
+<code>test = TRUE</code> asks whether the model strains against that restriction.</p>
+</div>
 <div class="bottom-line">
-<p>A score test is a screening and diagnostic tool. A substantively important extension still deserves a fitted and checked model.</p>
+<p>RSiena compares the observed popularity-related change with what the restricted model simulates. A large mismatch means the coefficient appears to want to move away from zero.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#c3" class="walkthrough-link" target="_blank">Test without fitting</a></p>
 </div>
 <aside class="notes">
-<p>Walkthrough example: be explicit about what is held fixed. A nonsignificant score test is not proof that an effect is absent.</p>
+<p>The estimated value prints as 0.000 and its standard error as NA because the coefficient was fixed, not estimated. The score concerns the local pressure at zero.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="score-result" class="slide level2">
+<h2>What the Score Test Tells Us Here</h2>
+<p>For the indegree-popularity effect:</p>
+<p><span class="math display">\[
+\chi^2=5.27,\qquad p=.022.
+\]</span></p>
+<div class="say-it">
+<p>The observed friendship changes contain more popularity-related structure than the restricted model reproduces. Zero does not look adequate for this effect, so a freely estimated popularity term is worth investigating.</p>
+</div>
+<p>It does <strong>not</strong> tell us:</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<ul>
+<li>The coefficient’s direction or size</li>
+<li>Its standard error after estimation</li>
+<li>How other coefficients will change</li>
+</ul>
+</div><div class="column" style="width:48%;">
+<ul>
+<li>Whether the expanded model will converge</li>
+<li>Whether goodness-of-fit will improve</li>
+</ul>
+</div></div>
+<div class="mini-caution">
+<p>Use this as a screen. Then fit the expanded model and check convergence, estimates, and goodness-of-fit.</p>
+</div>
+<aside class="notes">
+<p>Do not interpret the one-sided Z sign substantively. Its sign depends on RSiena’s score convention. Estimate the expanded model to learn direction and magnitude.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
