@@ -1142,6 +1142,9 @@ Y_{ih}=\alpha+\tau Z_h+\lambda\,\text{Minneapolis}_h+\varepsilon_{ih}.
 <p><span class="math inline">\(\tau\)</span> is the within-household spillover contrast.</p>
 </div>
 </div>
+<div class="slide-link">
+<p><a href="day13_causal.html#sec-nickerson-estimation" class="walkthrough-link" target="_blank">See the fitted contrast</a></p>
+</div>
 <aside class="notes">
 <p>This is a linear probability model estimated by least squares. The coefficient is a difference in turnout probabilities. Randomized message assignment supplies the initial causal leverage, while contact-conditioned interpretation also needs the contact-selection assumption. City adjustment pools the two field experiments without pretending that their baseline turnout rates were identical.</p>
 <style type="text/css">
@@ -1203,6 +1206,9 @@ display:block!important;
 </blockquote>
 <div class="bottom-line">
 <p>The first is an intervention spillover relative to the recycling script. The second is a mediated behavioral-contagion claim that needs a well-defined mediator intervention, temporal ordering, and much stronger identification assumptions.</p>
+</div>
+<div class="slide-link">
+<p><a href="day13_causal.html#sec-nickerson-ratio" class="walkthrough-link" target="_blank">Read what the ratio does and does not identify</a></p>
 </div>
 <aside class="notes">
 <p>The ratio says the partner voting-versus-recycling estimate is roughly three-fifths as large as the answerer estimate. It is not an IV estimate of one person’s vote causing the other’s. The randomized voting-versus-recycling contrast does not require recycling to be inert. That extra assumption is needed only to reinterpret the estimate relative to no turnout-relevant message. The behavioral claim would require a well-defined and temporally ordered intervention on the answerer’s voting, no unmeasured mediator-outcome confounding, and an exclusion argument. An IV interpretation would also need relevance, monotonicity, and a clearly defined complier effect.</p>
@@ -1377,10 +1383,13 @@ display:block!important;
 \Pr(D_i=d,D_j=d&#39;).
 \]</span></p>
 <div class="bottom-line">
-<p>The first probability tells us how rare one unit’s exposure is. The second captures dependence between two units’ exposure conditions. Both come from the design and mapping.</p>
+<p>The first probability tells us how rare one unit’s exposure is. The second captures dependence between two units’ exposure conditions. Conservative design-based variance calculations use both because cross-condition covariance is not fully observed.</p>
+</div>
+<div class="slide-link">
+<p><a href="day13_causal.html#sec-ht-joint" class="walkthrough-link" target="_blank">See why joint exposure probabilities matter</a></p>
 </div>
 <aside class="notes">
-<p>The indicator turns on only for the observed condition. The inverse probability is the weight. Shared neighbors, fixed treatment totals, and other design features can make units enter exposure conditions together. Exact design-based uncertainty uses the joint probabilities, so independent-observation standard errors are generally not justified.</p>
+<p>The indicator turns on only for the observed condition. The inverse probability is the weight. Shared neighbors, fixed treatment totals, and other design features can make units enter exposure conditions together. Joint probabilities enter design-based variance calculations, but potential outcomes under two mutually exclusive conditions are never jointly observed. Aronow and Samii therefore use a conservative variance estimator rather than claiming the exact contrast variance is identified.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1429,7 +1438,7 @@ display:block!important;
 </section>
 <section id="paluck-design" class="slide level2">
 <h2>Case 2: Two Levels of Randomization in 56 Schools</h2>
-<p>Paluck, Shepherd, and Aronow (2016) randomized 28 of 56 schools, then randomized half of the seed-eligible students in program schools.</p>
+<p>Paluck, Shepherd, and Aronow (2016) randomized 28 of 56 schools, then assigned half of the seed-eligible students in program schools to receive an invitation to join the program.</p>
 <svg class="causal-svg" viewbox="0 0 1400 360" role="img" aria-labelledby="paluck-dag-title paluck-dag-desc">
 <title id="paluck-dag-title">
 Paluck school assignment and exposure construction
@@ -1440,7 +1449,7 @@ Paluck school assignment and exposure construction
 <p><a href="day13_causal.html#sec-paluck-design" class="walkthrough-link" target="_blank">Open the school design</a></p>
 </div>
 <aside class="notes">
-<p>Read the three inputs into the exposure condition. School assignment, assignments among eligible students, and the pretreatment friendship network jointly determine whether the student has own-assignment, peer-assignment, and school exposure. This is an exposure-construction diagram rather than a complete causal DAG. The outcome is self-reported wearing of the program wristband. Eligibility determines which conditions a student could reach, and the pretreatment network is essential because a network measured afterward could itself have changed in response to the program.</p>
+<p>Read the three inputs into the exposure condition. School assignment, assignments among eligible students, and the pretreatment friendship network jointly determine whether the student has own-assignment, peer-assignment, and school exposure. This is an exposure-construction diagram rather than a complete causal DAG. The outcome is self-reported wearing of the program wristband. Eligibility determines which conditions a student could reach, and the pretreatment network is essential because a network measured afterward could itself have changed in response to the program. Twenty-four percent of assigned seed students did not accept the invitation, so keep every result on the intention-to-treat assignment-exposure scale rather than actual participation.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1633,9 +1642,9 @@ display:block!important;
 <h2>Case 3: Monitoring Can Move Behavior Nearby</h2>
 <p>Ichino and Schündeln (2012):</p>
 <ul>
-<li>868 electoral areas in 39 Ghanaian constituencies</li>
+<li>868 electoral areas in 39 constituencies, blocked within four regions</li>
 <li>13 constituencies assigned to the observer program</li>
-<li>Roughly 25% of areas inside treated constituencies assigned an observer</li>
+<li>Roughly 25% of areas inside treated constituencies assigned to receive an observer visit</li>
 <li>Outcome: proportional registration growth from 2004 to 2008</li>
 </ul>
 <div class="big-question">
@@ -1750,42 +1759,37 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="ghana-scenarios" class="slide level2">
-<h2>Turn the Ghana Coefficients Into Intervention Scenarios</h2>
-<p>Evaluating the local-density counts at their zero reference values and assigning no observers in the 5-to-10-kilometer ring, relative to an area in a control constituency:</p>
+<h2>Nearby Assignment Has Different Slopes by Focal Assignment</h2>
+<p>Change one already nearby area from unassigned to assigned an observer, holding the number of nearby areas and the other terms fixed:</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 42%">
-<col style="width: 57%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Scenario</th>
-<th style="text-align: right;">Fitted Difference in Registration Growth</th>
+<th>Focal Area</th>
+<th style="text-align: right;">Fitted Change in Registration Growth</th>
+<th style="text-align: right;">95% Interval</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Area assigned an observer, none within 5 km</td>
-<td style="text-align: right;">-7.6 percentage points</td>
+<td>Not assigned an observer</td>
+<td style="text-align: right;">+2.7 pp</td>
+<td style="text-align: right;">[1.0, 4.4]</td>
 </tr>
 <tr class="even">
-<td>Area assigned an observer, one within 5 km</td>
-<td style="text-align: right;">-5.9 percentage points</td>
-</tr>
-<tr class="odd">
-<td>Area not assigned an observer, one within 5 km</td>
-<td style="text-align: right;">-1.4 percentage points</td>
+<td>Assigned an observer</td>
+<td style="text-align: right;">+1.7 pp</td>
+<td style="text-align: right;">[-1.2, 4.7]</td>
 </tr>
 </tbody>
 </table>
 <div class="bottom-line">
-<p>Within this sample and model, own-area assignment reduced fitted growth at the stated reference values, while the positive nearby-assignment slope is consistent with activity moving nearby.</p>
+<p>The positive nearby slope is clear for unassigned focal areas and smaller, with greater uncertainty, for assigned focal areas. This is consistent with strategic relocation, not direct proof of it.</p>
 </div>
 <div class="slide-link">
 <p><a href="day13_causal.html#sec-ghana-interpretation" class="walkthrough-link" target="_blank">Put the coefficients back into the intervention</a></p>
 </div>
 <aside class="notes">
-<p>The fitted gap is largest for an area assigned an observer with no assigned observer area within 5 kilometers. Once one such nearby assignment is added, the gap shrinks. These are published coefficient combinations evaluated with the 5-to-10-kilometer assigned count and the local-density counts set to zero.</p>
+<p>For an unassigned focal area, the nearby contrast is the 2.7-point main effect. For an assigned focal area, add the focal-by-nearby interaction, producing 1.7 points. The interval for the second combination crosses zero. Holding the total number of nearby areas fixed keeps the comparison feasible and avoids interpreting an artificial combination with one assigned nearby area but zero nearby areas in total.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1810,6 +1814,9 @@ display:block!important;
 </ul>
 <div class="bottom-line">
 <p>An identified effect on a proxy does not automatically identify the underlying behavior the proxy is meant to reveal.</p>
+</div>
+<div class="slide-link">
+<p><a href="day13_causal.html#sec-ghana-caution" class="walkthrough-link" target="_blank">Review the outcome and proxy caution</a></p>
 </div>
 <aside class="notes">
 <p>This is the outcome interpretation checkpoint. The randomized result is about growth in registered voters. The authors have reasons to interpret unusual growth as irregularity, but those reasons are a separate evidentiary step.</p>
@@ -1867,13 +1874,13 @@ Double-negative-control causal diagram
 <desc id="egami-dag-desc">Unmeasured network confounding points to the negative-control exposure, friends’ baseline GPA, the student’s later GPA, and the student’s baseline GPA. The negative-control exposure may predict friends’ GPA, and baseline GPA may predict later GPA. The target causal arrow runs from friends’ baseline GPA to later GPA. Identification rules out effects from friends’ baseline GPA to the student’s baseline GPA and direct effects from the negative-control exposure to later GPA or baseline GPA.</desc> <defs> <marker id="egami-arrow" markerwidth="12" markerheight="12" refx="10" refy="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#535054" /></marker> <marker id="egami-target-arrow" markerwidth="12" markerheight="12" refx="10" refy="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#008208" /></marker> </defs> <rect x="440" y="16" width="520" height="72" rx="15" fill="#535054" /> <text x="700" y="45" text-anchor="middle" font-size="23" font-weight="700" fill="#FFFFFF">Unmeasured network confounding</text> <text x="700" y="73" text-anchor="middle" font-size="19" fill="#FFFFFF">U: hidden selection and shared context</text> <path d="M570,88 C500,125 248,125 205,176" fill="none" stroke="#535054" stroke-width="4" marker-end="url(#egami-arrow)" /> <path d="M650,88 C625,125 575,125 550,176" fill="none" stroke="#535054" stroke-width="4" marker-end="url(#egami-arrow)" /> <path d="M750,88 C775,125 825,125 850,176" fill="none" stroke="#535054" stroke-width="4" marker-end="url(#egami-arrow)" /> <path d="M830,88 C900,125 1152,125 1195,176" fill="none" stroke="#535054" stroke-width="4" marker-end="url(#egami-arrow)" /> <rect x="35" y="185" width="340" height="108" rx="15" fill="#F2F2F2" stroke="#535054" stroke-width="4" /> <text x="205" y="217" text-anchor="middle" font-size="23" font-weight="700" fill="#18453B">Exposure control, Z</text> <text x="205" y="249" text-anchor="middle" font-size="20" fill="#000000">Peers-of-peers GPA</text> <text x="205" y="277" text-anchor="middle" font-size="20" fill="#000000">or peers’ headaches</text> <rect x="400" y="185" width="300" height="108" rx="15" fill="#18453B" /> <text x="550" y="223" text-anchor="middle" font-size="23" font-weight="700" fill="#FFFFFF">Focal exposure, A</text> <text x="550" y="256" text-anchor="middle" font-size="20" fill="#FFFFFF">Friends’ average</text> <text x="550" y="282" text-anchor="middle" font-size="20" fill="#FFFFFF">baseline GPA</text> <rect x="735" y="185" width="300" height="108" rx="15" fill="#E8F2F0" stroke="#008208" stroke-width="4" /> <text x="885" y="223" text-anchor="middle" font-size="23" font-weight="700" fill="#18453B">Outcome, Y</text> <text x="885" y="256" text-anchor="middle" font-size="20" fill="#000000">Student’s later</text> <text x="885" y="282" text-anchor="middle" font-size="20" fill="#000000">GPA</text> <rect x="1070" y="185" width="295" height="108" rx="15" fill="#EFF6E8" stroke="#7BBD00" stroke-width="4" /> <text x="1218" y="217" text-anchor="middle" font-size="22" font-weight="700" fill="#18453B">Outcome control, W</text> <text x="1218" y="249" text-anchor="middle" font-size="20" fill="#000000">Student’s own</text> <text x="1218" y="277" text-anchor="middle" font-size="20" fill="#000000">baseline GPA</text> <path d="M375,239 L385,239" fill="none" stroke="#535054" stroke-width="5" marker-end="url(#egami-arrow)" /> <path d="M700,239 L720,239" fill="none" stroke="#008208" stroke-width="7" marker-end="url(#egami-target-arrow)" /> <path d="M1070,239 L1050,239" fill="none" stroke="#535054" stroke-width="5" marker-end="url(#egami-arrow)" /> <text x="700" y="333" text-anchor="middle" font-size="21" font-weight="700" fill="#535054">Required exclusions: A does not affect W; Z does not directly affect Y or W.</text> <text x="700" y="364" text-anchor="middle" font-size="19" fill="#535054">Bridge and relevance assumptions are additional and cannot be read from the arrows alone.</text>
 </svg>
 <div class="bottom-line">
-<p>Under the exclusions, relevance or completeness, and bridge assumptions, the proxy relationships identify a bridge used to adjust the peer-exposure contrast for latent confounding.</p>
+<p>Under the exclusions, relevance formalized through completeness, and bridge assumptions, the proxy relationships identify a bridge used to adjust the peer-exposure contrast for latent confounding.</p>
 </div>
 <div class="slide-link">
 <p><a href="day13_causal.html#sec-negative-controls" class="walkthrough-link" target="_blank">Read the negative-control logic</a></p>
 </div>
 <aside class="notes">
-<p>Start with the target arrow from friends’ baseline GPA to the student’s later GPA. The hidden variable at the top represents selection and shared-context forces that can create the conventional association. The exposure control is allowed to predict the focal exposure, and the outcome control is allowed to predict later GPA. The identifying exclusions instead rule out an effect of the focal exposure on the outcome control and a direct effect of the exposure control on either later GPA or the outcome control, conditional on the focal exposure, latent confounding, measured covariates, and the network. Relevance or completeness and a valid bridge are additional assumptions that the diagram alone cannot establish. Predating the follow-up outcome by itself does not validate the outcome control.</p>
+<p>Start with the target arrow from friends’ baseline GPA to the student’s later GPA. The hidden variable at the top represents selection and shared-context forces that can create the conventional association. The exposure control can be associated with the focal exposure, but its identifying value comes from remaining informative about the outcome control after conditioning on the focal exposure and measured covariates. The identifying exclusions rule out an effect of the focal exposure on the outcome control and a direct effect of the exposure control on either later GPA or the outcome control, conditional on the focal exposure, latent confounding, measured covariates, and the network. Relevance, formalized through completeness, and a valid bridge are additional assumptions that the diagram alone cannot establish. Predating the follow-up outcome by itself does not validate the outcome control.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1896,13 +1903,13 @@ display:block!important;
 <li>Use network-HAC uncertainty for sufficiently local network dependence.</li>
 </ol>
 <div class="bottom-line">
-<p>GMM minimizes a weighted moment mismatch. Identification still needs latent ignorability, consistency, both exclusions, relevance or completeness, and a valid bridge.</p>
+<p>GMM minimizes a weighted moment mismatch. Identification still needs latent ignorability, consistency, both exclusions, relevance formalized through completeness, and a valid bridge.</p>
 </div>
 <div class="slide-link">
-<p><a href="day13_causal.html#sec-negative-assumptions" class="walkthrough-link" target="_blank">Audit the assumptions</a></p>
+<p><a href="day13_causal.html#sec-negative-gmm" class="walkthrough-link" target="_blank">See how GMM estimates the bridge</a></p>
 </div>
 <aside class="notes">
-<p>GMM is not finding a latent position like AME. It chooses bridge parameters that make the model’s observed moment conditions line up with the sample. The causal claim requires a well-defined peer-GPA intervention, latent ignorability after conditioning on measured covariates, the network, and latent confounding, both negative-control exclusions, informative controls, and a valid bridge.</p>
+<p>GMM is not finding a latent position like AME and never estimates each student’s hidden confounder. It chooses bridge parameters that make the model’s observed moment conditions line up with the sample. The causal claim requires a well-defined peer-GPA intervention, latent ignorability after conditioning on measured covariates, the network, and latent confounding, both negative-control exclusions, informative controls, completeness, and a valid bridge.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1930,7 +1937,7 @@ display:block!important;
 <p><a href="day13_causal.html#sec-egami-results" class="walkthrough-link" target="_blank">Compare the published estimates</a></p>
 </div>
 <aside class="notes">
-<p>The conventional estimate is 0.176 and very precise. The negative-control estimates are 0.033 and 0.078 with intervals crossing zero. This does not prove that the peer effect is zero. It shows that the original large positive association is not stable under the proposed strategies for hidden confounding.</p>
+<p>The conventional estimate is 0.176 and very precise. The negative-control estimates are 0.033 and 0.078 with intervals crossing zero. Relevance is strong for peers-of-peers GPA, with F = 81.44, but weak for peers’ headaches, with F = 4.76, which helps explain the second estimate’s huge interval. This does not prove that the peer effect is zero. It shows that the original large positive association is not stable under the proposed strategies for hidden confounding.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
