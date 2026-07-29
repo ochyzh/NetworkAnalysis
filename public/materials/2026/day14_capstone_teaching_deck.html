@@ -1010,7 +1010,7 @@ Shahryar Minhas
 <p><a href="day14_capstone.html#sec-question" class="walkthrough-link" target="_blank">Open the Day 14 path</a></p>
 </div>
 <aside class="notes">
-<p>Opening point: this is not a recap of package syntax. One rebel-cooperation network anchors the fitted model comparison so differences in estimand and interpretation stay visible, then the final sections extend the map to embeddings, influence, layers, and scale.</p>
+<p>Opening point: this is not a recap of package syntax. One rebel-cooperation network anchors the fitted model comparison so differences in estimand and interpretation stay visible, then the final sections open a separate tour of methods beyond the course.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1138,7 +1138,6 @@ display:block!important;
 <li>Discrete relational types</li>
 <li>A latent relational surface</li>
 <li>An explicit graph configuration such as closure</li>
-<li>Predictive node features or held-out link predictions</li>
 <li>Influence among actors</li>
 </ul>
 <div class="big-question">
@@ -1174,7 +1173,7 @@ display:block!important;
 <p><a href="day14_capstone.html#sec-model-compass" class="walkthrough-link" target="_blank">Read the model-by-model substantive interpretations</a></p>
 </div>
 <aside class="notes">
-<p>The walkthrough completes these sentences for GLM with DCR, SRM, blocks, AME, ERGM, node embeddings, and influence models. I will use the same four prompts as we move through the lenses.</p>
+<p>The walkthrough completes these sentences for the models students have already learned. I will use the same four prompts as we move through the fitted lenses.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1218,17 +1217,13 @@ display:block!important;
 <td>Named graph configurations such as shared partners</td>
 </tr>
 <tr class="even">
-<td>Node embedding</td>
-<td>Similarity in sampled walk neighborhoods</td>
-</tr>
-<tr class="odd">
 <td>DCR</td>
 <td>No new pattern; uncertainty around the existing GLM</td>
 </tr>
 </tbody>
 </table>
 <div class="bottom-line">
-<p>Most model lenses rebuild the conditional mean, node embeddings change the prediction target, and DCR alone leaves the point estimates fixed while changing their uncertainty.</p>
+<p>Most model lenses rebuild the conditional mean. DCR alone leaves the point estimates fixed while changing their uncertainty.</p>
 </div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-estimation-roadmap" class="walkthrough-link" target="_blank">Compare the estimation strategies</a></p>
@@ -1281,14 +1276,10 @@ display:block!important;
 <td>ERGM</td>
 <td>Maximize a graph likelihood using simulated network statistics</td>
 </tr>
-<tr class="even">
-<td>Node2vec</td>
-<td>Maximize a node-context discrimination objective with negative sampling</td>
-</tr>
 </tbody>
 </table>
 <div class="say-it">
-<p>The target says what counts as a better fit. MCMC, variational EM, alternating updates, and stochastic gradients are different ways of reaching or exploring that target.</p>
+<p>The target says what counts as a better fit. MCMC, variational EM, and alternating updates are different ways of reaching or exploring that target.</p>
 </div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-estimation-roadmap" class="walkthrough-link" target="_blank">Connect Every Algorithm to Its Target</a></p>
@@ -1564,21 +1555,21 @@ display:block!important;
 <p>TERGM, SAOM, dynamic latent models</p>
 </div>
 <div class="metric-card">
-<p><span class="metric-label">Large sparse graph</span></p>
-<p><strong>Prediction first</strong></p>
-<p>Node2vec and related embeddings</p>
-</div>
-<div class="metric-card">
 <p><span class="metric-label">Network stack</span></p>
 <p><strong>Multilayer</strong></p>
 <p>Tensor and multilayer approaches</p>
+</div>
+<div class="metric-card">
+<p><span class="metric-label">Treatment spills over</span></p>
+<p><strong>Causal design</strong></p>
+<p>Day 13’s exposure and comparison logic</p>
 </div>
 </div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-framework" class="walkthrough-link" target="_blank">Use the decision framework</a></p>
 </div>
 <aside class="notes">
-<p>The estimand comes first. Next, preserve what was observed rather than coercing it into a familiar matrix. A large sparse graph may make feature learning and held-out prediction more realistic targets than a fully specified generative model, but that change in target must be explicit.</p>
+<p>The estimand comes first. Next, preserve what was observed rather than coercing it into a familiar matrix. A snapshot, a panel, a network stack, and a spillover design support different questions and require different assumptions.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1617,25 +1608,25 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="node2vec" class="slide level2">
-<h2>Node2vec Learns Network Contexts</h2>
-<p>Node2vec borrows the basic idea behind word2vec:</p>
-<ol type="1">
-<li>Start many short, biased walks from the nodes.</li>
-<li>Treat each walk like a sentence and each node like a word.</li>
-<li>Nodes appearing near one another become observed context pairs.</li>
-<li>Learn short vectors for prediction, classification, retrieval, or visualization.</li>
-</ol>
+<h2>The Frontier: Predicting Cooperation From Network Position</h2>
+<p>Return to the 30 armed organizations in the Syrian civil war and their 85 recorded cooperation ties.</p>
+<ul>
+<li>Al-Nusra Front, or ANF, cooperates with 20 organizations.</li>
+<li>Ahrar al-Sham Islamic Movement, or ASIM, cooperates with 25.</li>
+<li>ANF and ASIM share 18 cooperation partners.</li>
+</ul>
+<p>Suppose we hide some ties and ask whether each organization’s larger network neighborhood helps us predict the hidden ties.</p>
 <div class="mini-caution">
-<p>The return parameter <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> controls immediate backtracking. The in-out parameter <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math> shifts walks between local and outward exploration. These walks are an analyst-chosen sampling device, not actors moving through the network.</p>
+<p>This is a design example, not a fitted node2vec result.</p>
 </div>
 <div class="bottom-line">
-<p>The vectors summarize sampled network contexts. Their axes are not named traits or causal mechanisms.</p>
+<p>Node2vec turns an actor’s network position into a short list of predictors. It does not explain why the cooperation occurred.</p>
 </div>
 <div class="slide-link">
-<p><a href="day14_capstone.html#sec-node2vec" class="walkthrough-link" target="_blank">See how node2vec builds network features</a></p>
+<p><a href="day14_capstone.html#sec-node2vec" class="walkthrough-link" target="_blank">See the cooperation example</a></p>
 </div>
 <aside class="notes">
-<p>Use the language analogy carefully. A random walk supplies local sequences, just as a sentence supplies word contexts. The algorithm rewards vectors that recognize which nodes appeared near one another in those sampled walks. The bias parameters change which neighborhoods the walks visit: p changes the pull to return immediately, while q changes the balance between staying nearby and moving outward. The original paper connects those tendencies to homophily-like and role-like patterns, but a chosen p or q does not prove either process. The useful output is a compact feature vector for each observed node, evaluated through the task it is meant to support.</p>
+<p>This is the same network used throughout the capstone. The prediction exercise is hypothetical here, so do not claim a performance gain. The point is to make the task concrete: hide some known cooperation ties, build features without those ties, and test whether the features help recover them.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1649,30 +1640,81 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="node2vec-estimation" class="slide level2">
-<h2>What Node2vec Trains</h2>
-<p>The walks create the training data:</p>
-<ul>
-<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>D</mi><mo>+</mo></msup><annotation encoding="application/x-tex">D^+</annotation></semantics></math> contains node-context pairs found in the walk windows.</li>
-<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>D</mi><mo>−</mo></msup><annotation encoding="application/x-tex">D^-</annotation></semantics></math> contains sampled non-context pairs.</li>
-<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mi>i</mi></msub><annotation encoding="application/x-tex">z_i</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>c</mi><mi>j</mi></msub><annotation encoding="application/x-tex">c_j</annotation></semantics></math> are short center and context vectors.</li>
-</ul>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>max</mo><mrow><mi>Z</mi><mo>,</mo><mi>C</mi></mrow></munder><mrow><mo stretchy="true" form="prefix">[</mo><munder><mo>∑</mo><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∈</mo><msup><mi>D</mi><mo>+</mo></msup></mrow></munder><mo>log</mo><mi>σ</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>z</mi><mi>i</mi><mi>𝖳</mi></msubsup><msub><mi>c</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><munder><mo>∑</mo><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo>,</mo><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∈</mo><msup><mi>D</mi><mo>−</mo></msup></mrow></munder><mo>log</mo><mi>σ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><msubsup><mi>z</mi><mi>i</mi><mi>𝖳</mi></msubsup><msub><mi>c</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
-\max_{Z,C}
-\left[
-\sum_{(i,j)\in D^+}\log \sigma(z_i^{\mathsf T}c_j)
-+
-\sum_{(i,k)\in D^-}\log \sigma(-z_i^{\mathsf T}c_k)
-\right].
-</annotation></semantics></math></p>
-<p>The optimizer raises the scores of observed walk contexts and lowers the scores of sampled alternatives. The analyst chooses <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math>, dimension, walk length, window, and negative-sampling settings.</p>
+<h2>What Node2vec Does With the Network</h2>
+<ol type="1">
+<li>Hide the ties reserved for testing.</li>
+<li>Start at one organization and follow a few observed ties.</li>
+<li>Repeat these short network trips from every organization.</li>
+<li>Give organizations similar numerical profiles when the trips repeatedly reach similar neighborhoods.</li>
+<li>Use those profiles in a prediction model.</li>
+</ol>
+<div class="mini-caution">
+<p>The trips are created by the computer. They are not organizations moving through the conflict.</p>
+</div>
 <div class="bottom-line">
-<p>This is an objective for constructed walk-context pairs, not a likelihood for the observed tie <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">Y_{ij}</annotation></semantics></math>.</p>
+<p>The result is a few numbers for each organization. Those numbers are useful features, not automatically named traits such as ideology or influence.</p>
 </div>
 <div class="slide-link">
-<p><a href="day14_capstone.html#sec-node2vec" class="walkthrough-link" target="_blank">Follow the node2vec estimation target</a></p>
+<p><a href="day14_capstone.html#sec-node2vec-steps" class="walkthrough-link" target="_blank">Walk through the five steps</a></p>
 </div>
 <aside class="notes">
-<p>Read the objective in words before reading the symbols. D-plus contains node-context pairs observed in sampled walks, D-minus contains sampled non-context pairs, and sigma converts a dot product into a score between zero and one. The optimizer moves the two vector sets so observed contexts receive higher scores. The walk and tuning settings decide which contexts count, and standard node2vec does not estimate those settings from a dyadic outcome likelihood. Qiu et al. show that this family can be understood as low-rank factorization of transformed node-context association matrices built from network walks, not the raw adjacency matrix. Repeated seeds check algorithmic stability, not sampling uncertainty.</p>
+<p>No knowledge of text analysis is needed. The historical link is simply that node2vec borrowed a successful machine-learning trick for learning from repeated contexts. In a network, those contexts come from short computer-generated trips along observed ties.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="node2vec-ml-road" class="slide level2">
+<h2>A Short Machine-Learning Family Tree</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>The plain-language idea</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DeepWalk (Perozzi et al. 2014)</td>
+<td>Use ordinary short trips through a network to make actor features</td>
+</tr>
+<tr class="even">
+<td>LINE (Tang et al. 2015)</td>
+<td>Learn from direct ties and from actors with similar neighbors</td>
+</tr>
+<tr class="odd">
+<td>Node2vec (Grover and Leskovec 2016)</td>
+<td>Let the short trips stay local or explore farther away</td>
+</tr>
+<tr class="even">
+<td>NetMF (Qiu et al. 2018)</td>
+<td>Write down a large table of network neighborhoods, then compress it</td>
+</tr>
+<tr class="odd">
+<td>GraphSAGE (Hamilton et al. 2017)</td>
+<td>Combine an actor’s traits with information from its neighbors</td>
+</tr>
+</tbody>
+</table>
+<div class="bottom-line">
+<p>These methods offer different ways to turn a graph into predictors for machine learning. They are not competing causal estimators.</p>
+</div>
+<div class="slide-link">
+<p><a href="day14_capstone.html#sec-node2vec-ml-road" class="walkthrough-link" target="_blank">See how the methods connect</a></p>
+</div>
+<aside class="notes">
+<p>DeepWalk came first among the walk-based methods. LINE was built for very large networks. Node2vec added control over whether the trips stay nearby or move outward. Qiu et al. (2018) showed that these methods can be understood as compressing transformed node-context tables and proposed NetMF to make that matrix-factorization view explicit. GraphSAGE and later graph neural networks add a learned rule for combining node traits with neighbor information, which can also help with actors not present during training.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1686,21 +1728,7 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="node2vec-lfm" class="slide level2">
-<h2>Node2vec and Latent Factor Models Share Algebra, Not a Target</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><span class="card-title">Node2vec</span></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext mathvariant="normal">walk-context score</mtext><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msubsup><mi>z</mi><mi>i</mi><mi>𝖳</mi></msubsup><msub><mi>c</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">
-\text{walk-context score}_{ij}=z_i^{\mathsf T}c_j
-</annotation></semantics></math></p>
-<p>Learns features from contexts created by biased walks.</p>
-</div><div class="column" style="width:51%;">
-<p><span class="card-title">Latent factor model or AME</span></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>η</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>𝖳</mi></msubsup><mi>β</mi><mo>+</mo><msub><mi>a</mi><mi>i</mi></msub><mo>+</mo><msub><mi>b</mi><mi>j</mi></msub><mo>+</mo><msubsup><mi>u</mi><mi>i</mi><mi>𝖳</mi></msubsup><msub><mi>v</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">
-\eta_{ij}=x_{ij}^{\mathsf T}\beta+a_i+b_j+u_i^{\mathsf T}v_j
-</annotation></semantics></math></p>
-<p>Models the observed dyadic outcome after covariates and actor effects.</p>
-</div></div>
+<h2>Node2vec and Day 10 Are Cousins</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -1709,32 +1737,38 @@ display:block!important;
 </colgroup>
 <thead>
 <tr class="header">
-<th>Question</th>
-<th>Node2vec</th>
-<th>LFM or AME</th>
+<th></th>
+<th>Node2vec and related graph ML</th>
+<th>Latent factor model or AME</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Main deliverable</td>
-<td>Scalable features and prediction</td>
-<td>Dyadic model and relational decomposition</td>
+<td>Main goal</td>
+<td>Build useful features for prediction</td>
+<td>Explain a declared dyadic outcome</td>
 </tr>
 <tr class="even">
-<td>Natural check</td>
-<td>Held-out task and tuning stability</td>
-<td>Uncertainty, prediction, and network GOF</td>
+<td>What gets compressed</td>
+<td>Network neighborhoods</td>
+<td>Unexplained patterns in the outcome</td>
+</tr>
+<tr class="odd">
+<td>What we check</td>
+<td>Performance on genuinely hidden cases</td>
+<td>Uncertainty, prediction, and network fit</td>
 </tr>
 </tbody>
 </table>
+<p>Both approaches reduce complicated relational patterns to a few numbers per actor. They do that for different reasons.</p>
 <div class="bottom-line">
-<p>The same low-rank algebra reconstructs different objects, so the methods support different claims.</p>
+<p>If node2vec improves hidden-tie prediction, say exactly that. Do not rename an axis “ideology,” “influence,” or “alliance” without outside evidence.</p>
 </div>
 <div class="slide-link">
 <p><a href="day14_capstone.html#sec-node2vec-lfm" class="walkthrough-link" target="_blank">Compare node2vec with latent factor models</a></p>
 </div>
 <aside class="notes">
-<p>AME puts a dot product inside a model for observed ties or dyadic outcomes after measured covariates and sender and receiver effects. Node2vec scores contexts created by a walk procedure. Standard node2vec does not natively return an AME-style dyadic likelihood, covariate coefficients, posterior intervals, or generative network goodness-of-fit. Both coordinate systems are nonidentified, so interpret dot products, fitted predictions, and stability rather than naming individual axes. Choose node2vec when scalable features or held-out prediction are the target. Choose AME when the target is a dyadic model with covariate adjustment, explicit actor effects, uncertainty, and model-based diagnostics. Using both can be sensible when prediction and explanation are separate parts of the project.</p>
+<p>Day 10 used a movie example to show how a large table can be approximated with a small number of latent dimensions. Node2vec has the same compression intuition, but it compresses a table produced from network neighborhoods. AME models the dyadic outcome directly, can include measured predictors and actor effects, and supports model-based uncertainty and goodness-of-fit. Similar mathematics does not make the research claims interchangeable.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
