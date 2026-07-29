@@ -1,0 +1,494 @@
+DAY 13 LIVE PRESENTER SCRIPT
+============================
+
+Causal Inference on Networks: Who Is Affected, What Are We Comparing, and Why?
+
+This is the live slide-by-slide script. Each section gives you language you can read directly, followed by the transition into the next slide. The fuller conceptual and technical reference is in `day13_briefing.txt`.
+
+TIMING MAP
+==========
+
+Slides 1 through 4, opening and route: minutes 0 through 10.
+
+Slides 5 through 10, household experiment: minutes 10 through 40.
+
+Slides 11 through 19, exposure mappings, estimands, weighting, and support: minutes 40 through 75.
+
+Break: minutes 75 through 85.
+
+Slides 20 through 26, school experiment: minutes 85 through 115.
+
+Slides 27 through 33, Ghana monitoring experiment: minutes 115 through 145.
+
+Slides 34 through 40, observational peer effects and negative controls: minutes 145 through 170.
+
+Slides 41 through 43, synthesis and closing: minutes 170 through 180.
+
+SLIDE 1: Title
+==============
+
+Open by connecting this session to the rest of the course. The earlier methods helped us describe network structure, dependence, and change. This session asks a different question: what lets us say that an intervention caused an outcome when its effects can also reach connected people?
+
+The central distinction is simple: a model can represent network dependence very well without identifying a causal effect. Here we will first define the comparison, then ask why it is credible, and only then discuss estimation.
+
+Transition: “Let us begin with the basic causal comparison we are trying to recover.”
+
+SLIDE 2: What Are We Trying to Learn?
+=====================================
+
+Read the opening definition directly. A causal question compares what would happen to the same unit under two different actions or exposure conditions. We see only one of those outcomes, so the design must provide a credible comparison for the missing outcome.
+
+Use the four questions as the lecture's repeated checklist: What changes? Whose outcome might respond? Which two situations are compared? Why is the comparison credible?
+
+The key line is: “The method comes after the causal comparison is clear.” If the technical language starts to take over later, return to these four questions.
+
+Transition: “Networks complicate the second and third questions because another person's assignment may become part of my treatment experience.”
+
+SLIDE 3: Why Networks Change the Causal Question
+================================================
+
+Start with the contrast between the two cards. Without spillovers, my treatment status may be enough to describe my treatment experience. With spillovers, I may also respond to what happens to people connected to me.
+
+Use the school example on the slide. An untreated student with a treated friend has not experienced the same situation as an untreated student with no treated friends. Calling both students untreated hides a potentially important difference.
+
+Interference is the technical name for one unit's assignment affecting another unit's outcome. It does not tell us the mechanism. The effect could travel through conversation, visibility, competition, relocation, or another process.
+
+Transition: “We will build this logic through four published examples, starting with the smallest possible network.”
+
+SLIDE 4: Four Published Examples Build the Logic
+================================================
+
+Walk down the table and give one sentence for each example. Nickerson shows a message delivered to one household member and outcomes for two people. Aronow and Samii show how direct and peer exposure work in a school network. Ichino and Schündeln show strategic relocation around election monitoring. Egami and Tchetgen Tchetgen show what an observational peer-effect argument needs when treatment is not randomized.
+
+Emphasize that the numerical results are not directly comparable. The common thread is the reasoning: what changed, who could respond, and which two situations are compared?
+
+Transition: “The household experiment gives us the cleanest place to see the difference between a direct effect and a spillover.”
+
+SLIDE 5: Case 1: One Message, Two Outcomes
+=========================================
+
+Describe the intervention concretely. In two-registered-voter households, a canvasser delivered either a voting message or a recycling message to the person who answered the door. The researchers then checked administrative turnout records for that person and for the other registered voter in the household.
+
+Read the diagram from the randomized script to the two outcomes. The left branch is the comparison for the person who heard the script. The right branch is the comparison for the other voter.
+
+Point out what the diagram does not contain. There is no arrow from the answerer's act of voting to the partner's act of voting because the experiment did not randomize or isolate that behavioral path.
+
+Transition: “Random assignment helps, but the released-data analysis introduces one additional issue.”
+
+SLIDE 6: Random Assignment Helps, but Contact Still Matters
+===========================================================
+
+State the two facts separately. The household's script was randomly assigned. The analysis then kept households in which a canvasser successfully reached someone.
+
+Random assignment makes the original voting-script and recycling-script groups comparable. Once the sample is restricted after assignment, the causal interpretation also needs the assigned script not to change which households enter the contacted sample, or another reason that the contacted groups remain comparable.
+
+This is a general lesson: randomization protects the original assigned comparison, but it does not automatically protect every subgroup selected after assignment.
+
+Transition: “With that caveat stated, the numerical comparison is straightforward.”
+
+SLIDE 7: The Estimate Is a Difference Between the Two Script Groups
+===================================================================
+
+Explain the calculation before mentioning regression. For the answerer, compare average turnout in households assigned the voting script with average turnout in households assigned the recycling script. Repeat the same comparison for the other registered voter.
+
+The fitted model adjusts for whether the household was in Denver or Minneapolis. The coefficient is still a difference in turnout probability, expressed in percentage points.
+
+If someone asks what least squares is doing, say that it chooses the city-adjusted group difference that best fits the observed turnout outcomes. Random assignment, not least squares itself, supplies the causal leverage.
+
+Transition: “The result shows an increase for both people in the household.”
+
+SLIDE 8: Turnout Was Higher Under the Voting Message for Both People
+====================================================================
+
+Read the result in units students can use. Among successfully contacted households, turnout was about 9.7 percentage points higher for the person who heard the voting message and about 5.9 points higher for the other voter, each compared with the recycling-script group.
+
+The points are the estimated differences. The horizontal lines are 95 percent uncertainty intervals. Both estimates point in the positive direction.
+
+Keep the qualification attached to the claim: these are contacted-household comparisons, and the causal reading uses the contact-comparability condition from the previous slide.
+
+Transition: “The paper also compares the size of the partner estimate with the size of the answerer estimate.”
+
+SLIDE 9: What the “About 60%” Statement Means
+=============================================
+
+Walk through the ratio slowly. The partner estimate is 0.059 and the answerer estimate is 0.097. Dividing gives about 0.61.
+
+The plain-language interpretation is that the estimated increase for the partner is about 61 percent as large as the estimated increase for the answerer. It is a ratio of two increases.
+
+Say what it is not. It is not a 61-percentage-point increase, it is not the share of partners who were persuaded, and it is not an estimate that one person's act of voting caused the other's.
+
+Transition: “That last distinction tells us exactly where the causal claim must stop.”
+
+SLIDE 10: What the Household Experiment Does Not Show
+=====================================================
+
+Read the supported statement first. Under the contact-comparability condition, assignment to the voting rather than recycling script increased partner turnout in successfully contacted two-voter households.
+
+Then read the unsupported statement. The experiment does not by itself show that one person's act of voting caused the other person to vote.
+
+The reason is simple: the randomized action was the script. The answerer's eventual decision to vote was not randomized. Identifying that mediated behavioral effect would require a separate design or much stronger assumptions about the answerer's behavior and the partner's response.
+
+Transition: “A two-person household is manageable. A larger network requires a way to summarize many other assignments.”
+
+SLIDE 11: A Network Makes Everyone's Assignment Potentially Relevant
+====================================================================
+
+Contrast the two expressions in words. The first says my outcome depends only on my own assignment. The second allows my outcome to depend on the entire pattern of assignments across the network.
+
+The full-vector notation is honest under interference, but it creates too many possible treatment environments. With 100 people and two assignment values, there are more assignment patterns than any study can compare one by one.
+
+The problem is therefore not whether to ignore other people's assignments. It is how to summarize the parts of those assignments that could matter for each unit.
+
+Transition: “That summary is called an exposure mapping.”
+
+SLIDE 12: An Exposure Mapping Makes the Problem Manageable
+==========================================================
+
+Translate the equation one piece at a time. The assignment vector records who was assigned. The network records who is connected to whom. The mapping is the rule saying which assignments matter for unit i. Its output is unit i's exposure condition.
+
+Use the example on the slide: one condition could be “not assigned and no assigned friends,” while another is “not assigned and at least one assigned friend.”
+
+The important caution is that grouping two assignment patterns together asserts that their differences do not matter for the outcome. Randomization tells us the probability of the declared conditions, but it does not prove that the mapping is substantively correct.
+
+Transition: “The next choice is what feature of treated neighbors should define exposure.”
+
+SLIDE 13: We Must Decide What Counts as Exposure
+================================================
+
+Read each option as a question. Any asks whether at least one connection received the intervention. Count asks how many connections received it. Share asks what fraction of the unit's connections received it.
+
+Give the mechanism behind the choice. One trusted person might be enough for a message to travel, while repeated reinforcement might make the count or share more plausible. For an isolate, the treated share is undefined unless the analyst states a separate rule.
+
+The mapping is part of the substantive argument. It should not be selected simply because one version produces the strongest estimate.
+
+Transition: “Once exposure is defined, we still have several different causal questions available.”
+
+SLIDE 14: There Is No Single Network Treatment Effect
+=====================================================
+
+Use the school-program column to explain the four contrasts. A direct effect changes my own assignment while peer exposure stays fixed. A spillover effect changes peer exposure while my own assignment stays fixed. A total effect changes both. A policy effect compares two rules for assigning the program across the network.
+
+Emphasize the phrase “what stays fixed.” Two estimates can both be causal and answer different questions because they compare different treatment environments.
+
+A policy effect is especially different. It averages over the pattern of individual exposures created by each assignment rule, such as assigning 10 percent rather than 30 percent of eligible students.
+
+Transition: “Even after the contrast is defined, units may have very different chances of reaching its exposure conditions.”
+
+SLIDE 15: Why Do We Need Design Weights?
+=======================================
+
+Use the friendship example. A student with many eligible friends may easily get an assigned friend. A student with only one eligible friend may rarely do so. Among students observed with peer exposure, the first type can therefore be overrepresented.
+
+Horvitz-Thompson weights correct this imbalance using probabilities created by the known randomization and the measured network. Units who rarely reach a condition receive more weight when they do reach it.
+
+These are design weights. They are not regression controls and are not estimated propensity scores meant to remove observational confounding.
+
+Transition: “A two-person numerical example makes the weighting rule easier to see.”
+
+SLIDE 16: A Small Weighting Example
+===================================
+
+Read the table directly. Ana had a 10 percent chance of peer exposure, so her inverse-probability weight is 10. Ben had a 50 percent chance, so his weight is 2.
+
+Ana receives more weight because observing her in that exposure condition was rarer under the design. Her outcome stands in for more possible assignments in which she would not have reached the condition.
+
+A larger weight does not mean Ana matters more substantively. It records how much information the randomization supplied about that exposure for someone in her network position.
+
+Transition: “The formula applies exactly this same logic to every target unit.”
+
+SLIDE 17: The Formula Is the Same Weighted Average
+==================================================
+
+Read the formula from the inside out. The indicator keeps unit i only when it actually reached condition d. The observed outcome supplies its contribution. Dividing by the exposure probability creates the design weight. Summing combines the weighted outcomes, and dividing by N returns the total to the target-population scale.
+
+Estimate this weighted mean once for condition d and once for condition d prime. Their difference is the estimated causal contrast.
+
+Do not get stuck on the notation. The formula is simply the weighting procedure from the Ana and Ben example written compactly.
+
+Transition: “Those individual probabilities build the point estimate. Measuring uncertainty requires one more probability.”
+
+SLIDE 18: Uncertainty Must Track Shared Exposure
+===============================================
+
+The individual probability asks how often one unit reaches an exposure condition. The joint probability asks how often two units reach their respective conditions together.
+
+Use the shared-friend example. If two students share many eligible friends, their peer-exposure statuses may rise and fall together across possible random assignments. Treating their observations as independent would understate or otherwise misrepresent uncertainty.
+
+Individual exposure probabilities build the Horvitz-Thompson weights. Joint exposure probabilities help calculate design-based standard errors. The walkthrough explains why Aronow and Samii use a conservative variance estimator when exact cross-condition covariance is not fully observed.
+
+Transition: “Before weighting anything, we must check that both sides of the proposed comparison are possible.”
+
+SLIDE 19: The Comparison Must Actually Be Possible
+==================================================
+
+Translate positivity as one question: could every unit in the target population have reached both exposure conditions being compared?
+
+Use the examples. An isolate cannot have an assigned friend. An ineligible student cannot receive direct assignment. A cluster design can rule out some mixtures of local treatment and control.
+
+If an exposure probability is zero, no weight can create the missing outcome. Restricting the target population can restore support, but it changes who the result describes. Positivity is therefore a property of the contrast, assignment design, network, and target population together.
+
+Transition: “The school experiment shows why all of these pieces are necessary.”
+
+SLIDE 20: Case 2: A School Program Can Reach Students Several Ways
+=================================================================
+
+Give the design in two stages. Twenty-eight of 56 schools were assigned to host the program. Within program schools, half of the eligible seed students were assigned an invitation.
+
+A student could receive an invitation, remain uninvited but have an invited friend, or simply attend a program school. Aronow and Samii combine the randomization with the pretreatment friendship network to define these different experiences.
+
+Read the diagram as exposure construction, not as a complete causal DAG. School assignment, student assignment, and the pretreatment network jointly determine exposure. The measured outcome is reported program-wristband wearing.
+
+Transition: “Before interpreting those exposures, keep assignment separate from actual participation.”
+
+SLIDE 21: Assignment Is Not the Same as Participation
+=====================================================
+
+The randomized action was an invitation to join the program. Accepting the invitation and participating afterward were not randomized.
+
+About 24 percent of assigned seed students did not accept the invitation. The clean causal interpretation is therefore intention to treat: the effect of invitation assignment and of exposure to peers' invitation assignments.
+
+Do not casually rename these as effects of participation. Estimating the effect of actual participation would require another identification argument because participation is a post-assignment choice.
+
+Transition: “With assignment defined correctly, we can translate the design into five exposure experiences.”
+
+SLIDE 22: Five Experiences Connect the Design to the Network
+============================================================
+
+Start with the plain-language labels, not the binary codes. The five experiences are no program exposure, program-school context only, peer assignment only, own assignment only, and both own and peer assignment.
+
+Then decode one example. The code d011 means the student was not assigned, had at least one assigned peer, and attended a program school. The digits always record own assignment, peer exposure, and school assignment in that order.
+
+The main target is 2,050 eligible students with support for the relevant comparisons. Ineligible students cannot occupy conditions that require own assignment.
+
+Transition: “The design-weighted estimates compare each of these experiences with no program exposure.”
+
+SLIDE 23: Wristband Reporting Was Higher Under Direct and Peer-Assignment Exposure
+==================================================================================
+
+The baseline is eligible students in control schools with no program exposure. Relative to that condition, reported wristband wearing was 5.7 percentage points higher with program-school context only, 15.4 points higher for unassigned students with an assigned peer, and about 30 points higher for students assigned directly.
+
+The interval for program context alone includes zero, so that result is uncertain. The direct-assignment conditions show the largest differences.
+
+Keep the outcome precise. This is reported wristband wearing, and the exposure is assignment to an invitation or to a peer's invitation, not actual participation.
+
+Transition: “To isolate peer assignment, we should compare conditions that keep the student's own assignment and school context the same.”
+
+SLIDE 24: The Peer-Assignment Comparison Holds Own Assignment Fixed
+===================================================================
+
+Compare d011 with d001. In both conditions, the student is unassigned and attends a program school. The only mapped difference is whether at least one peer was assigned.
+
+Subtracting 5.7 from 15.4 gives a 9.7-percentage-point difference in reported wristband wearing. This is the clean peer-assignment contrast in the published mapping.
+
+The 15.4-point comparison with control schools is not a pure peer contrast because it changes both peer exposure and program-school context.
+
+Transition: “We can isolate own assignment by holding peer exposure fixed instead.”
+
+SLIDE 25: The Own-Assignment Comparison Holds Peer Exposure Fixed
+=================================================================
+
+Compare d111 with d011. Both groups attend program schools and have at least one assigned peer. The mapped difference is whether the student was assigned an invitation.
+
+Subtracting 15.4 from 29.9 gives a 14.5-percentage-point own-assignment difference in reported wristband wearing.
+
+The subtraction gives the point estimate, but the published table does not give the covariance between the two estimated exposure means. We therefore cannot build a valid confidence interval by simply subtracting or combining their reported standard errors.
+
+Transition: “These clean comparisons still depend on the exposure mapping being a useful summary of how the program travels.”
+
+SLIDE 26: The Mapping Can Be Challenged
+=======================================
+
+Explain what the any-peer mapping compresses. It treats one assigned acquaintance like six assigned friends, a highly visible student like a rarely nominated student, and incoming ties like outgoing ties.
+
+Alternative mappings could use the number or share assigned, distinguish especially prominent peers, preserve nomination direction, or focus on stronger ties.
+
+A richer mapping may better represent the mechanism, but it also creates more categories, rarer exposures, larger weights, and more support problems. Changing the mapping changes the causal question rather than merely improving a technical setting.
+
+Transition: “The Ghana application widens the idea of spillovers beyond social influence.”
+
+SLIDE 27: Case 3: Monitoring May Push Behavior Somewhere Nearby
+==============================================================
+
+State the substantive problem first. Election observers may deter questionable registration where they are present. Strategic actors may then move registration activity to a nearby area without an observer.
+
+The study covered 868 electoral areas in 39 constituencies across four regions. Thirteen constituencies were assigned to the observer program, and about one quarter of areas inside program constituencies were assigned an observer visit.
+
+The outcome is proportional registration growth from 2004 to 2008. The spillover mechanism here is strategic relocation across space, not necessarily communication or influence through friendship.
+
+Transition: “The model separates three parts of this two-stage intervention.”
+
+SLIDE 28: The Ghana Model Separates Three Comparisons
+=====================================================
+
+Read the three paths into the focal area's registration growth. First, does simply being inside a program constituency matter? Second, does having an observer at the focal area matter? Third, does having observer-assigned areas nearby matter?
+
+The model also allows the nearby pattern to differ depending on whether the focal area itself has an observer. It adjusts for local density and respects the first-stage randomization blocks.
+
+The diagram organizes assignment and spatial exposure. It does not prove deterrence or displacement. Those are substantive interpretations of a pattern in the estimated comparisons.
+
+Transition: “The regression translates those three parts of the intervention into specific model terms.”
+
+SLIDE 29: What the Ghana Regression Compares
+============================================
+
+Walk down the table. The focal-area term compares monitored and unmonitored areas. The constituency term captures broader program context. The distance-ring terms measure whether registration growth changes near monitored areas. The interactions ask whether nearby patterns differ when the focal area is monitored too.
+
+Local-density terms help distinguish observer assignment from the number of places available nearby. Randomization-block indicators reflect how the first-stage assignment was organized.
+
+The full equation remains in the walkthrough. On this slide, the important point is that the regression represents the two-stage assignment and spatial exposure story instead of treating every area as isolated.
+
+Transition: “Several tools appear in this analysis, and each does a different job.”
+
+SLIDE 30: Estimation, Identification, and Uncertainty Have Different Jobs
+========================================================================
+
+OLS chooses coefficient values that make fitted registration growth close to observed registration growth. Random assignment provides the causal leverage for the assignment terms under the exposure model. Clustered standard errors allow areas within the same constituency to have related errors. The randomization test compares the observed result with results under other assignments permitted by the design.
+
+Say the key line directly: OLS calculates the fitted comparison, but least squares alone does not make that comparison causal.
+
+This distinction will return at the end of the lecture. Estimation calculates a contrast, identification explains why it can be interpreted causally, and uncertainty describes how much the estimate could vary.
+
+Transition: “The fitted pattern points in opposite directions locally and nearby.”
+
+SLIDE 31: Own-Area and Nearby Assignment Point in Opposite Directions
+=====================================================================
+
+At the model's reference values, assigning an observer to the focal area is associated with about 3.5 percentage points less registration growth. For an unmonitored focal area, one additional observer-assigned area within 5 kilometers is associated with about 2.7 points more growth.
+
+Because the model includes interactions, these are conditional coefficients, not universal average effects. The nearby coefficient applies when the focal area is not itself assigned an observer and the other interacting variables are at their reference values.
+
+The negative local and positive nearby pattern is consistent with deterrence at monitored sites and relocation toward nearby unmonitored sites. It does not prove that mechanism.
+
+Transition: “The next slide translates the interaction into two concrete fitted scenarios.”
+
+SLIDE 32: What Does One More Nearby Observer Mean in the Fitted Model?
+======================================================================
+
+Imagine holding the focal area and the other modeled features fixed while one additional area within 5 kilometers is observer assigned.
+
+For an unmonitored focal area, the fitted change in registration growth is plus 2.7 percentage points, with an interval of about 1.0 to 4.4. For a focal area that also has an observer, the fitted change is about plus 1.7 points, and its interval includes zero.
+
+Call these fitted conditional comparisons, not literal isolated treatment toggles. The first is consistent with strategic relocation into unmonitored areas, but it does not identify who moved or why.
+
+Transition: “Even a credible assignment effect must be described using the outcome that was actually measured.”
+
+SLIDE 33: Registration Growth Is the Outcome, Not Fraud Itself
+==============================================================
+
+The experiment supports a claim about how observer assignment changed registration growth in the sampled areas under the published spatial exposure model.
+
+Calling excess growth fraudulent or irregular registration requires additional evidence about the registration process, the meaning of the growth measure, the distance mapping, and the accuracy of the linear exposure-response specification.
+
+Also keep external reach separate from internal validity. The study draws on four regions, so the result should not be mechanically generalized to all of Ghana.
+
+Transition: “The first three applications began with randomized assignment. The final application does not.”
+
+SLIDE 34: Case 4: Observational Peer Effects Need More Than Adjustment
+=====================================================================
+
+The question is whether increasing friends' average baseline GPA by one point would raise a student's later GPA.
+
+A conventional regression can adjust for measured student characteristics and school fixed effects, but hidden selection can remain. Students with similar ambition, resources, course placement, or study habits may become friends before either one influences the other.
+
+A precise, well-fitting regression can therefore mix peer influence with preexisting similarity and shared environment. Adding more observed controls does not guarantee that all common causes have been removed.
+
+Transition: “The negative-control strategy searches for observable clues left by those hidden forces.”
+
+SLIDE 35: The Negative-Control Idea in Plain Language
+=====================================================
+
+We cannot directly observe every reason friends have similar GPAs. The method uses two variables that may carry information about the hidden selection process while being ruled out of specific causal paths.
+
+The student's own baseline GPA is the outcome-side clue. Peers-of-peers' GPA or peers' headaches serve as exposure-side clues. If both clues respond to the same hidden forces and satisfy the required exclusions, their relationships can help correct the focal peer-GPA comparison.
+
+These controls do not reveal the true hidden-confounder value for each student. They provide indirect information used by a model.
+
+Transition: “The diagram gives names to the four observed variables and makes the required missing arrows visible.”
+
+SLIDE 36: Four Variables Carry the Negative-Control Logic
+=========================================================
+
+Start with the green arrow. A is friends' average baseline GPA, and Y is the student's later GPA. That peer effect is the target.
+
+W is the student's own baseline GPA, the outcome control. Z is peers-of-peers' GPA or peers' headaches, the exposure control. U represents hidden selection and shared context that can affect all four observed variables.
+
+The missing arrows are identifying assumptions. A must not cause W, and Z must not directly cause Y or W after the stated conditioning. The diagram does not prove those exclusions, proxy strength, or bridge correctness.
+
+Transition: “The next slide states the assumptions in ordinary language so we can see the price of the causal claim.”
+
+SLIDE 37: The Assumptions Are the Price of the Negative-Control Strategy
+========================================================================
+
+Walk through the five requirements. Friends' baseline GPA must not cause the student's own baseline GPA. The exposure control must not directly affect the student's baseline or later GPA after conditioning. Both controls must contain enough information about hidden selection. The bridge model must represent how hidden selection enters the outcome. The peer-GPA intervention and network timing must be well defined.
+
+The walkthrough gives the formal versions, including latent ignorability and completeness. On the slide, the crucial point is that these are substantive claims about timing, causal paths, and proxy information.
+
+A DAG displays the assumptions so readers can challenge them. It cannot validate them.
+
+Transition: “If those assumptions are defended, the bridge provides the actual correction rule.”
+
+SLIDE 38: The Bridge Is a Correction Rule
+=========================================
+
+Describe the bridge before the acronym. It uses relationships among the focal exposure, outcome, measured covariates, and the two proxy controls to estimate how hidden selection appears in the later outcome. It adjusts the peer-GPA comparison without estimating a personal hidden-confounder score.
+
+Then read the GMM steps. Propose bridge parameters, calculate sample relationships that should be zero under the proposed correction, measure the remaining mismatches, and choose the parameter values that make the weighted mismatches as small as possible.
+
+GMM is the estimation procedure. The exclusions, proxy relevance, latent-ignorability condition, timing, and bridge assumptions are what support a causal interpretation.
+
+Transition: “The adjusted estimates look very different from the ordinary regression.”
+
+SLIDE 39: The Large Peer Association Shrinks Under Negative Controls
+====================================================================
+
+The conventional adjusted regression estimates a 0.176-point increase in a student's later GPA for a one-point increase in friends' average GPA. The negative-control estimates are 0.033 and 0.078, and both uncertainty intervals include zero.
+
+The conclusion is not that the true peer effect must be zero. It is that the large, precise conventional association is not stable under these proposed corrections for hidden selection.
+
+The peer-of-peer GPA proxy relationship is much stronger than the headaches proxy relationship. The reported F statistics describe that strength, but they do not prove the exclusions, completeness condition, or full identification strategy.
+
+Transition: “The standard errors in this example also return us to the difference between causal identification and dependence-aware uncertainty.”
+
+SLIDE 40: DCR and Network-HAC Fix Different Uncertainty Problems
+================================================================
+
+DCR is designed for dyadic data, where rows such as US-China and US-Russia share an actor and may have related errors. Network-HAC is designed for unit-level observations located in a graph, allowing observations close in the network to remain related under a distance-decay assumption.
+
+Both methods can change standard errors and confidence intervals. Neither changes the fitted coefficient, defines exposure, fixes hidden confounding, or creates a causal design.
+
+Use the two questions on the slide: an uncertainty correction asks how precise the estimate is. Identification asks why the estimate represents the effect of an intervention.
+
+Transition: “This lets us separate the three jobs that are often blended in network applications.”
+
+SLIDE 41: Three Jobs Must Stay Separate
+=======================================
+
+The first job is describing or modeling dependence. SRM, blockmodels, AME, ERGM, TERGM, and SAOM help represent relational structure or change.
+
+The second job is identifying a causal contrast. Random assignment plus a defended exposure mapping can do this, as can a carefully defended observational strategy under stronger assumptions.
+
+The third job is calculating uncertainty when observations are dependent. Design-based variance, clustered standard errors, DCR, and network-HAC address versions of that problem.
+
+A better-fitting network model may improve the first job. It does not quietly provide the second.
+
+Transition: “Once the jobs are separated, the final written claim becomes much easier to discipline.”
+
+SLIDE 42: Say Only What Each Example Supports
+=============================================
+
+Read the four conclusions as templates. In the household study, assignment to the voting rather than recycling script increased partner turnout under the contact condition. In the school study, invitation assignment and peer-assignment exposure increased reported wristband wearing under the published mapping.
+
+In Ghana, observer assignment changed registration growth locally and nearby under the spatial exposure model. In the GPA study, the large adjusted association became smaller and uncertain under the negative-control strategy, and a causal reading depends on that strategy's assumptions.
+
+Keep the measured outcome and the caveat in the same sentence. Do not replace turnout, wristband reporting, registration growth, or GPA with a larger unmeasured concept.
+
+Transition: “We can now reduce the entire lecture to four questions that travel to any new application.”
+
+SLIDE 43: Four Questions Organize the Whole Analysis
+====================================================
+
+Read the four cards as a sequence. First, state the intervention or assignment as an action. Second, name the unit, measured outcome, network, and possible routes of exposure. Third, define the two conditions being compared, check that both are possible, and choose an estimator that follows the design. Fourth, state the mapping, measurement, identification, and dependence assumptions that remain.
+
+Close with the final line: “Start with the action, not the model. If we can explain the two situations being compared and why they are comparable, the technical details have a clear job.”
+
+If there is time for one final prompt, ask for a proposed network causal claim and walk through the four questions aloud.

@@ -1,0 +1,264 @@
+DAY 13 PREPARATION BRIEFING
+============================
+
+Causal Inference on Networks: Who Is Affected, What Are We Comparing, and Why?
+
+This is the preparation and reference document. Read it before class and use it to review the causal logic, terminology, technical details, likely questions, and claims to avoid. The separate `day13_notes.txt` file is the shorter slide-by-slide script to keep open while presenting. Nothing needs to be estimated during class.
+
+THE TLDR
+========
+
+The lecture asks one question repeatedly: when one person's treatment can affect someone else, what exactly are we calling the treatment, the exposure, and the causal effect?
+
+The main lesson is that a network does not give us a single treatment effect. It creates several possible comparisons. We might ask about receiving the intervention ourselves, being connected to someone who receives it, receiving both, or changing the overall treatment policy. Each question compares different potential outcomes and may require different support from the design.
+
+We use four published applications to build that argument. Nickerson starts with a two-person household, where assignment to a voting rather than recycling script can affect turnout for both the person who hears it and the other registered voter. Aronow and Samii extend the same logic to a school network, where students can be assigned directly, have peer-assignment exposure, or merely be in a school assigned to the program. Ichino and Schündeln show that spillovers can involve strategic displacement rather than social influence. Egami and Tchetgen Tchetgen show what an observational peer-effect analysis must add when exposure is not randomized.
+
+The technical center of the lecture is the exposure mapping. It turns the full assignment vector into the features that are supposed to matter for one unit's outcome. Once that mapping is declared, we name the exact contrast, check whether each unit could have reached both exposure conditions, and use the assignment probabilities to estimate the corresponding exposure means.
+
+Horvitz-Thompson estimation is presented as a weighted average, not as mysterious machinery. A unit who had only a small chance of reaching an exposure condition must represent more units in that condition. Individual exposure probabilities determine the weights. Joint exposure probabilities determine how the weighted observations move together and therefore enter the variance.
+
+The final boundary is equally important. A network model can describe dependence, latent structure, or network change without identifying a causal effect. Clustered or network-robust standard errors can correct uncertainty under a dependence assumption, but they do not change an associational coefficient into a causal estimand.
+
+If students remember one sequence, it should be this: state the action, name the unit and outcome, draw an indexed causal path or exposure schematic that fits the design, define exposure, name the two conditions being compared, check support, match the estimator to the design, and then state the strongest assumption still doing work.
+
+PRESENTER BRIEFING: THE CAUSAL LOGIC IN PLAIN LANGUAGE
+=======================================================
+
+The easiest way to hold the whole lecture together is to separate three jobs that are often blended in applied work.
+
+Identification asks why a comparison can be interpreted causally. In the randomized cases, the assignment mechanism creates comparable potential treatment environments, but the exposure mapping, support, consistency, and any post-assignment sample restriction still matter. In the observational case, identification comes from a much longer set of negative-control and bridge assumptions.
+
+Estimation asks how we turn the observed data into the target contrast. Nickerson uses a city-adjusted difference in means written as a linear probability model. Aronow and Samii use design probabilities in a Horvitz-Thompson estimator. Ghana uses a regression that represents the two-stage randomized assignment and spatial exposure structure. Egami and Tchetgen Tchetgen use GMM to estimate a confounding bridge.
+
+Uncertainty asks how much the estimate would vary under repeated assignments or samples. Heteroskedasticity-robust, cluster-robust, design-based, and network-HAC calculations answer versions of this question. They do not supply the causal comparison on their own.
+
+Whenever the class starts treating a regression coefficient, a randomization, or a robust standard error as if it did all three jobs, return to this distinction: "What creates comparability, what calculates the contrast, and what calculates its uncertainty?"
+
+THE CORE OBJECTS YOU NEED AT YOUR FINGERTIPS
+============================================
+
+Unit: the entity whose potential outcome is being compared. It is a person in Nickerson, a student in Paluck and Egami, and an electoral area in Ghana.
+
+Assignment: the action generated by the design. It is the voting or recycling script in Nickerson, school and student assignment in Paluck, constituency and electoral-area assignment in Ghana, and no randomized assignment in the observational GPA case.
+
+Treatment receipt: what the unit actually receives or does. Assignment and receipt can differ. A student can be assigned to a program but not participate fully. A voter can receive a voting message but not vote. The experiments primarily identify assignment effects unless a separate argument identifies an effect of receipt.
+
+Exposure: the part of the full assignment environment that the analysis claims is relevant to one unit. In Paluck, exposure records own assignment, whether at least one measured peer was assigned, and whether the school was assigned to the program.
+
+Potential outcome: the outcome the same unit would have under a specified exposure condition. Only one is observed for a unit, but the causal estimand compares two of them.
+
+Estimand: the population quantity we want, such as average turnout under the voting script minus average turnout under the recycling script, or average wristband reporting under `d011` minus average reporting under `d001`.
+
+Estimator: the rule applied to observed data, such as a regression coefficient or a Horvitz-Thompson weighted mean, that estimates the estimand.
+
+Consistency: the observed outcome equals the potential outcome under the exposure the unit actually experienced. Under an exposure mapping, this also says that assignment patterns placed in the same exposure category are genuinely equivalent for that unit's outcome.
+
+Positivity or support: every unit in the target population has a nonzero chance of reaching both conditions in the causal contrast. It is a property of a contrast, a design, and a target population together.
+
+Interference: one unit's outcome can depend on other units' assignments. Interference is not automatically peer influence. It can arise through household discussion, social visibility, strategic relocation, congestion, competition, information, or institutional response.
+
+Internal validity: whether the stated contrast is credible for the studied units and conditions. External validity: whether it transports to a new population, treatment intensity, network, or policy regime. A result can be internally credible and still have limited external reach.
+
+THE FOUR APPLICATIONS AT A GLANCE
+=================================
+
+| Case | What Is Assigned or Observed? | Exposure and Outcome | What Does the Causal Work? | How Is It Estimated? | Main Limitation to Say Out Loud |
+|---|---|---|---|---|---|
+| Nickerson | Household voting or recycling script | Answerer or partner turnout | Randomized script assignment, plus comparability within the successfully contacted sample | City-adjusted linear probability model | The partner contrast is an intervention spillover, not the effect of the answerer's act of voting |
+| Paluck through Aronow and Samii | School assignment and assignment of eligible students | Own, peer, and school exposure; reported wristband wearing | Two-stage randomization, pretreatment network, declared exposure mapping, and positive support | Horvitz-Thompson exposure means and design-based uncertainty | The mapping is a theory, and different contrasts hold different parts of exposure fixed |
+| Ghana | Constituency program assignment and observer assignment to electoral areas | Own-area and nearby observer exposure; registration growth | Two-stage randomization plus the spatial exposure-response specification | OLS, constituency-clustered uncertainty, and a Fisher randomization test | The identified outcome is registration growth, not fraud itself |
+| Egami and Tchetgen Tchetgen | Observed friend GPA and proxy controls | Friends' baseline GPA; student's later GPA | Negative-control exclusions, informative proxies, a valid bridge, timing, and latent ignorability | GMM bridge estimation and network-HAC uncertainty | The estimates are causal only under a substantial observational identification argument |
+
+HOW TO READ THE DIAGRAMS WITHOUT OVERSELLING THEM
+=================================================
+
+The Nickerson figure is an assignment-and-outcome schematic. The arrows show that randomized script assignment is compared on two outcomes. The missing arrow from answerer turnout to partner turnout is deliberate because that mediated behavioral effect is not identified. The dashed contact frame is a warning that the released-data comparison conditions on a post-assignment event.
+
+The Paluck figure is an exposure-construction schematic. School assignment, assignments among eligible students, and the pretreatment network jointly create a student's exposure condition. It is not claiming that the network itself is randomized or that the displayed boxes contain every cause of wristband reporting.
+
+The Ghana figure is a spatial assignment schematic. It separates broader constituency assignment, assignment at the focal area, and nearby assignment. It does not prove that deterrence or displacement is the behavioral mechanism.
+
+The Egami figure is the closest thing here to a conventional causal DAG. An arrow means that a direct causal relationship is allowed by the graph. A missing arrow is an identifying exclusion, not an empirical finding. The graph helps organize assumptions, but it cannot prove that the proxy variables are informative enough or that the confounding bridge is correctly specified.
+
+When students ask whether a diagram is "the true DAG," answer: "No diagram earns that status from the data alone. It is a compact statement of the causal relationships and exclusions the analysis is asking us to defend."
+
+THE ASSUMPTION LADDER
+=====================
+
+Start with a well-defined action and outcome. "Increase peers' GPA" is harder to define than "assign this student to the program." A vague intervention makes the potential outcomes vague.
+
+Next define how assignments reach each unit. Under interference, randomization alone does not tell us whether any treated peer, the number treated, the treated share, strong ties, or geographic distance is the right exposure summary.
+
+Then require consistency. If two assignment vectors receive the same exposure label, the mapping assumes they lead to the same potential outcome for that unit. This is where an overly coarse "any treated friend" mapping can fail.
+
+Then check positivity. A student who was never eligible cannot reveal an own-assignment effect. An isolate cannot reveal an effect of having an assigned friend. Restricting the target population can restore support, but it changes whom the result describes.
+
+Then match estimation to the design. A convenient regression is not automatically the estimator implied by a complicated assignment mechanism. In the school case, unequal exposure probabilities motivate design weights.
+
+Then match uncertainty to the dependence generated by the design or network. Units can enter exposure conditions together, electoral areas share constituency shocks, and network-near observations can remain dependent.
+
+Finally, state what remains unverified. Randomization does not validate the exposure mapping, measurement, post-assignment restrictions, or transport to a new policy regime. Negative controls do not validate their own exclusions, relevance formalized through completeness, or bridge specification.
+
+THE NOTATION, TRANSLATED
+========================
+
+`Y_i(z_i)` means unit `i` has one potential outcome for each value of its own assignment. That notation assumes other units' assignments do not matter.
+
+`Y_i(z)` with bold `z` means unit `i` may have a different potential outcome under every full assignment vector. It is honest under interference but too large to use directly in most networks.
+
+`D_i = f_i(z, G)` means the exposure mapping uses the assignment vector and measured network to place unit `i` in a manageable exposure condition.
+
+`Y_i(d)` means potential outcomes are now indexed by that exposure condition. This is a simplification with substantive content, not merely shorthand.
+
+`tau(d,d')` is the average difference between each unit's potential outcome under exposure `d` and the same unit's potential outcome under `d'`.
+
+`pi_i(d)` is unit `i`'s probability of reaching condition `d` under the actual assignment design and measured network. Its inverse is the Horvitz-Thompson weight.
+
+`pi_ij(d,d')` is the probability that unit `i` reaches `d` while unit `j` reaches `d'`. It matters for uncertainty because exposure indicators are not generally independent.
+
+The Horvitz-Thompson estimator keeps a unit only when it actually reaches condition `d`, divides that observed outcome by the unit's probability of reaching `d`, sums those weighted outcomes, and divides by the target population size. A low-probability observation carries more weight because it represents many assignment realizations in which that unit did not reach the condition.
+
+Horvitz-Thompson and Hájek answer the same basic design-weighting problem differently. Horvitz-Thompson uses the known target population size in the denominator and is exactly design-unbiased under its conditions, but it can be noisy and can even leave the natural outcome range in a particular sample. Hájek divides by the observed sum of weights, which often stabilizes the estimate and keeps a binary-outcome mean easier to read, but it trades exact finite-design unbiasedness for that stability. The deck focuses on Horvitz-Thompson because its logic is the cleanest.
+
+WHY THE JOINT PROBABILITY ENTERS THE VARIANCE
+=============================================
+
+Imagine two students who share many of the same eligible friends. Under repeated random assignments, they may become peer-exposed together. Their weighted outcome contributions therefore rise and fall together. A variance calculation that treats them as independent misses that co-movement.
+
+The individual probability answers, "How surprising is it that this student reached condition `d`?" The joint probability answers, "How often would these two students reach their respective conditions together?" The first builds the point estimate. The second is required for design-based variance calculations.
+
+Joint probabilities are necessary but do not generally identify the exact variance of a contrast. For the same unit, `Y_i(d)` and `Y_i(d')` can never be observed together. Aronow and Samii therefore construct conservative randomization-based variance estimators. The clean classroom phrasing is: "The design tells us how exposure indicators co-move, but the fundamental missing-potential-outcome problem still prevents an exact contrast variance."
+
+This is also why subtracting two published standard errors is wrong. If two estimated exposure means use the same randomization, their errors are correlated. The variance of a difference is `Var(A) + Var(B) - 2 Cov(A,B)`. Without the covariance, we cannot reconstruct the interval for the difference from the two marginal intervals.
+
+WHAT GMM AND A CONFOUNDING BRIDGE ARE DOING
+===========================================
+
+Begin with the problem rather than the acronym. Hidden selection `U` makes friends' baseline GPA `A` and the student's later GPA `Y` move together even if the causal peer effect is small. We cannot condition on `U` because we do not observe it.
+
+The negative controls supply two imperfect fingerprints of `U`. The exposure control `Z`, such as peers-of-peers' GPA or peers' headaches, may carry information about the hidden selection process but is assumed not to affect the student's later or baseline GPA directly after the stated conditioning. Its identifying value comes from remaining informative about the outcome control `W` after conditioning on friends' GPA and measured covariates, not merely from predicting friends' GPA. The outcome control `W`, the student's baseline GPA, may carry information about the same hidden process but is assumed not to be affected by friends' baseline GPA.
+
+A confounding bridge is a function that uses the observed exposure, covariates, and proxy information to reproduce how the hidden confounding enters the outcome. GMM chooses the bridge parameters so that residual discrepancies are unrelated to the variables that should have zero association under the model's moment conditions.
+
+Formally, GMM chooses parameters to make a vector of sample moments close to zero and minimizes a weighted quadratic mismatch, often written `g(theta)' W g(theta)`. It does not maximize a likelihood unless a special model makes the two procedures coincide.
+
+Completeness is the hardest assumption to explain. In plain language, the proxy controls must vary richly enough with the hidden confounding that different hidden-confounding patterns do not all produce the same observed proxy relationships. If the proxies barely react to `U`, or react in indistinguishable ways, the bridge cannot recover the adjustment.
+
+The result is not "negative controls removed all bias." It is "under these exclusions, proxy relevance formalized through completeness, bridge correctness, timing, and latent ignorability, the adjusted peer-exposure contrast is identified." That is why the wider intervals are intellectually honest rather than a methodological failure.
+
+WHAT TO SAY WHEN SOMEONE ASKS, "IS THIS CAUSAL?"
+=================================================
+
+For Nickerson, say: "The voting-versus-recycling script was randomized. Within the successfully contacted sample, the causal interpretation also needs successful contact not to have been affected by script assignment, or an equivalent comparability argument."
+
+For Paluck, say: "The school and student assignments were randomized. The reported exposure contrast is causal for the supported eligible students under the declared pretreatment-network exposure mapping and exposure consistency."
+
+For Ghana, say: "Observer assignment was randomized through the two-stage design. The coefficients describe effects on registration growth under the published spatial exposure-response model, with the mechanism and proxy interpretation remaining separate questions."
+
+For Egami and Tchetgen Tchetgen, say: "This is observational. The causal interpretation comes from the stated negative-control, bridge, timing, and latent-ignorability assumptions, not from adjustment or network-HAC uncertainty alone."
+
+For an SRM, AME, ERGM, SAOM, or DCR result without a causal design, say: "This is a conditional association or modeled process result. The network model addresses dependence or structure, but it does not itself supply the intervention comparison."
+
+THE THREE-HOUR ROUTE
+====================
+
+Use minutes 0 through 10 for Slides 1 through 4. Establish continuity with the causal foundation and preview the four cases. The point is not to reteach all of potential outcomes or merely repeat that interference exists. The advance is moving from "interference exists" to a concrete exposure definition, estimand, support condition, and estimator.
+
+Use minutes 10 through 40 for Slides 5 through 10 on Nickerson. This is the simplest case and should do real conceptual work. Students should leave it able to distinguish a direct message contrast, an intervention spillover to the other voter, and the much stronger claim that one person's act of voting caused the other person to vote.
+
+Use minutes 40 through 75 for Slides 11 through 19. Move from the full assignment vector to exposure mappings, direct and spillover contrasts, Horvitz-Thompson weighting, joint exposure probabilities, and positivity. This is the most technical block, so keep returning to the household example whenever the notation starts to float free of an actual intervention.
+
+Take a ten-minute break from minute 75 through minute 85, immediately after positivity. That gives the first part a clean arc: simple application, general notation, estimator, and design limitation.
+
+Use minutes 85 through 115 for Slides 20 through 26 on the Paluck school experiment. This is where students see why the full framework was necessary. Work carefully through the five exposure conditions and make them name what is held fixed in each comparison.
+
+Use minutes 115 through 145 for Slides 27 through 33 on the Ghana observer experiment. The purpose is to widen their idea of interference. Nearby effects can arise because strategic actors relocate activity, not because attitudes spread through friendship.
+
+Use minutes 145 through 170 for Slides 34 through 40 on the observational GPA example and the distinction between identification and uncertainty corrections. Keep the high-level question in view: if friendship selection and later academic performance share hidden causes, what additional information would allow us to learn about that hidden selection? Explain the negative-control logic first and GMM second.
+
+Use minutes 170 through 180 for Slides 41 through 43. Draw the boundary with the earlier models, match causal language to evidence, and finish with the reusable sequence.
+
+The protected parts are Slides 5 through 10, 12 through 19, 22 through 25, 31 through 33, 35 through 39, and 41 through 43. If discussion runs long, shorten the alternative exposure mappings on Slide 13, the mapping challenge on Slide 26, the regression detail on Slide 29, and the formal GMM language on Slide 38. Do not cut the distinction between an intervention spillover and behavioral contagion, the positivity discussion, the Paluck comparison that holds school assignment fixed, the Ghana outcome caution, or the final evidence-to-language slide.
+
+OPENING SCRIPT
+==============
+
+You can begin with: "We have spent several days learning increasingly sophisticated ways to represent dependence in relational data. Today we are changing the question. We are no longer asking only what predicts a tie, what latent structure remains, or how a network changes. We are asking what would have happened under a different intervention when that intervention can reach people other than the person assigned to it."
+
+Then say: "We already have the causal foundation. We know what potential outcomes are, why selection and influence are hard to separate, and why interference breaks the usual story in which my outcome depends only on my treatment. I want to begin after that point. The practical problem is deciding whose assignment can affect whom, what two exposure conditions we are comparing, and whether the design actually gives us both sides of that comparison."
+
+Give them the destination before the details: "By the end, I want you to be able to read a sentence such as 'peer assignment increased reported wristband wearing' and immediately ask five questions. Who was assigned? What counted as peer-assignment exposure? Compared with which condition? Could the relevant units actually reach both conditions? What assumptions turn the reported number into that causal sentence?"
+
+HOW TO USE THE DECK AND WALKTHROUGH
+==================================
+
+Stay in the deck for the full conceptual route and the published-result graphics. Open the walkthrough when the class needs to see exactly how a released-data result was calculated, how the exposure conditions are written formally, or how the Horvitz-Thompson estimator uses exposure probabilities. The deck links go directly to the relevant section, so there is no need to search through the document.
+
+The walkthrough is especially useful for the Nickerson regression, the formal exposure notation, the Horvitz-Thompson calculation, and the Ghana replication. The Paluck and Egami sections reconstruct published results because the student-level data are restricted. Say that once when each case appears, then focus on the design and interpretation.
+
+Do not run anything live. The rendered walkthrough already contains the code and output. When code appears, explain what the lines are asking the computer to calculate and then return to the substantive comparison.
+
+THE FOUR TRANSITIONS
+====================
+
+Transition from the causal foundation to Nickerson with: "We know interference means another person's assignment can matter. Let us begin with the smallest network in which that sentence has content: a household with two registered voters."
+
+Transition from Nickerson to the general framework with: "A two-person household lets us name the spillover without much notation. A school or village does not. We now need a disciplined way to compress everyone else's assignments into the part of the treatment environment that could matter for one person."
+
+Transition from the framework to Paluck with: "We now have all the pieces in the abstract. The school experiment shows why each one matters. Students can be assigned directly, have a peer assigned, or simply attend a school assigned to the program, and those are not interchangeable conditions."
+
+Transition from Paluck to Ghana with: "So far, exposure has sounded like information or behavior moving through social ties. That is only one kind of interference. Strategic actors can also respond to an intervention by moving the behavior we care about somewhere nearby."
+
+Transition from Ghana to Egami and Tchetgen Tchetgen with: "The first three cases began with randomized assignment. The final case removes that advantage. Once peer exposure is observational, adjustment for measured covariates is not enough if the same hidden forces shape friendship and later outcomes."
+
+Transition into the close with: "The methods differ, but the discipline is the same. We have to match the sentence we want to say to the comparison the design and estimator can actually support."
+
+THE DISTINCTIONS TO KEEP RETURNING TO
+=====================================
+
+Assignment is what the design randomizes. Exposure is the condition a unit reaches after combining assignments with the network or geography. Outcome is what is measured. These should never be treated as synonyms.
+
+A direct effect changes the unit's own treatment while holding peer exposure fixed. A spillover effect changes peer exposure while holding the unit's own treatment fixed. A comparison that changes both is still useful, but it should not be described as a pure direct or peer effect.
+
+An exposure mapping is a theory of how assignments reach outcomes. Randomization gives us probabilities for the declared conditions. It does not prove that "any treated friend," "number treated," or "share treated" is the correct summary of interference.
+
+Positivity belongs to a particular contrast and target population. The question is not whether every exposure category appears somewhere in the data. The question is whether each unit whose effect we want to average had a positive probability of reaching both conditions being compared.
+
+Point estimation and uncertainty use different probabilities in the design-based framework. Individual exposure probabilities weight the observed outcomes. Joint exposure probabilities tell us how two units' exposure indicators co-vary under repeated assignments.
+
+A robust covariance estimator changes uncertainty. It does not change the outcome model, repair confounding, or create a causal design. A negative-control strategy is different because it proposes additional assumptions and variables to identify hidden confounding rather than merely changing the standard error.
+
+LIKELY QUESTIONS AND SHORT ANSWERS
+==================================
+
+Question: "If treatment was randomized, why do we need all of this?" Answer: "Because treatment assignment was randomized, but the exposure condition we care about is a function of assignment and the network. Different people can have very different probabilities of reaching that condition, and some may have no chance at all."
+
+Question: "Why not just regress the outcome on the number of treated friends?" Answer: "That can be a useful exposure-response model, but the coefficient only answers the intended causal question if the exposure definition is credible, the design supports the relevant contrast, and the estimator and uncertainty calculation respect the assignment process."
+
+Question: "Is the exposure mapping estimated?" Answer: "Usually not in the framework we are using here. The analyst declares it from the proposed mechanism. The data can be used for sensitivity analyses across plausible mappings, but choosing the mapping after searching for the strongest result weakens the causal argument."
+
+Question: "Does Horvitz-Thompson require a model for the network?" Answer: "No. It requires the measured network, the assignment design, and the exposure mapping so that each unit's exposure probability can be calculated. Its justification comes from randomization, not from fitting a network-generating model."
+
+Question: "Why can the weights become unstable?" Answer: "A very small exposure probability creates a very large inverse-probability weight. That is the estimator honestly telling us that the design supplied little information about that condition for that part of the population."
+
+Question: "Is peer exposure the same as peer influence?" Answer: "No. Peer exposure is a treatment condition defined by the design and network. Peer influence is a mechanism that might explain the effect. The design can identify an exposure contrast without proving the behavioral path that produced it."
+
+Question: "Do clustered standard errors solve interference?" Answer: "No. They can allow residuals within a declared cluster to be correlated. They do not define exposure, recover missing potential outcomes, or identify a direct or spillover effect."
+
+Question: "Do negative controls prove there is no hidden confounding?" Answer: "No. They provide a way to adjust for hidden confounding under exclusion, relevance formalized through completeness, bridge, and timing assumptions. The strategy fails if friends' baseline GPA affects the student's baseline GPA, if the exposure control directly affects later or baseline GPA, or if the exposure control does not remain informative about the outcome control after conditioning on friends' GPA and measured covariates."
+
+Question: "Why not use AME to adjust for the hidden friendship structure?" Answer: "AME may capture important latent dependence, but a causal interpretation still requires the latent structure to recover the relevant common causes and to be incorporated correctly. Good fit alone does not establish that."
+
+WHAT NOT TO LET THE LECTURE BECOME
+==================================
+
+Do not turn the Nickerson result into a claim that one person's voting caused the partner's voting. The randomized intervention was assignment to the voting rather than recycling script, not the answerer's turnout.
+
+Do not call d011 minus d000 a pure peer-assignment effect in the Paluck case. That comparison changes both peer-assignment exposure and program-school assignment.
+
+Do not describe positive nearby registration growth in Ghana as proof of fraud displacement. The randomized result concerns registration growth. The interpretation of unusually high growth as irregular registration relies on additional evidence.
+
+Do not present the negative-control estimates as proof that friends do not matter. The result is that the large conventional peer-GPA association is not robust to the paper's strategy for hidden network confounding.
+
+Do not let the final boundary slide sound like a dismissal of the earlier course material. Those models answer important descriptive, measurement, dependence, and dynamic questions. The point is that causal identification is a different job.
