@@ -1619,59 +1619,39 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="simulated-first-difference" class="slide level2">
-<h2>The Smoking Summary Uses the Network-Only Model</h2>
-<div class="comparison-row">
-<div class="comparison-card">
-<p><span class="card-title">Complete Specification</span></p>
-<ul>
-<li><strong>Changing outcome:</strong> Friendship nominations across three waves</li>
-<li><strong>Other terms:</strong> Outdegree, reciprocity, transitive triplets, and three-cycles</li>
-<li><strong>Smoking term:</strong> Exact wave-1 category match, held fixed</li>
-</ul>
-</div>
-<div class="comparison-card accent-card">
-<p><span class="card-title">Two Simulation Scenarios</span></p>
-<ul>
-<li><strong>Term removed:</strong> Same complete model with the smoking coefficient at 0</li>
-<li><strong>Term included:</strong> Same complete model with that coefficient at 0.14</li>
-<li><strong>Unchanged:</strong> Starting networks, rates, and every other coefficient</li>
-</ul>
-</div>
-</div>
+<h2>Interpret the Same-Smoking Coefficient</h2>
+<p>The smoking comparison is a 0-to-1 change:</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 42%">
-<col style="width: 57%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Initially absent nomination between students in the same smoking category</th>
-<th style="text-align: right;">Probability present at next wave</th>
+<th>Same-smoking indicator</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Same-smoking coefficient set to 0</td>
-<td style="text-align: right;"><strong>2.15%</strong></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math></td>
+<td>The two students report different smoking categories</td>
 </tr>
 <tr class="even">
-<td>Same-smoking coefficient set to 0.14</td>
-<td style="text-align: right;"><strong>2.73%</strong></td>
-</tr>
-<tr class="odd">
-<td><strong>Change from including the term</strong></td>
-<td style="text-align: right;"><strong>+0.58 percentage points</strong></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math></td>
+<td>The two students report the same smoking category</td>
 </tr>
 </tbody>
 </table>
+<p>The estimated same-smoking coefficient is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.14</mn><annotation encoding="application/x-tex">0.14</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.14</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1.15</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\exp(0.14)=1.15.</annotation></semantics></math></p>
 <div class="bottom-line">
-<p>With everything else fixed, including the term moves simulated next-wave presence from 2.15% to 2.73%, a 0.58-point increase. No student’s smoking changes. The coefficient is 0.14 with SE 0.15, so the pattern is uncertain and not causal.</p>
+<p>At a modeled friendship-change opportunity, a nomination to a student with the <strong>same smoking status is about 15% more likely to be chosen</strong> than an otherwise identical nomination to a student with a different smoking status.</p>
+</div>
+<div class="mini-caution">
+<p>This is a conditional probability ratio between two possible nominations. The estimate is 0.14 with SE 0.15, so the difference is uncertain.</p>
 </div>
 <div class="slide-link">
-<p><a href="day12_saom.html#saom-first-differences" class="walkthrough-link" target="_blank">Define and interpret a simulated first difference</a></p>
+<p><a href="day12_saom.html#smoke-coefficient" class="walkthrough-link" target="_blank">Walk through the 0-to-1 comparison</a></p>
 </div>
 <aside class="notes">
-<p>Make the specification contrast explicit before reading the percentage. This is the first network-only model, not the later co-evolution model. The simulation removes one coefficient while retaining the entire fitted friendship process. Both scenarios use 1,000 unconditional simulations and the same seed.</p>
+<p>Name the variable first. The same-smoking indicator changes from zero for different smoking categories to one for the same category. The coefficient changes the log probability ratio by 0.14, and exponentiating gives a probability ratio of 1.15. Say “15% more likely to be chosen at the modeled opportunity,” not “15 percentage points more likely” and not “the probability of friendship is 15%.”</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1721,11 +1701,11 @@ display:block!important;
 <tr class="odd">
 <td><strong>Friendship</strong></td>
 <td>Outdegree, reciprocity, transitive triplets, three-cycles, drinking ego, and drinking alter</td>
-<td style="text-align: right;">Drinking similarity: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.44</mn><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.61</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">1.44\ (0.61)</annotation></semantics></math></td>
+<td style="text-align: right;">Similarity in reported drinking (1 to 5): <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.44</mn><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.61</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">1.44\ (0.61)</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td><strong>Drinking</strong></td>
-<td>Baseline movement toward higher or lower drinking and toward the middle or extremes</td>
+<td>Baseline movement across the 1-to-5 scale and toward the middle or extremes</td>
 <td style="text-align: right;">Movement toward friends’ average drinking: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.36</mn><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.95</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">1.36\ (0.95)</annotation></semantics></math></td>
 </tr>
 </tbody>
@@ -1754,7 +1734,7 @@ display:block!important;
 </section>
 <section id="selection-interpretation" class="slide level2">
 <h2>Interpret the Drinking-Similarity Coefficient</h2>
-<p>Drinking is measured from 1 to 5. RSiena converts the gap between two students into a similarity score:</p>
+<p>Reported drinking is coded <strong>1 = none</strong>, <strong>2 = once or twice a year</strong>, <strong>3 = monthly</strong>, <strong>4 = weekly</strong>, and <strong>5 = more than weekly</strong>. RSiena turns the gap into a similarity score:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1780,7 +1760,7 @@ display:block!important;
 <p>Moving one category closer raises similarity by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.25</mn><annotation encoding="application/x-tex">0.25</annotation></semantics></math>. With the estimated coefficient of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1.44</mn><annotation encoding="application/x-tex">1.44</annotation></semantics></math>:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.25</mn><mo>×</mo><mn>1.44</mn><mo>=</mo><mn>0.36</mn><mo>,</mo><mspace width="2.0em"></mspace><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.36</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1.43</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">0.25 \times 1.44 = 0.36,\qquad \exp(0.36)=1.43.</annotation></semantics></math></p>
 <div class="bottom-line">
-<p>Holding the other modeled features constant, a student who is <strong>one drinking category closer</strong> is about <strong>43% more attractive as a friendship nomination</strong> than an otherwise comparable student.</p>
+<p>At a modeled friendship-change opportunity, a student who is <strong>one drinking category closer is about 43% more likely to be chosen</strong> than an otherwise comparable student.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#selection-interpretation" class="walkthrough-link" target="_blank">Walk through the coefficient step by step</a></p>
