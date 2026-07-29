@@ -1725,20 +1725,21 @@ display:block!important;
 </tr>
 <tr class="even">
 <td><strong>Drinking</strong></td>
-<td>Linear shape and quadratic shape</td>
-<td style="text-align: right;">Average friends’ drinking: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.36</mn><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.95</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">1.36\ (0.95)</annotation></semantics></math></td>
+<td>Baseline movement toward higher or lower drinking and toward the middle or extremes</td>
+<td style="text-align: right;">Movement toward friends’ average drinking: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.36</mn><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.95</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">1.36\ (0.95)</annotation></semantics></math></td>
 </tr>
 </tbody>
 </table>
+<p>The two baseline drinking terms are called <strong>linear shape</strong> and <strong>quadratic shape</strong> in RSiena. They describe where drinking tends to move even apart from friends. They are not time trends.</p>
 <p><strong>Friendship opportunity:</strong> Change one outgoing nomination or make no change. <strong>Drinking opportunity:</strong> Move one category up or down or make no change. Separate period-specific rates govern how often the opportunities arise.</p>
 <div class="say-it">
-<p>The friendship result is consistent with selection on drinking similarity. The influence estimate is positive but too uncertain to distinguish from no influence. Two equations represent both processes but do not prove either mechanism.</p>
+<p>The fitted friendship process favors students with more similar drinking as possible friends. The estimated movement toward friends’ drinking is positive, but too uncertain to distinguish from no influence.</p>
 </div>
 <div class="slide-link">
 <p><a href="day12_saom.html#c1" class="walkthrough-link" target="_blank">Build the co-evolution model</a></p>
 </div>
 <aside class="notes">
-<p>This is not the smoking model from two slides ago. Drinking now changes endogenously alongside friendship. Selection belongs in the friendship equation, influence belongs in the drinking equation, and all of the nonfocal terms remain part of the specification.</p>
+<p>This is not the smoking model from two slides ago. Drinking now changes endogenously alongside friendship. Selection belongs in the friendship equation, while influence belongs in the drinking equation. The two baseline drinking terms are conventionally called linear shape and quadratic shape. They describe where drinking tends to move even apart from friends. They are not linear and quadratic time trends.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1751,47 +1752,41 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="average-first-differences" class="slide level2">
-<h2>Put the Selection Result on a Probability Scale</h2>
-<p>Imagine 100 possible nominations between students who report the same drinking level and are not connected at the start. The model without drinking-based selection predicts that about 2 will be present at the next survey. The fitted model predicts that a little more than 3 will be present.</p>
+<section id="selection-interpretation" class="slide level2">
+<h2>Interpret the Drinking-Similarity Coefficient</h2>
+<p>Drinking is measured from 1 to 5. RSiena converts the gap between two students into a similarity score:</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 26%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Starting pair, among absent nominations</th>
-<th style="text-align: right;">Selection term set to zero</th>
-<th style="text-align: right;">Fitted model</th>
-<th style="text-align: right;">Average change</th>
+<th>Difference in reported drinking</th>
+<th style="text-align: right;">Similarity score</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Same reported drinking level</td>
-<td style="text-align: right;">2.04%</td>
-<td style="text-align: right;">3.42%</td>
-<td style="text-align: right;"><strong>+1.38 percentage points</strong></td>
+<td>Same category</td>
+<td style="text-align: right;">1.00</td>
 </tr>
 <tr class="even">
-<td>At least two categories apart</td>
-<td style="text-align: right;">1.82%</td>
-<td style="text-align: right;">1.55%</td>
-<td style="text-align: right;"><strong>−0.27 percentage points</strong></td>
+<td>One category apart</td>
+<td style="text-align: right;">0.75</td>
+</tr>
+<tr class="odd">
+<td>Two categories apart</td>
+<td style="text-align: right;">0.50</td>
 </tr>
 </tbody>
 </table>
+<p>Moving one category closer raises similarity by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.25</mn><annotation encoding="application/x-tex">0.25</annotation></semantics></math>. With the estimated coefficient of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1.44</mn><annotation encoding="application/x-tex">1.44</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.25</mn><mo>×</mo><mn>1.44</mn><mo>=</mo><mn>0.36</mn><mo>,</mo><mspace width="2.0em"></mspace><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.36</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1.43</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">0.25 \times 1.44 = 0.36,\qquad \exp(0.36)=1.43.</annotation></semantics></math></p>
 <div class="bottom-line">
-<p>The difference is <strong>1.38 additional same-drinking nominations for every 100 possible nominations</strong>. Put simply, the fitted model says that students who report the same drinking level are more likely to become connected by the next survey.</p>
+<p>Holding the other modeled features constant, a student who is <strong>one drinking category closer</strong> is about <strong>43% more attractive as a friendship nomination</strong> than an otherwise comparable student.</p>
 </div>
 <div class="slide-link">
-<p><a href="day12_saom.html#average-first-differences" class="walkthrough-link" target="_blank">Walk through the five code steps</a></p>
+<p><a href="day12_saom.html#selection-interpretation" class="walkthrough-link" target="_blank">Walk through the coefficient step by step</a></p>
 </div>
 <aside class="notes">
-<p>Both scenarios begin from the same observed waves, retain the fitted rates and all other coefficients, and use 1,000 unconditional simulations. Do not average over all absent nominations because the centered similarity term raises formation for similar candidates and lowers it for dissimilar candidates. Those changes can cancel in a single pooled average.</p>
+<p>Start with the comparison, not the formula. Ask students to imagine two otherwise comparable possible friends. If one candidate is one drinking category closer to the student, that candidate receives 1.43 times the relative choice weight. This is the closest analogue to saying what a one-unit predictor change does. It is not a fixed percentage-point change because the probability of choosing one nomination also depends on every other available nomination, deletion, and the option of no change.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
