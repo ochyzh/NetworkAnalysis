@@ -195,7 +195,7 @@ All the class materials will be posted/updated here.
       </tr>
       <tr>
         <td>Day 14<br>Thu Jul 30</td>
-        <td>Which Model When? The Frontier</td>
+        <td>Which Model, When? The Frontier</td>
         <td>
           <dl>
           <dd><a href="../materials/2026/day14_capstone_teaching_deck.html" target=_blank> Teaching deck </a> | <a href="../materials/2026/day14_capstone_teaching_deck.html" download> Download deck </a> | <a href="../materials/2026/day14_capstone.html" target=_blank> Walkthrough </a> | <a href="../materials/2026/day14_capstone.zip" target=_blank> Code &amp; data </a>
@@ -205,7 +205,7 @@ All the class materials will be posted/updated here.
       </tr>
       <tr>
         <td>Extras</td>
-        <td>Ancillary Shelf: Optional Deep Dives (TERGM, Random Graphs, Ego-ERGMs, Valued ERGMs, SAOM Extensions)</td>
+        <td>Ancillary Shelf: Optional Deep Dives (TERGM, Relational Events, Random Graphs, Ego-ERGMs, Valued ERGMs, SAOM Extensions)</td>
         <td>
           <dl>
           <dd><a href="../materials/2026/ancillary/index.html" target=_blank> Shelf index </a> | <a href="../materials/2026/ancillary.zip" target=_blank> All as ZIP </a>
