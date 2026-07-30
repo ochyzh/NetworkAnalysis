@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Shahryar Minhas">
-<meta name="dcterms.date" content="2026-07-29">
+<meta name="dcterms.date" content="2026-07-30">
 
 <title>Day 12: Stochastic Actor-Oriented Models</title>
 <style>
@@ -2308,7 +2308,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#referee" id="toc-referee" class="nav-link" data-scroll-target="#referee">The referee checklist</a></li>
   <li><a href="#not-shown" id="toc-not-shown" class="nav-link" data-scroll-target="#not-shown">What we did not show</a></li>
-  <li><a href="#one-thing-we-didnt-cover-relational-event-models" id="toc-one-thing-we-didnt-cover-relational-event-models" class="nav-link" data-scroll-target="#one-thing-we-didnt-cover-relational-event-models">One thing we didn’t cover: relational event models</a></li>
   <li><a href="#homework-4" id="toc-homework-4" class="nav-link" data-scroll-target="#homework-4">Homework 4</a></li>
   <li><a href="#where-we-go-next-day-13" id="toc-where-we-go-next-day-13" class="nav-link" data-scroll-target="#where-we-go-next-day-13">Where we go next: Day 13</a></li>
   </ul></li>
@@ -2342,7 +2341,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 29, 2026</p>
+      <p class="date">July 30, 2026</p>
     </div>
   </div>
   
@@ -5317,12 +5316,6 @@ f_i^{\text{drink}}(z,x)
 <li><strong>Maximum-likelihood estimation</strong>, beyond the comparison in the <a href="#sec-estimation-roadmap">method-of-moments detail box</a>: <code>sienaAlgorithmCreate(maxlike = TRUE)</code> is slower but more efficient with substantial missingness or very small networks. The manual’s estimation chapter covers when it earns its runtime.</li>
 </ul>
 </section>
-<section id="one-thing-we-didnt-cover-relational-event-models" class="level3">
-<h3 class="anchored" data-anchor-id="one-thing-we-didnt-cover-relational-event-models">One thing we didn’t cover: relational event models</h3>
-<p>SAOM and TERGM model <strong>enduring ties</strong> observed as panel waves, where the process between waves is unobserved and must be inferred. That inference is where all today’s assumptions live.</p>
-<p>If instead you observe <strong>timestamped events</strong>, emails, calls, citations, meetings, you see the ordering directly, and most of that inferential burden evaporates. That’s relational event models (REM) and DyNAM. This matters for the communication and public health people especially: your data is more likely an event stream than a panel.</p>
-<p>And if it is, REM/DyNAM is the <em>right</em> model, not a pedagogical foil. It dissolves the untestable timing assumption that <a href="#c1">C1</a> called the load-bearing wall, because you <strong>observe</strong> the order of changes instead of inferring it. SAOM and TERGM have to re-infer that ordering under an assumption precisely because panel waves throw it away: the one-change-at-a-time micro-step machinery is the price of coarse sampling, not an intrinsic virtue. So REM does not replace SAOM <em>when all you have is panel waves</em>, there the assumption is unavoidable and you still need it, but if you actually hold the event stream, don’t discard the ordering to force the data back into a panel model. The current overview is <strong>Bianchi, Filippi-Mazzola, Lomi &amp; Wit (2024), “Relational Event Modeling,” <em>Annual Review of Statistics and Its Application</em> 11:297–319</strong>; for the framing debate see <strong>Butts, Lomi, Snijders &amp; Stadtfeld (2023), “Relational event models in Network Science,” <em>Network Science</em> 11(2):175–183</strong>. Packages: <code>relevent</code>, <code>rem</code>, <code>goldfish</code>, <code>remstimate</code>. Install nothing here; Day 14’s capstone includes a cached REM application using <code>relevent</code> on a timestamped event stream, with <code>goldfish</code> as a second specification.</p>
-</section>
 <section id="homework-4" class="level3">
 <h3 class="anchored" data-anchor-id="homework-4">Homework 4</h3>
 <p>Homework 4 offers two choices. You can interpret a supplied longitudinal-network result, focusing on what the estimates say about friendship change, selection, influence, uncertainty, and the limits of the evidence. Alternatively, you can share a piece of research connected to the course and meet with me to work through its research question, network measurement, model choice, or interpretation. Neither option requires fitting a new model.</p>
@@ -8015,49 +8008,41 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-2262"><a href="#cb71-2262" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`updateTheta()` / `updateSpecification()`**, carrying estimates from one fit into a *differently specified* effects object, for when <span class="co">[</span><span class="ot">B2</span><span class="co">](#b2)</span>&#39;s <span class="in">`prevAns`</span> doesn&#39;t apply because the specification changed too much. <span class="in">`?updateTheta`</span>.</span>
 <span id="cb71-2263"><a href="#cb71-2263" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Maximum-likelihood estimation**, beyond the comparison in the <span class="co">[</span><span class="ot">method-of-moments detail box</span><span class="co">](#sec-estimation-roadmap)</span>: <span class="in">`sienaAlgorithmCreate(maxlike = TRUE)`</span> is slower but more efficient with substantial missingness or very small networks. The manual&#39;s estimation chapter covers when it earns its runtime.</span>
 <span id="cb71-2264"><a href="#cb71-2264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2265"><a href="#cb71-2265" aria-hidden="true" tabindex="-1"></a><span class="fu">### One thing we didn&#39;t cover: relational event models</span></span>
+<span id="cb71-2265"><a href="#cb71-2265" aria-hidden="true" tabindex="-1"></a><span class="fu">### Homework 4</span></span>
 <span id="cb71-2266"><a href="#cb71-2266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2267"><a href="#cb71-2267" aria-hidden="true" tabindex="-1"></a>SAOM and TERGM model **enduring ties** observed as panel waves, where the process between waves is unobserved and must be inferred. That inference is where all today&#39;s assumptions live.</span>
+<span id="cb71-2267"><a href="#cb71-2267" aria-hidden="true" tabindex="-1"></a>Homework 4 offers two choices. You can interpret a supplied longitudinal-network result, focusing on what the estimates say about friendship change, selection, influence, uncertainty, and the limits of the evidence. Alternatively, you can share a piece of research connected to the course and meet with me to work through its research question, network measurement, model choice, or interpretation. Neither option requires fitting a new model.</span>
 <span id="cb71-2268"><a href="#cb71-2268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2269"><a href="#cb71-2269" aria-hidden="true" tabindex="-1"></a>If instead you observe **timestamped events**, emails, calls, citations, meetings, you see the ordering directly, and most of that inferential burden evaporates. That&#39;s relational event models (REM) and DyNAM. This matters for the communication and public health people especially: your data is more likely an event stream than a panel.</span>
+<span id="cb71-2269"><a href="#cb71-2269" aria-hidden="true" tabindex="-1"></a><span class="fu">### Where we go next: Day 13</span></span>
 <span id="cb71-2270"><a href="#cb71-2270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2271"><a href="#cb71-2271" aria-hidden="true" tabindex="-1"></a>And if it is, REM/DyNAM is the *right* model, not a pedagogical foil. It dissolves the untestable timing assumption that [C1](#c1) called the load-bearing wall, because you **observe** the order of changes instead of inferring it. SAOM and TERGM have to re-infer that ordering under an assumption precisely because panel waves throw it away: the one-change-at-a-time micro-step machinery is the price of coarse sampling, not an intrinsic virtue. So REM does not replace SAOM *when all you have is panel waves*, there the assumption is unavoidable and you still need it, but if you actually hold the event stream, don&#39;t discard the ordering to force the data back into a panel model. The current overview is **Bianchi, Filippi-Mazzola, Lomi &amp; Wit (2024), &quot;Relational Event Modeling,&quot; *Annual Review of Statistics and Its Application* 11:297–319**; for the framing debate see **Butts, Lomi, Snijders &amp; Stadtfeld (2023), &quot;Relational event models in Network Science,&quot; *Network Science* 11(2):175–183**. Packages: <span class="in">`relevent`</span>, <span class="in">`rem`</span>, <span class="in">`goldfish`</span>, <span class="in">`remstimate`</span>. Install nothing here; Day 14&#39;s capstone includes a cached REM application using <span class="in">`relevent`</span> on a timestamped event stream, with <span class="in">`goldfish`</span> as a second specification.</span>
+<span id="cb71-2271"><a href="#cb71-2271" aria-hidden="true" tabindex="-1"></a>Today closes the modeling arc of the course: every day so far has answered dependence by changing the *model*. Tomorrow (Day 13) leaves the model alone and interrogates the *design*: what a causal claim on a network even means, why interference breaks the usual potential-outcomes machinery, what randomization buys you, and what an observational researcher can honestly claim. Then Day 14 puts every model from this week head-to-head on one dataset and asks the question the syllabus opened with: which model, when?</span>
 <span id="cb71-2272"><a href="#cb71-2272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2273"><a href="#cb71-2273" aria-hidden="true" tabindex="-1"></a><span class="fu">### Homework 4</span></span>
+<span id="cb71-2273"><a href="#cb71-2273" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb71-2274"><a href="#cb71-2274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2275"><a href="#cb71-2275" aria-hidden="true" tabindex="-1"></a>Homework 4 offers two choices. You can interpret a supplied longitudinal-network result, focusing on what the estimates say about friendship change, selection, influence, uncertainty, and the limits of the evidence. Alternatively, you can share a piece of research connected to the course and meet with me to work through its research question, network measurement, model choice, or interpretation. Neither option requires fitting a new model.</span>
+<span id="cb71-2275"><a href="#cb71-2275" aria-hidden="true" tabindex="-1"></a><span class="fu"># Appendix A: Depth track {#appendix-a}</span></span>
 <span id="cb71-2276"><a href="#cb71-2276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2277"><a href="#cb71-2277" aria-hidden="true" tabindex="-1"></a><span class="fu">### Where we go next: Day 13</span></span>
-<span id="cb71-2278"><a href="#cb71-2278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2279"><a href="#cb71-2279" aria-hidden="true" tabindex="-1"></a>Today closes the modeling arc of the course: every day so far has answered dependence by changing the *model*. Tomorrow (Day 13) leaves the model alone and interrogates the *design*: what a causal claim on a network even means, why interference breaks the usual potential-outcomes machinery, what randomization buys you, and what an observational researcher can honestly claim. Then Day 14 puts every model from this week head-to-head on one dataset and asks the question the syllabus opened with: which model, when?</span>
-<span id="cb71-2280"><a href="#cb71-2280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2281"><a href="#cb71-2281" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb71-2277"><a href="#cb71-2277" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;A.1: Why the behavior equation needs shape terms&quot;}</span>
+<span id="cb71-2278"><a href="#cb71-2278" aria-hidden="true" tabindex="-1"></a>The linear and quadratic shape terms are included by default because a bounded ordinal behavior needs its own baseline change pattern. With only a linear term, the baseline evaluation can tilt toward higher or lower values but cannot represent a preference for the middle rather than the extremes, or the reverse. Omitting that curvature can force the friends&#39; drinking term to absorb a baseline pattern that has nothing to do with friends.</span>
+<span id="cb71-2279"><a href="#cb71-2279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-2280"><a href="#cb71-2280" aria-hidden="true" tabindex="-1"></a>The quadratic shape also has a substantive reading: negative means the behavior is self-correcting toward the middle, positive means it&#39;s self-reinforcing toward the extremes (polarizing). That&#39;s often more interesting than the influence term and it usually goes unreported.</span>
+<span id="cb71-2281"><a href="#cb71-2281" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb71-2282"><a href="#cb71-2282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2283"><a href="#cb71-2283" aria-hidden="true" tabindex="-1"></a><span class="fu"># Appendix A: Depth track {#appendix-a}</span></span>
-<span id="cb71-2284"><a href="#cb71-2284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2285"><a href="#cb71-2285" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;A.1: Why the behavior equation needs shape terms&quot;}</span>
-<span id="cb71-2286"><a href="#cb71-2286" aria-hidden="true" tabindex="-1"></a>The linear and quadratic shape terms are included by default because a bounded ordinal behavior needs its own baseline change pattern. With only a linear term, the baseline evaluation can tilt toward higher or lower values but cannot represent a preference for the middle rather than the extremes, or the reverse. Omitting that curvature can force the friends&#39; drinking term to absorb a baseline pattern that has nothing to do with friends.</span>
-<span id="cb71-2287"><a href="#cb71-2287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2288"><a href="#cb71-2288" aria-hidden="true" tabindex="-1"></a>The quadratic shape also has a substantive reading: negative means the behavior is self-correcting toward the middle, positive means it&#39;s self-reinforcing toward the extremes (polarizing). That&#39;s often more interesting than the influence term and it usually goes unreported.</span>
-<span id="cb71-2289"><a href="#cb71-2289" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb71-2290"><a href="#cb71-2290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2291"><a href="#cb71-2291" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;A.2: What to read next&quot;}</span>
-<span id="cb71-2292"><a href="#cb71-2292" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Snijders (2017)**, *Annu Rev Stat Appl* 4:343–363, the overview. Start here.</span>
-<span id="cb71-2293"><a href="#cb71-2293" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Steglich, Snijders &amp; Pearson (2010)**, *Sociological Methodology* 40(1):329–393 - the assigned reading; the selection/influence argument in full.</span>
-<span id="cb71-2294"><a href="#cb71-2294" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Lospinoso &amp; Snijders (2019)**, *Methodological Innovations* 12(3), GOF.</span>
-<span id="cb71-2295"><a href="#cb71-2295" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Block, Stadtfeld &amp; Snijders (2019)**, *SMR* 48(1):202–239, the graph-level vs transition-level framing.</span>
-<span id="cb71-2296"><a href="#cb71-2296" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Ripley, Snijders, Boda &amp; Vörös**, *Manual for RSiena*, current edition, the reference manual; note the 1.6 function names.</span>
-<span id="cb71-2297"><a href="#cb71-2297" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **ancillary TERGM deep dive** (<span class="in">`ancillary/tergm.qmd`</span>), the long-form companion to the TERGM you fit yesterday in Day 11&#39;s C4, fits the Knecht data both ways, so you can see the comparison in this section made empirical.</span>
-<span id="cb71-2298"><a href="#cb71-2298" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb71-2299"><a href="#cb71-2299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2300"><a href="#cb71-2300" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb71-2301"><a href="#cb71-2301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2302"><a href="#cb71-2302" aria-hidden="true" tabindex="-1"></a><span class="fu"># Appendix B: Session info {#appendix-b}</span></span>
-<span id="cb71-2303"><a href="#cb71-2303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2306"><a href="#cb71-2306" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb71-2307"><a href="#cb71-2307" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sessioninfo</span></span>
-<span id="cb71-2308"><a href="#cb71-2308" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
-<span id="cb71-2309"><a href="#cb71-2309" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb71-2283"><a href="#cb71-2283" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;A.2: What to read next&quot;}</span>
+<span id="cb71-2284"><a href="#cb71-2284" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Snijders (2017)**, *Annu Rev Stat Appl* 4:343–363, the overview. Start here.</span>
+<span id="cb71-2285"><a href="#cb71-2285" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Steglich, Snijders &amp; Pearson (2010)**, *Sociological Methodology* 40(1):329–393 - the assigned reading; the selection/influence argument in full.</span>
+<span id="cb71-2286"><a href="#cb71-2286" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Lospinoso &amp; Snijders (2019)**, *Methodological Innovations* 12(3), GOF.</span>
+<span id="cb71-2287"><a href="#cb71-2287" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Block, Stadtfeld &amp; Snijders (2019)**, *SMR* 48(1):202–239, the graph-level vs transition-level framing.</span>
+<span id="cb71-2288"><a href="#cb71-2288" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Ripley, Snijders, Boda &amp; Vörös**, *Manual for RSiena*, current edition, the reference manual; note the 1.6 function names.</span>
+<span id="cb71-2289"><a href="#cb71-2289" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **ancillary TERGM deep dive** (<span class="in">`ancillary/tergm.qmd`</span>), the long-form companion to the TERGM you fit yesterday in Day 11&#39;s C4, fits the Knecht data both ways, so you can see the comparison in this section made empirical.</span>
+<span id="cb71-2290"><a href="#cb71-2290" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb71-2291"><a href="#cb71-2291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-2292"><a href="#cb71-2292" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb71-2293"><a href="#cb71-2293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-2294"><a href="#cb71-2294" aria-hidden="true" tabindex="-1"></a><span class="fu"># Appendix B: Session info {#appendix-b}</span></span>
+<span id="cb71-2295"><a href="#cb71-2295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-2298"><a href="#cb71-2298" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb71-2299"><a href="#cb71-2299" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sessioninfo</span></span>
+<span id="cb71-2300"><a href="#cb71-2300" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb71-2301"><a href="#cb71-2301" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
