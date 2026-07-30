@@ -1542,20 +1542,40 @@ Shahryar Minhas
 </div>
 </section>
 <section id="negative-intuition" class="slide level2">
-<h2>Negative Controls Look for Clues About Hidden Selection</h2>
-<p>The method uses observed variables that may carry traces of hidden selection but should not lie on the peer-effect pathway being studied.</p>
-<div class="plain-grid">
-<div class="plain-card">
-<p><span class="card-title">Earlier Outcome Clue</span></p>
-<p>The student’s own baseline GPA existed before friends’ baseline GPA could affect the later outcome.</p>
-</div>
-<div class="plain-card">
-<p><span class="card-title">Network-Side Clue</span></p>
-<p>Peers-of-peers’ GPA may reflect the same friendship-selection process without directly changing the student’s later GPA.</p>
-</div>
-</div>
+<h2>The Paper Uses Two Negative Controls Together</h2>
+<p>A basic placebo check asks whether a variable with no plausible effect still predicts the outcome. Friends’ headaches provide that intuition here. Egami and Tchetgen Tchetgen (2024) go farther by pairing an exposure control with an outcome control.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Role</th>
+<th>Application variable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Main exposure</td>
+<td>Friends’ baseline GPA</td>
+</tr>
+<tr class="even">
+<td>Outcome</td>
+<td>Student’s later GPA</td>
+</tr>
+<tr class="odd">
+<td>Negative-control exposure</td>
+<td>Friends’ headaches or peers-of-peers’ GPA</td>
+</tr>
+<tr class="even">
+<td>Negative-control outcome</td>
+<td>Student’s own baseline GPA</td>
+</tr>
+</tbody>
+</table>
 <div class="read-aloud">
-<p>If these clues really capture the hidden forces and satisfy the required restrictions, they can help correct the peer-GPA comparison. Those restrictions are assumptions that researchers must defend, not facts the method discovers automatically.</p>
+<p>The two controls contain indirect information about hidden friendship selection and shared context. A specialized bridge estimated with generalized method of moments uses that information to revise the peer-effect estimate. This is not the same as simply adding headaches to an ordinary regression.</p>
 </div>
 <div class="slide-link">
 <p><a href="day13_causal.html#sec-negative-controls" class="walkthrough-link" target="_blank">Open the optional negative-control details</a></p>
@@ -1582,7 +1602,7 @@ Shahryar Minhas
 <p>It shows that:</p>
 <ol type="1">
 <li>The ordinary adjusted regression produced a large and precise positive association.</li>
-<li>The estimate became much smaller when the researchers used two proposed strategies for hidden selection.</li>
+<li>The estimate became much smaller with either alternative negative-control exposure, each paired with the student’s baseline GPA as the negative-control outcome.</li>
 <li>The causal conclusion therefore depends heavily on whether the negative controls and their assumptions are credible.</li>
 </ol>
 <div class="read-aloud">

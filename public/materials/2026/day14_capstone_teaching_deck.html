@@ -1526,7 +1526,7 @@ display:block!important;
 <h2>Lens 4: ERGM Makes Configurations Explicit</h2>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>Pr</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>Y</mi><mo>=</mo><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∝</mo><mo>exp</mo><mo stretchy="false" form="prefix">{</mo><msup><mi>θ</mi><mi>𝖳</mi></msup><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\Pr(Y=y)\propto\exp\{\theta^{\mathsf T}g(y)\}</annotation></semantics></math></p>
 <div class="big-question">
-<p>Does a shared-partner statistic retain a conditional association after actor heterogeneity is represented?</p>
+<p>Holding the rest of the network fixed, does a proposed tie receive greater conditional odds when it adds shared partners?</p>
 </div>
 <p>Use change statistics and simulation to interpret:</p>
 <ul>
@@ -1568,26 +1568,76 @@ display:block!important;
 <tbody>
 <tr class="odd">
 <td>Covariates plus shared partners</td>
-<td>Misses how unequal organizations’ partner counts are and produces too much transitivity</td>
+<td>Simulations have too little variation in partner counts and too much transitivity</td>
 </tr>
 <tr class="even">
 <td>Add one curved degree term</td>
-<td>Improves AIC, but still misses both patterns</td>
+<td>Improves AIC, but the observed values remain outside both simulation intervals</td>
 </tr>
 <tr class="odd">
 <td>Give each organization its own baseline activity</td>
-<td>Covers the selected actor-heterogeneity and transitivity-dependence checks; the remaining shared-partner interval includes zero</td>
+<td>The two observed values fall inside their simulation intervals; the remaining shared-partner coefficient interval includes zero</td>
 </tr>
 </tbody>
 </table>
 <div class="say-it">
-<p>Once the model represents how unusually active ANF and ASIM are, these data do not show a clear additional shared-partner pattern. Read that result from the final model and its simulations. Do not compare the shared-partner coefficients across specifications as though they estimated the same effect.</p>
+<p>Within the final, highly flexible specification, the remaining shared-partner association is imprecise and the two selected simulation checks do not reveal a mismatch. Do not compare the shared-partner coefficients across specifications as though they estimated the same effect.</p>
 </div>
 <div class="mini-caution">
-<p>With 29 organization-specific sociality parameters and only 85 observed ties, the final ERGM is a diagnostic teaching specification, not definitive evidence that closure is absent.</p>
+<p>With 29 sociality parameters and only 85 ties, matching degree heterogeneity is partly built into the final model. The nodal covariates also leave when sociality enters, so this is not a one-term-at-a-time comparison.</p>
 </div>
 <aside class="notes">
-<p>The model sequence separates two patterns that can look alike. A hub mechanically creates many shared partners. A closure pattern means ties remain especially common among pairs with shared partners after other included structure is represented. The first two specifications fail the simulation checks. Read the final specification on its own: it reproduces the focal patterns, and its conditional shared-partner interval includes zero. This does not prove that closure never occurs.</p>
+<p>The model sequence separates two patterns that can look alike. A hub mechanically creates many shared partners. A shared-partner association means ties remain especially common among pairs with shared partners after other included structure is represented. The first two specifications miss both simulation checks. Read the final specification on its own. It covers the focal statistics, and its conditional shared-partner interval includes zero. This does not prove that organizations formed or avoided ties through a particular process.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
+</section>
+<section id="ergm-simulation-check" class="slide level2 smaller">
+<h2>Inside the Simulation Interval Is Good News, with Limits</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Final sociality ERGM</th>
+<th style="text-align: right;">Observed</th>
+<th style="text-align: right;">Simulated median</th>
+<th style="text-align: right;">95% simulation interval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Variation in organizations’ partner rates</td>
+<td style="text-align: right;">0.184</td>
+<td style="text-align: right;">0.190</td>
+<td style="text-align: right;">[0.172, 0.207]</td>
+</tr>
+<tr class="even">
+<td>Centered transitivity dependence</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">-0.018</td>
+<td style="text-align: right;">[-0.075, 0.061]</td>
+</tr>
+</tbody>
+</table>
+<p>Both observed values are inside their intervals. For these two checks, the simulations do not reveal a mismatch. The median shows where a typical simulated network lands.</p>
+<div class="mini-caution">
+<p>This does not establish overall fit. We checked only two summaries with 200 simulations. Each row has its own interval; this is not one simultaneous band across every diagnostic. The negative transitivity values are possible because this is a centered dependence score, not a triangle count.</p>
+</div>
+<aside class="notes">
+<p>The first two ERGMs fail clearly. In both, observed actor heterogeneity is above the simulation interval and observed centered transitivity is below it. The sociality model covers both. That is the right interpretation of the interval. It supports this narrow check, not a declaration that the whole model is correct. In research, use more simulations, inspect the native degree, shared-partner, distance, component, isolate, and mixing diagnostics, and examine other decay values. The fixed decay of 0.5 is a teaching convention.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1817,12 +1867,14 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="negative-control" class="slide level2">
-<h2>Headaches Are a Check, Not the Outcome</h2>
+<h2>A Negative Control Starts as a Deliberate Non-Effect</h2>
 <p>Egami and Tchetgen Tchetgen (2024) ask whether students do better academically when their friends have higher GPAs.</p>
-<p><strong>The problem:</strong> students choose their friends. Shared motivation, family resources, stress, or school conditions could make friends’ GPAs look influential even when the relationship comes from shared background.</p>
-<p><strong>The check:</strong> friends’ headaches should not directly change a student’s later GPA. But headaches may still reflect that hidden background.</p>
+<p><strong>Main exposure:</strong> friends’ average baseline GPA<br>
+<strong>Outcome:</strong> the student’s later GPA<br>
+<strong>Confounding worry:</strong> friends may share motivation, family resources, courses, stress, or school conditions before any influence occurs</p>
+<p>Friends’ baseline headaches may reflect that hidden background, but should not directly change the student’s later GPA. As a basic placebo check, an association between friends’ headaches and later GPA would warn that hidden selection may remain.</p>
 <aside class="notes">
-<p>The outcome we care about is the student’s later GPA. Friends’ GPA is the exposure. Friends’ headaches are a diagnostic clue, not a second outcome of substantive interest.</p>
+<p>The headaches are not the outcome the researchers care about. A basic negative control asks whether the design finds a relationship where the proposed peer-GPA mechanism says there should not be one. A failed check can reveal bias. A passed check cannot rule out every confounder.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1835,8 +1887,8 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="what-the-two-negative-controls-tell-us" class="slide level2 smaller">
-<h2>What the Two Negative Controls Tell Us</h2>
+<section id="their-method-uses-two-controls-to-adjust-not-just-diagnose" class="slide level2 smaller">
+<h2>Their Method Uses Two Controls to Adjust, Not Just Diagnose</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -1844,27 +1896,27 @@ display:block!important;
 </colgroup>
 <thead>
 <tr class="header">
-<th>Clue</th>
-<th>Why it helps</th>
+<th>Role</th>
+<th>Variable</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Friends’ headaches</strong></td>
-<td>They may reflect hidden features of the friendship environment, but should not directly change the student’s later GPA</td>
+<td>Negative-control exposure</td>
+<td>Friends’ headaches, or peers-of-peers’ GPA in the alternative analysis</td>
 </tr>
 <tr class="even">
-<td><strong>Student’s earlier GPA</strong></td>
-<td>It reflects background influences on academic performance, but friends’ GPA cannot travel backward and change it</td>
+<td>Negative-control outcome</td>
+<td>Student’s own baseline GPA</td>
 </tr>
 </tbody>
 </table>
-<p>If friends’ headaches still predict later GPA, or friends’ GPA appears to predict a GPA recorded earlier, then either unmeasured network confounding remains or the proposed negative control does not satisfy its exclusion assumptions.</p>
+<p>Egami and Tchetgen Tchetgen use the pair to estimate a <strong>confounding bridge</strong> with GMM. Under additional exclusion, relevance, completeness, and bridge assumptions, that bridge adjusts the peer-GPA estimate.</p>
 <div class="bottom-line">
-<p>First use negative controls as a warning check. Egami and Tchetgen Tchetgen show that, with stronger assumptions, both clues can also help adjust the peer-GPA estimate. This is more than simply adding them to an ordinary regression.</p>
+<p>The correction is not “put headaches into the regression.” Two negative controls supply proxy information about hidden confounding, and a specialized estimator uses that information.</p>
 </div>
 <aside class="notes">
-<p>The two controls look at hidden background from different sides. Friends’ headaches give a clue from the peer environment. The student’s earlier GPA gives a clue from the outcome history. Keep the lecture-level message simple: an apparently persuasive peer association can shrink when hidden selection is treated more seriously.</p>
+<p>The distinction to repeat is diagnostic versus adjustment. A placebo-style negative control detects a warning. Their double-negative-control method pairs an exposure control with an outcome control and estimates a bridge that can adjust the focal contrast under stronger assumptions. The paper also uses peers-of-peers’ GPA as an alternative exposure control. The headache-based proxy relationship is weaker, which is why that estimate has a wide interval.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
