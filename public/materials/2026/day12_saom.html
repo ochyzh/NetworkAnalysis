@@ -2287,7 +2287,7 @@ window.Quarto = {
   <li><a href="#c1" id="toc-c1" class="nav-link" data-scroll-target="#c1">C1 · Selection and influence, jointly</a>
   <ul class="collapse">
   <li><a href="#c1-specification" id="toc-c1-specification" class="nav-link" data-scroll-target="#c1-specification">The Complete Co-Evolution Specification</a></li>
-  <li><a href="#honest" id="toc-honest" class="nav-link" data-scroll-target="#honest">The honest part</a></li>
+  <li><a href="#selection-influence-limits" id="toc-selection-influence-limits" class="nav-link" data-scroll-target="#selection-influence-limits">What the Result Does and Does Not Establish</a></li>
   <li><a href="#selection-interpretation" id="toc-selection-interpretation" class="nav-link" data-scroll-target="#selection-interpretation">Interpret the drinking-similarity coefficient step by step</a></li>
   <li><a href="#average-first-differences" id="toc-average-first-differences" class="nav-link" data-scroll-target="#average-first-differences">Optional model-level summaries</a></li>
   <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise">Exercise</a></li>
@@ -2369,7 +2369,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>This document uses three small helpers defined in <strong><code>_saom_helpers.R</code></strong>: <code>require_pkgs()</code>, <code>fit_or_load()</code>, and <code>checkpoint()</code>. The helper file must sit in your working directory alongside the <strong><code>cache_saom/</code></strong> folder of pre-fitted objects. (The file also defines a fourth, <code>quiet_solver()</code>, which belongs to the ERGM day and is never called here.) <strong>Source it first, before anything else runs:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;_saom_helpers.R&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>require_pkgs()</code> fails early and loudly if a package is missing; <code>fit_or_load()</code> returns a shipped fit instantly (or refits for real when you set <code>options(session.refit = TRUE)</code>); <code>checkpoint()</code> prints the compact comparison lines you’ll see throughout. The very first visible line below, <code>require_pkgs(c(&quot;RSiena&quot;, &quot;netify&quot;))</code>, is one of them, if you skipped the <code>source()</code> it will die with “could not find function.”</p>
+<p><code>require_pkgs()</code> fails early and loudly if a package is missing; <code>fit_or_load()</code> returns a shipped fit instantly (or refits from scratch when you set <code>options(session.refit = TRUE)</code>); <code>checkpoint()</code> prints the compact comparison lines you’ll see throughout. The very first visible line below, <code>require_pkgs(c(&quot;RSiena&quot;, &quot;netify&quot;))</code>, is one of them, if you skipped the <code>source()</code> it will die with “could not find function.”</p>
 </div>
 </div>
 <p>Today’s path:</p>
@@ -2412,7 +2412,7 @@ window.Quarto = {
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li>You’ve fit SAOMs before and want the diagnostics and the honest caveats → <a href="#block-c">Block C</a></li>
+<li>You’ve fit SAOMs before and want the diagnostics and limitations → <a href="#block-c">Block C</a></li>
 <li>You want the convergence machinery specifically → <a href="#b2">B2</a></li>
 <li>You want to know how to <em>referee</em> a SAOM paper without fitting one → <a href="#referee">the referee checklist</a></li>
 <li>You want the mathematics the core path skips → <a href="#appendix-a">Appendix A</a></li>
@@ -2444,7 +2444,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This document is written against <strong>RSiena 1.5.0</strong>, which is what is installed here. CRAN is further along, and <strong>RSiena ≥ 1.6.3 requires R ≥ 4.5.0</strong>, so on an older R, <code>install.packages(&quot;RSiena&quot;)</code> will silently offer you nothing rather than telling you why. That is a genuinely nasty failure mode and it is worth knowing about before you hit it.</p>
+<p>This document is written against <strong>RSiena 1.5.0</strong>, which is what is installed here. CRAN is further along, and <strong>RSiena ≥ 1.6.3 requires R ≥ 4.5.0</strong>, so on an older R, <code>install.packages(&quot;RSiena&quot;)</code> will silently offer you nothing rather than telling you why. That failure mode is easy to encounter and poorly explained, so it is worth knowing about before you hit it.</p>
 <p>More importantly: <strong>RSiena 1.6 renamed essentially the whole user-facing API.</strong> The old names still work, nothing you learn today stops working, but the current manual uses the new ones exclusively. The full translation table is in a collapsed box in <a href="#a1">A1</a>, reference on demand, not something to memorise.</p>
 </div>
 </div>
@@ -2456,9 +2456,9 @@ window.Quarto = {
 <section id="a1" class="level2">
 <h2 class="anchored" data-anchor-id="a1">A1 · The motivating question</h2>
 <p>Start with a question the earlier material left open: <em>suppose I want to study how smoking and friendships develop together. Can I answer that by comparing the network at time 1 with the network at time 2?</em></p>
-<p>The honest answer is “not the way you’re about to try,” and the reason is the thing we spent yesterday circling. Yesterday, with cross-sectional ERGMs, we could write down a transitivity parameter and test it, but from a single cross-section we could not distinguish <em>triadic closure</em> (I befriend my friends’ friends) from <em>homophily on something we didn’t measure</em>. That’s Shalizi &amp; Thomas, which you met on Day 10. One snapshot is not enough information.</p>
+<p>No, not with a simple before-and-after comparison. Yesterday, with cross-sectional ERGMs, we could write down a transitivity parameter and test it, but from a single cross-section we could not distinguish <em>triadic closure</em> (I befriend my friends’ friends) from <em>homophily on something we did not measure</em>. That is the problem raised by Shalizi and Thomas, which you met on Day 10. One snapshot is not enough information.</p>
 <p>Today’s answer is: <strong>use time</strong>. Yesterday’s C4 already made that move once, tie-oriented, the TERGM conditioned each wave on the last, with no actor anywhere in the machinery. Today the actor takes the wheel, and whether that is an upgrade or just a different bet on the same waves is <a href="#c3">C3</a>’s fight. If you observe the same people at several waves, you can ask whether ties changed to match behavior (selection) or behavior changed to match ties (influence). The temporal ordering helps, but the separation still depends on the model’s continuous-time micro-step assumptions.</p>
-<p>That is the entire promise of the stochastic actor-oriented model, and by the end of Block C I want you to be appropriately skeptical of it. It delivers something real. It does not deliver as much as people claim in abstracts.</p>
+<p>That is the central promise of the stochastic actor-oriented model, and by the end of Block C you should also understand its limits. It provides a useful separation of mechanisms under a declared process model, but it does not deliver as much as some abstracts claim.</p>
 <section id="sec-political-question" class="level3">
 <h3 class="anchored" data-anchor-id="sec-political-question">Did Similarity Produce the Relationship, or Did the Relationship Produce Similarity?</h3>
 <p>The same question appears in many settings. Do states form alliances because their security policies already align, or do alliances bring those policies closer together? Do legislators collaborate because they already hold similar positions, or does collaboration bring their positions closer? Do armed groups cooperate because their strategies already align, or does cooperation lead their strategies to converge? Repeated observations help us see what changed first, but they do not record every decision or change between waves. A SAOM fills in that missing sequence using an assumed actor-oriented process, so its results show patterns consistent with selection or influence rather than proving either process.</p>
@@ -2669,7 +2669,7 @@ window.Quarto = {
 <p><em>“Jaccard values of .3 and higher are good; values lower than .2 indicate that there might be difficulties in estimation; values lower than .1 are quite low indeed.”</em></p>
 </blockquote>
 <p>We’re at 0.331 and 0.384. Comfortably fine.</p>
-<p>The average degree matters too, because low Jaccard is <em>acceptable</em> if the network is growing or shrinking monotonically, you’d expect low overlap then. Ours is roughly flat (2.26 → 2.32 → 2.44), so the Jaccard is doing honest work. The manual’s sharp version:</p>
+<p>The average degree matters too, because low Jaccard is <em>acceptable</em> if the network is growing or shrinking monotonically, since we would expect low overlap then. Ours is roughly flat (2.26 → 2.32 → 2.44), so the Jaccard provides useful information. The manual’s sharper version:</p>
 <blockquote class="blockquote">
 <p><em>“If Jaccard indices are very low while the average degree is not strongly increasing, this indicates that the turnover in the network may be too high to consider the data as an evolving network, and perhaps the SIENA method is not suitable for the data set.”</em></p>
 </blockquote>
@@ -2735,7 +2735,7 @@ window.Quarto = {
 <p>The node-set name on the composition object must match the dependent network. Explicit <code>nodeSets</code> can be unnecessary for a simple one-mode network, but when supplied it is a list, as shown here, and makes that match visible.</p>
 <p>This matters even more in a co-evolution model. Network structural zeros stop the corresponding ties from changing, but they do not automatically stop an absent actor’s behavior from changing. A composition-change object makes the actor active only during the stated intervals and handles participation more coherently across the network and behavior processes.</p>
 <p>Statistically, adjusting for changing composition does not mean adding a joiner or leaver control variable. It means changing the process’s risk set. Before entry, the actor cannot receive opportunities or participate in feasible tie changes. While present, the actor participates normally. After exit, the actor stops participating. This prevents absence from being interpreted as mass tie dissolution, social isolation, avoidance, or ordinary missing data.</p>
-<p>The practical rule is simple: use <code>10</code> when a <strong>specific dyad is genuinely impossible</strong>; use <code>sienaCompositionChange()</code> when an <strong>actor enters or leaves the population</strong>.</p>
+<p>The practical rule is simple: use <code>10</code> when a <strong>specific dyad is structurally impossible</strong>; use <code>sienaCompositionChange()</code> when an <strong>actor enters or leaves the population</strong>.</p>
 </div>
 </div>
 </div>
@@ -2773,7 +2773,7 @@ window.Quarto = {
 </section>
 <section id="a3" class="level2">
 <h2 class="anchored" data-anchor-id="a3">A3 · The micro-step</h2>
-<p>This is the one genuinely new estimation idea today, and it is worth slowing down for.</p>
+<p>This is the main new estimation idea, and it is worth slowing down for.</p>
 <p>Everything you’ve fit so far models a network <strong>state</strong>. An ERGM puts a probability on the whole graph. SAOM does something different: it models the <strong>transition</strong> from one observed wave to the next, as the accumulation of many tiny unobserved changes.</p>
 <p>The story runs like this. Between wave 1 and wave 2 time runs continuously. At random moments, one randomly chosen actor gets an opportunity to change <strong>one</strong> thing, a single outgoing tie, or their own behavior score, never both, never two at once. They choose among the options, favouring the ones they prefer (probabilistically, piece 3 makes this precise). Repeat until you arrive at wave 2.</p>
 <p>Three pieces:</p>
@@ -3007,7 +3007,7 @@ E_{\theta}[S(X)]=S(X_{\mathrm{obs}}).
 </div>
 <div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The manual is unusually honest, and this is worth reading out loud:</p>
+<p>The manual states the limitation directly, and this is worth reading carefully:</p>
 <blockquote class="blockquote">
 <p><em>“The Stochastic Actor-Oriented Model is so complicated mathematically that it is hard to give proofs of any properties… Mathematical proofs of desirable properties are so hard that they should not be prerequisites for the use of the model.”</em></p>
 </blockquote>
@@ -3125,7 +3125,7 @@ f_i^{\text{friend}}(x)
 </div>
 <div id="callout-12" class="callout-12-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>This argument name is genuinely misleading and it trips everyone. <code>interaction1=</code> does not specify a statistical interaction, it names <strong>which covariate the effect applies to</strong>. <code>sameX</code> needs to know <em>same on what</em>. In RSiena 1.6 it was renamed <code>covar1=</code>, which is what it should always have been called.</p>
+<p>This argument name is misleading and it trips people up. <code>interaction1=</code> does not specify a statistical interaction, it names <strong>which covariate the effect applies to</strong>. <code>sameX</code> needs to know <em>same on what</em>. In RSiena 1.6 it was renamed <code>covar1=</code>, which is a clearer name.</p>
 </div>
 </div>
 </div>
@@ -3134,7 +3134,7 @@ f_i^{\text{friend}}(x)
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">effectsDocumentation</span>(eff1, <span class="at">type =</span> <span class="st">&quot;html&quot;</span>, <span class="at">display =</span> <span class="cn">FALSE</span>, <span class="at">filename =</span> <span class="st">&quot;eff1_doc&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>That writes <strong><code>eff1_doc.html</code></strong>, a browsable, searchable table of every effect <em>this particular data object</em> supports (455 rows for <code>dat1</code>), with the <code>shortName</code> column being exactly what you feed to <code>includeEffects()</code>, plus which <code>interaction1</code> covariate each one needs. Called with no effects object at all, <code>effectsDocumentation()</code> documents RSiena’s entire built-in catalogue. We don’t execute it in the render (it writes a file, not console output), run it once tonight and keep the tab open all week. It is the manual’s effect chapter, restricted to your data.</p>
-<p>Now fit. The fitted object ships with this document, so on your machine it returns instantly; when you refit it for real (<code>options(session.refit = TRUE)</code>) <code>siena07</code> runs its three phases and takes a few seconds. Either way the estimates are identical, the fit is seeded.</p>
+<p>Now fit. The fitted object ships with this document, so on your machine it returns instantly; when you refit it from scratch (<code>options(session.refit = TRUE)</code>) <code>siena07</code> runs its three phases and takes a few seconds. Either way the estimates are identical, the fit is seeded.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>alg <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">6886</span>, <span class="at">n3 =</span> <span class="dv">1000</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; If you use this algorithm object, siena07 will create/use an output file Siena.txt .</span></span>
@@ -3175,7 +3175,7 @@ f_i^{\text{friend}}(x)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This is your first real <code>siena07</code> table, so a key. The columns are, left to right, the <strong>estimate</strong>, its <strong>standard error</strong>, and a <strong>convergence</strong> t-ratio (that third column is <em>not</em> a significance test, it’s the <a href="#b2">B2</a> diagnostic; you want it small). To eyeball significance yourself, take estimate ÷ SE: bigger than ~2 in absolute value is conventionally “significant.” The row to find first is <strong><code>reciprocity</code></strong>. The later co-evolution model is shown through a tidy table instead (<a href="#c1">C1</a>); this one is the raw console form on purpose, so you’ve seen it once.</p>
+<p>This is the first <code>siena07</code> table, so here is a key. The columns are, left to right, the <strong>estimate</strong>, its <strong>standard error</strong>, and a <strong>convergence</strong> t-ratio (that third column is <em>not</em> a significance test, it is the <a href="#b2">B2</a> diagnostic; you want it small). To assess conventional statistical significance yourself, take estimate ÷ SE: larger than about 2 in absolute value is conventionally “significant.” The row to find first is <strong><code>reciprocity</code></strong>. The later co-evolution model is shown through a tidy table instead (<a href="#c1">C1</a>); this one is the raw console form on purpose, so you have seen it once.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-important callout-titled" title="Set a seed on every fit. Every one.">
@@ -3276,7 +3276,7 @@ f_i^{\text{friend}}(x)
 <p>Our model is at 0.063. That’s excellent, and it’s easy because the model is small.</p>
 <section id="now-lets-break-it-on-purpose" class="level3">
 <h3 class="anchored" data-anchor-id="now-lets-break-it-on-purpose">Now let’s break it on purpose</h3>
-<p>A converged model teaches you nothing about convergence. So here is a deliberately starved run, too few iterations, too few subphases, which is what a real model that hasn’t converged looks like.</p>
+<p>A converged model teaches you little about diagnosing convergence. The next example is a deliberately starved run with too few iterations and too few subphases, so you can see what a model that has not converged looks like.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>starved <span class="ot">&lt;-</span> <span class="fu">sienaAlgorithmCreate</span>(<span class="at">projname =</span> <span class="cn">NULL</span>, <span class="at">seed =</span> <span class="dv">42</span>, <span class="at">n3 =</span> <span class="dv">200</span>, <span class="at">nsub =</span> <span class="dv">2</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; If you use this algorithm object, siena07 will create/use an output file Siena.txt .</span></span>
@@ -3416,7 +3416,7 @@ f_i^{\text{friend}}(x)
 <li><strong>Too many parameters for the data.</strong> Especially on the behavior side; see <a href="#c1">C1</a>, where this is the deck’s own historical bug.</li>
 <li><strong>Near-collinear effects.</strong> E.G. Including <code>transTrip</code>, <code>transTies</code> and <code>gwespFF</code> together; they’re competing for the same variance.</li>
 <li><strong>An effect the data can’t inform.</strong> A covariate with almost no variance, or a homophily term on a nearly-constant attribute.</li>
-<li><strong>The model genuinely doesn’t apply</strong>, go back to <a href="#a2">A2</a> and re-check Jaccard.</li>
+<li><strong>The model does not apply</strong>, go back to <a href="#a2">A2</a> and re-check Jaccard.</li>
 </ul>
 <p>Raising <code>n3</code> gives phase 3 more simulations and can stabilize the Monte Carlo estimates of standard errors and convergence diagnostics. It does not make the data more informative, does not guarantee smaller standard errors, and does not fix a model that’s wrong.</p>
 </div>
@@ -3490,8 +3490,8 @@ f_i^{\text{friend}}(x)
 </div>
 <p>The negative outdegree contribution says that adding another nomination is unattractive in the fitted process. Returning Cara’s nomination and closing the two paths more than offset that cost. The proposed move gains 1.02 points in the evaluation score and receives about 2.78 times the choice weight of making no change, assuming the cycle and smoking statistics do not change.</p>
 <p>The example also shows why we should not ask whether reciprocity or transitivity “caused” a particular observed friendship. One move can activate both statistics. The reciprocity coefficient compares otherwise similar options that differ in whether the other student already nominated Alice. The transitivity coefficient compares otherwise similar options that differ in how many friend-of-friend paths would close. The model separates their contributions to its choice score, not the private historical reason for one student’s decision. If reciprocating moves almost always close paths in these data, the two comparisons contain little independent information and their separate estimates become less precise.</p>
-<p>The important warning is that these exponentiated values are not ordinary odds ratios for whether a tie exists. At an opportunity, the actor can consider all eligible additions, all eligible deletions, and no change. The probability assigned to one action depends on that whole choice set. The safest language is therefore: <strong>the coefficient changes the relative attractiveness of a candidate micro-step, not the unconditional probability that a tie exists.</strong></p>
-<p>The reusable sentence is: <strong>Holding the other modeled features constant, a one-unit increase in [statistic] changes the evaluation score of this proposed action by [coefficient], making the action more or less attractive.</strong> Add the exponentiated relative weight only when it genuinely helps the reader.</p>
+<p>The important warning is that these exponentiated values are not ordinary odds ratios for whether a tie exists. At an opportunity, the actor can consider all eligible additions, all eligible deletions, and no change. The probability assigned to one action depends on that whole choice set. Interpret the exponentiated coefficient as a change in the <strong>relative attractiveness of a candidate micro-step, not the unconditional probability that a tie exists.</strong></p>
+<p>The reusable sentence is: <strong>Holding the other modeled features constant, a one-unit increase in [statistic] changes the evaluation score of this proposed action by [coefficient], making the action more or less attractive.</strong> Add the exponentiated relative weight only when it helps the reader.</p>
 </section>
 <section id="smoke-coefficient" class="level3">
 <h3 class="anchored" data-anchor-id="smoke-coefficient">Interpret the same-smoking coefficient as a 0-to-1 change</h3>
@@ -3922,7 +3922,7 @@ f_i^{\text{friend}}(x)
 <h1>Block C: Co-evolution, and what it does not buy you</h1>
 <section id="c1" class="level2">
 <h2 class="anchored" data-anchor-id="c1">C1 · Selection and influence, jointly</h2>
-<p>Here is the payoff, and it is what Steglich, Snijders &amp; Pearson (2010) is about.</p>
+<p>That distinction is central to Steglich, Snijders, and Pearson (2010).</p>
 <p>The problem: we observe that friends resemble each other in drinking. Two mechanisms produce that, and they are observationally identical in a cross-section.</p>
 <ul>
 <li><strong>Selection</strong>, people choose friends who already drink like them.</li>
@@ -4175,8 +4175,8 @@ f_i^{\text{drink}}(z,x)
 <p>The first row models friendship change. Candidate friendship states receive greater weight when two students report more similar drinking. The second row models behavior change. Its estimate leans toward students moving in the direction of their friends’ average drinking, but the uncertainty is too wide to distinguish that pattern from no influence in this sample.</p>
 <p>The tempting sentence is “so it’s selection, not influence.” <strong>Do not write that sentence.</strong> Here is why not.</p>
 </section>
-<section id="honest" class="level3">
-<h3 class="anchored" data-anchor-id="honest">The honest part</h3>
+<section id="selection-influence-limits" class="level3">
+<h3 class="anchored" data-anchor-id="selection-influence-limits">What the Result Does and Does Not Establish</h3>
 <p><strong>1. Joint estimation is an identifying assumption, not a proof.</strong> Estimating both equations at once means selection and influence are separately <em>parameterized</em>. It does not by itself mean the data cleanly separate them. The distinction relies on the continuous-time micro-step structure: the model represents one actor changing one tie or one behavior step at a time. If Alice’s friendship and drinking both change between two interviews, the panel does not reveal which happened first, so the model must allocate that pattern through its assumed process.</p>
 <p><strong>2. Both mechanisms are badly underpowered at realistic sample sizes.</strong> We have 50 actors and 3 waves, which is a <em>normal</em> size for this literature. Look at the influence standard error relative to the estimate. A null result here is weak evidence of absence.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Depth: Why the selection/influence balance is fragile at this N">
@@ -4192,7 +4192,7 @@ f_i^{\text{drink}}(z,x)
 <div id="callout-22" class="callout-22-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>This is worth knowing before you over-read our result. We got selection significant and influence not, but at n = 50 that balance is not stable. Flip the datasets, the waves, or the behavior coding and the two can swap which one clears significance, precisely because both equations are estimated from very little information. The other canonical teaching dataset here, Knecht’s classroom data (26 pupils, 4 waves), is smaller still and is exactly where you would expect the estimates to be even noisier.</p>
-<p>The honest reading is the identification point, not either specific verdict: “SAOM separates selection from influence” means the model separately <em>parameterizes</em> them, not that either is reliably <em>estimable</em> at these sample sizes. If you want to see this for yourself, the ancillary TERGM deep dive, the long-form companion to yesterday’s C4, fits the Knecht data (it ships with <code>btergm</code> as <code>data(knecht)</code>, not with RSiena) and you can add the behavior equation there and watch the standard errors.</p>
+<p>The defensible reading is the identification point, not either specific verdict: “SAOM separates selection from influence” means the model separately <em>parameterizes</em> them, not that either is reliably <em>estimable</em> at these sample sizes. If you want to see this for yourself, the ancillary TERGM deep dive, the long-form companion to yesterday’s C4, fits the Knecht data (it ships with <code>btergm</code> as <code>data(knecht)</code>, not with RSiena) and you can add the behavior equation there and watch the standard errors.</p>
 </div>
 </div>
 </div>
@@ -4279,7 +4279,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Relative choice weight: 1.43</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Step 4: Say the result in ordinary language.</strong></p>
+<p><strong>Step 4: State what the model says about the application.</strong></p>
 <blockquote class="blockquote">
 <p>At a modeled friendship-change opportunity, a student who is one drinking category closer is about 43% more likely to be chosen than an otherwise comparable student.</p>
 </blockquote>
@@ -4718,13 +4718,13 @@ f_i^{\text{drink}}(z,x)
 </div>
 <p>With the influence term set to zero, students finish about 0.88 drinking categories from their starting friends’ average. With the fitted influence term, that distance is about 0.82 categories, a reduction of 0.06 categories. That is the model’s plain-language influence summary: including the fitted term reduces the simulated distance to where current friends began. The estimated influence coefficient is 1.36 with SE 0.95, so this small point-estimate contrast should not be presented as clear evidence of influence.</p>
 <p>These first differences average over the observed starting configurations and over the model’s simulated paths. They hold the other fitted coefficients fixed, but they do not include parameter uncertainty and they are not holdout forecasts. For a research analysis, repeat the calculation across parameter draws or bootstrap refits and report an interval. Use the goodness-of-fit checks in <a href="#c2">C2</a> to ask whether the fitted process reproduces network and behavior features beyond the statistics targeted in estimation.</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Stuck? Two real quirks in these two functions">
+<div class="callout callout-style-default callout-tip callout-titled" title="Stuck? Two quirks in these functions">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Stuck? Two real quirks in these two functions
+<span class="screen-reader-only">Tip</span>Stuck? Two quirks in these functions
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -4755,7 +4755,7 @@ f_i^{\text{drink}}(z,x)
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<p>Replace <code>avAlt</code> with <code>avSim</code> (average similarity) in the behavior equation. These encode genuinely different mechanisms: <code>avAlt</code> says ego moves toward the <em>mean level</em> of their friends; <code>avSim</code> says ego is rewarded for <em>resembling</em> friends, which is symmetric around each friend’s value.</p>
+<p>Replace <code>avAlt</code> with <code>avSim</code> (average similarity) in the behavior equation. These encode different mechanisms: <code>avAlt</code> says ego moves toward the <em>mean level</em> of their friends; <code>avSim</code> says ego is rewarded for <em>resembling</em> friends, which is symmetric around each friend’s value.</p>
 <p>Fit both, and decide which the data prefer. State how you decided, and note that you cannot simply compare t-ratios on differently-parameterized terms, so say what you actually used.</p>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
@@ -4819,7 +4819,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   1.78                   1.40</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Answering the question.</strong> No, a simple comparison of wave 1 with wave 2 cannot separate the two mechanisms. Two friends who smoke alike at wave 2 could have chosen each other partly because they were already similar, or their smoking could have become more similar after the friendship formed. A joint network-behavior model gives those processes separate parameters, but the separation still depends on the model’s assumptions about change between waves.</p>
-<p>On these data neither reaches conventional significance: smoking selection has a t-ratio of about 1.78 and smoking influence about 1.4. So the honest three-sentence answer is that her comparison cannot work even in principle, that the model which <em>can</em> work gives suggestive but inconclusive evidence for both mechanisms at n = 50, and that the right response is more waves or more actors rather than a stronger claim from these.</p>
+<p>On these data neither reaches conventional significance: smoking selection has a t-ratio of about 1.78 and smoking influence about 1.4. The three-sentence summary is that her comparison cannot work even in principle, that the model which <em>can</em> work gives suggestive but inconclusive evidence for both mechanisms at n = 50, and that the right response is more waves or more actors rather than a stronger claim from these data.</p>
 <p>(Check <code>tconv.max</code> before you read anything above. If it’s over 0.25, refit with <code>prevAns = m3</code> before interpreting.)</p>
 <p><strong>Stretch solution, <code>avSim</code> instead of <code>avAlt</code>.</strong> Same data, same network side, one line changed in the behavior equation:</p>
 <div class="cell">
@@ -4850,7 +4850,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; avAlt_influence_t avSim_influence_t       avSim_tconv </span></span>
 <span id="cb57-26"><a href="#cb57-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             1.400             1.650             0.129</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>avAlt</code> and <code>avSim</code> are <strong>not nested</strong>, so you cannot ask “which term is significant” and read off a winner, they are two different single-parameter influence specifications. The defensible ways to choose are (a) theory, do you believe actors move toward the <em>mean level</em> of their friends (<code>avAlt</code>) or toward <em>resembling each friend</em> (<code>avSim</code>, symmetric around each friend’s value)?, and (b) fit, via <code>sienaGOF</code> on the <code>BehaviorDistribution</code> auxiliary for each. What you must <strong>not</strong> do is compare the two influence t-ratios as if the larger one wins. Here influence is 1.65 under <code>avSim</code> versus 1.4 under <code>avAlt</code>, both short of significance, so at n = 50 these data do not decide between the two mechanisms, and honesty is saying so.</p>
+<p><code>avAlt</code> and <code>avSim</code> are <strong>not nested</strong>, so you cannot ask “which term is significant” and read off a winner, they are two different single-parameter influence specifications. The defensible ways to choose are (a) theory, do you believe actors move toward the <em>mean level</em> of their friends (<code>avAlt</code>) or toward <em>resembling each friend</em> (<code>avSim</code>, symmetric around each friend’s value)?, and (b) fit, via <code>sienaGOF</code> on the <code>BehaviorDistribution</code> auxiliary for each. What you must <strong>not</strong> do is compare the two influence t-ratios as if the larger one wins. Here influence is 1.65 under <code>avSim</code> versus 1.4 under <code>avAlt</code>, both short of significance, so at n = 50 these data do not distinguish between the two mechanisms.</p>
 </div>
 </div>
 </div>
@@ -5245,7 +5245,7 @@ f_i^{\text{drink}}(z,x)
 </blockquote>
 <p><strong>Block, Hollway, Stadtfeld, Koskinen &amp; Snijders (2022, <em>Network Science</em> 10(1))</strong> are the ones who re-read the code: the TERGM specification used nodal attributes computed from the <em>outcome</em> networks’ observed degrees, so 3 of its 13 terms carried information from the held-out wave. The out-of-sample prediction was partly predicting the future using the future. They also argued tie-level predictive accuracy is the wrong criterion, since these models are about endogenous processes rather than tie location.</p>
 <p><strong>Leifeld &amp; Cranmer (2022, <em>Network Science</em> 10(1):15–19)</strong> conceded the coding error, the formal acknowledgement is their corrigendum, <em>Network Science</em> 10(1):111, and pressed a deeper point that does not go away: <strong>the SAOM is itself a theory</strong>, not a neutral estimator. It hard-codes sequential one-tie-at-a-time micro-steps, actors with full network knowledge, and one-period look-ahead. Embedded theory ought to be falsifiable, and they argue held-out prediction is the only feasible way to test it.</p>
-<p><strong>Where that leaves you: the factual dispute is settled, the methodological one is not.</strong> The error was real and acknowledged. Whether predictive fit is a legitimate criterion for comparing generative network models is genuinely open, and reasonable people are on both sides.</p>
+<p><strong>Where that leaves you: the factual dispute is settled, the methodological one is not.</strong> The coding error occurred and was acknowledged. Whether predictive fit is a legitimate criterion for comparing generative network models remains an open methodological debate.</p>
 <p>The useful framing is Block, Stadtfeld &amp; Snijders (2019) again: ERGM is defined at the <strong>graph</strong> level, SAOM at the <strong>transition</strong> level. SAOM’s statistics nest within actors, so its dependence assumptions are <em>stronger</em>. That structure provides a route to identification, but only if the micro-step and specification assumptions are defensible. You should know what you paid.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Optional extension space for a co-evolution question.</span></span>
@@ -5301,7 +5301,7 @@ f_i^{\text{drink}}(z,x)
 <li>Do they interpret coefficients as probabilities or marginal effects? (They shouldn’t - <a href="#b3">B3</a>)</li>
 <li>Do they claim selection <em>versus</em> influence from a null result on one of them? (<a href="#c1">C1</a>)</li>
 </ol>
-<p>Every one of those is a real failure I have seen in print.</p>
+<p>I have seen every one of those failures in published work.</p>
 </section>
 <section id="not-shown" class="level3">
 <h3 class="anchored" data-anchor-id="not-shown">What we did not show</h3>
@@ -5322,7 +5322,7 @@ f_i^{\text{drink}}(z,x)
 </section>
 <section id="where-we-go-next-day-13" class="level3">
 <h3 class="anchored" data-anchor-id="where-we-go-next-day-13">Where we go next: Day 13</h3>
-<p>Today closes the modeling arc of the course: every day so far has answered dependence by changing the <em>model</em>. Tomorrow (Day 13) leaves the model alone and interrogates the <em>design</em>: what a causal claim on a network even means, why interference breaks the usual potential-outcomes machinery, what randomization buys you, and what an observational researcher can honestly claim. Then Day 14 puts every model from this week head-to-head on one dataset and asks the question the syllabus opened with: which model, when?</p>
+<p>Today closes the modeling arc of the course: every day so far has answered dependence by changing the <em>model</em>. Tomorrow (Day 13) leaves the model alone and interrogates the <em>design</em>: what a causal claim on a network even means, why interference breaks the usual potential-outcomes machinery, what randomization buys you, and which claims an observational design can support. Then Day 14 puts every model from this week head-to-head on one dataset and asks the question the syllabus opened with: which model, when?</p>
 <hr>
 </section>
 </section>
@@ -5927,7 +5927,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-55"><a href="#cb71-55" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;_saom_helpers.R&quot;</span>)</span>
 <span id="cb71-56"><a href="#cb71-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb71-57"><a href="#cb71-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-58"><a href="#cb71-58" aria-hidden="true" tabindex="-1"></a><span class="in">`require_pkgs()`</span> fails early and loudly if a package is missing; <span class="in">`fit_or_load()`</span> returns a shipped fit instantly (or refits for real when you set <span class="in">`options(session.refit = TRUE)`</span>); <span class="in">`checkpoint()`</span> prints the compact comparison lines you&#39;ll see throughout. The very first visible line below, <span class="in">`require_pkgs(c(&quot;RSiena&quot;, &quot;netify&quot;))`</span>, is one of them, if you skipped the <span class="in">`source()`</span> it will die with &quot;could not find function.&quot;</span>
+<span id="cb71-58"><a href="#cb71-58" aria-hidden="true" tabindex="-1"></a><span class="in">`require_pkgs()`</span> fails early and loudly if a package is missing; <span class="in">`fit_or_load()`</span> returns a shipped fit instantly (or refits from scratch when you set <span class="in">`options(session.refit = TRUE)`</span>); <span class="in">`checkpoint()`</span> prints the compact comparison lines you&#39;ll see throughout. The very first visible line below, <span class="in">`require_pkgs(c(&quot;RSiena&quot;, &quot;netify&quot;))`</span>, is one of them, if you skipped the <span class="in">`source()`</span> it will die with &quot;could not find function.&quot;</span>
 <span id="cb71-59"><a href="#cb71-59" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb71-60"><a href="#cb71-60" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-61"><a href="#cb71-61" aria-hidden="true" tabindex="-1"></a>Today&#39;s path:</span>
@@ -5940,7 +5940,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-68"><a href="#cb71-68" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Final <span class="pp">|</span> Wrap <span class="pp">|</span></span>
 <span id="cb71-69"><a href="#cb71-69" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-70"><a href="#cb71-70" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Already comfortable with parts of this? Where to jump&quot;}</span>
-<span id="cb71-71"><a href="#cb71-71" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>You&#39;ve fit SAOMs before and want the diagnostics and the honest caveats → <span class="co">[</span><span class="ot">Block C</span><span class="co">](#block-c)</span></span>
+<span id="cb71-71"><a href="#cb71-71" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>You&#39;ve fit SAOMs before and want the diagnostics and limitations → <span class="co">[</span><span class="ot">Block C</span><span class="co">](#block-c)</span></span>
 <span id="cb71-72"><a href="#cb71-72" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>You want the convergence machinery specifically → <span class="co">[</span><span class="ot">B2</span><span class="co">](#b2)</span></span>
 <span id="cb71-73"><a href="#cb71-73" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>You want to know how to *referee* a SAOM paper without fitting one → <span class="co">[</span><span class="ot">the referee checklist</span><span class="co">](#referee)</span></span>
 <span id="cb71-74"><a href="#cb71-74" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>You want the mathematics the core path skips → <span class="co">[</span><span class="ot">Appendix A</span><span class="co">](#appendix-a)</span></span>
@@ -5961,7 +5961,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-91"><a href="#cb71-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb71-92"><a href="#cb71-92" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-93"><a href="#cb71-93" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;A version note you need before you read anything else&quot;}</span>
-<span id="cb71-94"><a href="#cb71-94" aria-hidden="true" tabindex="-1"></a>This document is written against **RSiena 1.5.0**, which is what is installed here. CRAN is further along, and **RSiena ≥ 1.6.3 requires R ≥ 4.5.0**, so on an older R, <span class="in">`install.packages(&quot;RSiena&quot;)`</span> will silently offer you nothing rather than telling you why. That is a genuinely nasty failure mode and it is worth knowing about before you hit it.</span>
+<span id="cb71-94"><a href="#cb71-94" aria-hidden="true" tabindex="-1"></a>This document is written against **RSiena 1.5.0**, which is what is installed here. CRAN is further along, and **RSiena ≥ 1.6.3 requires R ≥ 4.5.0**, so on an older R, <span class="in">`install.packages(&quot;RSiena&quot;)`</span> will silently offer you nothing rather than telling you why. That failure mode is easy to encounter and poorly explained, so it is worth knowing about before you hit it.</span>
 <span id="cb71-95"><a href="#cb71-95" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-96"><a href="#cb71-96" aria-hidden="true" tabindex="-1"></a>More importantly: **RSiena 1.6 renamed essentially the whole user-facing API.** The old names still work, nothing you learn today stops working, but the current manual uses the new ones exclusively. The full translation table is in a collapsed box in <span class="co">[</span><span class="ot">A1</span><span class="co">](#a1)</span>, reference on demand, not something to memorise.</span>
 <span id="cb71-97"><a href="#cb71-97" aria-hidden="true" tabindex="-1"></a>:::</span>
@@ -5974,11 +5974,11 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-104"><a href="#cb71-104" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-105"><a href="#cb71-105" aria-hidden="true" tabindex="-1"></a>Start with a question the earlier material left open: *suppose I want to study how smoking and friendships develop together. Can I answer that by comparing the network at time 1 with the network at time 2?*</span>
 <span id="cb71-106"><a href="#cb71-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-107"><a href="#cb71-107" aria-hidden="true" tabindex="-1"></a>The honest answer is &quot;not the way you&#39;re about to try,&quot; and the reason is the thing we spent yesterday circling. Yesterday, with cross-sectional ERGMs, we could write down a transitivity parameter and test it, but from a single cross-section we could not distinguish *triadic closure* (I befriend my friends&#39; friends) from *homophily on something we didn&#39;t measure*. That&#39;s Shalizi &amp; Thomas, which you met on Day 10. One snapshot is not enough information.</span>
+<span id="cb71-107"><a href="#cb71-107" aria-hidden="true" tabindex="-1"></a>No, not with a simple before-and-after comparison. Yesterday, with cross-sectional ERGMs, we could write down a transitivity parameter and test it, but from a single cross-section we could not distinguish *triadic closure* (I befriend my friends&#39; friends) from *homophily on something we did not measure*. That is the problem raised by Shalizi and Thomas, which you met on Day 10. One snapshot is not enough information.</span>
 <span id="cb71-108"><a href="#cb71-108" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-109"><a href="#cb71-109" aria-hidden="true" tabindex="-1"></a>Today&#39;s answer is: **use time**. Yesterday&#39;s C4 already made that move once, tie-oriented, the TERGM conditioned each wave on the last, with no actor anywhere in the machinery. Today the actor takes the wheel, and whether that is an upgrade or just a different bet on the same waves is <span class="co">[</span><span class="ot">C3</span><span class="co">](#c3)</span>&#39;s fight. If you observe the same people at several waves, you can ask whether ties changed to match behavior (selection) or behavior changed to match ties (influence). The temporal ordering helps, but the separation still depends on the model&#39;s continuous-time micro-step assumptions.</span>
 <span id="cb71-110"><a href="#cb71-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-111"><a href="#cb71-111" aria-hidden="true" tabindex="-1"></a>That is the entire promise of the stochastic actor-oriented model, and by the end of Block C I want you to be appropriately skeptical of it. It delivers something real. It does not deliver as much as people claim in abstracts.</span>
+<span id="cb71-111"><a href="#cb71-111" aria-hidden="true" tabindex="-1"></a>That is the central promise of the stochastic actor-oriented model, and by the end of Block C you should also understand its limits. It provides a useful separation of mechanisms under a declared process model, but it does not deliver as much as some abstracts claim.</span>
 <span id="cb71-112"><a href="#cb71-112" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-113"><a href="#cb71-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### Did Similarity Produce the Relationship, or Did the Relationship Produce Similarity? {#sec-political-question}</span></span>
 <span id="cb71-114"><a href="#cb71-114" aria-hidden="true" tabindex="-1"></a></span>
@@ -6088,7 +6088,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-222"><a href="#cb71-222" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-223"><a href="#cb71-223" aria-hidden="true" tabindex="-1"></a>We&#39;re at <span class="in">`r round(j12,3)`</span> and <span class="in">`r round(j23,3)`</span>. Comfortably fine.</span>
 <span id="cb71-224"><a href="#cb71-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-225"><a href="#cb71-225" aria-hidden="true" tabindex="-1"></a>The average degree matters too, because low Jaccard is *acceptable* if the network is growing or shrinking monotonically, you&#39;d expect low overlap then. Ours is roughly flat (<span class="in">`r paste(round(deg,2), collapse=&quot; → &quot;)`</span>), so the Jaccard is doing honest work. The manual&#39;s sharp version:</span>
+<span id="cb71-225"><a href="#cb71-225" aria-hidden="true" tabindex="-1"></a>The average degree matters too, because low Jaccard is *acceptable* if the network is growing or shrinking monotonically, since we would expect low overlap then. Ours is roughly flat (<span class="in">`r paste(round(deg,2), collapse=&quot; → &quot;)`</span>), so the Jaccard provides useful information. The manual&#39;s sharper version:</span>
 <span id="cb71-226"><a href="#cb71-226" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-227"><a href="#cb71-227" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; *&quot;If Jaccard indices are very low while the average degree is not strongly increasing, this indicates that the turnover in the network may be too high to consider the data as an evolving network, and perhaps the SIENA method is not suitable for the data set.&quot;*</span></span>
 <span id="cb71-228"><a href="#cb71-228" aria-hidden="true" tabindex="-1"></a></span>
@@ -6153,7 +6153,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-287"><a href="#cb71-287" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-288"><a href="#cb71-288" aria-hidden="true" tabindex="-1"></a>Statistically, adjusting for changing composition does not mean adding a joiner or leaver control variable. It means changing the process&#39;s risk set. Before entry, the actor cannot receive opportunities or participate in feasible tie changes. While present, the actor participates normally. After exit, the actor stops participating. This prevents absence from being interpreted as mass tie dissolution, social isolation, avoidance, or ordinary missing data.</span>
 <span id="cb71-289"><a href="#cb71-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-290"><a href="#cb71-290" aria-hidden="true" tabindex="-1"></a>The practical rule is simple: use <span class="in">`10`</span> when a **specific dyad is genuinely impossible**; use `sienaCompositionChange()` when an **actor enters or leaves the population**.</span>
+<span id="cb71-290"><a href="#cb71-290" aria-hidden="true" tabindex="-1"></a>The practical rule is simple: use <span class="in">`10`</span> when a **specific dyad is structurally impossible**; use `sienaCompositionChange()` when an **actor enters or leaves the population**.</span>
 <span id="cb71-291"><a href="#cb71-291" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb71-292"><a href="#cb71-292" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb71-293"><a href="#cb71-293" aria-hidden="true" tabindex="-1"></a></span>
@@ -6174,7 +6174,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-310"><a href="#cb71-310" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-311"><a href="#cb71-311" aria-hidden="true" tabindex="-1"></a><span class="fu">## A3 · The micro-step {#a3}</span></span>
 <span id="cb71-312"><a href="#cb71-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-313"><a href="#cb71-313" aria-hidden="true" tabindex="-1"></a>This is the one genuinely new estimation idea today, and it is worth slowing down for.</span>
+<span id="cb71-313"><a href="#cb71-313" aria-hidden="true" tabindex="-1"></a>This is the main new estimation idea, and it is worth slowing down for.</span>
 <span id="cb71-314"><a href="#cb71-314" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-315"><a href="#cb71-315" aria-hidden="true" tabindex="-1"></a>Everything you&#39;ve fit so far models a network **state**. An ERGM puts a probability on the whole graph. SAOM does something different: it models the **transition** from one observed wave to the next, as the accumulation of many tiny unobserved changes.</span>
 <span id="cb71-316"><a href="#cb71-316" aria-hidden="true" tabindex="-1"></a></span>
@@ -6395,7 +6395,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-531"><a href="#cb71-531" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb71-532"><a href="#cb71-532" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-533"><a href="#cb71-533" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: The manual&#39;s own candour about identification&quot;}</span>
-<span id="cb71-534"><a href="#cb71-534" aria-hidden="true" tabindex="-1"></a>The manual is unusually honest, and this is worth reading out loud:</span>
+<span id="cb71-534"><a href="#cb71-534" aria-hidden="true" tabindex="-1"></a>The manual states the limitation directly, and this is worth reading carefully:</span>
 <span id="cb71-535"><a href="#cb71-535" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-536"><a href="#cb71-536" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; *&quot;The Stochastic Actor-Oriented Model is so complicated mathematically that it is hard to give proofs of any properties... Mathematical proofs of desirable properties are so hard that they should not be prerequisites for the use of the model.&quot;*</span></span>
 <span id="cb71-537"><a href="#cb71-537" aria-hidden="true" tabindex="-1"></a></span>
@@ -6468,7 +6468,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-610"><a href="#cb71-610" aria-hidden="true" tabindex="-1"></a>The first four structural coefficients ask how a proposed friendship change alters network structure. The same-smoking coefficient asks whether a candidate state receives more weight when it contains more nominations between students in the same baseline smoking category, conditional on those structural terms.</span>
 <span id="cb71-611"><a href="#cb71-611" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-612"><a href="#cb71-612" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? <span class="in">`interaction1`</span> is not an interaction&quot;}</span>
-<span id="cb71-613"><a href="#cb71-613" aria-hidden="true" tabindex="-1"></a>This argument name is genuinely misleading and it trips everyone. <span class="in">`interaction1=`</span> does not specify a statistical interaction, it names **which covariate the effect applies to**. <span class="in">`sameX`</span> needs to know *same on what*. In RSiena 1.6 it was renamed <span class="in">`covar1=`</span>, which is what it should always have been called.</span>
+<span id="cb71-613"><a href="#cb71-613" aria-hidden="true" tabindex="-1"></a>This argument name is misleading and it trips people up. <span class="in">`interaction1=`</span> does not specify a statistical interaction, it names **which covariate the effect applies to**. <span class="in">`sameX`</span> needs to know *same on what*. In RSiena 1.6 it was renamed <span class="in">`covar1=`</span>, which is a clearer name.</span>
 <span id="cb71-614"><a href="#cb71-614" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb71-615"><a href="#cb71-615" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-616"><a href="#cb71-616" aria-hidden="true" tabindex="-1"></a>One more thing before we fit, and it is the single most useful line in this section for your own work. Today I dictate every shortName, <span class="in">`recip`</span>, <span class="in">`transTrip`</span>, <span class="in">`cycle3`</span>, <span class="in">`sameX`</span> - but on your data nobody dictates them, and guessing shortNames from memory is how people end up asking &quot;what&#39;s the name for indegree popularity again?&quot; At midnight. The answer is that the catalogue is queryable:</span>
@@ -6481,7 +6481,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-625"><a href="#cb71-625" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-626"><a href="#cb71-626" aria-hidden="true" tabindex="-1"></a>That writes **`eff1_doc.html`**, a browsable, searchable table of every effect *this particular data object* supports (<span class="in">`r nrow(eff1)`</span> rows for <span class="in">`dat1`</span>), with the <span class="in">`shortName`</span> column being exactly what you feed to <span class="in">`includeEffects()`</span>, plus which <span class="in">`interaction1`</span> covariate each one needs. Called with no effects object at all, <span class="in">`effectsDocumentation()`</span> documents RSiena&#39;s entire built-in catalogue. We don&#39;t execute it in the render (it writes a file, not console output), run it once tonight and keep the tab open all week. It is the manual&#39;s effect chapter, restricted to your data.</span>
 <span id="cb71-627"><a href="#cb71-627" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-628"><a href="#cb71-628" aria-hidden="true" tabindex="-1"></a>Now fit. The fitted object ships with this document, so on your machine it returns instantly; when you refit it for real (<span class="in">`options(session.refit = TRUE)`</span>) <span class="in">`siena07`</span> runs its three phases and takes a few seconds. Either way the estimates are identical, the fit is seeded.</span>
+<span id="cb71-628"><a href="#cb71-628" aria-hidden="true" tabindex="-1"></a>Now fit. The fitted object ships with this document, so on your machine it returns instantly; when you refit it from scratch (<span class="in">`options(session.refit = TRUE)`</span>) <span class="in">`siena07`</span> runs its three phases and takes a few seconds. Either way the estimates are identical, the fit is seeded.</span>
 <span id="cb71-629"><a href="#cb71-629" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-632"><a href="#cb71-632" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb71-633"><a href="#cb71-633" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: b1-fit</span></span>
@@ -6499,7 +6499,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-647"><a href="#cb71-647" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb71-648"><a href="#cb71-648" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-649"><a href="#cb71-649" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title=&quot;Reading that output: Which number is which&quot;}</span>
-<span id="cb71-650"><a href="#cb71-650" aria-hidden="true" tabindex="-1"></a>This is your first real <span class="in">`siena07`</span> table, so a key. The columns are, left to right, the **estimate**, its **standard error**, and a **convergence** t-ratio (that third column is *not* a significance test, it&#39;s the [B2](#b2) diagnostic; you want it small). To eyeball significance yourself, take estimate ÷ SE: bigger than ~2 in absolute value is conventionally &quot;significant.&quot; The row to find first is **`reciprocity`**. The later co-evolution model is shown through a tidy table instead (<span class="co">[</span><span class="ot">C1</span><span class="co">](#c1)</span>); this one is the raw console form on purpose, so you&#39;ve seen it once.</span>
+<span id="cb71-650"><a href="#cb71-650" aria-hidden="true" tabindex="-1"></a>This is the first <span class="in">`siena07`</span> table, so here is a key. The columns are, left to right, the **estimate**, its **standard error**, and a **convergence** t-ratio (that third column is *not* a significance test, it is the [B2](#b2) diagnostic; you want it small). To assess conventional statistical significance yourself, take estimate ÷ SE: larger than about 2 in absolute value is conventionally &quot;significant.&quot; The row to find first is **`reciprocity`**. The later co-evolution model is shown through a tidy table instead (<span class="co">[</span><span class="ot">C1</span><span class="co">](#c1)</span>); this one is the raw console form on purpose, so you have seen it once.</span>
 <span id="cb71-651"><a href="#cb71-651" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb71-652"><a href="#cb71-652" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-653"><a href="#cb71-653" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title=&quot;Set a seed on every fit. Every one.&quot;}</span>
@@ -6584,7 +6584,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-742"><a href="#cb71-742" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-743"><a href="#cb71-743" aria-hidden="true" tabindex="-1"></a><span class="fu">### Now let&#39;s break it on purpose</span></span>
 <span id="cb71-744"><a href="#cb71-744" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-745"><a href="#cb71-745" aria-hidden="true" tabindex="-1"></a>A converged model teaches you nothing about convergence. So here is a deliberately starved run, too few iterations, too few subphases, which is what a real model that hasn&#39;t converged looks like.</span>
+<span id="cb71-745"><a href="#cb71-745" aria-hidden="true" tabindex="-1"></a>A converged model teaches you little about diagnosing convergence. The next example is a deliberately starved run with too few iterations and too few subphases, so you can see what a model that has not converged looks like.</span>
 <span id="cb71-746"><a href="#cb71-746" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-749"><a href="#cb71-749" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb71-750"><a href="#cb71-750" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: b2-bad</span></span>
@@ -6674,7 +6674,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-838"><a href="#cb71-838" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Too many parameters for the data.** Especially on the behavior side; see <span class="co">[</span><span class="ot">C1</span><span class="co">](#c1)</span>, where this is the deck&#39;s own historical bug.</span>
 <span id="cb71-839"><a href="#cb71-839" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Near-collinear effects.** E.G. Including <span class="in">`transTrip`</span>, <span class="in">`transTies`</span> and <span class="in">`gwespFF`</span> together; they&#39;re competing for the same variance.</span>
 <span id="cb71-840"><a href="#cb71-840" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**An effect the data can&#39;t inform.** A covariate with almost no variance, or a homophily term on a nearly-constant attribute.</span>
-<span id="cb71-841"><a href="#cb71-841" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The model genuinely doesn&#39;t apply**, go back to <span class="co">[</span><span class="ot">A2</span><span class="co">](#a2)</span> and re-check Jaccard.</span>
+<span id="cb71-841"><a href="#cb71-841" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The model does not apply**, go back to <span class="co">[</span><span class="ot">A2</span><span class="co">](#a2)</span> and re-check Jaccard.</span>
 <span id="cb71-842"><a href="#cb71-842" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-843"><a href="#cb71-843" aria-hidden="true" tabindex="-1"></a>Raising <span class="in">`n3`</span> gives phase 3 more simulations and can stabilize the Monte Carlo estimates of standard errors and convergence diagnostics. It does not make the data more informative, does not guarantee smaller standard errors, and does not fix a model that&#39;s wrong.</span>
 <span id="cb71-844"><a href="#cb71-844" aria-hidden="true" tabindex="-1"></a>:::</span>
@@ -6753,9 +6753,9 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-923"><a href="#cb71-923" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-924"><a href="#cb71-924" aria-hidden="true" tabindex="-1"></a>The example also shows why we should not ask whether reciprocity or transitivity &quot;caused&quot; a particular observed friendship. One move can activate both statistics. The reciprocity coefficient compares otherwise similar options that differ in whether the other student already nominated Alice. The transitivity coefficient compares otherwise similar options that differ in how many friend-of-friend paths would close. The model separates their contributions to its choice score, not the private historical reason for one student&#39;s decision. If reciprocating moves almost always close paths in these data, the two comparisons contain little independent information and their separate estimates become less precise.</span>
 <span id="cb71-925"><a href="#cb71-925" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-926"><a href="#cb71-926" aria-hidden="true" tabindex="-1"></a>The important warning is that these exponentiated values are not ordinary odds ratios for whether a tie exists. At an opportunity, the actor can consider all eligible additions, all eligible deletions, and no change. The probability assigned to one action depends on that whole choice set. The safest language is therefore: **the coefficient changes the relative attractiveness of a candidate micro-step, not the unconditional probability that a tie exists.**</span>
+<span id="cb71-926"><a href="#cb71-926" aria-hidden="true" tabindex="-1"></a>The important warning is that these exponentiated values are not ordinary odds ratios for whether a tie exists. At an opportunity, the actor can consider all eligible additions, all eligible deletions, and no change. The probability assigned to one action depends on that whole choice set. Interpret the exponentiated coefficient as a change in the **relative attractiveness of a candidate micro-step, not the unconditional probability that a tie exists.**</span>
 <span id="cb71-927"><a href="#cb71-927" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-928"><a href="#cb71-928" aria-hidden="true" tabindex="-1"></a>The reusable sentence is: **Holding the other modeled features constant, a one-unit increase in [statistic] changes the evaluation score of this proposed action by [coefficient], making the action more or less attractive.** Add the exponentiated relative weight only when it genuinely helps the reader.</span>
+<span id="cb71-928"><a href="#cb71-928" aria-hidden="true" tabindex="-1"></a>The reusable sentence is: **Holding the other modeled features constant, a one-unit increase in [statistic] changes the evaluation score of this proposed action by [coefficient], making the action more or less attractive.** Add the exponentiated relative weight only when it helps the reader.</span>
 <span id="cb71-929"><a href="#cb71-929" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-930"><a href="#cb71-930" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpret the same-smoking coefficient as a 0-to-1 change {#smoke-coefficient}</span></span>
 <span id="cb71-931"><a href="#cb71-931" aria-hidden="true" tabindex="-1"></a></span>
@@ -7093,7 +7093,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-1285"><a href="#cb71-1285" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1286"><a href="#cb71-1286" aria-hidden="true" tabindex="-1"></a><span class="fu">## C1 · Selection and influence, jointly {#c1}</span></span>
 <span id="cb71-1287"><a href="#cb71-1287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-1288"><a href="#cb71-1288" aria-hidden="true" tabindex="-1"></a>Here is the payoff, and it is what Steglich, Snijders &amp; Pearson (2010) is about.</span>
+<span id="cb71-1288"><a href="#cb71-1288" aria-hidden="true" tabindex="-1"></a>That distinction is central to Steglich, Snijders, and Pearson (2010).</span>
 <span id="cb71-1289"><a href="#cb71-1289" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1290"><a href="#cb71-1290" aria-hidden="true" tabindex="-1"></a>The problem: we observe that friends resemble each other in drinking. Two mechanisms produce that, and they are observationally identical in a cross-section.</span>
 <span id="cb71-1291"><a href="#cb71-1291" aria-hidden="true" tabindex="-1"></a></span>
@@ -7212,7 +7212,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-1414"><a href="#cb71-1414" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1415"><a href="#cb71-1415" aria-hidden="true" tabindex="-1"></a>The tempting sentence is &quot;so it&#39;s selection, not influence.&quot; **Do not write that sentence.** Here is why not.</span>
 <span id="cb71-1416"><a href="#cb71-1416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-1417"><a href="#cb71-1417" aria-hidden="true" tabindex="-1"></a><span class="fu">### The honest part {#honest}</span></span>
+<span id="cb71-1417"><a href="#cb71-1417" aria-hidden="true" tabindex="-1"></a><span class="fu">### What the Result Does and Does Not Establish {#selection-influence-limits}</span></span>
 <span id="cb71-1418"><a href="#cb71-1418" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1419"><a href="#cb71-1419" aria-hidden="true" tabindex="-1"></a>**1. Joint estimation is an identifying assumption, not a proof.** Estimating both equations at once means selection and influence are separately *parameterized*. It does not by itself mean the data cleanly separate them. The distinction relies on the continuous-time micro-step structure: the model represents one actor changing one tie or one behavior step at a time. If Alice&#39;s friendship and drinking both change between two interviews, the panel does not reveal which happened first, so the model must allocate that pattern through its assumed process.</span>
 <span id="cb71-1420"><a href="#cb71-1420" aria-hidden="true" tabindex="-1"></a></span>
@@ -7221,7 +7221,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-1423"><a href="#cb71-1423" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse=&quot;true&quot; title=&quot;Depth: Why the selection/influence balance is fragile at this N&quot;}</span>
 <span id="cb71-1424"><a href="#cb71-1424" aria-hidden="true" tabindex="-1"></a>This is worth knowing before you over-read our result. We got selection significant and influence not, but at n = 50 that balance is not stable. Flip the datasets, the waves, or the behavior coding and the two can swap which one clears significance, precisely because both equations are estimated from very little information. The other canonical teaching dataset here, Knecht&#39;s classroom data (26 pupils, 4 waves), is smaller still and is exactly where you would expect the estimates to be even noisier.</span>
 <span id="cb71-1425"><a href="#cb71-1425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-1426"><a href="#cb71-1426" aria-hidden="true" tabindex="-1"></a>The honest reading is the identification point, not either specific verdict: &quot;SAOM separates selection from influence&quot; means the model separately *parameterizes* them, not that either is reliably *estimable* at these sample sizes. If you want to see this for yourself, the ancillary TERGM deep dive, the long-form companion to yesterday&#39;s C4, fits the Knecht data (it ships with <span class="in">`btergm`</span> as <span class="in">`data(knecht)`</span>, not with RSiena) and you can add the behavior equation there and watch the standard errors.</span>
+<span id="cb71-1426"><a href="#cb71-1426" aria-hidden="true" tabindex="-1"></a>The defensible reading is the identification point, not either specific verdict: &quot;SAOM separates selection from influence&quot; means the model separately *parameterizes* them, not that either is reliably *estimable* at these sample sizes. If you want to see this for yourself, the ancillary TERGM deep dive, the long-form companion to yesterday&#39;s C4, fits the Knecht data (it ships with <span class="in">`btergm`</span> as <span class="in">`data(knecht)`</span>, not with RSiena) and you can add the behavior equation there and watch the standard errors.</span>
 <span id="cb71-1427"><a href="#cb71-1427" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb71-1428"><a href="#cb71-1428" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1429"><a href="#cb71-1429" aria-hidden="true" tabindex="-1"></a>**3. The behavior equation is where people over-fit, and it matters here.** Our behavior equation has five parameters: two rate parameters plus linear shape, quadratic shape, and `avAlt`. That is close to the maximum a 1–5 ordinal outcome on 50 actors will support. A common failure, and it appears in widely-circulated teaching material for this exact dataset - is piling on more behavior effects and getting an influence estimate with a **standard error larger than the estimate itself**, then reporting it without comment. Keeping the behavior side minimal is not laziness; it&#39;s what makes the influence coefficient readable at all.</span>
@@ -7283,7 +7283,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-1489"><a href="#cb71-1489" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb71-1490"><a href="#cb71-1490" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb71-1491"><a href="#cb71-1491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-1492"><a href="#cb71-1492" aria-hidden="true" tabindex="-1"></a>**Step 4: Say the result in ordinary language.**</span>
+<span id="cb71-1492"><a href="#cb71-1492" aria-hidden="true" tabindex="-1"></a>**Step 4: State what the model says about the application.**</span>
 <span id="cb71-1493"><a href="#cb71-1493" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1494"><a href="#cb71-1494" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; At a modeled friendship-change opportunity, a student who is one drinking category closer is about </span><span class="in">`r round(100 * (relative_choice_weight_one_category - 1))`</span><span class="at">% more likely to be chosen than an otherwise comparable student.</span></span>
 <span id="cb71-1495"><a href="#cb71-1495" aria-hidden="true" tabindex="-1"></a></span>
@@ -7629,7 +7629,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-1851"><a href="#cb71-1851" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1852"><a href="#cb71-1852" aria-hidden="true" tabindex="-1"></a>These first differences average over the observed starting configurations and over the model&#39;s simulated paths. They hold the other fitted coefficients fixed, but they do not include parameter uncertainty and they are not holdout forecasts. For a research analysis, repeat the calculation across parameter draws or bootstrap refits and report an interval. Use the goodness-of-fit checks in <span class="co">[</span><span class="ot">C2</span><span class="co">](#c2)</span> to ask whether the fitted process reproduces network and behavior features beyond the statistics targeted in estimation.</span>
 <span id="cb71-1853"><a href="#cb71-1853" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-1854"><a href="#cb71-1854" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? Two real quirks in these two functions&quot;}</span>
+<span id="cb71-1854"><a href="#cb71-1854" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=&quot;true&quot; title=&quot;Stuck? Two quirks in these functions&quot;}</span>
 <span id="cb71-1855"><a href="#cb71-1855" aria-hidden="true" tabindex="-1"></a>**First**, by default `selectionTable()` returns a long-format *data frame* (`ego`, `vego`, `valter`, `select`), not the grid above, so `round(st, 3)` errors with `non-numeric-alike variable(s) in data frame: ego`. Pass **`as.matrix = TRUE`** to get the grid. <span class="in">`silent = TRUE`</span> suppresses the parameter-echo it otherwise prints.</span>
 <span id="cb71-1856"><a href="#cb71-1856" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1857"><a href="#cb71-1857" aria-hidden="true" tabindex="-1"></a>**Second**, never <span class="in">`head()`</span> the default (data-frame) form and print it. <span class="in">`print(head(st, 3))`</span> errors with a <span class="in">`dimnames`</span> complaint, because the print method assigns row names from a fixed-length attribute regardless of how you subset. <span class="in">`print(st)`</span> on the whole object is fine. That quirk is present in 1.5 and 1.6 alike, you did nothing wrong.</span>
@@ -7657,7 +7657,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-1881"><a href="#cb71-1881" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1882"><a href="#cb71-1882" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stretch</span></span>
 <span id="cb71-1883"><a href="#cb71-1883" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-1884"><a href="#cb71-1884" aria-hidden="true" tabindex="-1"></a>Replace <span class="in">`avAlt`</span> with <span class="in">`avSim`</span> (average similarity) in the behavior equation. These encode genuinely different mechanisms: <span class="in">`avAlt`</span> says ego moves toward the *mean level* of their friends; `avSim` says ego is rewarded for *resembling* friends, which is symmetric around each friend&#39;s value.</span>
+<span id="cb71-1884"><a href="#cb71-1884" aria-hidden="true" tabindex="-1"></a>Replace <span class="in">`avAlt`</span> with <span class="in">`avSim`</span> (average similarity) in the behavior equation. These encode different mechanisms: <span class="in">`avAlt`</span> says ego moves toward the *mean level* of their friends; `avSim` says ego is rewarded for *resembling* friends, which is symmetric around each friend&#39;s value.</span>
 <span id="cb71-1885"><a href="#cb71-1885" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1886"><a href="#cb71-1886" aria-hidden="true" tabindex="-1"></a>Fit both, and decide which the data prefer. State how you decided, and note that you cannot simply compare t-ratios on differently-parameterized terms, so say what you actually used.</span>
 <span id="cb71-1887"><a href="#cb71-1887" aria-hidden="true" tabindex="-1"></a></span>
@@ -7690,7 +7690,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-1918"><a href="#cb71-1918" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1919"><a href="#cb71-1919" aria-hidden="true" tabindex="-1"></a>**Answering the question.** No, a simple comparison of wave 1 with wave 2 cannot separate the two mechanisms. Two friends who smoke alike at wave 2 could have chosen each other partly because they were already similar, or their smoking could have become more similar after the friendship formed. A joint network-behavior model gives those processes separate parameters, but the separation still depends on the model&#39;s assumptions about change between waves.</span>
 <span id="cb71-1920"><a href="#cb71-1920" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-1921"><a href="#cb71-1921" aria-hidden="true" tabindex="-1"></a>On these data neither reaches conventional significance: smoking selection has a t-ratio of about <span class="in">`r round(tt3[[&quot;smokeDep similarity&quot;]],2)`</span> and smoking influence about <span class="in">`r round(tt3[[&quot;smokeDep average alter&quot;]],2)`</span>. So the honest three-sentence answer is that her comparison cannot work even in principle, that the model which *can* work gives suggestive but inconclusive evidence for both mechanisms at n = 50, and that the right response is more waves or more actors rather than a stronger claim from these.</span>
+<span id="cb71-1921"><a href="#cb71-1921" aria-hidden="true" tabindex="-1"></a>On these data neither reaches conventional significance: smoking selection has a t-ratio of about <span class="in">`r round(tt3[[&quot;smokeDep similarity&quot;]],2)`</span> and smoking influence about <span class="in">`r round(tt3[[&quot;smokeDep average alter&quot;]],2)`</span>. The three-sentence summary is that her comparison cannot work even in principle, that the model which *can* work gives suggestive but inconclusive evidence for both mechanisms at n = 50, and that the right response is more waves or more actors rather than a stronger claim from these data.</span>
 <span id="cb71-1922"><a href="#cb71-1922" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1923"><a href="#cb71-1923" aria-hidden="true" tabindex="-1"></a>(Check <span class="in">`tconv.max`</span> before you read anything above. If it&#39;s over 0.25, refit with <span class="in">`prevAns = m3`</span> before interpreting.)</span>
 <span id="cb71-1924"><a href="#cb71-1924" aria-hidden="true" tabindex="-1"></a></span>
@@ -7713,7 +7713,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-1943"><a href="#cb71-1943" aria-hidden="true" tabindex="-1"></a>  <span class="at">avSim_tconv       =</span> <span class="fu">round</span>(m3s<span class="sc">$</span>tconv.max, <span class="dv">3</span>))</span>
 <span id="cb71-1944"><a href="#cb71-1944" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb71-1945"><a href="#cb71-1945" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-1946"><a href="#cb71-1946" aria-hidden="true" tabindex="-1"></a><span class="in">`avAlt`</span> and <span class="in">`avSim`</span> are **not nested**, so you cannot ask &quot;which term is significant&quot; and read off a winner, they are two different single-parameter influence specifications. The defensible ways to choose are (a) theory, do you believe actors move toward the *mean level* of their friends (`avAlt`) or toward *resembling each friend* (`avSim`, symmetric around each friend&#39;s value)?, and (b) fit, via `sienaGOF` on the `BehaviorDistribution` auxiliary for each. What you must **not** do is compare the two influence t-ratios as if the larger one wins. Here influence is <span class="in">`r round(tt3s[[&quot;smokeDep average similarity&quot;]],2)`</span> under <span class="in">`avSim`</span> versus <span class="in">`r round(tt3[[&quot;smokeDep average alter&quot;]],2)`</span> under <span class="in">`avAlt`</span>, both short of significance, so at n = 50 these data do not decide between the two mechanisms, and honesty is saying so.</span>
+<span id="cb71-1946"><a href="#cb71-1946" aria-hidden="true" tabindex="-1"></a><span class="in">`avAlt`</span> and <span class="in">`avSim`</span> are **not nested**, so you cannot ask &quot;which term is significant&quot; and read off a winner, they are two different single-parameter influence specifications. The defensible ways to choose are (a) theory, do you believe actors move toward the *mean level* of their friends (`avAlt`) or toward *resembling each friend* (`avSim`, symmetric around each friend&#39;s value)?, and (b) fit, via `sienaGOF` on the `BehaviorDistribution` auxiliary for each. What you must **not** do is compare the two influence t-ratios as if the larger one wins. Here influence is <span class="in">`r round(tt3s[[&quot;smokeDep average similarity&quot;]],2)`</span> under <span class="in">`avSim`</span> versus <span class="in">`r round(tt3[[&quot;smokeDep average alter&quot;]],2)`</span> under <span class="in">`avAlt`</span>, both short of significance, so at n = 50 these data do not distinguish between the two mechanisms.</span>
 <span id="cb71-1947"><a href="#cb71-1947" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb71-1948"><a href="#cb71-1948" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-1949"><a href="#cb71-1949" aria-hidden="true" tabindex="-1"></a><span class="fu">## C2 · Goodness of fit {#c2}</span></span>
@@ -7942,7 +7942,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-2192"><a href="#cb71-2192" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-2193"><a href="#cb71-2193" aria-hidden="true" tabindex="-1"></a>**Leifeld &amp; Cranmer (2022, *Network Science* 10(1):15–19)** conceded the coding error, the formal acknowledgement is their corrigendum, *Network Science* 10(1):111, and pressed a deeper point that does not go away: **the SAOM is itself a theory**, not a neutral estimator. It hard-codes sequential one-tie-at-a-time micro-steps, actors with full network knowledge, and one-period look-ahead. Embedded theory ought to be falsifiable, and they argue held-out prediction is the only feasible way to test it.</span>
 <span id="cb71-2194"><a href="#cb71-2194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2195"><a href="#cb71-2195" aria-hidden="true" tabindex="-1"></a>**Where that leaves you: the factual dispute is settled, the methodological one is not.** The error was real and acknowledged. Whether predictive fit is a legitimate criterion for comparing generative network models is genuinely open, and reasonable people are on both sides.</span>
+<span id="cb71-2195"><a href="#cb71-2195" aria-hidden="true" tabindex="-1"></a>**Where that leaves you: the factual dispute is settled, the methodological one is not.** The coding error occurred and was acknowledged. Whether predictive fit is a legitimate criterion for comparing generative network models remains an open methodological debate.</span>
 <span id="cb71-2196"><a href="#cb71-2196" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-2197"><a href="#cb71-2197" aria-hidden="true" tabindex="-1"></a>The useful framing is Block, Stadtfeld &amp; Snijders (2019) again: ERGM is defined at the **graph** level, SAOM at the **transition** level. SAOM&#39;s statistics nest within actors, so its dependence assumptions are *stronger*. That structure provides a route to identification, but only if the micro-step and specification assumptions are defensible. You should know what you paid.</span>
 <span id="cb71-2198"><a href="#cb71-2198" aria-hidden="true" tabindex="-1"></a></span>
@@ -7994,7 +7994,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-2248"><a href="#cb71-2248" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Do they interpret coefficients as probabilities or marginal effects? (They shouldn&#39;t - <span class="co">[</span><span class="ot">B3</span><span class="co">](#b3)</span>)</span>
 <span id="cb71-2249"><a href="#cb71-2249" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Do they claim selection *versus* influence from a null result on one of them? (<span class="co">[</span><span class="ot">C1</span><span class="co">](#c1)</span>)</span>
 <span id="cb71-2250"><a href="#cb71-2250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2251"><a href="#cb71-2251" aria-hidden="true" tabindex="-1"></a>Every one of those is a real failure I have seen in print.</span>
+<span id="cb71-2251"><a href="#cb71-2251" aria-hidden="true" tabindex="-1"></a>I have seen every one of those failures in published work.</span>
 <span id="cb71-2252"><a href="#cb71-2252" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-2253"><a href="#cb71-2253" aria-hidden="true" tabindex="-1"></a><span class="fu">### What we did not show {#not-shown}</span></span>
 <span id="cb71-2254"><a href="#cb71-2254" aria-hidden="true" tabindex="-1"></a></span>
@@ -8014,7 +8014,7 @@ f_i^{\text{drink}}(z,x)
 <span id="cb71-2268"><a href="#cb71-2268" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-2269"><a href="#cb71-2269" aria-hidden="true" tabindex="-1"></a><span class="fu">### Where we go next: Day 13</span></span>
 <span id="cb71-2270"><a href="#cb71-2270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-2271"><a href="#cb71-2271" aria-hidden="true" tabindex="-1"></a>Today closes the modeling arc of the course: every day so far has answered dependence by changing the *model*. Tomorrow (Day 13) leaves the model alone and interrogates the *design*: what a causal claim on a network even means, why interference breaks the usual potential-outcomes machinery, what randomization buys you, and what an observational researcher can honestly claim. Then Day 14 puts every model from this week head-to-head on one dataset and asks the question the syllabus opened with: which model, when?</span>
+<span id="cb71-2271"><a href="#cb71-2271" aria-hidden="true" tabindex="-1"></a>Today closes the modeling arc of the course: every day so far has answered dependence by changing the *model*. Tomorrow (Day 13) leaves the model alone and interrogates the *design*: what a causal claim on a network even means, why interference breaks the usual potential-outcomes machinery, what randomization buys you, and which claims an observational design can support. Then Day 14 puts every model from this week head-to-head on one dataset and asks the question the syllabus opened with: which model, when?</span>
 <span id="cb71-2272"><a href="#cb71-2272" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-2273"><a href="#cb71-2273" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb71-2274"><a href="#cb71-2274" aria-hidden="true" tabindex="-1"></a></span>
